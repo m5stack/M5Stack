@@ -1,0 +1,75 @@
+/*
+ * (C) Copyright 2014 Aurélien Rodot. All rights reserved.
+ *
+ * This file is part of the Gamebuino Library (http://gamebuino.com)
+ *
+ * The Gamebuino Library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+
+M5Stack 	KEYWORD3
+display	KEYWORD1
+buttons	KEYWORD1
+
+////////////////////////core
+begin	KEYWORD1
+update	KEYWORD1
+
+////////////////////////buttons
+pressed	KEYWORD1
+released	KEYWORD1
+held	KEYWORD1
+repeat	KEYWORD1
+timeHeld	KEYWORD1
+BTN_A 	LITERAL1
+BTN_B 	LITERAL1
+BTN_C 	LITERAL1
+
+////////////////////////Display
+getBuffer	KEYWORD1
+setContrast	KEYWORD1
+clear	KEYWORD1
+update	KEYWORD1
+fillScreen	KEYWORD1
+persistence	KEYWORD1
+setColor	KEYWORD1
+drawPixel	KEYWORD1
+getPixel	KEYWORD1
+drawLine	KEYWORD1
+drawFastVLine	KEYWORD1
+drawFastHLine	KEYWORD1
+drawRect	KEYWORD1
+fillRect	KEYWORD1
+drawRoundRect	KEYWORD1
+fillRoundRect	KEYWORD1
+drawCircle	KEYWORD1
+fillCircle	KEYWORD1
+drawCircleHelper	KEYWORD1
+fillCircleHelper	KEYWORD1
+drawTriangle	KEYWORD1
+fillTriangle	KEYWORD1
+drawBitmap	KEYWORD1
+drawChar	KEYWORD1
+print	KEYWORD1
+cursorX	KEYWORD1
+cursorY	KEYWORD1
+fontSize	KEYWORD1
+textWrap	KEYWORD1
+fontWidth	KEYWORD1
+fontHeight	KEYWORD1
+setFont	KEYWORD1
+
+WHITE 	LITERAL1
+BLACK 	LITERAL1
+INVERT 	LITERAL1
+GRAY 	LITERAL1
