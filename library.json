@@ -1,0 +1,16 @@
+{
+  "name": "M5Stack",
+  "description": "An ESP32 Arduino board",
+  "keywords": "M5Stack",
+  "authors": {
+    "name": "Zibin Zheng",
+    "url": "https://github.com/m5stack/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/m5stack/m5stack.git"
+  },
+  "version": "0.1",
+  "framework": "arduino",
+  "platforms": "esp32"
+}
