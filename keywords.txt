@@ -34,6 +34,7 @@ timeHeld	KEYWORD1
 BTN_A 	LITERAL1
 BTN_B 	LITERAL1
 BTN_C 	LITERAL1
+LED_PIN LITERAL1
 
 ////////////////////////Display
 getBuffer	KEYWORD1

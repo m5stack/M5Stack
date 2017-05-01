@@ -85,6 +85,7 @@ class M5STACK_TFTLCD : public Adafruit_GFX {
   void     fillScreen(uint16_t color);
   void     reset(void);
   void     drawPicture(int x, int y,uint16_t pic_H, uint16_t pic_V, const uint8_t* pic);
+  void     drawPicture();
   void     ProgressBar(int x, int y, int w, int h, uint8_t val);
 
   // LCD screen button

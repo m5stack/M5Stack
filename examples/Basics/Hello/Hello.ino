@@ -4,6 +4,7 @@
 void setup(){
   // initialize the M5Stack object
   m5.begin();
+  
   // lcd display
   m5.lcd.printf("hello world");
 }

@@ -47,7 +47,11 @@
 #define BUTTON_C_PIN        37
 
 // BEEP PIN
-#define BEEP_PIN   5
+#define BEEP_PIN            5
+
+// LED 
+#define LED_PIN             13
+#define LED_BUILTIN         13
 
 #define USE_SERIAL 			Serial
 
