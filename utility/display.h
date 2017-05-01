@@ -2,8 +2,10 @@
 #define	DISPLAY_H
 
 #include <SPI.h>
-#include <Adafruit_GFX.h>
+#include "Adafruit_GFX.h"
 #include "utility/config.h"
+#include "FS.h"
+#include "SD.h"
 
 #include <Fonts/FreeMonoBoldOblique12pt7b.h>
 #include <Fonts/FreeMono9pt7b.h>
@@ -37,6 +39,30 @@
 #ifndef _swap_int16_t
 #define _swap_int16_t(a, b) { int16_t t = a; a = b; b = t; }
 #endif
+
+typedef struct
+{
+    uint16_t    bfType;
+    uint32_t    bfSize;
+    uint16_t    bfReserved1;
+    uint16_t    bfReserved2;
+    uint32_t    bfOffBits;
+} BitMapFileHeader;
+
+typedef struct
+{
+    uint32_t   biSize;
+    uint32_t   biWidth;
+    uint32_t   biHeight;
+    uint16_t   biPlanes;
+    uint16_t   biBitCount;
+    uint32_t   biCompression;
+    uint32_t   biSizeImage;
+    uint32_t   biXPelsPerMeter;
+    uint32_t   biYPelsPerMeter;
+    uint32_t   biClrUsed;
+    uint32_t   biClrImportant;
+} BitMapInfoHeader;
 
 class TFTLCD_Button {
 
@@ -85,7 +111,7 @@ class M5STACK_TFTLCD : public Adafruit_GFX {
   void     fillScreen(uint16_t color);
   void     reset(void);
   void     drawPicture(int x, int y,uint16_t pic_H, uint16_t pic_V, const uint8_t* pic);
-  void     drawPicture();
+  void     drawPicture(const char* filename);
   void     ProgressBar(int x, int y, int w, int h, uint8_t val);
 
   // LCD screen button

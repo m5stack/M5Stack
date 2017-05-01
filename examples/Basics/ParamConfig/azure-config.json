@@ -1,6 +1,6 @@
 {
-    "SSID":"MasterHax_2.4G",
-    "PASSWORD":"wittyercheese551",
-    "DeviceID":"test001",
+    "WiFi_SSID":"MasterHax_2.4G",
+    "WiFi_PASSWORD":"wittyercheese551",
+    "AzureDeviceID":"test001",
     "ConnectingString":"m5statck-abcde"
 }

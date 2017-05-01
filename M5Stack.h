@@ -16,6 +16,12 @@
 #include "utility/bootmenu.h"
 #include "utility/config.h"
 
+#ifdef ENABLE_DEBUG
+#define M5PUTLOG(X)     Serial.printf(X)
+#else
+#define M5PUTLOG(X)
+#endif
+
 class M5Stack {
 public:
     void begin();

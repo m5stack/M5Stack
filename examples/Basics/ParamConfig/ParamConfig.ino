@@ -1,7 +1,7 @@
 #include <M5Stack.h>
 #include <ArduinoJson.h>
 
-bool parserFSJsonParam(const char* filename, const char* keyword, char* strout) {
+bool getParamFromTFCard(const char* filename, const char* keyword, char* strout) {
   // fs file read
   File fsFile;
   uint8_t fsbuffer[255];
@@ -66,9 +66,9 @@ void setup(){
   // lcd display
   m5.lcd.printf("JSON test");
 
-  char ssid[100];
-  if(parserFSJsonParam("/azure-config.json", "PASSWORD", buf)) {
-    Serial.printf("Read Value:%s", buf);
+  char ssid[30];
+  if(getParamFromTFCard("/azure-config.json", "PASSWORD", ssid)) {
+    Serial.printf("Read Value:%s", ssid);
   }
 
 }

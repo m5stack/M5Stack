@@ -308,6 +308,83 @@ void M5STACK_TFTLCD::drawPicture(int x, int y,uint16_t pic_H, uint16_t pic_V, co
 	endWrite();
 }
 
+#define HTONL(v)	( ((v) << 24) | (((v) >> 24) & 255) | (((v) << 8) & 0xff0000) | (((v) >> 8) & 0xff00) )
+#define HTONS(v)	( (((v) << 8) & 0xff00) | (((v) >> 8) & 255) )
+
+void M5STACK_TFTLCD::drawPicture(const char* filename)
+{
+  uint8_t buf[700];
+  uint16_t tmp;
+  File fsFile;
+
+  if(SD.exists(filename)) {
+    fsFile = SD.open(filename, "r");
+    if(fsFile) {
+        Serial.printf("open the %s, size:%d \r\n",filename, fsFile.size());
+        fsFile.read(buf, 14);
+        Serial.printf("bfType :0x%x \r\n", ((BitMapFileHeader*)buf)->bfType);
+        fsFile.read(buf, 40);
+        Serial.printf("biSize:%d, Width:%d, Height:%d, biBitCount%d\r\n", \
+        ((BitMapInfoHeader*)buf)->biSize,   ((BitMapInfoHeader*)buf)->biWidth, \
+        ((BitMapInfoHeader*)buf)->biHeight, ((BitMapInfoHeader*)buf)->biBitCount);
+
+        // BitMapInfoHeader
+        // fsFile.read(buf, 32);
+
+		int bmp_bit_count = ((BitMapInfoHeader*)buf)->biBitCount;
+        uint16_t r,g,b;
+		uint16_t rev_color;
+		bool rev_bit=1;
+
+		startWrite();
+        LCDSetWindow(0, 219, 0, 175);
+		endWrite();
+
+		if(bmp_bit_count == 16) {
+			for(int i=0; i<176; i++) {
+				int sizen = fsFile.read(buf, 440);
+				// Serial.printf("i:%d, sizen:%d\r\n", i, sizen);
+				startWrite();
+				// LCDSetWindow(0, 219, 176-i, 176-i);
+				for(int j=0; j<220; j++) {
+					spiWrite(buf[j*2+1]);
+					spiWrite(buf[j*2]);
+				}
+				endWrite();
+			}
+		} else if(bmp_bit_count == 24) {
+			for(int i=0; i<176; i++) {
+				int sizen = fsFile.read(buf, 660);
+				// Serial.printf("i:%d, sizen:%d\r\n", i, sizen);
+				startWrite();
+				// LCDSetWindow(0, 219, 176-i, 176-i);
+				// LCDSetWindow(0, 219, i, i);
+				for(int j=0; j<220; j++) {
+					// rev_color = Combine16Bit_565(buf[j*3+2], buf[j*3+1], buf[j*3]);
+					// if(rev_bit) spiWrite(buf[j-1]);
+					// else spiWrite(buf[j+1]);
+					// rev_bit = !rev_bit;
+					// rev_color = buf[j*2];
+					// sw16(rev_color);
+					// HTONS(rev_color);
+					// spiWrite16(rev_color);
+					// Serial.printf("%x ", buf[j]);
+					rev_color  = (((uint16_t)buf[j*3+2] >> 3) << 11) ;
+					rev_color |= (((uint16_t)buf[j*3+1] >> 2) << 5) ;
+					rev_color |= ((uint16_t)buf[j*3] >> 3) ;
+
+					// spiWrite(buf[j*2+1]);
+					spiWrite16(rev_color);
+				}
+				endWrite();
+				// drawPicture(0, 176-i, 219, 1, buf);
+			}
+		}
+        fsFile.close();
+    }
+  }
+}
+
 void M5STACK_TFTLCD::ProgressBar(int x, int y, int w, int h, uint8_t val)
 {
 	drawRect(x, y, w, h, 0x09F1);
