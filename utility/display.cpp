@@ -401,7 +401,7 @@ void M5STACK_TFTLCD::reset(void)
 	delay(10);
 }
 
-void M5STACK_TFTLCD::buttonSet(uint8_t button_id, char* str)
+void M5STACK_TFTLCD::buttonSet(uint8_t button_id, const char* str)
 {
 	#define X_OFFSET 40
 	#define Y_POS 165
@@ -468,7 +468,7 @@ TFTLCD_Button::TFTLCD_Button(void) {
 void TFTLCD_Button::initButton(
  Adafruit_GFX *gfx, int16_t x, int16_t y, uint8_t w, uint8_t h,
  uint16_t outline, uint16_t fill, uint16_t textcolor,
- char *label, uint8_t textsize)
+ const char *label, uint8_t textsize)
 {
   _x            = x;
   _y            = y;

@@ -17,9 +17,33 @@ char wifi_password[40];
 // DNSServer dnsServer;
 WebServer webServer(80);
 
+void writeFile(fs::FS &fs, const char * path, const char * message) {
+  Serial.printf("Writing file: %s\n", path);
+
+  File file = fs.open(path, FILE_WRITE);
+  if (!file) {
+    Serial.println("Failed to open file for writing");
+    return;
+  }
+  if (file.print(message)) {
+    Serial.println("File written");
+  } else {
+    Serial.println("Write failed");
+  }
+}
+
+void deleteFile(fs::FS &fs, const char * path) {
+  Serial.printf("Deleting file: %s\n", path);
+  if (fs.remove(path)) {
+    Serial.println("File deleted");
+  } else {
+    Serial.println("Delete failed");
+  }
+}
+
 void setup() {
   m5.begin();
-//   EEPROM.begin(512);
+  //   EEPROM.begin(512);
   delay(10);
   if (restoreConfig()) {
     if (checkConnection()) {
@@ -41,42 +65,43 @@ void loop() {
 
 boolean restoreConfig() {
   // char fsbuffer[200];
-  const char* filename = "/azure-config.json";
+  const char* filename = "/wifi-config.json";
   Serial.printf("Reading %s\r\n", filename);
   if (SD.exists(filename)) {
     //file exists, reading and loading
     Serial.println("reading config file");
     File configFile = SD.open(filename, "r");
     if (configFile) {
-        Serial.println("opened config file");
-        size_t size = configFile.size();
-        // Allocate a buffer to store contents of the file.
-        std::unique_ptr<char[]> fsbuffer(new char[size]);
-        
-        configFile.readBytes(fsbuffer.get(), size);
-        // configFile.readBytes(fsbuffer, size);
-        fsbuffer[size] = 0;
-        DynamicJsonBuffer jsonBuffer;
-        // JsonObject& json = jsonBuffer.parseObject(fsbuffer);
-        JsonObject& json = jsonBuffer.parseObject(fsbuffer.get());
-        json.printTo(Serial);
-        if (json.success()) {
-          Serial.println("\nparsed json");
-          // const char* wifi = json["WiFi_SSID"];
-          // const char* passwd = json["WiFi_PASSWORD"];
-          strcpy(wifi_ssid, json["WiFi_SSID"]);
-          strcpy(wifi_password, json["WiFi_PASSWORD"]);
-          Serial.printf("SSID:%s\r\n", wifi_ssid);
-          Serial.printf("PASSWORD:%s\r\n", wifi_password);
-          WiFi.begin(wifi_ssid, wifi_password);
-          return true;
-        } else {
-          Serial.println("failed to load json config");
-          return false;
-        }
+      Serial.println("opened config file");
+      size_t size = configFile.size();
+      // Allocate a buffer to store contents of the file.
+      std::unique_ptr<char[]> fsbuffer(new char[size]);
+
+      configFile.readBytes(fsbuffer.get(), size);
+      // configFile.readBytes(fsbuffer, size);
+      fsbuffer[size] = 0;
+      DynamicJsonBuffer jsonBuffer;
+      // JsonObject& json = jsonBuffer.parseObject(fsbuffer);
+      JsonObject& json = jsonBuffer.parseObject(fsbuffer.get());
+      json.printTo(Serial);
+      if (json.success()) {
+        Serial.println("\nparsed json");
+        // const char* wifi = json["WiFi_SSID"];
+        // const char* passwd = json["WiFi_PASSWORD"];
+        strcpy(wifi_ssid, json["WiFi_SSID"]);
+        strcpy(wifi_password, json["WiFi_PASSWORD"]);
+        Serial.printf("SSID:%s\r\n", wifi_ssid);
+        Serial.printf("PASSWORD:%s\r\n", wifi_password);
+        WiFi.begin(wifi_ssid, wifi_password);
+        return true;
+      } else {
+        Serial.println("failed to load json config");
+        return false;
+      }
     }
   } else {
     Serial.printf("file isn't exists.\r\n");
+    writeFile(SD, "/wifi-config.json", "{\"WiFi_SSID\":\"MasterHax_2.4G\",\"WiFi_PASSWORD\":\"wittyercheese551\",\"AzureDeviceID\":\"test001\",\"ConnectingString\":\"m5statck-abcde\"}");
   }
   return false;
 }
@@ -110,9 +135,9 @@ void startWebServer() {
       webServer.send(200, "text/html", makePage("Wi-Fi Settings", s));
     });
     webServer.on("/setap", []() {
-      for (int i = 0; i < 96; ++i) {
-        // EEPROM.write(i, 0);
-      }
+      // for (int i = 0; i < 96; ++i) {
+      //   EEPROM.write(i, 0);
+      // }
       String ssid = urlDecode(webServer.arg("ssid"));
       Serial.print("SSID: ");
       Serial.println(ssid);
@@ -121,47 +146,47 @@ void startWebServer() {
       Serial.println(pass);
       Serial.println("Writing SSID to EEPROM...");
 
-//----------------file--------------------
-      const char* filename = "/azure-config.json";
+      //----------------file--------------------
+      const char* filename = "/wifi-config.json";
       if (SD.exists(filename)) {
         //file exists, reading and loading
         Serial.println("reading config file");
         File configFile = SD.open(filename, "r");
         if (configFile) {
-            Serial.println("opened config file");
-            size_t size = configFile.size();
-            // Allocate a buffer to store contents of the file.
-            std::unique_ptr<char[]> fsbuffer(new char[size]);
-            
-            configFile.readBytes(fsbuffer.get(), size);
-            // configFile.readBytes(fsbuffer, size);
-            fsbuffer[size] = 0;
+          Serial.println("opened config file");
+          size_t size = configFile.size();
+          // Allocate a buffer to store contents of the file.
+          std::unique_ptr<char[]> fsbuffer(new char[size]);
 
-            DynamicJsonBuffer jsonBuffer;
-            JsonObject& root = jsonBuffer.parseObject(fsbuffer.get());
-            root[String("WiFi_SSID")] = ssid;
-            root[String("WiFi_PASSWORD")] = pass;
+          configFile.readBytes(fsbuffer.get(), size);
+          // configFile.readBytes(fsbuffer, size);
+          fsbuffer[size] = 0;
 
-            String output;
-            root.printTo(output);
-            Serial.printf("Save Json.\r\n");
-            Serial.print(output);
-            configFile.close();
+          DynamicJsonBuffer jsonBuffer;
+          JsonObject& root = jsonBuffer.parseObject(fsbuffer.get());
+          root[String("WiFi_SSID")] = ssid;
+          root[String("WiFi_PASSWORD")] = pass;
 
-            File configFile = SD.open(filename, "w");
-            if(!configFile){
-              Serial.println("Failed to open file for writing");
-              return;
-            }
-            
-            if(configFile.print(output)){
-                Serial.println("File written");
-            } else {
-                Serial.println("Write failed");
-            }
+          String output;
+          root.printTo(output);
+          Serial.printf("Save Json.\r\n");
+          Serial.print(output);
+          configFile.close();
+
+          File configFile = SD.open(filename, "w");
+          if (!configFile) {
+            Serial.println("Failed to open file for writing");
+            return;
+          }
+
+          if (configFile.print(output)) {
+            Serial.println("File written");
+          } else {
+            Serial.println("Write failed");
+          }
         }
       }
-//---------------------------------------
+      //---------------------------------------
 
       for (int i = 0; i < ssid.length(); ++i) {
         // EEPROM.write(i, ssid[i]);
@@ -170,7 +195,7 @@ void startWebServer() {
       for (int i = 0; i < pass.length(); ++i) {
         // EEPROM.write(32 + i, pass[i]);
       }
-    //   EEPROM.commit();
+      //   EEPROM.commit();
 
 
       Serial.println("Write EEPROM done!");
@@ -194,44 +219,41 @@ void startWebServer() {
       webServer.send(200, "text/html", makePage("STA mode", s));
     });
     webServer.on("/reset", []() {
-      for (int i = 0; i < 96; ++i) {
-        // EEPROM.write(i, 0);
-      }
-    //   EEPROM.commit();
-
-
+      deleteFile(SD, "/wifi-config.json");
       String s = "<h1>Wi-Fi settings was reset.</h1><p>Please reset device.</p>";
       webServer.send(200, "text/html", makePage("Reset Wi-Fi Settings", s));
+      delay(3000);
+      ESP.restart();
     });
   }
   webServer.begin();
 }
 
 void setupMode() {
-    WiFi.mode(WIFI_MODE_STA);
-    WiFi.disconnect();
-    delay(100);
-    int n = WiFi.scanNetworks();
-    delay(100);
-    Serial.println("");
-    for (int i = 0; i < n; ++i) {
-        ssidList += "<option value=\"";
-        ssidList += WiFi.SSID(i);
-        ssidList += "\">";
-        ssidList += WiFi.SSID(i);
-        ssidList += "</option>";
-    }
-    delay(100);
-    WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
-    WiFi.softAP(apSSID);
-    WiFi.mode(WIFI_MODE_AP);
-    // WiFi.softAPConfig(IPAddress local_ip, IPAddress gateway, IPAddress subnet);
-    // WiFi.softAP(const char* ssid, const char* passphrase = NULL, int channel = 1, int ssid_hidden = 0);
-    //   dnsServer.start(53, "*", apIP);
-    startWebServer();
-    Serial.print("Starting Access Point at \"");
-    Serial.print(apSSID);
-    Serial.println("\"");
+  WiFi.mode(WIFI_MODE_STA);
+  WiFi.disconnect();
+  delay(100);
+  int n = WiFi.scanNetworks();
+  delay(100);
+  Serial.println("");
+  for (int i = 0; i < n; ++i) {
+    ssidList += "<option value=\"";
+    ssidList += WiFi.SSID(i);
+    ssidList += "\">";
+    ssidList += WiFi.SSID(i);
+    ssidList += "</option>";
+  }
+  delay(100);
+  WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
+  WiFi.softAP(apSSID);
+  WiFi.mode(WIFI_MODE_AP);
+  // WiFi.softAPConfig(IPAddress local_ip, IPAddress gateway, IPAddress subnet);
+  // WiFi.softAP(const char* ssid, const char* passphrase = NULL, int channel = 1, int ssid_hidden = 0);
+  // dnsServer.start(53, "*", apIP);
+  startWebServer();
+  Serial.print("Starting Access Point at \"");
+  Serial.print(apSSID);
+  Serial.println("\"");
 }
 
 String makePage(String title, String contents) {
