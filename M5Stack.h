@@ -28,6 +28,11 @@ public:
     uint8_t bootSetup();
     void loop();
 
+    //LED
+    void ledOn();
+    void ledOff();
+    void ledTrig();
+
     // button API
     bool pressed(uint8_t button);
     bool released(uint8_t button);

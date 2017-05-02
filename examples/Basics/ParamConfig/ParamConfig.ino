@@ -67,7 +67,7 @@ void setup(){
   m5.lcd.printf("JSON test");
 
   char ssid[30];
-  if(getParamFromTFCard("/azure-config.json", "PASSWORD", ssid)) {
+  if(getParamFromTFCard("/azure-config.json", "WiFi_SSID", ssid)) {
     Serial.printf("Read Value:%s", ssid);
   }
 

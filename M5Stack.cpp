@@ -11,10 +11,16 @@ void M5Stack::begin()
   pinMode(BEEP_PIN, OUTPUT);
   digitalWrite(BEEP_PIN, 0);
 
+  // LED init
+  pinMode(LED_PIN, OUTPUT);
+
   // Setup the button with an internal pull-up
   btn_pins[BTN_A] = BUTTON_A_PIN;
   btn_pins[BTN_B] = BUTTON_B_PIN;
   btn_pins[BTN_C] = BUTTON_C_PIN;
+  pinMode(BUTTON_A_PIN, INPUT_PULLUP);
+  pinMode(BUTTON_B_PIN, INPUT_PULLUP);
+  pinMode(BUTTON_C_PIN, INPUT_PULLUP);
 
   // M5.lcd INIT
   lcd.begin();
@@ -33,7 +39,7 @@ void M5Stack::loop()
 {
   // buttons reads each button btn_states and store it
   for (uint8_t thisButton = 0; thisButton < NUM_BTN; thisButton++) {
-      pinMode(btn_pins[thisButton], INPUT_PULLUP); //enable internal pull up resistors
+    //   pinMode(btn_pins[thisButton], INPUT_PULLUP); //enable internal pull up resistors
       if (digitalRead(btn_pins[thisButton]) == LOW) { //if button pressed
           btn_states[thisButton]++; //increase button hold time
       } else {
@@ -44,7 +50,7 @@ void M5Stack::loop()
           else
               btn_states[thisButton] = 0xFF; //button just released
       }
-      pinMode(btn_pins[thisButton], INPUT); //disable internal pull up resistors to save power
+    //   pinMode(btn_pins[thisButton], INPUT); //disable internal pull up resistors to save power
   }
 
   // TFTLCD button update
@@ -80,6 +86,29 @@ uint8_t M5Stack::bootSetup()
     delay(1);
   }
   return select_app_id;
+}
+
+/*
+ * Turn ON LED
+ */
+void M5Stack::ledOn() {
+    digitalWrite(LED_PIN, 1);
+}
+
+/*
+ * Turn OFF LED
+ */
+void M5Stack::ledOff() {
+    digitalWrite(LED_PIN, 0);
+}
+
+/*
+ * ledTrig LED
+ */
+void M5Stack::ledTrig() {
+    static bool tgbit;
+    digitalWrite(LED_PIN, tgbit);
+    tgbit = !tgbit;
 }
 
 /*

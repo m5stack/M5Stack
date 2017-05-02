@@ -495,7 +495,7 @@ void TFTLCD_Button::drawButton(boolean inverted) {
 
 	x = _x;
 	_gfx->setFont(NULL);
-	_gfx->fillRect(_x-_w/2-2, 130, _w+4, 45, _fillcolor);
+	_gfx->fillRect(_x-_w/2-2, 147, _w+4, 28, _fillcolor);
 
   if(!inverted) {
 		// _gfx->fillRect(_x-_w/2-1, _y+10-_h/2-1, _w+2, _h+3, _fillcolor);
