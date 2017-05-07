@@ -101,7 +101,7 @@ boolean restoreConfig() {
     }
   } else {
     Serial.printf("file isn't exists.\r\n");
-    writeFile(SD, "/wifi-config.json", "{\"WiFi_SSID\":\"MasterHax_2.4G\",\"WiFi_PASSWORD\":\"wittyercheese551\",\"AzureDeviceID\":\"test001\",\"ConnectingString\":\"m5statck-abcde\"}");
+    writeFile(SD, "/wifi-config.json", "{\"WiFi_SSID\":\"xMasterHax_2.4G\",\"WiFi_PASSWORD\":\"wittyercheese551\",\"AzureDeviceID\":\"test001\",\"ConnectingString\":\"m5statck-abcde\"}");
   }
   return false;
 }
