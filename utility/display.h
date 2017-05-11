@@ -2,8 +2,10 @@
 #define	DISPLAY_H
 
 #include <SPI.h>
-#include <Adafruit_GFX.h>
+#include "Adafruit_GFX.h"
 #include "utility/config.h"
+#include "FS.h"
+#include "SD.h"
 
 #include <Fonts/FreeMonoBoldOblique12pt7b.h>
 #include <Fonts/FreeMono9pt7b.h>
@@ -26,10 +28,10 @@
 #define GRED						0XFFE0
 #define GBLUE						0X07FF
 #define RED							0xF800
-#define MAGENTA					0xF81F
+#define MAGENTA					    0xF81F
 #define GREEN						0x07E0
 #define CYAN						0x7FFF
-#define YELLOW					0xFFE0
+#define YELLOW					    0xFFE0
 #define BROWN						0XBC40
 #define BRRED						0XFC07
 #define GRAY						0X8430
@@ -38,13 +40,37 @@
 #define _swap_int16_t(a, b) { int16_t t = a; a = b; b = t; }
 #endif
 
+typedef struct
+{
+    uint16_t    bfType;
+    uint32_t    bfSize;
+    uint16_t    bfReserved1;
+    uint16_t    bfReserved2;
+    uint32_t    bfOffBits;
+} BitMapFileHeader;
+
+typedef struct
+{
+    uint32_t   biSize;
+    uint32_t   biWidth;
+    uint32_t   biHeight;
+    uint16_t   biPlanes;
+    uint16_t   biBitCount;
+    uint32_t   biCompression;
+    uint32_t   biSizeImage;
+    uint32_t   biXPelsPerMeter;
+    uint32_t   biYPelsPerMeter;
+    uint32_t   biClrUsed;
+    uint32_t   biClrImportant;
+} BitMapInfoHeader;
+
 class TFTLCD_Button {
 
  public:
   TFTLCD_Button(void);
   void initButton(Adafruit_GFX *gfx, int16_t x, int16_t y,
    uint8_t w, uint8_t h, uint16_t outline, uint16_t fill,
-   uint16_t textcolor, char *label, uint8_t textsize);
+   uint16_t textcolor, const char *label, uint8_t textsize);
   void drawButton(boolean inverted = false);
   boolean contains(int16_t x, int16_t y);
 
@@ -85,11 +111,12 @@ class M5STACK_TFTLCD : public Adafruit_GFX {
   void     fillScreen(uint16_t color);
   void     reset(void);
   void     drawPicture(int x, int y,uint16_t pic_H, uint16_t pic_V, const uint8_t* pic);
+  void     drawPicture(const char* filename);
   void     ProgressBar(int x, int y, int w, int h, uint8_t val);
 
   // LCD screen button
   TFTLCD_Button buttons[3];
-  void     buttonSet(uint8_t button_id, char* str);
+  void     buttonSet(uint8_t button_id, const char* str);
   void     buttonEnable(uint8_t button_id);
   void     buttonDisable(uint8_t button_id);
   void     buttonUpdate();
