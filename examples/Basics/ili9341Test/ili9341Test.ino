@@ -18,6 +18,7 @@
 #include "SPI.h"
 #include "Adafruit_GFX.h"
 #include "Adafruit_ILI9341.h"
+#include "bmp_map.h"
 
 // For the Adafruit shield, these are the default.
 #define TFT_DC    27
@@ -42,17 +43,18 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, 1);
   tft.begin();
-
   tft.fillScreen(ILI9341_BLACK);
   // tft.fillRect(10, 20, 200, 160, ILI9341_GREEN);
+  tft.drawBitmap(0, 0, 220, 176, (const uint16_t*)gImage_select_backguand);
 
-  button1.initButtonUL(&tft, 100, 100, 60, 40, ILI9341_BLUE, ILI9341_RED, ILI9341_GREEN, "text", 2);
-  button1.drawButton(false);
-  pinMode(39, INPUT_PULLUP);
-  while(1) {
-    // button1.drawButton(digitalRead(BUTTON_A_PIN));
-    button1.drawButton(digitalRead(39));
-  }
+  // button1.initButtonUL(&tft, 100, 100, 60, 40, ILI9341_NAVY, ILI9341_RED, ILI9341_GREEN, "text", 2);
+  // button1.drawButton(false);
+  // pinMode(39, INPUT_PULLUP);
+
+  // while(1) {
+  //   // button1.drawButton(digitalRead(BUTTON_A_PIN));
+  //   button1.drawButton(digitalRead(39));
+  // }
   
 
   // // read diagnostics (optional but can help debug problems)
