@@ -8,9 +8,9 @@ Arduino Library for M5Stack Electronic Modules
 
 2. copy the M5Stack folder to your arduino default library. Your Arduino library folder should now look like this  
    (on Windows): [arduino installation directory]
-   Arduino\libraries\ 
+        Arduino\libraries\
    (on MACOS): [arduino Package Contents]
-   ~/Documents/Arduino/libraries/
+        ~/Documents/Arduino/libraries/
 
 3. Open the Arduino Application. (If it's already open, you will need to restart it to see changes.)
 
