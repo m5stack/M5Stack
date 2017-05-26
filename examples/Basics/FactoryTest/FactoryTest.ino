@@ -63,7 +63,7 @@ void writeFile(fs::FS &fs, const char * path, const char * message){
 }
 
 // the setup routine runs once when M5Stack starts up
-void setup(){
+void setup() {
   // initialize the M5Stack object
   m5.begin();
   randomSeed(100);

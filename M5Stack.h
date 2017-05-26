@@ -15,6 +15,8 @@
 #include "utility/bmp_map.h"
 #include "utility/bootmenu.h"
 #include "utility/config.h"
+// #include "utility/Buttons.h"
+#include "utility/Button.h"
 
 #ifdef ENABLE_DEBUG
 #define M5PUTLOG(X)     Serial.printf(X)
@@ -41,6 +43,12 @@ public:
     uint8_t timeHeld(uint8_t button);
 
     M5STACK_TFTLCD lcd;
+    #define DEBOUNCE_MS 20
+    #define PULLUP true
+    #define INVERT true
+    Button buttonA = Button(BUTTON_A_PIN, PULLUP, INVERT, DEBOUNCE_MS);    //Declare the button
+    Button buttonB = Button(BUTTON_B_PIN, PULLUP, INVERT, DEBOUNCE_MS);
+    Button buttonC = Button(BUTTON_C_PIN, PULLUP, INVERT, DEBOUNCE_MS);
 
 private:
     uint8_t btn_pins[NUM_BTN];

@@ -15,14 +15,14 @@ void M5Stack::begin()
   pinMode(LED_PIN, OUTPUT);
 
   // Setup the button with an internal pull-up
-  btn_pins[BTN_A] = BUTTON_A_PIN;
-  btn_pins[BTN_B] = BUTTON_B_PIN;
-  btn_pins[BTN_C] = BUTTON_C_PIN;
+//   btn_pins[BTN_A] = BUTTON_A_PIN;
+//   btn_pins[BTN_B] = BUTTON_B_PIN;
+//   btn_pins[BTN_C] = BUTTON_C_PIN;
   pinMode(BUTTON_A_PIN, INPUT_PULLUP);
   pinMode(BUTTON_B_PIN, INPUT_PULLUP);
   pinMode(BUTTON_C_PIN, INPUT_PULLUP);
 
-  // M5.lcd INIT
+  // M5 LCD INIT
   lcd.begin();
   lcd.fillScreen(BLACK);
   lcd.setCursor(0, 0);
@@ -37,21 +37,10 @@ void M5Stack::begin()
 
 void M5Stack::loop()
 {
-  // buttons reads each button btn_states and store it
-  for (uint8_t thisButton = 0; thisButton < NUM_BTN; thisButton++) {
-    //   pinMode(btn_pins[thisButton], INPUT_PULLUP); //enable internal pull up resistors
-      if (digitalRead(btn_pins[thisButton]) == LOW) { //if button pressed
-          btn_states[thisButton]++; //increase button hold time
-      } else {
-          if (btn_states[thisButton] == 0)//button idle
-              continue;
-          if (btn_states[thisButton] == 0xFF)//if previously released
-              btn_states[thisButton] = 0; //set to idle
-          else
-              btn_states[thisButton] = 0xFF; //button just released
-      }
-    //   pinMode(btn_pins[thisButton], INPUT); //disable internal pull up resistors to save power
-  }
+  //button 
+  buttonA.read();
+  buttonB.read();
+  buttonC.read();
 
   // TFTLCD button update
   lcd.buttonUpdate();
@@ -85,6 +74,7 @@ uint8_t M5Stack::bootSetup()
     lcd.ProgressBar(20, 146, 180, 13, progress_p);
     delay(1);
   }
+
   return select_app_id;
 }
 
@@ -116,20 +106,26 @@ void M5Stack::ledTrig() {
  * The button has to be released for it to be triggered again.
  */
 bool M5Stack::pressed(uint8_t button) {
-    if (btn_states[button] == 1)
-        return true;
-    else
-        return false;
+    if(button == BTN_A) {
+        return buttonA.wasPressed();
+    } else if(button == BTN_B) {
+        return buttonB.wasPressed();
+    } else if(button == BTN_C) {
+        return buttonC.wasPressed();
+    }
 }
 
 /*
  * return true if 'button' is released
  */
 bool M5Stack::released(uint8_t button) {
-    if (btn_states[button] == 0xFF)
-        return true;
-    else
-        return false;
+    if(button == BTN_A) {
+        return buttonA.wasReleased();
+    } else if(button == BTN_B) {
+        return buttonB.wasReleased();
+    } else if(button == BTN_C) {
+        return buttonC.wasReleased();
+    }
 }
 
 /**
