@@ -14,6 +14,12 @@ void M5Stack::begin()
   // LED init
   pinMode(LED_PIN, OUTPUT);
 
+  // TONE
+  ledcSetup(TONE_PIN_CHANNEL, 0, 8);
+  ledcAttachPin(SPEAKER_PIN, 0);
+//   ledcWrite(TONE_PIN_CHANNEL, 128);
+//   ledcWriteTone(TONE_PIN_CHANNEL, double freq);
+
   // Setup the button with an internal pull-up
 //   btn_pins[BTN_A] = BUTTON_A_PIN;
 //   btn_pins[BTN_B] = BUTTON_B_PIN;
@@ -168,6 +174,15 @@ uint8_t M5Stack::timeHeld(uint8_t button){
         return btn_states[button];
     else
         return 0;
+}
+
+void M5Stack::tone(double freq) {
+    ledcWriteTone(TONE_PIN_CHANNEL, freq);
+}
+
+void M5Stack::noTone() {
+    ledcWriteTone(TONE_PIN_CHANNEL, 0);
+    digitalWrite(SPEAKER_PIN, 0);
 }
 
 M5Stack m5;

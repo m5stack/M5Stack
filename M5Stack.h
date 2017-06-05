@@ -17,6 +17,7 @@
 #include "utility/config.h"
 // #include "utility/Buttons.h"
 #include "utility/Button.h"
+#include "esp32-hal-dac.h"
 
 #ifdef ENABLE_DEBUG
 #define M5PUTLOG(X)     Serial.printf(X)
@@ -41,6 +42,11 @@ public:
     bool held(uint8_t button, uint8_t time);
     bool repeat(uint8_t button, uint8_t period);
     uint8_t timeHeld(uint8_t button);
+
+    // Tone
+    void tone(double freq);
+    void noTone();
+    #define TONE_PIN_CHANNEL   0
 
     M5STACK_TFTLCD lcd;
     #define DEBOUNCE_MS 20

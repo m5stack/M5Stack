@@ -30,7 +30,7 @@
 #define TFCARD_CS_PIN       4
 
 //screens back light
-#define BACKLIGHT_PIN 5
+#define BACKLIGHT_PIN       5
 
 //number of buttons
 #define NUM_BTN         	3
@@ -48,6 +48,7 @@
 
 // BEEP PIN
 #define BEEP_PIN            5
+#define SPEAKER_PIN         25
 
 // LED 
 #define LED_PIN             13
