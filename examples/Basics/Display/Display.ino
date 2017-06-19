@@ -7,38 +7,38 @@ void setup(){
   randomSeed(100);
 
   // lcd display
-  m5.lcd.fillScreen(ILI9341_WHITE);
+  m5.lcd.fillScreen(WHITE);
   delay(500);
-  m5.lcd.fillScreen(ILI9341_RED);
+  m5.lcd.fillScreen(RED);
   delay(500);
-  m5.lcd.fillScreen(ILI9341_GREEN);
+  m5.lcd.fillScreen(GREEN);
   delay(500);
-  m5.lcd.fillScreen(ILI9341_BLUE);
+  m5.lcd.fillScreen(BLUE);
   delay(500);
-  m5.lcd.fillScreen(ILI9341_BLACK);
+  m5.lcd.fillScreen(BLACK);
   delay(500);
 
   // text print
   m5.lcd.setFont();
-  m5.lcd.fillScreen(ILI9341_BLACK);
+  m5.lcd.fillScreen(BLACK);
   m5.lcd.setCursor(10, 10);
-  m5.lcd.setTextColor(ILI9341_WHITE);
+  m5.lcd.setTextColor(WHITE);
   m5.lcd.setTextSize(1);
   m5.lcd.printf("Display Test!");
 
   // draw graphic
   delay(1000);
-  m5.lcd.drawRect(100, 100, 50, 50, ILI9341_BLUE);
+  m5.lcd.drawRect(100, 100, 50, 50, BLUE);
   delay(1000);
-  m5.lcd.fillRect(100, 100, 50, 50, ILI9341_BLUE);
+  m5.lcd.fillRect(100, 100, 50, 50, BLUE);
   delay(1000);
-  m5.lcd.drawCircle(100, 100, 50, ILI9341_RED);
+  m5.lcd.drawCircle(100, 100, 50, RED);
   delay(1000);
-  m5.lcd.fillCircle(100, 100, 50, ILI9341_RED);
+  m5.lcd.fillCircle(100, 100, 50, RED);
   delay(1000);
-  m5.lcd.drawTriangle(30, 30, 180, 100, 80, 150, ILI9341_YELLOW);
+  m5.lcd.drawTriangle(30, 30, 180, 100, 80, 150, YELLOW);
   delay(1000);
-  m5.lcd.fillTriangle(30, 30, 180, 100, 80, 150, ILI9341_YELLOW);
+  m5.lcd.fillTriangle(30, 30, 180, 100, 80, 150, YELLOW);
   
 /*
   m5.lcd.drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
