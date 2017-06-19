@@ -12,7 +12,19 @@
 #define SPI_MISO_PIN    7
 #define LCD_RS_PIN      27
 #define LCD_RST_PIN     2
-#define LCD_LED_PIN		12
+// #define LCD_LED_PIN		12
+#define LCD_LED_PIN		32
+
+#define TFT_DC    27
+#define TFT_CS    14
+#define TFT_MOSI  23
+#define TFT_CLK   18
+// #define TFT_RST   2
+#define TFT_RST   33
+#define TFT_MISO  0
+// #define LED_PIN 12
+// #define LED_PIN 32
+//----------------------------
 
 //auto back-light levels
 #define BACKLIGHT_MIN 0

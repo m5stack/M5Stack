@@ -11,13 +11,29 @@
 #include <Wire.h>
 #include "FS.h"
 #include "SD.h"
-#include "utility/display.h"
+// #include "utility/display.h"
+#include "utility/ILI9341.h"
 #include "utility/bmp_map.h"
-#include "utility/bootmenu.h"
+// #include "utility/bootmenu.h"
 #include "utility/config.h"
 // #include "utility/Buttons.h"
 #include "utility/Button.h"
 #include "esp32-hal-dac.h"
+
+#include <Fonts/FreeMonoBoldOblique12pt7b.h>
+#include <Fonts/FreeMono9pt7b.h>
+#include <Fonts/FreeMonoBold9pt7b.h>
+#include <Fonts/FreeMonoBoldOblique9pt7b.h>
+#include <Fonts/FreeSans9pt7b.h>
+#include <Fonts/FreeSerif9pt7b.h>
+#include <Fonts/FreeSerifItalic9pt7b.h>
+#include <Fonts/FreeSansOblique9pt7b.h>
+#include <Fonts/FreeMonoOblique9pt7b.h>
+#include <Fonts/FreeSansBoldOblique9pt7b.h>
+#include <Fonts/FreeSerifBold9pt7b.h>
+#include <Fonts/FreeSerifBoldItalic9pt7b.h>
+#include <Fonts/FreeSansBold9pt7b.h>
+
 
 #ifdef ENABLE_DEBUG
 #define M5PUTLOG(X)     Serial.printf(X)
@@ -31,12 +47,12 @@ public:
     uint8_t bootSetup();
     void loop();
 
-    //LED
+    // LED
     void ledOn();
     void ledOff();
     void ledTrig();
 
-    // button API
+    // Button API
     bool pressed(uint8_t button);
     bool released(uint8_t button);
     bool held(uint8_t button, uint8_t time);
@@ -48,7 +64,10 @@ public:
     void noTone();
     #define TONE_PIN_CHANNEL   0
 
-    M5STACK_TFTLCD lcd;
+    // M5STACK_TFTLCD lcd;
+    Adafruit_ILI9341 lcd = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
+
+    // Button lib
     #define DEBOUNCE_MS 20
     #define PULLUP true
     #define INVERT true

@@ -21,15 +21,14 @@ void M5Stack::begin()
 //   ledcWriteTone(TONE_PIN_CHANNEL, double freq);
 
   // Setup the button with an internal pull-up
-//   btn_pins[BTN_A] = BUTTON_A_PIN;
-//   btn_pins[BTN_B] = BUTTON_B_PIN;
-//   btn_pins[BTN_C] = BUTTON_C_PIN;
   pinMode(BUTTON_A_PIN, INPUT_PULLUP);
   pinMode(BUTTON_B_PIN, INPUT_PULLUP);
   pinMode(BUTTON_C_PIN, INPUT_PULLUP);
 
   // M5 LCD INIT
   lcd.begin();
+//   pinMode(LCD_LED_PIN, OUTPUT);
+//   digitalWrite(LCD_LED_PIN, 1);
   lcd.fillScreen(BLACK);
   lcd.setCursor(0, 0);
   lcd.setTextColor(WHITE);
@@ -49,37 +48,38 @@ void M5Stack::loop()
   buttonC.read();
 
   // TFTLCD button update
-  lcd.buttonUpdate();
+//   lcd.buttonUpdate();
 }
 
 uint8_t M5Stack::bootSetup()
 {
-  //-------BOOT MENU---------
-  lcd.fillScreen(WHITE);
-  lcd.setFont(&FreeSansOblique9pt7b);
+    uint8_t select_app_id;
+//   //-------BOOT MENU---------
+//   lcd.fillScreen(WHITE);
+//   lcd.setFont(&FreeSansOblique9pt7b);
 
-  //--------APP STORE---------
-  lcd.drawPicture(0, 0, 220, 175, gImage_select_backguand);
-  lcd.fillRect(0, 30, 219, 120, WHITE);
-  uint8_t select_app_id = selectMenu();
-  Serial.printf("downloading the app:%d\r\n", select_app_id);
-  lcd.fillScreen(BLACK);
-  lcd.setTextColor(WHITE);
-  lcd.setFont();
-  lcd.setTextSize(1);
-  lcd.setCursor(2, 20);
+//   //--------APP STORE---------
+//   lcd.drawPicture(0, 0, 220, 175, gImage_select_backguand);
+//   lcd.fillRect(0, 30, 219, 120, WHITE);
+//   select_app_id = selectMenu();
+//   Serial.printf("downloading the app:%d\r\n", select_app_id);
+//   lcd.fillScreen(BLACK);
+//   lcd.setTextColor(WHITE);
+//   lcd.setFont();
+//   lcd.setTextSize(1);
+//   lcd.setCursor(2, 20);
 
-  //----------downloading----------
-  lcd.fillScreen(WHITE);
-  drawTitle("LOADING...", GRAY);
-  lcd.drawPicture(47, 38, 120, 96, gImage_logo);
+//   //----------downloading----------
+//   lcd.fillScreen(WHITE);
+//   drawTitle("LOADING...", GRAY);
+//   lcd.drawPicture(47, 38, 120, 96, gImage_logo);
 
-  int progress_p=0;
-  while(++progress_p < 100) {
-    // Serial.printf("progress:%d%%\r\n", progress_p);
-    lcd.ProgressBar(20, 146, 180, 13, progress_p);
-    delay(1);
-  }
+//   int progress_p=0;
+//   while(++progress_p < 100) {
+//     // Serial.printf("progress:%d%%\r\n", progress_p);
+//     lcd.ProgressBar(20, 146, 180, 13, progress_p);
+//     delay(1);
+//   }
 
   return select_app_id;
 }
