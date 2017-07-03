@@ -681,4 +681,6 @@ void Adafruit_ILI9341::setBrightness(uint8_t duty) {
     ledcSetup(2, 10000, 8);
     ledcAttachPin(LCD_LED_PIN, 2);
     ledcWrite(2, duty);
+    // pinMode(LCD_LED_PIN, OUPUT);
+    // digitalWrite(LCD_LED_PIN, 1);
 }

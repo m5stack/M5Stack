@@ -11,12 +11,9 @@
 #include <Wire.h>
 #include "FS.h"
 #include "SD.h"
-// #include "utility/display.h"
 #include "utility/ILI9341.h"
 #include "utility/bmp_map.h"
-// #include "utility/bootmenu.h"
 #include "utility/config.h"
-// #include "utility/Buttons.h"
 #include "utility/Button.h"
 #include "esp32-hal-dac.h"
 
@@ -44,7 +41,6 @@
 class M5Stack {
 public:
     void begin();
-    uint8_t bootSetup();
     void loop();
 
     // LED
@@ -76,8 +72,7 @@ public:
     Button buttonC = Button(BUTTON_C_PIN, PULLUP, INVERT, DEBOUNCE_MS);
 
 private:
-    uint8_t btn_pins[NUM_BTN];
-    uint8_t btn_states[NUM_BTN];
+
 };
 
 extern M5Stack m5stack;

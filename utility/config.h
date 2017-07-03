@@ -1,10 +1,6 @@
 #ifndef CONFIG_H_
 #define	CONFIG_H_
 
-//GUI
-#define SPILCD_W 	220
-#define SPILCD_H 	176
-
 //screen
 #define SPI_CS_PIN      14
 #define SPI_DCLK_PIN    18
@@ -53,7 +49,6 @@
 #define BUTTON_A            0
 #define BUTTON_B            1
 #define BUTTON_C            2
-#define NUM_BTN             3
 #define BUTTON_A_PIN        39
 #define BUTTON_B_PIN        38
 #define BUTTON_C_PIN        37
