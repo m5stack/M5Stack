@@ -13,7 +13,7 @@
   MIT license, all text above must be included in any redistribution
  ****************************************************/
 
-#include "ILI9341.h"
+#include "Display.h"
 #ifndef ARDUINO_STM32_FEATHER
   #include "pins_arduino.h"
 #ifndef RASPI

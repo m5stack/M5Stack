@@ -13,8 +13,8 @@
   MIT license, all text above must be included in any redistribution
  *******************************************************************/
 
-#ifndef _ILI9341_H_
-#define _ILI9341_H_
+#ifndef _DISPLAY_H_
+#define _DISPLAY_H_
 
 #if ARDUINO >= 100
  #include "Arduino.h"

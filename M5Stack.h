@@ -11,7 +11,7 @@
 #include <Wire.h>
 #include "FS.h"
 #include "SD.h"
-#include "utility/ILI9341.h"
+#include "utility/Display.h"
 #include "utility/bmp_map.h"
 #include "utility/config.h"
 #include "utility/Button.h"
