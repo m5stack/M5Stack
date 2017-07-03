@@ -1,5 +1,20 @@
 #include <M5Stack.h>
 
+void GPIO_test() {
+    uint8_t gpio_table[] = {23,19,18,3,16,21,2,12,15,35,36,26,1,17,22,5,13,0,34};
+    for(int i=0; i<sizeof(gpio_table)/sizeof(gpio_table[0]); i++) {
+        pinMode(gpio_table[i], OUTPUT);
+    }
+
+    while(1) {
+        for(int i=0; i<sizeof(gpio_table)/sizeof(gpio_table[0]); i++) {
+            digitalWrite(gpio_table[i], 1);
+            delay(1);
+            digitalWrite(gpio_table[i], 0);
+        }
+    }
+}
+
 //TF card test
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
     Serial.printf("Listing directory: %s\n", dirname);
@@ -65,6 +80,7 @@ void writeFile(fs::FS &fs, const char * path, const char * message){
 // the setup routine runs once when M5Stack starts up
 void setup() {
   // initialize the M5Stack object
+//   GPIO_test();
   m5.begin();
   randomSeed(100);
 
@@ -118,9 +134,9 @@ void setup() {
   delay(100);
   m5.lcd.fillTriangle(30, 30, 180, 100, 80, 150, YELLOW);
 
-  m5.lcd.buttonSet(BTN_A, "A");
-  m5.lcd.buttonSet(BTN_B, "B");
-  m5.lcd.buttonSet(BTN_C, "C");
+//   m5.lcd.buttonSet(BTN_A, "A");
+//   m5.lcd.buttonSet(BTN_B, "B");
+//   m5.lcd.buttonSet(BTN_C, "C");
   
 /*
   m5.lcd.drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
@@ -138,6 +154,6 @@ void setup() {
 void loop(){
 
   //rand draw 
-  m5.lcd.fillTriangle(random(219), random(175), random(219), random(175), random(219), random(175), random(0xfffe));
+  m5.lcd.fillTriangle(random(319), random(239), random(319), random(239), random(319), random(239), random(0xfffe));
   m5.loop();
 }

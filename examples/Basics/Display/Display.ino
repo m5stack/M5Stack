@@ -56,7 +56,8 @@ void setup(){
 void loop(){
 
   //rand draw 
-  m5.lcd.fillTriangle(random(219), random(175), random(219), random(175), random(219), random(175), random(0xfffe));
+  // m5.lcd.fillTriangle(random(219), random(175), random(219), random(175), random(219), random(175), random(0xfffe));
+  m5.lcd.fillTriangle(random(319), random(239), random(319), random(239), random(319), random(239), random(0xfffe));
 
   m5.loop();
 }
