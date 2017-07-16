@@ -3,8 +3,7 @@
 
 #include "M5Stack.h"
 
-void M5Stack::begin()
-{
+void M5Stack::begin() {
   //UART 
   Serial.begin(115200);
 
@@ -26,7 +25,7 @@ void M5Stack::begin()
 
   // M5 LCD INIT
   lcd.begin();
-  lcd.setBrightness(128);
+  lcd.setBrightness(100);
   lcd.fillScreen(BLACK);
   lcd.setCursor(0, 0);
   lcd.setTextColor(WHITE);
@@ -39,65 +38,11 @@ void M5Stack::begin()
   }
 }
 
-void M5Stack::loop()
-{
+void M5Stack::update() {
   //button 
-  buttonA.read();
-  buttonB.read();
-  buttonC.read();
-
-  // TFTLCD button update
-//   lcd.buttonUpdate();
-}
-
-/*
- * Turn ON LED
- */
-void M5Stack::ledOn() {
-    digitalWrite(LED_PIN, 1);
-}
-
-/*
- * Turn OFF LED
- */
-void M5Stack::ledOff() {
-    digitalWrite(LED_PIN, 0);
-}
-
-/*
- * ledTrig LED
- */
-void M5Stack::ledTrig() {
-    static bool tgbit;
-    digitalWrite(LED_PIN, tgbit);
-    tgbit = !tgbit;
-}
-
-/*
- * Returns true when 'button' is pressed.
- * The button has to be released for it to be triggered again.
- */
-bool M5Stack::pressed(uint8_t button) {
-    if(button == BTN_A) {
-        return buttonA.wasPressed();
-    } else if(button == BTN_B) {
-        return buttonB.wasPressed();
-    } else if(button == BTN_C) {
-        return buttonC.wasPressed();
-    }
-}
-
-/*
- * return true if 'button' is released
- */
-bool M5Stack::released(uint8_t button) {
-    if(button == BTN_A) {
-        return buttonA.wasReleased();
-    } else if(button == BTN_B) {
-        return buttonB.wasReleased();
-    } else if(button == BTN_C) {
-        return buttonC.wasReleased();
-    }
+  BtnA.read();
+  BtnB.read();
+  BtnC.read();
 }
 
 /*

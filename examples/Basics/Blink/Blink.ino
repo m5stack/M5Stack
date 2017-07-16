@@ -25,7 +25,7 @@
 // the setup function runs once when you press reset or power the board
 void setup() {
   // initialize the M5Stack object
-  m5.begin();
+  M5.begin();
   
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(LED_PIN, OUTPUT);

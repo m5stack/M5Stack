@@ -6,7 +6,7 @@ void setup(){
   m5.begin();
   
   // lcd display
-  m5.lcd.printf("hello world");
+  m5.Lcd.printf("hello world");
 }
 
 // the loop routine runs over and over again forever

@@ -671,16 +671,19 @@ void Adafruit_ILI9341::drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h,
     endWrite();
 }
 
-void Adafruit_ILI9341::progressBar(int x, int y, int w, int h, uint8_t val)
-{
+void Adafruit_ILI9341::drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h, const uint8_t *pcolors) {
+    drawBitmap(x, y, w, h, (uint16_t*)pcolors);
+}
+
+void Adafruit_ILI9341::progressBar(int x, int y, int w, int h, uint8_t val) {
 	drawRect(x, y, w, h, 0x09F1);
 	fillRect(x+1, y+1, w*(((float)val)/100.0), h-1, 0x09F1);
 }
 
-void Adafruit_ILI9341::setBrightness(uint8_t duty) {
+void Adafruit_ILI9341::setBrightness(uint8_t brightness) {
     ledcSetup(2, 10000, 8);
     ledcAttachPin(LCD_LED_PIN, 2);
-    ledcWrite(2, duty);
+    ledcWrite(2, brightness);
     // pinMode(LCD_LED_PIN, OUPUT);
     // digitalWrite(LCD_LED_PIN, 1);
 }
