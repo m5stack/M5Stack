@@ -11,9 +11,6 @@ void M5Stack::begin() {
   pinMode(BEEP_PIN, OUTPUT);
   digitalWrite(BEEP_PIN, 0);
 
-  // LED init
-  pinMode(LED_PIN, OUTPUT);
-
   // TONE
   ledcSetup(TONE_PIN_CHANNEL, 0, 8);
   ledcAttachPin(SPEAKER_PIN, 0);

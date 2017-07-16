@@ -682,8 +682,8 @@ void Adafruit_ILI9341::progressBar(int x, int y, int w, int h, uint8_t val) {
 
 void Adafruit_ILI9341::setBrightness(uint8_t brightness) {
     ledcSetup(2, 10000, 8);
-    ledcAttachPin(LCD_LED_PIN, 2);
+    ledcAttachPin(TFT_LED_PIN, 2);
     ledcWrite(2, brightness);
-    // pinMode(LCD_LED_PIN, OUPUT);
-    // digitalWrite(LCD_LED_PIN, 1);
+    // pinMode(TFT_LED_PIN, OUPUT);
+    // digitalWrite(TFT_LED_PIN, 1);
 }

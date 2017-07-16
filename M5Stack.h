@@ -110,7 +110,7 @@ class M5Stack {
     void noTone();
 
     // TFT;
-    Adafruit_ILI9341 Lcd = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
+    Adafruit_ILI9341 Lcd = Adafruit_ILI9341(TFT_CS_PIN, TFT_DC_PIN, TFT_RST_PIN);
 
  private:
 
