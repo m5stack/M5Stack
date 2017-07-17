@@ -23,7 +23,8 @@
  #include "WProgram.h"
 #endif
 #include <SPI.h>
-#include "Adafruit_GFX.h"
+#include "utility/Adafruit_GFX.h"
+// #include "Adafruit_GFX.h"
 
 #include "utility/config.h"
 

@@ -1,7 +1,7 @@
 #include <M5Stack.h>
 
 // the setup routine runs once when M5Stack starts up
-void setup(){
+void setup() {
   // initialize the M5Stack object
   m5.begin();
   randomSeed(100);
