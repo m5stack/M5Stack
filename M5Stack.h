@@ -22,42 +22,42 @@
 
     LCD:
         M5.lcd.setBrightness(uint8_t brightness);
-        M5.lcd.drawPixel(int16_t x, int16_t y, uint16_t color);
-        M5.lcd.drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
-        M5.lcd.fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
-        M5.lcd.fillScreen(uint16_t color);
-        M5.lcd.drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
-        M5.lcd.drawCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername,uint16_t color);
-        M5.lcd.fillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
-        M5.lcd.fillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername,int16_t delta, uint16_t color);
-        M5.lcd.drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
-        M5.lcd.fillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
-        M5.lcd.drawRoundRect(int16_t x0, int16_t y0, int16_t w, int16_t h, int16_t radius, uint16_t color);
-        M5.lcd.fillRoundRect(int16_t x0, int16_t y0, int16_t w, int16_t h, int16_t radius, uint16_t color);
-        M5.lcd.drawBitmap(int16_t x, int16_t y, const uint8_t bitmap[], int16_t w, int16_t h, uint16_t color);
-        M5.lcd.drawRGBBitmap(int16_t x, int16_t y, const uint16_t bitmap[], int16_t w, int16_t h),
-        M5.lcd.drawChar(uint16_t x, uint16_t y, char c, uint16_t color, uint16_t bg, uint8_t size);
-        M5.lcd.setCursor(uint16_t x0, uint16_t y0);
-        M5.lcd.setTextColor(uint16_t color);
-        M5.lcd.setTextColor(uint16_t color, uint16_t backgroundcolor);
-        M5.lcd.setTextSize(uint8_t size);
-        M5.lcd.setTextWrap(boolean w);
+        M5.Lcd.drawPixel(int16_t x, int16_t y, uint16_t color);
+        M5.Lcd.drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
+        M5.Lcd.fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
+        M5.Lcd.fillScreen(uint16_t color);
+        M5.Lcd.drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
+        M5.Lcd.drawCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername,uint16_t color);
+        M5.Lcd.fillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
+        M5.Lcd.fillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername,int16_t delta, uint16_t color);
+        M5.Lcd.drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
+        M5.Lcd.fillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
+        M5.Lcd.drawRoundRect(int16_t x0, int16_t y0, int16_t w, int16_t h, int16_t radius, uint16_t color);
+        M5.Lcd.fillRoundRect(int16_t x0, int16_t y0, int16_t w, int16_t h, int16_t radius, uint16_t color);
+        M5.Lcd.drawBitmap(int16_t x, int16_t y, const uint8_t bitmap[], int16_t w, int16_t h, uint16_t color);
+        M5.Lcd.drawRGBBitmap(int16_t x, int16_t y, const uint16_t bitmap[], int16_t w, int16_t h),
+        M5.Lcd.drawChar(uint16_t x, uint16_t y, char c, uint16_t color, uint16_t bg, uint8_t size);
+        M5.Lcd.setCursor(uint16_t x0, uint16_t y0);
+        M5.Lcd.setTextColor(uint16_t color);
+        M5.Lcd.setTextColor(uint16_t color, uint16_t backgroundcolor);
+        M5.Lcd.setTextSize(uint8_t size);
+        M5.Lcd.setTextWrap(boolean w);
 
     Button:
-        M5.btnA/B/C.read();
-        M5.btnA/B/C.isPressed();
-        M5.btnA/B/C.isReleased();
-        M5.btnA/B/C.wasPressed();
-        M5.btnA/B/C.wasReleased();
-        M5.btnA/B/C.pressedFor(uint32_t ms);
-        M5.btnA/B/C.releasedFor(uint32_t ms);
-        M5.btnA/B/C.lastChange();
+        M5.BtnA/B/C.read();
+        M5.BtnA/B/C.isPressed();
+        M5.BtnA/B/C.isReleased();
+        M5.BtnA/B/C.wasPressed();
+        M5.BtnA/B/C.wasReleased();
+        M5.BtnA/B/C.pressedFor(uint32_t ms);
+        M5.BtnA/B/C.releasedFor(uint32_t ms);
+        M5.BtnA/B/C.lastChange();
 
     Speaker:
-        M5.speaker.tone(freq);
-        M5.speaker.tone(freq, time);
-        M5.speaker.beep();
-        M5.speaker.mute();
+        M5.Speaker.tone(uint32_t freq);
+        M5.Speaker.tone(freq, time);
+        M5.Speaker.beep();
+        M5.Speaker.mute();
 
  *
  * \par History:
@@ -122,3 +122,4 @@ extern M5Stack m5stack;
 #define lcd Lcd
 
 #endif
+
