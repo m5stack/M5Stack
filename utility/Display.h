@@ -24,9 +24,10 @@
 #endif
 #include <SPI.h>
 #include "utility/Adafruit_GFX.h"
+// #include "utility/Adafruit_GFX.h"
+#include "utility/config.h"
 // #include "Adafruit_GFX.h"
 
-#include "utility/config.h"
 
 #if defined(ARDUINO_STM32_FEATHER)
 typedef volatile uint32 RwReg;

@@ -11,7 +11,7 @@ void setup(){
 }
 
 // the loop routine runs over and over again forever
-void loop(){
+void loop() {
 
   if(M5.BtnA.wasPressed()) {
     M5.Lcd.printf("wasPressed A \r\n");

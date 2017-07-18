@@ -43,8 +43,8 @@
 #define BUTTON_C_PIN        37
 
 // BEEP PIN
-#define BEEP_PIN            5
 #define SPEAKER_PIN         25
+#define TONE_PIN_CHANNEL    0
 
 // LED 
 #define LED_PIN             13

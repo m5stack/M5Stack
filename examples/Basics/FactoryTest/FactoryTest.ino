@@ -84,12 +84,6 @@ void setup() {
   m5.begin();
   randomSeed(100);
 
-  // Beep
-  for(int i=0; i<200; i++) {
-    digitalWrite(BEEP_PIN, !digitalRead(BEEP_PIN));
-    delay(1);
-  }
-
   // TF card test
   listDir(SD, "/", 0);
   writeFile(SD, "/hello.txt", "Hello ");

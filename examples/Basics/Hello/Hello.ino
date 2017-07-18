@@ -2,10 +2,11 @@
 
 // the setup routine runs once when M5Stack starts up
 void setup(){
-  // initialize the M5Stack object
+
+  // Initialize the M5Stack object
   m5.begin();
   
-  // lcd display
+  // LCD display
   m5.Lcd.printf("hello world");
 }
 

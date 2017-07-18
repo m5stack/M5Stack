@@ -83,6 +83,13 @@
 #include "utility/bmp_map.h"
 #include "utility/config.h"
 #include "utility/Button.h"
+#include "utility/Speaker.h"
+#include "utility/music_8bit.h"
+
+extern "C" {
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+}
 
 #ifdef ENABLE_DEBUG
 #define M5PUTLOG(X)     Serial.printf(X)
@@ -98,16 +105,14 @@ class M5Stack {
 
     // Button API
     #define DEBOUNCE_MS 20
-    #define PULLUP true
+    #define PULLUP_EN true
     #define INVERT true
-    Button BtnA = Button(BUTTON_A_PIN, PULLUP, INVERT, DEBOUNCE_MS);    //Declare the button
-    Button BtnB = Button(BUTTON_B_PIN, PULLUP, INVERT, DEBOUNCE_MS);
-    Button BtnC = Button(BUTTON_C_PIN, PULLUP, INVERT, DEBOUNCE_MS);
+    Button BtnA = Button(BUTTON_A_PIN, PULLUP_EN, INVERT, DEBOUNCE_MS);    //Declare the button
+    Button BtnB = Button(BUTTON_B_PIN, PULLUP_EN, INVERT, DEBOUNCE_MS);
+    Button BtnC = Button(BUTTON_C_PIN, PULLUP_EN, INVERT, DEBOUNCE_MS);
 
     // Tone
-    #define TONE_PIN_CHANNEL   0
-    void tone(double freq);
-    void noTone();
+    SPEAKER Speaker;
 
     // TFT;
     Adafruit_ILI9341 Lcd = Adafruit_ILI9341(TFT_CS_PIN, TFT_DC_PIN, TFT_RST_PIN);
