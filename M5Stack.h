@@ -57,6 +57,7 @@
         M5.Speaker.tone(uint32_t freq);
         M5.Speaker.tone(freq, time);
         M5.Speaker.beep();
+        M5.Speaker.setBeep(uint16_t frequency, uint16_t duration);
         M5.Speaker.mute();
 
  *
@@ -100,22 +101,25 @@ extern "C" {
 class M5Stack {
 
  public:
+ 
     void begin();
     void update();
 
     // Button API
     #define DEBOUNCE_MS 20
-    #define PULLUP_EN true
-    #define INVERT true
-    Button BtnA = Button(BUTTON_A_PIN, PULLUP_EN, INVERT, DEBOUNCE_MS);    //Declare the button
-    Button BtnB = Button(BUTTON_B_PIN, PULLUP_EN, INVERT, DEBOUNCE_MS);
-    Button BtnC = Button(BUTTON_C_PIN, PULLUP_EN, INVERT, DEBOUNCE_MS);
+    Button BtnA = Button(BUTTON_A_PIN, true, DEBOUNCE_MS);    //Declare the button
+    Button BtnB = Button(BUTTON_B_PIN, true, DEBOUNCE_MS);
+    Button BtnC = Button(BUTTON_C_PIN, true, DEBOUNCE_MS);
 
-    // Tone
+    // SPEAKER
     SPEAKER Speaker;
 
-    // TFT;
+    // LCD
     Adafruit_ILI9341 Lcd = Adafruit_ILI9341(TFT_CS_PIN, TFT_DC_PIN, TFT_RST_PIN);
+
+    // UART
+    HardwareSerial Serial0 = HardwareSerial(0);
+    HardwareSerial Serial2 = HardwareSerial(2);
 
  private:
 

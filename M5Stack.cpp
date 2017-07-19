@@ -3,12 +3,12 @@
 
 #include "M5Stack.h"
 
-void m5_update();
-
 void M5Stack::begin() {
     
     //UART 
     Serial.begin(115200);
+    Serial.flush();
+    Serial.println("M5Stack init...");
 
     // TONE
     Speaker.begin();
@@ -18,18 +18,18 @@ void M5Stack::begin() {
     pinMode(BUTTON_B_PIN, INPUT_PULLUP);
     pinMode(BUTTON_C_PIN, INPUT_PULLUP);
 
-    // M5 LCD INIT
-    lcd.begin();
-    lcd.setBrightness(100);
-    lcd.fillScreen(BLACK);
-    lcd.setCursor(0, 0);
-    lcd.setTextColor(WHITE);
-    lcd.setTextSize(1);
-
     //TF Card
     if(!SD.begin(TFCARD_CS_PIN)) {
-        Serial.println("Card Mount Failed");
+        Serial.println("TF Card Mount Failed.");
     }
+
+    // M5 LCD INIT
+    Lcd.begin();
+    Lcd.fillScreen(BLACK);
+    Lcd.setCursor(0, 0);
+    Lcd.setTextColor(WHITE);
+    Lcd.setTextSize(1);
+    Lcd.setBrightness(80);
 }
 
 void M5Stack::update() {

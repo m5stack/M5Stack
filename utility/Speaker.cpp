@@ -7,10 +7,8 @@ SPEAKER::SPEAKER(void) {
 void SPEAKER::begin() {
     ledcSetup(TONE_PIN_CHANNEL, 0, 13);
     ledcAttachPin(SPEAKER_PIN, TONE_PIN_CHANNEL);
-}
-
-void SPEAKER::beep() {
-    tone(1000, 200);
+    digitalWrite(SPEAKER_PIN, 0);
+    setBeep(1000, 100);
 }
 
 void SPEAKER::tone(uint16_t frequency) {
@@ -23,14 +21,17 @@ void SPEAKER::tone(uint16_t frequency, uint32_t duration) {
     speaker_on = 1;
 }
 
-void SPEAKER::setVolume(uint8_t volume) {
-    // uint32_t valueMax = 255;
-    // // calculate duty, 8191 from 2 ^ 13 - 1
-    // uint32_t duty = (8191 / valueMax) * min(volume, valueMax);
+void SPEAKER::beep() {
+    tone(_beep_freq, _beep_duration);
+}
 
-    // // write duty to LEDC
-    // ledcWrite(TONE_PIN_CHANNEL, duty);
-    _volume = 10 - volume;
+void SPEAKER::setBeep(uint16_t frequency, uint16_t duration) {
+    _beep_freq = frequency;
+    _beep_duration = duration;
+}
+
+void SPEAKER::setVolume(uint8_t volume) {
+    _volume = 11 - volume;
 }
 
 void SPEAKER::mute() {
@@ -54,11 +55,10 @@ void SPEAKER::write(uint8_t value) {
 void SPEAKER::playMusic(const uint8_t* music_data, uint16_t sample_rate) {
     uint32_t length = strlen((char*)music_data);
     uint16_t delay_interval = ((uint32_t)1000000/sample_rate);
-    if(_volume != 0) {
+    if(_volume != 11) {
         for(int i=0; i<length; i++) {
             dacWrite(SPEAKER_PIN, music_data[i]/_volume);
             delayMicroseconds(delay_interval);
         }
     }
-
 }

@@ -237,7 +237,7 @@ void Adafruit_ILI9341::begin(uint32_t freq)
     _freq = freq;
 
     // LED Control
-    setBrightness(80);
+    setBrightness(0);
 
     // Control Pins
     pinMode(_dc, OUTPUT);

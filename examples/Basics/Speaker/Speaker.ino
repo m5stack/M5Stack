@@ -25,12 +25,13 @@
 #define NOTE_DH6 990
 #define NOTE_DH7 112
 
+
 void setup() {
-  
+
   // Initialize the M5Stack object
   M5.begin();
 
-  M5.Speaker.setVolume(1);
+  M5.Speaker.setVolume(8);
   M5.Speaker.playMusic(m5stack_startup_music, 25000);
 }
 
