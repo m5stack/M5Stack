@@ -29,15 +29,12 @@
  * (Note that invert cannot be implied from puEnable since an external  *
  *  pullup could be used.)                                              *
  *----------------------------------------------------------------------*/
-Button::Button(uint8_t pin, uint8_t puEnable, uint8_t invert, uint32_t dbTime)
+Button::Button(uint8_t pin, uint8_t invert, uint32_t dbTime)
 {
     _pin = pin;
-    _puEnable = puEnable;
     _invert = invert;
     _dbTime = dbTime;
-    pinMode(_pin, INPUT);
-    if (_puEnable != 0)
-        digitalWrite(_pin, HIGH);       //enable pullup resistor
+    pinMode(_pin, INPUT_PULLUP);
     _state = digitalRead(_pin);
     if (_invert != 0) _state = !_state;
     _time = millis();
@@ -111,7 +108,6 @@ uint8_t Button::wasReleased(void)
 {
     return !_state && _changed;
 }
-
 /*----------------------------------------------------------------------*
  * pressedFor(ms) and releasedFor(ms) check to see if the button is     *
  * pressed (or released), and has been in that state for the specified  *
@@ -127,7 +123,6 @@ uint8_t Button::releasedFor(uint32_t ms)
 {
     return (_state == 0 && _time - _lastChange >= ms) ? 1 : 0;
 }
-
 /*----------------------------------------------------------------------*
  * lastChange() returns the time the button last changed state,         *
  * in milliseconds.                                                     *

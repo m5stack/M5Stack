@@ -23,9 +23,11 @@
  #include "WProgram.h"
 #endif
 #include <SPI.h>
-#include "Adafruit_GFX.h"
-
+#include "utility/Adafruit_GFX.h"
+// #include "utility/Adafruit_GFX.h"
 #include "utility/config.h"
+// #include "Adafruit_GFX.h"
+
 
 #if defined(ARDUINO_STM32_FEATHER)
 typedef volatile uint32 RwReg;
@@ -92,8 +94,7 @@ typedef volatile uint32_t RwReg;
 #define ILI9341_GMCTRN1    0xE1
 /*
 #define ILI9341_PWCTR6     0xFC
-
- */
+*/
 
 // Color definitions
 #define ILI9341_BLACK       0x0000      /*   0,   0,   0 */
@@ -180,6 +181,7 @@ class Adafruit_ILI9341 : public Adafruit_GFX {
         void      drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
         void      fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
         void      drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h, const uint16_t *pcolors);
+        void      drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h, const uint8_t *pcolors);
 
         uint8_t   readcommand8(uint8_t reg, uint8_t index = 0);
 
@@ -203,7 +205,7 @@ class Adafruit_ILI9341 : public Adafruit_GFX {
     using Adafruit_GFX::drawBitmap;
 //     #define drawPicture drawBitmap
     void progressBar(int x, int y, int w, int h, uint8_t val);
-    void setBrightness(uint8_t duty);
+    void setBrightness(uint8_t brightness);
 
     private:
 #ifdef ESP32

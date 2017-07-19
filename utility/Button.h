@@ -18,7 +18,7 @@
 class Button
 {
     public:
-        Button(uint8_t pin, uint8_t puEnable, uint8_t invert, uint32_t dbTime);
+        Button(uint8_t pin, uint8_t invert, uint32_t dbTime);
         uint8_t read();
         uint8_t isPressed();
         uint8_t isReleased();
@@ -27,7 +27,7 @@ class Button
         uint8_t pressedFor(uint32_t ms);
         uint8_t releasedFor(uint32_t ms);
         uint32_t lastChange();
-    
+
     private:
         uint8_t _pin;           //arduino pin number
         uint8_t _puEnable;      //internal pullup resistor enabled

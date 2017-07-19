@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-extern const unsigned char gImage_logo[];
+extern const unsigned char gImage_logoM5[];
 
 #ifdef __cplusplus
 }

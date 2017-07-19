@@ -18,14 +18,17 @@ void GPIO_test() {
 //TF card test
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
     Serial.printf("Listing directory: %s\n", dirname);
+    m5.Lcd.printf("Listing directory: %s\n", dirname);
 
     File root = fs.open(dirname);
     if(!root){
         Serial.println("Failed to open directory");
+        m5.Lcd.println("Failed to open directory");
         return;
     }
     if(!root.isDirectory()){
         Serial.println("Not a directory");
+        m5.Lcd.println("Not a directory");
         return;
     }
 
@@ -33,15 +36,21 @@ void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
     while(file){
         if(file.isDirectory()){
             Serial.print("  DIR : ");
+            m5.Lcd.print("  DIR : ");
             Serial.println(file.name());
+            m5.Lcd.println(file.name());
             if(levels){
                 listDir(fs, file.name(), levels -1);
             }
         } else {
             Serial.print("  FILE: ");
+            m5.Lcd.print("  FILE: ");
             Serial.print(file.name());
+            m5.Lcd.print(file.name());
             Serial.print("  SIZE: ");
+            m5.Lcd.print("  SIZE: ");
             Serial.println(file.size());
+            m5.Lcd.println(file.size());
         }
         file = root.openNextFile();
     }
@@ -49,111 +58,208 @@ void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
 
 void readFile(fs::FS &fs, const char * path){
     Serial.printf("Reading file: %s\n", path);
+    m5.Lcd.printf("Reading file: %s\n", path);
 
     File file = fs.open(path);
     if(!file){
         Serial.println("Failed to open file for reading");
+        m5.Lcd.println("Failed to open file for reading");
         return;
     }
 
     Serial.print("Read from file: ");
+    m5.Lcd.print("Read from file: ");
     while(file.available()){
-        Serial.write(file.read());
+        int ch = file.read();
+        Serial.write(ch);
+        m5.Lcd.write(ch);
     }
 }
 
 void writeFile(fs::FS &fs, const char * path, const char * message){
     Serial.printf("Writing file: %s\n", path);
+    m5.Lcd.printf("Writing file: %s\n", path);
 
     File file = fs.open(path, FILE_WRITE);
     if(!file){
         Serial.println("Failed to open file for writing");
+        m5.Lcd.println("Failed to open file for writing");
         return;
     }
     if(file.print(message)){
         Serial.println("File written");
+        m5.Lcd.println("File written");
     } else {
         Serial.println("Write failed");
+        m5.Lcd.println("Write failed");
     }
+}
+
+void startup_logo() {
+    m5.lcd.setBrightness(0);
+    m5.lcd.drawBitmap(0, 0, 320, 240, (uint16_t *)gImage_logoM5);
+    uint8_t brightness, pre_b;
+    uint32_t length = strlen((char*)m5stack_startup_music);
+    uint8_t _volume = 2;
+    uint16_t delay_interval = ((uint32_t)1000000/20000);
+    if(_volume != 0) {
+        for(int i=0; i<length; i++) {
+            dacWrite(SPEAKER_PIN, m5stack_startup_music[i]>>2);
+            delayMicroseconds(40);
+            brightness = (i/156);
+            if(pre_b != brightness) {
+                pre_b = brightness;
+                m5.lcd.setBrightness(brightness);
+            }
+        }
+    }
+
+    for(int i=255; i>=0; i--) {
+        m5.lcd.setBrightness(i);
+        // delayMicroseconds(1500);
+        delay(2);
+    }
+    m5.Lcd.fillScreen(BLACK);
+    delay(1000);
+}
+
+void buttons_test() {
+    if(M5.BtnA.wasPressed()) {
+        M5.Lcd.printf("A");
+        Serial.printf("A");
+    }
+    if(M5.BtnB.wasPressed()) {
+        M5.Lcd.printf("B");
+        Serial.printf("B");
+    } 
+    if(M5.BtnC.wasPressed()) {
+        M5.Lcd.printf("C");
+        Serial.printf("C");
+    } 
+}
+
+void wifi_test() {
+    WiFi.mode(WIFI_STA);
+    WiFi.disconnect();
+    delay(100);
+
+    m5.lcd.println("scan start");
+
+    // WiFi.scanNetworks will return the number of networks found
+    int n = WiFi.scanNetworks();
+    m5.lcd.println("scan done");
+    if (n == 0) {
+        m5.lcd.println("no networks found");
+    } else {
+        m5.lcd.print(n);
+        m5.lcd.println(" networks found");
+        for (int i = 0; i < n; ++i) {
+            // Print SSID and RSSI for each network found
+            m5.lcd.print(i + 1);
+            m5.lcd.print(": ");
+            m5.lcd.print(WiFi.SSID(i));
+            m5.lcd.print(" (");
+            m5.lcd.print(WiFi.RSSI(i));
+            m5.lcd.print(")");
+            m5.lcd.println((WiFi.encryptionType(i) == WIFI_AUTH_OPEN)?" ":"*");
+            delay(10);
+        }
+    }
+    m5.lcd.println("");
 }
 
 // the setup routine runs once when M5Stack starts up
 void setup() {
-  // initialize the M5Stack object
-//   GPIO_test();
-  m5.begin();
-  randomSeed(100);
+    // initialize the M5Stack object
+    // GPIO_test();
+    m5.begin();
+    startup_logo();
 
-  // Beep
-  for(int i=0; i<200; i++) {
-    digitalWrite(BEEP_PIN, !digitalRead(BEEP_PIN));
-    delay(1);
-  }
+    // Lcd display
+    m5.lcd.setBrightness(100);
+    m5.Lcd.setFont();
+    m5.Lcd.fillScreen(BLACK);
+    m5.Lcd.setCursor(10, 10);
+    m5.Lcd.setTextColor(WHITE);
+    m5.Lcd.setTextSize(1);
+    m5.Lcd.printf("Display Test!");
+    delay(800);
 
-  //LED ON
-  m5.ledOn();
-  delay(200);
-  m5.ledOff();
+    m5.Lcd.fillScreen(WHITE);
+    delay(200);
+    m5.Lcd.fillScreen(RED);
+    delay(200);
+    m5.Lcd.fillScreen(GREEN);
+    delay(200);
+    m5.Lcd.fillScreen(BLUE);
+    delay(200);
+    m5.Lcd.fillScreen(BLACK);
+    delay(200);
 
-  // TF card test
-  listDir(SD, "/", 0);
-  writeFile(SD, "/hello.txt", "Hello ");
-  readFile(SD, "/hello.txt");
+    // draw graphic
+    delay(100);
+    m5.Lcd.drawRect(100, 100, 50, 50, BLUE);
+    delay(100);
+    m5.Lcd.fillRect(100, 100, 50, 50, BLUE);
+    delay(100);
+    m5.Lcd.drawCircle(100, 100, 50, RED);
+    delay(100);
+    m5.Lcd.fillCircle(100, 100, 50, RED);
+    delay(100);
+    m5.Lcd.drawTriangle(30, 30, 180, 100, 80, 150, YELLOW);
+    delay(100);
+    m5.Lcd.fillTriangle(30, 30, 180, 100, 80, 150, YELLOW);
+    delay(500);
 
-  // lcd display
-  m5.lcd.fillScreen(WHITE);
-  delay(100);
-  m5.lcd.fillScreen(RED);
-  delay(100);
-  m5.lcd.fillScreen(GREEN);
-  delay(100);
-  m5.lcd.fillScreen(BLUE);
-  delay(100);
-  m5.lcd.fillScreen(BLACK);
-  delay(100);
+    //rand draw 
+    int i = 250;
+    while(--i) {
+        m5.Lcd.fillTriangle(random(m5.Lcd.width()-1), random(m5.Lcd.height()-1), random(m5.Lcd.width()-1), random(m5.Lcd.height()-1), random(m5.Lcd.width()-1), random(m5.Lcd.height()-1), random(0xfffe));
+    }
+    for(int i=255; i>=0; i--) {
+        m5.lcd.setBrightness(i);
+        delay(2);
+    }
 
-  // text print
-  m5.lcd.setFont();
-  m5.lcd.fillScreen(BLACK);
-  m5.lcd.setCursor(10, 10);
-  m5.lcd.setTextColor(WHITE);
-  m5.lcd.setTextSize(1);
-  m5.lcd.printf("Display Test!");
+    //wifi test
+    m5.Lcd.setCursor(0, 10);
+    m5.Lcd.fillScreen(BLACK);
+    for(int i=0; i<200; i++) {
+        m5.lcd.setBrightness(i);
+        delay(2);
+    }
+    m5.Lcd.println("wifi test:");
+    wifi_test();
+    delay(2000);
 
-  // draw graphic
-  delay(100);
-  m5.lcd.drawRect(100, 100, 50, 50, BLUE);
-  delay(100);
-  m5.lcd.fillRect(100, 100, 50, 50, BLUE);
-  delay(100);
-  m5.lcd.drawCircle(100, 100, 50, RED);
-  delay(100);
-  m5.lcd.fillCircle(100, 100, 50, RED);
-  delay(100);
-  m5.lcd.drawTriangle(30, 30, 180, 100, 80, 150, YELLOW);
-  delay(100);
-  m5.lcd.fillTriangle(30, 30, 180, 100, 80, 150, YELLOW);
+    // TF card test
+    m5.Lcd.fillScreen(BLACK);
+    m5.Lcd.setCursor(0, 10);
+    m5.Lcd.printf("TF card test:\r\n");
+    listDir(SD, "/", 0);
+    writeFile(SD, "/hello.txt", "Hello world");
+    readFile(SD, "/hello.txt");
 
-//   m5.lcd.buttonSet(BTN_A, "A");
-//   m5.lcd.buttonSet(BTN_B, "B");
-//   m5.lcd.buttonSet(BTN_C, "C");
-  
-/*
-  m5.lcd.drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
-  m5.lcd.drawCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, uint16_t color);
-  m5.lcd.fillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
-  m5.lcd.fillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, int16_t delta, uint16_t color);
-  m5.lcd.drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
-  m5.lcd.fillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
-  m5.lcd.drawRoundRect(int16_t x0, int16_t y0, int16_t w, int16_t h, int16_t radius, uint16_t color);
-  m5.lcd.fillRoundRect(int16_t x0, int16_t y0, int16_t w, int16_t h, int16_t radius, uint16_t color);
-*/
+    //Button test
+    m5.Lcd.println();
+    m5.Lcd.println();
+    m5.Lcd.print("buttons Test:");
+    m5.Lcd.setTextColor(RED);
+
+    /*
+    m5.Lcd.drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
+    m5.Lcd.drawCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, uint16_t color);
+    m5.Lcd.fillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
+    m5.Lcd.fillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, int16_t delta, uint16_t color);
+    m5.Lcd.drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
+    m5.Lcd.fillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
+    m5.Lcd.drawRoundRect(int16_t x0, int16_t y0, int16_t w, int16_t h, int16_t radius, uint16_t color);
+    m5.Lcd.fillRoundRect(int16_t x0, int16_t y0, int16_t w, int16_t h, int16_t radius, uint16_t color);
+    */
 }
 
 // the loop routine runs over and over again forever
 void loop(){
-
-  //rand draw 
-  m5.lcd.fillTriangle(random(319), random(239), random(319), random(239), random(319), random(239), random(0xfffe));
-  m5.loop();
+    buttons_test();
+    m5.update();
 }
