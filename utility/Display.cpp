@@ -75,26 +75,8 @@
 /*
  * Hardware SPI Macros
  * */
-
-#ifndef ESP32
-    #define SPI_OBJECT  SPI
-#else
-    #define SPI_OBJECT  _spi
-#endif
-
-#if defined (__AVR__) ||  defined(TEENSYDUINO) ||  defined(ARDUINO_ARCH_STM32F1)
-    #define HSPI_SET_CLOCK() SPI_OBJECT.setClockDivider(SPI_CLOCK_DIV2);
-#elif defined (__arm__)
-    #define HSPI_SET_CLOCK() SPI_OBJECT.setClockDivider(11);
-#elif defined(ESP8266) || defined(ESP32)
-    #define HSPI_SET_CLOCK() SPI_OBJECT.setFrequency(_freq);
-#elif defined(RASPI)
-    #define HSPI_SET_CLOCK() SPI_OBJECT.setClock(_freq);
-#elif defined(ARDUINO_ARCH_STM32F1)
-    #define HSPI_SET_CLOCK() SPI_OBJECT.setClock(_freq);
-#else
-    #define HSPI_SET_CLOCK()
-#endif
+#define SPI_OBJECT  _spi
+#define HSPI_SET_CLOCK() SPI_OBJECT.setFrequency(_freq);
 
 #ifdef SPI_HAS_TRANSACTION
     #define HSPI_BEGIN_TRANSACTION() SPI_OBJECT.beginTransaction(SPISettings(_freq, MSBFIRST, SPI_MODE0))
@@ -122,7 +104,7 @@
 #else
     // Standard Byte-by-Byte SPI
 
-    #if defined (__AVR__) || defined(TEENSYDUINO)
+#if defined (__AVR__) || defined(TEENSYDUINO)
 static inline uint8_t _avr_spi_read(void) __attribute__((always_inline));
 static inline uint8_t _avr_spi_read(void) {
     uint8_t r = 0;
@@ -145,20 +127,7 @@ static inline uint8_t _avr_spi_read(void) {
 /*
  * Final SPI Macros
  * */
-#if defined (ARDUINO_ARCH_ARC32)
-#define SPI_DEFAULT_FREQ         16000000
-#elif defined (__AVR__) || defined(TEENSYDUINO)
-#define SPI_DEFAULT_FREQ         8000000
-#elif defined(ESP8266) || defined(ESP32)
 #define SPI_DEFAULT_FREQ         78000000
-#elif defined(RASPI)
-#define SPI_DEFAULT_FREQ         80000000
-#elif defined(ARDUINO_ARCH_STM32F1)
-#define SPI_DEFAULT_FREQ         36000000
-#else
-#define SPI_DEFAULT_FREQ         24000000
-#endif
-
 #define SPI_BEGIN()             if(_sclk < 0){SPI_OBJECT.begin();}
 #define SPI_BEGIN_TRANSACTION() if(_sclk < 0){HSPI_BEGIN_TRANSACTION();}
 #define SPI_END_TRANSACTION()   if(_sclk < 0){HSPI_END_TRANSACTION();}
@@ -167,11 +136,11 @@ static inline uint8_t _avr_spi_read(void) {
 #define SPI_WRITE_PIXELS(c,l)   if(_sclk < 0){HSPI_WRITE_PIXELS(c,l);}else{SSPI_WRITE_PIXELS(c,l);}
 
 // Pass 8-bit (each) R,G,B, get back 16-bit packed color
-uint16_t Adafruit_ILI9341::color565(uint8_t r, uint8_t g, uint8_t b) {
+uint16_t ILI9341::color565(uint8_t r, uint8_t g, uint8_t b) {
     return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | ((b & 0xF8) >> 3);
 }
 
-Adafruit_ILI9341::Adafruit_ILI9341(int8_t cs, int8_t dc, int8_t mosi,
+ILI9341::ILI9341(int8_t cs, int8_t dc, int8_t mosi,
         int8_t sclk, int8_t rst, int8_t miso) : Adafruit_GFX(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT) {
     _cs   = cs;
     _dc   = dc;
@@ -199,7 +168,7 @@ Adafruit_ILI9341::Adafruit_ILI9341(int8_t cs, int8_t dc, int8_t mosi,
 #endif
 }
 
-Adafruit_ILI9341::Adafruit_ILI9341(int8_t cs, int8_t dc, int8_t rst) : Adafruit_GFX(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT) {
+ILI9341::ILI9341(int8_t cs, int8_t dc, int8_t rst) : Adafruit_GFX(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT) {
     _cs   = cs;
     _dc   = dc;
     _rst  = rst;
@@ -223,9 +192,9 @@ Adafruit_ILI9341::Adafruit_ILI9341(int8_t cs, int8_t dc, int8_t rst) : Adafruit_
 
 
 #ifdef ESP32
-void Adafruit_ILI9341::begin(uint32_t freq, SPIClass &spi)
+void ILI9341::begin(uint32_t freq, SPIClass &spi)
 #else
-void Adafruit_ILI9341::begin(uint32_t freq)
+void ILI9341::begin(uint32_t freq)
 #endif
 {
 #ifdef ESP32
@@ -390,7 +359,7 @@ void Adafruit_ILI9341::begin(uint32_t freq)
     setRotation(0);
 }
 
-void Adafruit_ILI9341::setRotation(uint8_t m) {
+void ILI9341::setRotation(uint8_t m) {
     rotation = m % 4; // can't be higher than 3
     switch (rotation) {
         case 0:
@@ -423,20 +392,20 @@ void Adafruit_ILI9341::setRotation(uint8_t m) {
     endWrite();
 }
 
-void Adafruit_ILI9341::invertDisplay(boolean i) {
+void ILI9341::invertDisplay(boolean i) {
     startWrite();
     writeCommand(i ? ILI9341_INVON : ILI9341_INVOFF);
     endWrite();
 }
 
-void Adafruit_ILI9341::scrollTo(uint16_t y) {
+void ILI9341::scrollTo(uint16_t y) {
     startWrite();
     writeCommand(ILI9341_VSCRSADD);
     SPI_WRITE16(y);
     endWrite();
 }
 
-uint8_t Adafruit_ILI9341::spiRead() {
+uint8_t ILI9341::spiRead() {
     if(_sclk < 0){
         return HSPI_READ();
     }
@@ -455,7 +424,7 @@ uint8_t Adafruit_ILI9341::spiRead() {
     return r;
 }
 
-void Adafruit_ILI9341::spiWrite(uint8_t b) {
+void ILI9341::spiWrite(uint8_t b) {
     if(_sclk < 0){
         HSPI_WRITE(b);
         return;
@@ -476,23 +445,23 @@ void Adafruit_ILI9341::spiWrite(uint8_t b) {
  * Transaction API
  * */
 
-void Adafruit_ILI9341::startWrite(void){
+void ILI9341::startWrite(void){
     SPI_BEGIN_TRANSACTION();
     SPI_CS_LOW();
 }
 
-void Adafruit_ILI9341::endWrite(void){
+void ILI9341::endWrite(void){
     SPI_CS_HIGH();
     SPI_END_TRANSACTION();
 }
 
-void Adafruit_ILI9341::writeCommand(uint8_t cmd){
+void ILI9341::writeCommand(uint8_t cmd){
     SPI_DC_LOW();
     spiWrite(cmd);
     SPI_DC_HIGH();
 }
 
-void Adafruit_ILI9341::setAddrWindow(uint16_t x, uint16_t y, uint16_t w, uint16_t h) {
+void ILI9341::setAddrWindow(uint16_t x, uint16_t y, uint16_t w, uint16_t h) {
     // x = ILI9341_TFTWIDTH - x;
     uint32_t xa = ((uint32_t)x << 16) | (x+w-1);
     uint32_t ya = ((uint32_t)y << 16) | (y+h-1);
@@ -503,22 +472,22 @@ void Adafruit_ILI9341::setAddrWindow(uint16_t x, uint16_t y, uint16_t w, uint16_
     writeCommand(ILI9341_RAMWR); // write to RAM
 }
 
-void Adafruit_ILI9341::pushColor(uint16_t color) {
+void ILI9341::pushColor(uint16_t color) {
   startWrite();
   SPI_WRITE16(color);
   endWrite();
 }
 
 
-void Adafruit_ILI9341::writePixel(uint16_t color){
+void ILI9341::writePixel(uint16_t color){
     SPI_WRITE16(color);
 }
 
-void Adafruit_ILI9341::writePixels(uint16_t * colors, uint32_t len){
+void ILI9341::writePixels(uint16_t * colors, uint32_t len){
     SPI_WRITE_PIXELS((uint8_t*)colors , len * 2);
 }
 
-void Adafruit_ILI9341::writeColor(uint16_t color, uint32_t len){
+void ILI9341::writeColor(uint16_t color, uint32_t len){
 #ifdef SPI_HAS_WRITE_PIXELS
     if(_sclk >= 0){
         for (uint32_t t=0; t<len; t++){
@@ -555,13 +524,13 @@ void Adafruit_ILI9341::writeColor(uint16_t color, uint32_t len){
 #endif
 }
 
-void Adafruit_ILI9341::writePixel(int16_t x, int16_t y, uint16_t color) {
+void ILI9341::writePixel(int16_t x, int16_t y, uint16_t color) {
     if((x < 0) ||(x >= _width) || (y < 0) || (y >= _height)) return;
     setAddrWindow(x,y,1,1);
     writePixel(color);
 }
 
-void Adafruit_ILI9341::writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color){
+void ILI9341::writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color){
     if((x >= _width) || (y >= _height)) return;
     int16_t x2 = x + w - 1, y2 = y + h - 1;
     if((x2 < 0) || (y2 < 0)) return;
@@ -585,15 +554,15 @@ void Adafruit_ILI9341::writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h,
     writeColor(color, len);
 }
 
-void Adafruit_ILI9341::writeFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color){
+void ILI9341::writeFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color){
     writeFillRect(x, y, 1, h, color);
 }
 
-void Adafruit_ILI9341::writeFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color){
+void ILI9341::writeFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color){
     writeFillRect(x, y, w, 1, color);
 }
 
-uint8_t Adafruit_ILI9341::readcommand8(uint8_t c, uint8_t index) {
+uint8_t ILI9341::readcommand8(uint8_t c, uint8_t index) {
     uint32_t freq = _freq;
     if(_freq > 24000000){
         _freq = 24000000;
@@ -608,27 +577,27 @@ uint8_t Adafruit_ILI9341::readcommand8(uint8_t c, uint8_t index) {
     return r;
 }
 
-void Adafruit_ILI9341::drawPixel(int16_t x, int16_t y, uint16_t color){
+void ILI9341::drawPixel(int16_t x, int16_t y, uint16_t color){
     startWrite();
     writePixel(x, y, color);
     endWrite();
 }
 
-void Adafruit_ILI9341::drawFastVLine(int16_t x, int16_t y,
+void ILI9341::drawFastVLine(int16_t x, int16_t y,
         int16_t h, uint16_t color) {
     startWrite();
     writeFastVLine(x, y, h, color);
     endWrite();
 }
 
-void Adafruit_ILI9341::drawFastHLine(int16_t x, int16_t y,
+void ILI9341::drawFastHLine(int16_t x, int16_t y,
         int16_t w, uint16_t color) {
     startWrite();
     writeFastHLine(x, y, w, color);
     endWrite();
 }
 
-void Adafruit_ILI9341::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
+void ILI9341::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
         uint16_t color) {
     startWrite();
     writeFillRect(x,y,w,h,color);
@@ -637,7 +606,7 @@ void Adafruit_ILI9341::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
 
 // This code was ported/adapted from https://github.com/PaulStoffregen/ILI9341_t3
 // by Marc MERLIN. See examples/pictureEmbed to use this.
-void Adafruit_ILI9341::drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h,
+void ILI9341::drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h,
   const uint16_t *pcolors) {
 
     int16_t x2, y2; // Lower-right coord
@@ -671,19 +640,29 @@ void Adafruit_ILI9341::drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h,
     endWrite();
 }
 
-void Adafruit_ILI9341::drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h, const uint8_t *pcolors) {
+void ILI9341::drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h, const uint8_t *pcolors) {
     drawBitmap(x, y, w, h, (uint16_t*)pcolors);
 }
 
-void Adafruit_ILI9341::progressBar(int x, int y, int w, int h, uint8_t val) {
+void ILI9341::progressBar(int x, int y, int w, int h, uint8_t val) {
 	drawRect(x, y, w, h, 0x09F1);
 	fillRect(x+1, y+1, w*(((float)val)/100.0), h-1, 0x09F1);
 }
 
-void Adafruit_ILI9341::setBrightness(uint8_t brightness) {
+void ILI9341::setBrightness(uint8_t brightness) {
     ledcSetup(2, 10000, 8);
     ledcAttachPin(TFT_LED_PIN, 2);
     ledcWrite(2, brightness);
     // pinMode(TFT_LED_PIN, OUPUT);
     // digitalWrite(TFT_LED_PIN, 1);
+}
+
+void ILI9341::putChar(int x, int y, char ch) {
+    setCursor(x, y);
+    print(ch);
+}
+
+void ILI9341::putStr(int x, int y, String str) {
+    setCursor(x, y);
+    print(str);
 }
