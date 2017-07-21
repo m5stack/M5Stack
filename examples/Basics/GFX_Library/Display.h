@@ -23,8 +23,8 @@
  #include "WProgram.h"
 #endif
 #include <SPI.h>
-// #include <utility/Adafruit_GFX.h>
-#include "utility/GFX_Library/dafruit_GFX.h"
+#include <utility/Adafruit_GFX.h>
+// #include <GFX_Library/dafruit_GFX.h>
 #include <utility/Config.h>
 
 #define ILI9341_TFTWIDTH   320
@@ -132,28 +132,11 @@
 #define USE_FAST_PINIO
 #endif
 
-class ILI9341 {
+class ILI9341 : public Adafruit_GFX {
     protected:
-        void
-        charBounds(char c, int16_t *x, int16_t *y,
-        int16_t *minx, int16_t *miny, int16_t *maxx, int16_t *maxy);
-        const int16_t
-        WIDTH, HEIGHT;   // This is the 'raw' display w/h - never changes
-        int16_t
-        _width, _height, // Display w/h as modified by current rotation
-        cursor_x, cursor_y;
-        uint16_t
-        textcolor, textbgcolor;
-        uint8_t
-        textsize,
-        rotation;
-        boolean
-        wrap,   // If set, 'wrap' text at right edge of display
-        _cp437; // If set, use correct CP437 charset (default is off)
-        GFXfont
-        *gfxFont;
 
     public:
+        ILI9341(int8_t _CS, int8_t _DC, int8_t _MOSI, int8_t _SCLK, int8_t _RST = -1, int8_t _MISO = -1);
         ILI9341(int8_t _CS, int8_t _DC, int8_t _RST = -1);
 
 #ifndef ESP32
@@ -214,80 +197,6 @@ class ILI9341 {
         void    setBrightness(uint8_t brightness);
         void    putChar(int x, int y, char ch);
         void    putStr(int x, int y, String str);
-
-//------------------------------
-  // These exist only with Adafruit_GFX (no subclass overrides)
-  void
-    drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color),
-    drawCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername,
-      uint16_t color),
-    fillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color),
-    fillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername,
-      int16_t delta, uint16_t color),
-    drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
-      int16_t x2, int16_t y2, uint16_t color),
-    fillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
-      int16_t x2, int16_t y2, uint16_t color),
-    drawRoundRect(int16_t x0, int16_t y0, int16_t w, int16_t h,
-      int16_t radius, uint16_t color),
-    fillRoundRect(int16_t x0, int16_t y0, int16_t w, int16_t h,
-      int16_t radius, uint16_t color),
-    drawBitmap(int16_t x, int16_t y, const uint8_t bitmap[],
-      int16_t w, int16_t h, uint16_t color),
-    drawBitmap(int16_t x, int16_t y, const uint8_t bitmap[],
-      int16_t w, int16_t h, uint16_t color, uint16_t bg),
-    drawBitmap(int16_t x, int16_t y, uint8_t *bitmap,
-      int16_t w, int16_t h, uint16_t color),
-    drawBitmap(int16_t x, int16_t y, uint8_t *bitmap,
-      int16_t w, int16_t h, uint16_t color, uint16_t bg),
-    drawXBitmap(int16_t x, int16_t y, const uint8_t bitmap[],
-      int16_t w, int16_t h, uint16_t color),
-    drawGrayscaleBitmap(int16_t x, int16_t y, const uint8_t bitmap[],
-      int16_t w, int16_t h),
-    drawGrayscaleBitmap(int16_t x, int16_t y, uint8_t *bitmap,
-      int16_t w, int16_t h),
-    drawGrayscaleBitmap(int16_t x, int16_t y,
-      const uint8_t bitmap[], const uint8_t mask[],
-      int16_t w, int16_t h),
-    drawGrayscaleBitmap(int16_t x, int16_t y,
-      uint8_t *bitmap, uint8_t *mask, int16_t w, int16_t h),
-    drawRGBBitmap(int16_t x, int16_t y, const uint16_t bitmap[],
-      int16_t w, int16_t h),
-    drawRGBBitmap(int16_t x, int16_t y, uint16_t *bitmap,
-      int16_t w, int16_t h),
-    drawRGBBitmap(int16_t x, int16_t y,
-      const uint16_t bitmap[], const uint8_t mask[],
-      int16_t w, int16_t h),
-    drawRGBBitmap(int16_t x, int16_t y,
-      uint16_t *bitmap, uint8_t *mask, int16_t w, int16_t h),
-    drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color,
-      uint16_t bg, uint8_t size),
-    setCursor(int16_t x, int16_t y),
-    setTextColor(uint16_t c),
-    setTextColor(uint16_t c, uint16_t bg),
-    setTextSize(uint8_t s),
-    setTextWrap(boolean w),
-    cp437(boolean x=true),
-    setFont(const GFXfont *f = NULL),
-    getTextBounds(char *string, int16_t x, int16_t y,
-      int16_t *x1, int16_t *y1, uint16_t *w, uint16_t *h),
-    getTextBounds(const __FlashStringHelper *s, int16_t x, int16_t y,
-      int16_t *x1, int16_t *y1, uint16_t *w, uint16_t *h);
-
-#if ARDUINO >= 100
-  virtual size_t write(uint8_t);
-#else
-  virtual void   write(uint8_t);
-#endif
-
-  int16_t height(void) const;
-  int16_t width(void) const;
-
-  uint8_t getRotation(void) const;
-
-  // get current cursor position (get rotation safe maximum values, using: width() for x, height() for y)
-  int16_t getCursorX(void) const;
-  int16_t getCursorY(void) const;
 
     private:
         SPIClass _spi;
