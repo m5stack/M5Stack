@@ -1,6 +1,9 @@
 #ifndef _CONFIG_H_
 #define	_CONFIG_H_
 
+// #include "res/bmp_map.h"
+// #include "utility/music_8bit.h"
+
 //screen
 #define TFT_LED_PIN		32
 #define TFT_DC_PIN    27

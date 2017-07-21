@@ -860,30 +860,12 @@ void ILI9341::drawFastHLine(int16_t x, int16_t y,
     endWrite();
 }
 
-// (x,y) is topmost point; if unsure, calling function
-// should sort endpoints or call writeLine() instead
-void ILI9341::writeFastVLine(int16_t x, int16_t y,
-        int16_t h, uint16_t color) {
-    // Overwrite in subclasses if startWrite is defined!
-    // Can be just writeLine(x, y, x, y+h-1, color);
-    // or writeFillRect(x, y, 1, h, color);
-    drawFastVLine(x, y, h, color);
+void ILI9341::writeFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color){
+    writeFillRect(x, y, 1, h, color);
 }
 
-// (x,y) is leftmost point; if unsure, calling function
-// should sort endpoints or call writeLine() instead
-void ILI9341::writeFastHLine(int16_t x, int16_t y,
-        int16_t w, uint16_t color) {
-    // Overwrite in subclasses if startWrite is defined!
-    // Example: writeLine(x, y, x+w-1, y, color);
-    // or writeFillRect(x, y, w, 1, color);
-    drawFastHLine(x, y, w, color);
-}
-
-void ILI9341::writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h,
-        uint16_t color) {
-    // Overwrite in subclasses if desired!
-    fillRect(x,y,w,h,color);
+void ILI9341::writeFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color){
+    writeFillRect(x, y, w, 1, color);
 }
 
 void ILI9341::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
