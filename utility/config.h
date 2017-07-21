@@ -1,5 +1,8 @@
-#ifndef CONFIG_H_
-#define	CONFIG_H_
+#ifndef _CONFIG_H_
+#define	_CONFIG_H_
+
+// #include "res/bmp_map.h"
+// #include "utility/music_8bit.h"
 
 //screen
 #define TFT_LED_PIN		32
@@ -9,19 +12,10 @@
 #define TFT_CLK_PIN   18
 #define TFT_RST_PIN   33
 #define TFT_MISO_PIN  0
-//----------------------------
 
 //auto back-light levels
 #define BACKLIGHT_MIN 0
 #define BACKLIGHT_MAX 255
-
-//battery voltage monitor
-#define BAT_PIN A6
-#define NUM_LVL 4
-#define BAT_LVL_CRITIC  3500
-#define BAT_LVL_LOW		3550
-#define BAT_LVL_MED		3700
-#define BAT_LVL_FULL	3900
 
 //SD card
 #define TFCARD_CS_PIN       4

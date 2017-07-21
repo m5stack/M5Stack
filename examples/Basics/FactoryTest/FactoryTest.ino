@@ -106,7 +106,7 @@ void startup_logo() {
         for(int i=0; i<length; i++) {
             dacWrite(SPEAKER_PIN, m5stack_startup_music[i]>>2);
             delayMicroseconds(40);
-            brightness = (i/156);
+            brightness = (i/157);
             if(pre_b != brightness) {
                 pre_b = brightness;
                 m5.lcd.setBrightness(brightness);

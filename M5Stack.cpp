@@ -5,7 +5,7 @@
 
 void M5Stack::begin() {
     
-    //UART 
+    // UART 
     Serial.begin(115200);
     Serial.flush();
     Serial.println("M5Stack init...");
@@ -18,10 +18,8 @@ void M5Stack::begin() {
     pinMode(BUTTON_B_PIN, INPUT_PULLUP);
     pinMode(BUTTON_C_PIN, INPUT_PULLUP);
 
-    //TF Card
-    if(!SD.begin(TFCARD_CS_PIN)) {
-        Serial.println("TF Card Mount Failed.");
-    }
+    // TF Card
+    SD.begin(TFCARD_CS_PIN);
 
     // M5 LCD INIT
     Lcd.begin();

@@ -1,5 +1,5 @@
 #include "Arduino.h"
-#include "config.h"
+#include "Config.h"
 #include "esp32-hal-dac.h"
 
 class SPEAKER {

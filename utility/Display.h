@@ -22,19 +22,28 @@
 #else
  #include "WProgram.h"
 #endif
+#define PROGMEM
+
+typedef struct { // Data stored PER GLYPH
+	uint16_t bitmapOffset;     // Pointer into GFXfont->bitmap
+	uint8_t  width, height;    // Bitmap dimensions in pixels
+	uint8_t  xAdvance;         // Distance to advance cursor (x axis)
+	int8_t   xOffset, yOffset; // Dist from cursor pos to UL corner
+} GFXglyph;
+
+typedef struct { // Data stored for FONT AS A WHOLE:
+	uint8_t  *bitmap;      // Glyph bitmaps, concatenated
+	GFXglyph *glyph;       // Glyph array
+	uint8_t   first, last; // ASCII extents
+	uint8_t   yAdvance;    // Newline distance (y axis)
+} GFXfont;
+
+
 #include <SPI.h>
-#include "utility/Adafruit_GFX.h"
-// #include "utility/Adafruit_GFX.h"
-#include "utility/config.h"
-// #include "Adafruit_GFX.h"
-
-
-#if defined(ARDUINO_STM32_FEATHER)
-typedef volatile uint32 RwReg;
-#endif
-#if defined(ARDUINO_FEATHER52)
-typedef volatile uint32_t RwReg;
-#endif
+// #include <utility/Adafruit_GFX.h>
+// #include "utility/GFX_Library/dafruit_GFX.h"
+// #include "gfxfont.h"
+#include <utility/Config.h>
 
 #define ILI9341_TFTWIDTH   320
 #define ILI9341_TFTHEIGHT  240
@@ -137,17 +146,33 @@ typedef volatile uint32_t RwReg;
 #define GREENYELLOW 0xAFE5      /* 173, 255,  47 */
 #define PINK        0xF81F
 
-
-#if defined (__AVR__) || defined(TEENSYDUINO) || defined(ESP8266) || defined (ESP32) || defined(__arm__)
+#if defined(ESP8266) || defined (ESP32)
 #define USE_FAST_PINIO
 #endif
 
-class Adafruit_ILI9341 : public Adafruit_GFX {
+class ILI9341 : public Print{
     protected:
+        void
+        charBounds(char c, int16_t *x, int16_t *y,
+        int16_t *minx, int16_t *miny, int16_t *maxx, int16_t *maxy);
+        const int16_t
+        WIDTH, HEIGHT;   // This is the 'raw' display w/h - never changes
+        int16_t
+        _width, _height, // Display w/h as modified by current rotation
+        cursor_x, cursor_y;
+        uint16_t
+        textcolor, textbgcolor;
+        uint8_t
+        textsize,
+        rotation;
+        boolean
+        wrap,   // If set, 'wrap' text at right edge of display
+        _cp437; // If set, use correct CP437 charset (default is off)
+        GFXfont
+        *gfxFont;
 
     public:
-        Adafruit_ILI9341(int8_t _CS, int8_t _DC, int8_t _MOSI, int8_t _SCLK, int8_t _RST = -1, int8_t _MISO = -1);
-        Adafruit_ILI9341(int8_t _CS, int8_t _DC, int8_t _RST = -1);
+        ILI9341(int8_t _CS, int8_t _DC, int8_t _RST = -1);
 
 #ifndef ESP32
         void      begin(uint32_t freq = 0);
@@ -160,11 +185,14 @@ class Adafruit_ILI9341 : public Adafruit_GFX {
 
         // Required Non-Transaction
         void      drawPixel(int16_t x, int16_t y, uint16_t color);
+        void      drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
+
 
         // Transaction API
         void      startWrite(void);
         void      endWrite(void);
         void      writePixel(int16_t x, int16_t y, uint16_t color);
+        void      writeLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
         void      writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
         void      writeFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
         void      writeFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
@@ -174,12 +202,14 @@ class Adafruit_ILI9341 : public Adafruit_GFX {
         void      writePixel(uint16_t color);
         void      writePixels(uint16_t * colors, uint32_t len);
         void      writeColor(uint16_t color, uint32_t len);
-	void      pushColor(uint16_t color);
+	      void      pushColor(uint16_t color);
 
         // Recommended Non-Transaction
         void      drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
         void      drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
         void      fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
+        void      drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
+        void      fillScreen(uint16_t color);
         void      drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h, const uint16_t *pcolors);
         void      drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h, const uint8_t *pcolors);
 
@@ -202,15 +232,94 @@ class Adafruit_ILI9341 : public Adafruit_GFX {
     // to allow access to base class functions.  This'll band-aid the issue
     // for now but might be inadequate for "vintage" complier variants that
     // some board support packages might possibly be using, dunno.
-    using Adafruit_GFX::drawBitmap;
-//     #define drawPicture drawBitmap
-    void progressBar(int x, int y, int w, int h, uint8_t val);
-    void setBrightness(uint8_t brightness);
+        // using Adafruit_GFX::drawBitmap;
+        void    progressBar(int x, int y, int w, int h, uint8_t val);
+        void    setBrightness(uint8_t brightness);
+        void    putChar(int x, int y, char ch);
+        void    putStr(int x, int y, String str);
+
+//------------------------------
+  // These exist only with Adafruit_GFX (no subclass overrides)
+  // CONTROL API
+  // These MAY be overridden by the subclass to provide device-specific
+  // optimized code.  Otherwise 'generic' versions are used.
+        // void    setRotation(uint8_t r);
+        // void    invertDisplay(boolean i);
+
+  void
+    drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color),
+    drawCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername,
+      uint16_t color),
+    fillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color),
+    fillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername,
+      int16_t delta, uint16_t color),
+    drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
+      int16_t x2, int16_t y2, uint16_t color),
+    fillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
+      int16_t x2, int16_t y2, uint16_t color),
+    drawRoundRect(int16_t x0, int16_t y0, int16_t w, int16_t h,
+      int16_t radius, uint16_t color),
+    fillRoundRect(int16_t x0, int16_t y0, int16_t w, int16_t h,
+      int16_t radius, uint16_t color),
+    drawBitmap(int16_t x, int16_t y, const uint8_t bitmap[],
+      int16_t w, int16_t h, uint16_t color),
+    drawBitmap(int16_t x, int16_t y, const uint8_t bitmap[],
+      int16_t w, int16_t h, uint16_t color, uint16_t bg),
+    drawBitmap(int16_t x, int16_t y, uint8_t *bitmap,
+      int16_t w, int16_t h, uint16_t color),
+    drawBitmap(int16_t x, int16_t y, uint8_t *bitmap,
+      int16_t w, int16_t h, uint16_t color, uint16_t bg),
+    drawXBitmap(int16_t x, int16_t y, const uint8_t bitmap[],
+      int16_t w, int16_t h, uint16_t color),
+    drawGrayscaleBitmap(int16_t x, int16_t y, const uint8_t bitmap[],
+      int16_t w, int16_t h),
+    drawGrayscaleBitmap(int16_t x, int16_t y, uint8_t *bitmap,
+      int16_t w, int16_t h),
+    drawGrayscaleBitmap(int16_t x, int16_t y,
+      const uint8_t bitmap[], const uint8_t mask[],
+      int16_t w, int16_t h),
+    drawGrayscaleBitmap(int16_t x, int16_t y,
+      uint8_t *bitmap, uint8_t *mask, int16_t w, int16_t h),
+    drawRGBBitmap(int16_t x, int16_t y, const uint16_t bitmap[],
+      int16_t w, int16_t h),
+    drawRGBBitmap(int16_t x, int16_t y, uint16_t *bitmap,
+      int16_t w, int16_t h),
+    drawRGBBitmap(int16_t x, int16_t y,
+      const uint16_t bitmap[], const uint8_t mask[],
+      int16_t w, int16_t h),
+    drawRGBBitmap(int16_t x, int16_t y,
+      uint16_t *bitmap, uint8_t *mask, int16_t w, int16_t h),
+    drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color,
+      uint16_t bg, uint8_t size),
+    setCursor(int16_t x, int16_t y),
+    setTextColor(uint16_t c),
+    setTextColor(uint16_t c, uint16_t bg),
+    setTextSize(uint8_t s),
+    setTextWrap(boolean w),
+    cp437(boolean x=true),
+    setFont(const GFXfont *f = NULL),
+    getTextBounds(char *string, int16_t x, int16_t y,
+      int16_t *x1, int16_t *y1, uint16_t *w, uint16_t *h),
+    getTextBounds(const __FlashStringHelper *s, int16_t x, int16_t y,
+      int16_t *x1, int16_t *y1, uint16_t *w, uint16_t *h);
+
+#if ARDUINO >= 100
+  virtual size_t write(uint8_t);
+#else
+  virtual void   write(uint8_t);
+#endif
+
+  int16_t height(void) const;
+  int16_t width(void) const;
+
+  uint8_t getRotation(void) const;
+
+  // get current cursor position (get rotation safe maximum values, using: width() for x, height() for y)
+  int16_t getCursorX(void) const;
+  int16_t getCursorY(void) const;
 
     private:
-#ifdef ESP32
         SPIClass _spi;
-#endif
         uint32_t _freq;
 #if defined (__AVR__) || defined(TEENSYDUINO)
         int8_t  _cs, _dc, _rst, _sclk, _mosi, _miso;
