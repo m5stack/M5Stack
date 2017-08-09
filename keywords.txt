@@ -24,6 +24,7 @@ buttons	KEYWORD1
 ////////////////////////core
 begin	KEYWORD1
 update	KEYWORD1
+startupLogo  KEYWORD1
 
 ////////////////////////buttons
 pressed	KEYWORD1

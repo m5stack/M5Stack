@@ -24,6 +24,8 @@
 #endif
 #define PROGMEM
 
+#include "SD.h"
+
 typedef struct { // Data stored PER GLYPH
 	uint16_t bitmapOffset;     // Pointer into GFXfont->bitmap
 	uint8_t  width, height;    // Bitmap dimensions in pixels
@@ -237,7 +239,7 @@ class ILI9341 : public Print{
         void    setBrightness(uint8_t brightness);
         void    putChar(int x, int y, char ch);
         void    putStr(int x, int y, String str);
-
+        void    bmpDraw(char *filename, uint8_t x, uint16_t y);
 //------------------------------
   // These exist only with Adafruit_GFX (no subclass overrides)
   // CONTROL API

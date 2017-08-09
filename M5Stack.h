@@ -98,6 +98,7 @@ class M5Stack {
 
     void begin();
     void update();
+    void startupLogo();
 
     // Button API
     #define DEBOUNCE_MS 20

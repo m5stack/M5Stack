@@ -60,5 +60,12 @@ void SPEAKER::playMusic(const uint8_t* music_data, uint16_t sample_rate) {
             dacWrite(SPEAKER_PIN, music_data[i]/_volume);
             delayMicroseconds(delay_interval);
         }
+    
+        for(int t=music_data[length-1]/_volume; t>=0; t--) {
+            dacWrite(SPEAKER_PIN, t);
+            delay(2);
+        }
     }
+    pinMode(25, OUTPUT);
+    digitalWrite(25, 0);
 }

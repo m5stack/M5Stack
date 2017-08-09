@@ -5,13 +5,13 @@
 // #include "utility/music_8bit.h"
 
 //screen
-#define TFT_LED_PIN		32
+#define TFT_LED_PIN	  32
 #define TFT_DC_PIN    27
 #define TFT_CS_PIN    14
 #define TFT_MOSI_PIN  23
 #define TFT_CLK_PIN   18
 #define TFT_RST_PIN   33
-#define TFT_MISO_PIN  0
+#define TFT_MISO_PIN  19
 
 //auto back-light levels
 #define BACKLIGHT_MIN 0
