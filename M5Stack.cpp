@@ -67,7 +67,6 @@ void M5Stack::startupLogo() {
 
     for(int i=255; i>=0; i--) {
         lcd.setBrightness(i);
-        // delayMicroseconds(1500);
         delay(2);
     }
     Lcd.fillScreen(BLACK);
@@ -77,7 +76,6 @@ void M5Stack::startupLogo() {
         delay(2);
     }
     Lcd.setBrightness(100);
-    Speaker.begin();
 }
 
 M5Stack m5;
