@@ -66,6 +66,4 @@ void SPEAKER::playMusic(const uint8_t* music_data, uint16_t sample_rate) {
             delay(2);
         }
     }
-    pinMode(25, OUTPUT);
-    digitalWrite(25, 0);
 }

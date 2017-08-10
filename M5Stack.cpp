@@ -44,38 +44,32 @@ void M5Stack::update() {
 void M5Stack::startupLogo() {
     static uint8_t brightness, pre_brightness;
     uint32_t length = strlen((char*)m5stack_startup_music);
-    uint8_t _volume = 2;
-    uint16_t delay_interval = ((uint32_t)1000000/20000);
     Lcd.setBrightness(0);
     Lcd.drawBitmap(0, 0, 320, 240, (uint16_t *)gImage_logoM5);
-    if(_volume != 0) {
-        for(int i=0; i<length; i++) {
-            dacWrite(SPEAKER_PIN, m5stack_startup_music[i]>>2);
-            delayMicroseconds(40);
-            brightness = (i/157);
-            if(pre_brightness != brightness) {
-                pre_brightness = brightness;
-                Lcd.setBrightness(brightness);
-            }
+    for(int i=0; i<length; i++) {
+        dacWrite(SPEAKER_PIN, m5stack_startup_music[i]>>2);
+        delayMicroseconds(40);
+        brightness = (i/157);
+        if(pre_brightness != brightness) {
+            pre_brightness = brightness;
+            Lcd.setBrightness(brightness);
         }
-    }
-
-    for(int i=32; i>0; i--) {
-        dacWrite(SPEAKER_PIN, i);
-        delay(2);
     }
 
     for(int i=255; i>=0; i--) {
         lcd.setBrightness(i);
+        if(i<=32) {
+            dacWrite(SPEAKER_PIN, i);
+        }
         delay(2);
     }
+
     Lcd.fillScreen(BLACK);
-    delay(1000);
+    delay(800);
     for(int i=0; i>=100; i++) {
         Lcd.setBrightness(i);
         delay(2);
     }
-    Lcd.setBrightness(100);
 }
 
 M5Stack m5;

@@ -42,9 +42,6 @@ typedef struct { // Data stored for FONT AS A WHOLE:
 
 
 #include <SPI.h>
-// #include <utility/Adafruit_GFX.h>
-// #include "utility/GFX_Library/dafruit_GFX.h"
-// #include "gfxfont.h"
 #include <utility/Config.h>
 
 #define ILI9341_TFTWIDTH   320

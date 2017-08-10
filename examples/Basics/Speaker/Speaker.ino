@@ -30,7 +30,7 @@ void setup() {
 
   // Initialize the M5Stack object
   M5.begin();
-
+  
   M5.Speaker.setVolume(8);
   M5.Speaker.playMusic(m5stack_startup_music, 25000);
 }

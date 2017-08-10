@@ -18,6 +18,8 @@
  */
 
 M5Stack 	KEYWORD3
+M5 	        KEYWORD3
+m5 	        KEYWORD3
 display	KEYWORD1
 buttons	KEYWORD1
 
@@ -25,6 +27,7 @@ buttons	KEYWORD1
 begin	KEYWORD1
 update	KEYWORD1
 startupLogo  KEYWORD1
+Speaker  KEYWORD1
 
 ////////////////////////buttons
 pressed	KEYWORD1

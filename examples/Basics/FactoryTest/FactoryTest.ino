@@ -56,7 +56,7 @@ void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
     }
 }
 
-void readFile(fs::FS &fs, const char * path){
+void readFile(fs::FS &fs, const char * path) {
     Serial.printf("Reading file: %s\n", path);
     m5.Lcd.printf("Reading file: %s\n", path);
 
@@ -94,34 +94,6 @@ void writeFile(fs::FS &fs, const char * path, const char * message){
         m5.Lcd.println("Write failed");
     }
 }
-
-// void startup_logo() {
-//     m5.lcd.setBrightness(0);
-//     m5.lcd.drawBitmap(0, 0, 320, 240, (uint16_t *)gImage_logoM5);
-//     static uint8_t brightness, pre_b;
-//     uint32_t length = strlen((char*)m5stack_startup_music);
-//     uint8_t _volume = 2;
-//     uint16_t delay_interval = ((uint32_t)1000000/20000);
-//     if(_volume != 0) {
-//         for(int i=0; i<length; i++) {
-//             dacWrite(SPEAKER_PIN, m5stack_startup_music[i]>>2);
-//             delayMicroseconds(40);
-//             brightness = (i/157);
-//             if(pre_b != brightness) {
-//                 pre_b = brightness;
-//                 m5.lcd.setBrightness(brightness);
-//             }
-//         }
-//     }
-
-//     for(int i=255; i>=0; i--) {
-//         m5.lcd.setBrightness(i);
-//         // delayMicroseconds(1500);
-//         delay(2);
-//     }
-//     m5.Lcd.fillScreen(BLACK);
-//     delay(1000);
-// }
 
 void buttons_test() {
     if(M5.BtnA.wasPressed()) {
@@ -171,9 +143,7 @@ void wifi_test() {
 // the setup routine runs once when M5Stack starts up
 void setup() {
     // initialize the M5Stack object
-    // GPIO_test();
     m5.begin();
-    // startup_logo();
     m5.startupLogo();
 
     // Lcd display
