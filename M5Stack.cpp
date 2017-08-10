@@ -41,4 +41,35 @@ void M5Stack::update() {
     Speaker.update();
 }
 
+void M5Stack::startupLogo() {
+    static uint8_t brightness, pre_brightness;
+    uint32_t length = strlen((char*)m5stack_startup_music);
+    Lcd.setBrightness(0);
+    Lcd.drawBitmap(0, 0, 320, 240, (uint16_t *)gImage_logoM5);
+    for(int i=0; i<length; i++) {
+        dacWrite(SPEAKER_PIN, m5stack_startup_music[i]>>2);
+        delayMicroseconds(40);
+        brightness = (i/157);
+        if(pre_brightness != brightness) {
+            pre_brightness = brightness;
+            Lcd.setBrightness(brightness);
+        }
+    }
+
+    for(int i=255; i>=0; i--) {
+        lcd.setBrightness(i);
+        if(i<=32) {
+            dacWrite(SPEAKER_PIN, i);
+        }
+        delay(2);
+    }
+
+    Lcd.fillScreen(BLACK);
+    delay(800);
+    for(int i=0; i>=100; i++) {
+        Lcd.setBrightness(i);
+        delay(2);
+    }
+}
+
 M5Stack m5;
