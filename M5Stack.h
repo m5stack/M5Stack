@@ -80,10 +80,10 @@
 #include "FS.h"
 #include "SD.h"
 #include "esp32-hal-dac.h"
-#include <utility/Display.h>
-#include <utility/config.h>
-#include <utility/Button.h>
-#include <utility/Speaker.h>
+#include "utility/Display.h"
+#include "utility/config.h"
+#include "utility/Button.h"
+#include "utility/Speaker.h"
 #include "utility/bmp_map.h"
 #include "utility/music_8bit.h"
 

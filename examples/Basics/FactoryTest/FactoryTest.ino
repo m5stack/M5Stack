@@ -1,17 +1,44 @@
 #include <M5Stack.h>
 
+bool gpio_test_flg = 0;
 void GPIO_test() {
-    uint8_t gpio_table[] = {23,19,18,3,16,21,2,12,15,35,36,26,1,17,22,5,13,0,34};
-    for(int i=0; i<sizeof(gpio_table)/sizeof(gpio_table[0]); i++) {
-        pinMode(gpio_table[i], OUTPUT);
-    }
-
-    while(1) {
-        for(int i=0; i<sizeof(gpio_table)/sizeof(gpio_table[0]); i++) {
+    // uint8_t gpio_table[] = {23,19,18,3,16,21,2,12,15,26,1,17,22,5,13,0,34};
+    uint8_t gpio_table[] = {12,2,21,16,3,18,19,23,15,0,13,5,22,17,1,26,25};
+    
+    // while(1) 
+    {
+        for (int i = 0; i<=sizeof(gpio_table) / sizeof(gpio_table[0]); i++) {
+            pinMode(gpio_table[i], OUTPUT);
+        }
+        for(int i=0; i<=sizeof(gpio_table)/sizeof(gpio_table[0]); i++) {
             digitalWrite(gpio_table[i], 1);
-            delay(1);
+            delay(50);
+            digitalWrite(gpio_table[i], 0);
+            delay(50);
+            digitalWrite(gpio_table[i], 1);
+            delay(50);
+            digitalWrite(gpio_table[i], 0);
+            delay(50);
+            digitalWrite(gpio_table[i], 1);
+            delay(50);
             digitalWrite(gpio_table[i], 0);
         }
+        // m5.begin();
+    }
+}
+
+void adc_test() {
+    int count = 10;
+    pinMode(35, INPUT);
+    pinMode(36, INPUT);
+    pinMode(34, INPUT);
+    m5.Lcd.fillScreen(BLACK);
+    while(count--) {
+        m5.Lcd.setCursor(0, 10);
+        m5.Lcd.setTextColor(WHITE, BLACK);
+        m5.Lcd.setTextSize(2);
+        m5.Lcd.printf("ADC1:%d\r\nADC2:%d\r\nADC3:%d\r\n", analogRead(35), analogRead(36), analogRead(34));
+        delay(500);
     }
 }
 
@@ -142,8 +169,25 @@ void wifi_test() {
 
 // the setup routine runs once when M5Stack starts up
 void setup() {
+    
+    //gpio test 
+    pinMode(BUTTON_A_PIN, INPUT_PULLUP);
+    if(digitalRead(BUTTON_A_PIN) == 0) {
+        gpio_test_flg = 1;
+    }
+
+    if (gpio_test_flg) {
+        GPIO_test();
+    }
+
     // initialize the M5Stack object
     m5.begin();
+    
+    // dac test
+    if (gpio_test_flg){
+        adc_test();
+    }
+
     m5.startupLogo();
 
     // Lcd display
