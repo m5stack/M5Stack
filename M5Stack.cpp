@@ -72,4 +72,4 @@ void M5Stack::startupLogo() {
     }
 }
 
-M5Stack m5;
+M5Stack m5stack;
