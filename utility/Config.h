@@ -21,7 +21,7 @@
 #define BACKLIGHT_PIN       5
 
 //number of buttons
-#define NUM_BTN         	  3
+#define NUM_BTN             3
 //buttons ID
 #define BTN_A               0
 #define BTN_B               1
