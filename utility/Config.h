@@ -10,15 +10,8 @@
 #define TFT_RST_PIN         33
 #define TFT_MISO_PIN        19
 
-//auto back-light levels
-#define BACKLIGHT_MIN       0
-#define BACKLIGHT_MAX       255
-
 //SD card
 #define TFCARD_CS_PIN       4
-
-//screens back light
-#define BACKLIGHT_PIN       5
 
 //number of buttons
 #define NUM_BTN             3
@@ -36,10 +29,6 @@
 // BEEP PIN
 #define SPEAKER_PIN         25
 #define TONE_PIN_CHANNEL    0
-
-// LED 
-#define LED_PIN             13
-#define LED_BUILTIN         13
 
 #define USE_SERIAL 			    Serial
 
