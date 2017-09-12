@@ -66,4 +66,6 @@ void SPEAKER::playMusic(const uint8_t* music_data, uint16_t sample_rate) {
             delay(2);
         }
     }
+    // ledcSetup(TONE_PIN_CHANNEL, 0, 13);
+    ledcAttachPin(SPEAKER_PIN, TONE_PIN_CHANNEL);
 }

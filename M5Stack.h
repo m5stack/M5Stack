@@ -42,6 +42,8 @@
         M5.Lcd.setTextColor(uint16_t color, uint16_t backgroundcolor);
         M5.Lcd.setTextSize(uint8_t size);
         M5.Lcd.setTextWrap(boolean w);
+        M5.Lcd.printf();
+        M5.Lcd.print();
 
     Button:
         M5.BtnA/B/C.read();
