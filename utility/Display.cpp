@@ -2276,8 +2276,3 @@ void ILI9341::writeHzkGbk(const uint8_t* c)
 		cursor_y += 20;
 	}
 }
-
-void ILI9341::reverse(bool reverse)
-{
-	reversed = reverse;
-}

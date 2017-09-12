@@ -358,7 +358,7 @@ public:
 	void writeHzkAsc(const char c);
 	void writeHzkGbk(const uint8_t* c);
 	void writeHzk(const char c);
-	void reverse(bool reverse);
+	inline void highlight(bool isHighlight) { reversed = isHighlight; }
 
 
 
