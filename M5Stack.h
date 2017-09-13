@@ -79,10 +79,12 @@
 #include <WiFiClient.h>
 #include <WiFiMulti.h>
 #include <Wire.h>
+#include <TFT_eSPI.h> // Graphics and font library for ILI9341 driver chip
+#include <SPI.h>
 #include "FS.h"
 #include "SD.h"
 #include "esp32-hal-dac.h"
-#include "utility/Display.h"
+// #include "utility/Display.h"
 #include "utility/Config.h"
 #include "utility/Button.h"
 #include "utility/Speaker.h"
@@ -112,7 +114,8 @@ class M5Stack {
     SPEAKER Speaker;
 
     // LCD
-    ILI9341 Lcd = ILI9341(TFT_CS_PIN, TFT_DC_PIN, TFT_RST_PIN);
+    // ILI9341 Lcd = ILI9341(TFT_CS_PIN, TFT_DC_PIN, TFT_RST_PIN);
+    TFT_eSPI Lcd = TFT_eSPI(); // Invoke library, pins defined in User_Setup.h
 
     // UART
     HardwareSerial Serial0 = HardwareSerial(0);
