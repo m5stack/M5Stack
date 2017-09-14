@@ -17,6 +17,7 @@
 #include <limits.h>
 #include <pgmspace.h>
 
+
 #define MADCTL_MY  0x80
 #define MADCTL_MX  0x40
 #define MADCTL_MV  0x20
@@ -446,6 +447,8 @@ ILI9341::ILI9341(int8_t cs, int8_t dc, int8_t rst) : WIDTH(ILI9341_TFTWIDTH), HE
     _mosi  = -1;
     _miso  = -1;
     _freq = 0;
+
+	
 #ifdef USE_FAST_PINIO
     csport    = portOutputRegister(digitalPinToPort(_cs));
     cspinmask = digitalPinToBitMask(_cs);
@@ -627,6 +630,11 @@ void ILI9341::begin(uint32_t freq)
     _width  = ILI9341_TFTWIDTH;
     _height = ILI9341_TFTHEIGHT;
     setRotation(0);
+
+	// HZK16 is not used by default
+	hzk16Type = DontUsedHzk16;
+	pHzk16File = NULL;
+	pAsc16File = NULL;
 }
 
 void ILI9341::setRotation(uint8_t m) {
@@ -1592,47 +1600,87 @@ size_t ILI9341::write(uint8_t c) {
 #else
 void ILI9341::write(uint8_t c) {
 #endif
-    if(!gfxFont) { // 'Classic' built-in font
 
-        if(c == '\n') {                        // Newline?
-            cursor_x  = 0;                     // Reset x to zero,
-            cursor_y += textsize * 8;          // advance y one line
-        } else if(c != '\r') {                 // Ignore carriage returns
-            if(wrap && ((cursor_x + textsize * 6) > _width)) { // Off right?
-                cursor_x  = 0;                 // Reset x to zero,
-                cursor_y += textsize * 8;      // advance y one line
-            }
-            drawChar(cursor_x, cursor_y, c, textcolor, textbgcolor, textsize);
-            cursor_x += textsize * 6;          // Advance x one char
-        }
+	if (hzk16Type == DontUsedHzk16)
+	{
+		if (!gfxFont) { // 'Classic' built-in font
 
-    } else { // Custom font
+			if (c == '\n') {                        // Newline?
+				cursor_x = 0;                     // Reset x to zero,
+				cursor_y += textsize * 8;          // advance y one line
+			}
+			else if (c != '\r') {                 // Ignore carriage returns
+				if (wrap && ((cursor_x + textsize * 6) > _width)) { // Off right?
+					cursor_x = 0;                 // Reset x to zero,
+					cursor_y += textsize * 8;      // advance y one line
+				}
+				if (reversed)
+				{
+					drawChar(cursor_x, cursor_y, c, textbgcolor, textcolor, textsize);
+				}
+				else
+				{
+					drawChar(cursor_x, cursor_y, c, textcolor, textbgcolor, textsize);
+				}
+				cursor_x += textsize * 6;          // Advance x one char
+			}
 
-        if(c == '\n') {
-            cursor_x  = 0;
-            cursor_y += (int16_t)textsize *
-                        (uint8_t)pgm_read_byte(&gfxFont->yAdvance);
-        } else if(c != '\r') {
-            uint8_t first = pgm_read_byte(&gfxFont->first);
-            if((c >= first) && (c <= (uint8_t)pgm_read_byte(&gfxFont->last))) {
-                GFXglyph *glyph = &(((GFXglyph *)pgm_read_pointer(
-                  &gfxFont->glyph))[c - first]);
-                uint8_t   w     = pgm_read_byte(&glyph->width),
-                          h     = pgm_read_byte(&glyph->height);
-                if((w > 0) && (h > 0)) { // Is there an associated bitmap?
-                    int16_t xo = (int8_t)pgm_read_byte(&glyph->xOffset); // sic
-                    if(wrap && ((cursor_x + textsize * (xo + w)) > _width)) {
-                        cursor_x  = 0;
-                        cursor_y += (int16_t)textsize *
-                          (uint8_t)pgm_read_byte(&gfxFont->yAdvance);
-                    }
-                    drawChar(cursor_x, cursor_y, c, textcolor, textbgcolor, textsize);
-                }
-                cursor_x += (uint8_t)pgm_read_byte(&glyph->xAdvance) * (int16_t)textsize;
-            }
-        }
+		}
+		else { // Custom font
 
-    }
+			if (c == '\n') {
+				cursor_x = 0;
+				cursor_y += (int16_t)textsize *
+					(uint8_t)pgm_read_byte(&gfxFont->yAdvance);
+			}
+			else if (c != '\r') {
+				uint8_t first = pgm_read_byte(&gfxFont->first);
+				if ((c >= first) && (c <= (uint8_t)pgm_read_byte(&gfxFont->last))) {
+					GFXglyph *glyph = &(((GFXglyph *)pgm_read_pointer(
+						&gfxFont->glyph))[c - first]);
+					uint8_t   w = pgm_read_byte(&glyph->width),
+						h = pgm_read_byte(&glyph->height);
+					if ((w > 0) && (h > 0)) { // Is there an associated bitmap?
+						int16_t xo = (int8_t)pgm_read_byte(&glyph->xOffset); // sic
+						if (wrap && ((cursor_x + textsize * (xo + w)) > _width)) {
+							cursor_x = 0;
+							cursor_y += (int16_t)textsize *
+								(uint8_t)pgm_read_byte(&gfxFont->yAdvance);
+						}
+
+						//drawChar(cursor_x, cursor_y, c, textcolor, textbgcolor, textsize);
+						if (reversed)
+						{
+							drawChar(cursor_x, cursor_y, c, textbgcolor, textcolor, textsize);
+						}
+						else
+						{
+							drawChar(cursor_x, cursor_y, c, textcolor, textbgcolor, textsize);
+						}
+					}
+					cursor_x += (uint8_t)pgm_read_byte(&glyph->xAdvance) * (int16_t)textsize;
+				}
+			}
+
+		}
+	}
+	else
+	{
+		if (c < 0xA1)
+		{// ASCII
+			writeHzkAsc(c);
+		}
+		else
+		{// GBK
+			hzkBuf[hzkBufCount++] = c;
+			if (hzkBufCount == 2)
+			{
+				writeHzkGbk(hzkBuf);
+				hzkBufCount = 0;
+			}
+		}
+	}
+
 #if ARDUINO >= 100
     return 1;
 #endif
@@ -1968,4 +2016,263 @@ void ILI9341::bmpDraw(char *filename, uint8_t x, uint16_t y) {
 
   bmpFile.close();
   if(!goodBmp) Serial.println(F("BMP format not recognized."));
+}
+
+void ILI9341::initHzk16(boolean use)
+{
+	if (use == false)
+	{// 不使用 HZK16 和 ASC16 字体
+		hzk16Type = DontUsedHzk16;
+		Serial.println("Use default font.");
+	}
+	else if (pAscCharMatrix == NULL || pGbkCharMatrix == NULL)
+	{// 使用外置的 HZK16 和 ASC16 字体
+
+		// 检查外置的字体文件是否存在
+		if (SD.exists("/HZK16") && SD.exists("/ASC16"))
+		{// 存在
+			hzk16Type = ExternalHzk16;
+			Serial.println("Use external HZK16 and ASC16 font.");
+		}
+		else
+		{// 不存在
+			hzk16Type = DontUsedHzk16;
+			Serial.println("External font file HZK16/ASC16 lost, use default font.");
+		}
+		
+	}
+	else
+	{// 使用内置的 HZK16 和 ASC16 字体
+		hzk16Type = InternalHzk16;
+		Serial.println("Use internal HZK16 and ASC16 font.");
+	}
+
+	switch (hzk16Type)
+	{
+		case ExternalHzk16:
+		{
+			if (pHzk16File == NULL)
+			{
+				Hzk16File = SD.open("/HZK16");
+				pHzk16File = &Hzk16File;
+			}
+			if (pAsc16File == NULL)
+			{
+				Asc16File = SD.open("/ASC16");
+				pAsc16File = &Asc16File;
+			}
+			hzkBufCount = 0;
+			break;
+		}
+		case InternalHzk16:
+		{
+			if (pAscCharMatrix == NULL || pGbkCharMatrix == NULL)
+			{
+				hzk16Type = DontUsedHzk16;
+			}
+
+			if (pHzk16File != NULL)
+			{
+				pHzk16File->close();
+				pHzk16File = NULL;
+			}
+			if(pAsc16File!=NULL)
+			{
+				pAsc16File->close();
+				pAsc16File = NULL;
+			}
+			hzkBufCount = 0;
+			break;
+		}
+		case DontUsedHzk16:
+		{
+			if (pHzk16File != NULL)
+			{
+				pHzk16File->close();
+				pHzk16File = NULL;
+			}
+			if(pAsc16File!=NULL)
+			{
+				pAsc16File->close();
+				pAsc16File = NULL;
+			}
+			break;
+		}
+	}
+}
+
+void ILI9341::writeHzkAsc(const char c)
+{
+	if (c == '\n')
+	{
+		cursor_x = 0;
+		cursor_y += 20;
+	}
+	else if(c!='\r')
+	{
+		uint32_t offset;
+		uint8_t mask;
+		uint16_t posX = cursor_x, posY = cursor_y;
+		uint8_t charMatrix[16];
+		uint8_t* pCharMatrix;
+
+		offset = (uint32_t)c * 16;
+
+		if (hzk16Type == ExternalHzk16)
+		{
+			pAsc16File->seek(offset, SeekSet);
+			pAsc16File->readBytes((char*)&charMatrix[0], 16);
+			pCharMatrix = &charMatrix[0];
+		}
+		else
+		{
+			if (pAscCharMatrix == NULL)
+			{
+				return;
+			}
+			pCharMatrix = pAscCharMatrix + offset;
+		}
+		
+
+		if (reversed)
+		{
+			for (uint8_t i = 0; i < 16; i++)
+			{
+				mask = 0x80;
+				posX = cursor_x;
+				for (uint8_t j = 0; j < 8; j++)
+				{
+					if ((*pCharMatrix & mask) != 0)
+					{
+						drawPixel(posX, posY, textbgcolor);
+					}
+					else
+					{
+						drawPixel(posX, posY, textcolor);
+					}
+					mask >>= 1;
+					posX++;
+				}
+				posY++;
+				pCharMatrix++;
+			}
+		}
+		else
+		{
+			for (uint8_t i = 0; i < 16; i++)
+			{
+				mask = 0x80;
+				posX = cursor_x;
+				for (uint8_t j = 0; j < 8; j++)
+				{
+					if ((*pCharMatrix & mask) != 0)
+					{
+						drawPixel(posX, posY, textcolor);
+					}
+					mask >>= 1;
+					posX++;
+				}
+				posY++;
+				pCharMatrix++;
+			}
+		}
+		
+		cursor_x += 8;
+		if (wrap && ((cursor_x + 8) > _width))
+		{
+			cursor_x = 0;
+			cursor_y += 20;
+		}
+	}
+	
+}
+
+void ILI9341::writeHzkGbk(const uint8_t* c)
+{
+
+	uint32_t offset;
+	uint8_t mask;
+	uint16_t posX = cursor_x, posY = cursor_y;
+	uint8_t charMatrix[32];
+	uint8_t* pCharMatrix;
+
+	offset = (uint32_t)(94 * (uint32_t)(c[0] - 0xA1) + (uint32_t)(c[1] - 0xA1)) * 32;
+	if (hzk16Type == ExternalHzk16)
+	{
+		pHzk16File->seek(offset, SeekSet);
+		pHzk16File->readBytes((char*)&charMatrix[0], 32);
+		pCharMatrix = &charMatrix[0];
+	}
+	else
+	{
+		if (pGbkCharMatrix == NULL)
+		{
+			return;
+		}
+		pCharMatrix = pGbkCharMatrix + offset;
+	}
+	
+
+	if (reversed)
+	{
+		for (uint8_t i = 0; i < 16; i++)
+		{
+			posX = cursor_x;
+			mask = 0x80;
+			for (uint8_t j = 0; j < 8; j++)
+			{
+				if ((*pCharMatrix & mask) != 0)
+				{
+					drawPixel(posX, posY, textbgcolor);
+				}
+				else
+				{ 
+					drawPixel(posX, posY, textcolor);
+				}
+				if ((*(pCharMatrix + 1) & mask) != 0)
+				{
+					drawPixel(posX + 8, posY, textbgcolor);
+				}
+				else
+				{
+					drawPixel(posX + 8, posY, textcolor);
+				}
+				mask >>= 1;
+				posX++;
+			}
+			posY++;
+			pCharMatrix += 2;
+		}
+	}
+	else
+	{
+		for (uint8_t i = 0; i < 16; i++)
+		{
+			posX = cursor_x;
+			mask = 0x80;
+			for (uint8_t j = 0; j < 8; j++)
+			{
+				if ((*pCharMatrix & mask) != 0)
+				{
+					drawPixel(posX, posY, textcolor);
+				}
+				if ((*(pCharMatrix + 1) & mask) != 0)
+				{
+					drawPixel(posX + 8, posY, textcolor);
+				}
+				mask >>= 1;
+				posX++;
+			}
+			posY++;
+			pCharMatrix += 2;
+		}
+	}
+
+	
+	cursor_x += 16;
+	if (wrap && ((cursor_x + 16) > _width))
+	{
+		cursor_x = 0;
+		cursor_y += 20;
+	}
 }
