@@ -349,12 +349,11 @@ public:
 	// GB2312 font
 	void useHzk16(boolean use);
 
-	// Added by walson
-	void writeHzkAsc(const char c);
-	void writeHzkGbk(const uint8_t* c);
-	void writeHzk(const char c);
+	// Highlight the text (Once set to be true, the text background will not be transparent any more)
 	inline void highlight(bool isHighlight) { highlighted = isHighlight; }
+	// Set highlight color
 	inline void setHighlightColor(uint16_t color) { highlightcolor = color; istransparent = false; }
+	// Set background to transparent or not (if not, text will always be drawn with background color set with setTextColor)
 	inline void setTransparentBgColor(bool isTransparent) { istransparent = isTransparent; }
 private:
 	SPIClass _spi;
@@ -386,6 +385,11 @@ private:
 	uint8_t     spiRead(void);
 
 	void initHzk16(boolean use);
+	// Write HZK Ascii codes
+	void writeHzkAsc(const char c);
+	// Write HZK GBK codes
+	void writeHzkGbk(const uint8_t* c);
+	void writeHzk(const char c);
 };
 
 #endif

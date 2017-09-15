@@ -1714,7 +1714,9 @@ int16_t ILI9341::getCursorY(void) const {
 void ILI9341::setTextSize(uint8_t s) {
     textsize = (s > 0) ? s : 1;
 
-	// Modified @20170915
+	// Calculate the text width and height. 
+	// It's 8 pixels wide and 16 pixels high in for ASCII characters, 
+	// and 16 pixels both wide and high for GBK characters in HZK16 mode.
 	ascCharWidth = 8 * textsize; 
 	ascCharHeigth = 16 * textsize;
 	
@@ -2057,28 +2059,28 @@ void ILI9341::useHzk16(boolean use)
 void ILI9341::initHzk16(boolean use)
 {
 	if (use == false)
-	{// 不使用 HZK16 和 ASC16 字体
+	{// Do not use HZK16 and ASC16 fonts
 		hzk16Type = DontUsedHzk16;
 		Serial.println("Use default font.");
 	}
 	else if (pAscCharMatrix == NULL || pGbkCharMatrix == NULL)
-	{// 使用外置的 HZK16 和 ASC16 字体
+	{// Use external HZK16 and ASC16 font on TF card.
 
-		// 检查外置的字体文件是否存在
+		// Check if HZK16 and ASC16 files exist on TF card.
 		if (SD.exists("/HZK16") && SD.exists("/ASC16"))
-		{// 存在
+		{// Exists
 			hzk16Type = ExternalHzk16;
 			Serial.println("Use external HZK16 and ASC16 font.");
 		}
 		else
-		{// 不存在
+		{// Not exists
 			hzk16Type = DontUsedHzk16;
 			Serial.println("External font file HZK16/ASC16 lost, use default font.");
 		}
 		
 	}
 	else
-	{// 使用内置的 HZK16 和 ASC16 字体
+	{// Use internal HZK16 and ASC16 fonts
 		hzk16Type = InternalHzk16;
 		Serial.println("Use internal HZK16 and ASC16 font.");
 	}
