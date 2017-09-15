@@ -435,6 +435,7 @@ ILI9341::ILI9341(int8_t cs, int8_t dc, int8_t rst) : WIDTH(ILI9341_TFTWIDTH), HE
     rotation  = 0;
     cursor_y  = cursor_x    = 0;
     textsize  = 1;
+	
     textcolor = textbgcolor = 0xFFFF;
     wrap      = true;
     _cp437    = false;
@@ -448,7 +449,23 @@ ILI9341::ILI9341(int8_t cs, int8_t dc, int8_t rst) : WIDTH(ILI9341_TFTWIDTH), HE
     _miso  = -1;
     _freq = 0;
 
-	
+	// Set default HZK16 and ASC16 font width and height.
+	ascCharWidth = 8;
+	ascCharHeigth = 16;
+	gbkCharWidth = 16;
+	gbkCharHeight = 16;
+
+	// Set default highlight color
+	highlightcolor = RED;
+	highlighted = false;
+
+	// HZK16 is not used by default
+	hzk16Used = false;
+	hzk16Type = DontUsedHzk16;
+	pHzk16File = nullptr;
+	pAsc16File = nullptr;
+
+
 #ifdef USE_FAST_PINIO
     csport    = portOutputRegister(digitalPinToPort(_cs));
     cspinmask = digitalPinToBitMask(_cs);
@@ -630,11 +647,6 @@ void ILI9341::begin(uint32_t freq)
     _width  = ILI9341_TFTWIDTH;
     _height = ILI9341_TFTHEIGHT;
     setRotation(0);
-
-	// HZK16 is not used by default
-	hzk16Type = DontUsedHzk16;
-	pHzk16File = NULL;
-	pAsc16File = NULL;
 }
 
 void ILI9341::setRotation(uint8_t m) {
@@ -1614,7 +1626,7 @@ void ILI9341::write(uint8_t c) {
 					cursor_x = 0;                 // Reset x to zero,
 					cursor_y += textsize * 8;      // advance y one line
 				}
-				if (reversed)
+				if (highlighted)
 				{
 					drawChar(cursor_x, cursor_y, c, textbgcolor, textcolor, textsize);
 				}
@@ -1649,7 +1661,7 @@ void ILI9341::write(uint8_t c) {
 						}
 
 						//drawChar(cursor_x, cursor_y, c, textcolor, textbgcolor, textsize);
-						if (reversed)
+						if (highlighted)
 						{
 							drawChar(cursor_x, cursor_y, c, textbgcolor, textcolor, textsize);
 						}
@@ -1701,6 +1713,13 @@ int16_t ILI9341::getCursorY(void) const {
 
 void ILI9341::setTextSize(uint8_t s) {
     textsize = (s > 0) ? s : 1;
+
+	// Modified @20170915
+	ascCharWidth = 8 * textsize; 
+	ascCharHeigth = 16 * textsize;
+	
+	gbkCharWidth = ascCharHeigth;
+	gbkCharHeight = gbkCharWidth;
 }
 
 void ILI9341::setTextColor(uint16_t c) {
@@ -2018,6 +2037,23 @@ void ILI9341::bmpDraw(char *filename, uint8_t x, uint16_t y) {
   if(!goodBmp) Serial.println(F("BMP format not recognized."));
 }
 
+void ILI9341::useHzk16(boolean use)
+{
+	if (hzk16Used == use)
+		return;
+
+	hzk16Used = use;
+
+#if defined(_ASC16_) && defined(_HZK16_)
+	pAscCharMatrix = (uint8_t*)&ASC16[0];
+	pGbkCharMatrix = (uint8_t*)&HZK16[0];
+#else
+	pAscCharMatrix = NULL;
+	pGbkCharMatrix = NULL;
+#endif
+	initHzk16(use);
+}
+
 void ILI9341::initHzk16(boolean use)
 {
 	if (use == false)
@@ -2106,7 +2142,7 @@ void ILI9341::writeHzkAsc(const char c)
 	if (c == '\n')
 	{
 		cursor_x = 0;
-		cursor_y += 20;
+		cursor_y += ascCharHeigth;
 	}
 	else if(c!='\r')
 	{
@@ -2115,7 +2151,7 @@ void ILI9341::writeHzkAsc(const char c)
 		uint16_t posX = cursor_x, posY = cursor_y;
 		uint8_t charMatrix[16];
 		uint8_t* pCharMatrix;
-
+		
 		offset = (uint32_t)c * 16;
 
 		if (hzk16Type == ExternalHzk16)
@@ -2133,55 +2169,49 @@ void ILI9341::writeHzkAsc(const char c)
 			pCharMatrix = pAscCharMatrix + offset;
 		}
 		
+		startWrite();
 
-		if (reversed)
+		if (highlighted)
 		{
-			for (uint8_t i = 0; i < 16; i++)
+			writeFillRect(cursor_x, cursor_y, ascCharWidth, ascCharHeigth, highlightcolor);
+		}
+		else if (istransparent == false)
+		{
+			writeFillRect(cursor_x, cursor_y, ascCharWidth, ascCharHeigth, textbgcolor);
+		}
+
+		for (uint8_t row = 0; row < 16; row++)
+		{
+			mask = 0x80;
+			posX = cursor_x;
+			for (uint8_t col = 0; col < 8; col++)
 			{
-				mask = 0x80;
-				posX = cursor_x;
-				for (uint8_t j = 0; j < 8; j++)
+				if ((*pCharMatrix & mask) != 0)
 				{
-					if ((*pCharMatrix & mask) != 0)
+					if (textsize == 1) 
 					{
-						drawPixel(posX, posY, textbgcolor);
+						writePixel(posX, posY, textcolor);
 					}
 					else
 					{
-						drawPixel(posX, posY, textcolor);
+						writeFillRect(posX, posY, textsize, textsize, textcolor);
 					}
-					mask >>= 1;
-					posX++;
 				}
-				posY++;
-				pCharMatrix++;
+				posX += textsize;
+				mask >>= 1;
 			}
+			posY += textsize;
+			pCharMatrix++;
 		}
-		else
-		{
-			for (uint8_t i = 0; i < 16; i++)
-			{
-				mask = 0x80;
-				posX = cursor_x;
-				for (uint8_t j = 0; j < 8; j++)
-				{
-					if ((*pCharMatrix & mask) != 0)
-					{
-						drawPixel(posX, posY, textcolor);
-					}
-					mask >>= 1;
-					posX++;
-				}
-				posY++;
-				pCharMatrix++;
-			}
-		}
+
+		endWrite();
+
 		
-		cursor_x += 8;
-		if (wrap && ((cursor_x + 8) > _width))
+		cursor_x += ascCharWidth;
+		if (wrap && ((cursor_x + ascCharWidth) > _width))
 		{
 			cursor_x = 0;
-			cursor_y += 20;
+			cursor_y += ascCharHeigth;
 		}
 	}
 	
@@ -2212,67 +2242,58 @@ void ILI9341::writeHzkGbk(const uint8_t* c)
 		pCharMatrix = pGbkCharMatrix + offset;
 	}
 	
+	startWrite();
 
-	if (reversed)
+	if (highlighted)
 	{
-		for (uint8_t i = 0; i < 16; i++)
-		{
-			posX = cursor_x;
-			mask = 0x80;
-			for (uint8_t j = 0; j < 8; j++)
-			{
-				if ((*pCharMatrix & mask) != 0)
-				{
-					drawPixel(posX, posY, textbgcolor);
-				}
-				else
-				{ 
-					drawPixel(posX, posY, textcolor);
-				}
-				if ((*(pCharMatrix + 1) & mask) != 0)
-				{
-					drawPixel(posX + 8, posY, textbgcolor);
-				}
-				else
-				{
-					drawPixel(posX + 8, posY, textcolor);
-				}
-				mask >>= 1;
-				posX++;
-			}
-			posY++;
-			pCharMatrix += 2;
-		}
+		writeFillRect(cursor_x, cursor_y, gbkCharWidth, gbkCharHeight, highlightcolor);
 	}
-	else
+	else if (istransparent == false)
 	{
-		for (uint8_t i = 0; i < 16; i++)
-		{
-			posX = cursor_x;
-			mask = 0x80;
-			for (uint8_t j = 0; j < 8; j++)
-			{
-				if ((*pCharMatrix & mask) != 0)
-				{
-					drawPixel(posX, posY, textcolor);
-				}
-				if ((*(pCharMatrix + 1) & mask) != 0)
-				{
-					drawPixel(posX + 8, posY, textcolor);
-				}
-				mask >>= 1;
-				posX++;
-			}
-			posY++;
-			pCharMatrix += 2;
-		}
+		writeFillRect(cursor_x, cursor_y, gbkCharWidth, gbkCharHeight, textbgcolor);
 	}
 
+	for (uint8_t row = 0; row < 16; row++)
+	{
+		posX = cursor_x;
+		mask = 0x80;
+		for (uint8_t col = 0; col < 8; col++)
+		{
+			if ((*pCharMatrix & mask) != 0)
+			{
+				if (textsize == 1)
+				{
+					writePixel(posX, posY, textcolor);
+				}
+				else
+				{
+					writeFillRect(posX, posY, textsize, textsize, textcolor);
+				}
+			}
+			if ((*(pCharMatrix + 1) & mask) != 0)
+			{
+				if (textsize == 1)
+				{
+					writePixel(posX + ascCharWidth, posY, textcolor);
+				}
+				else
+				{
+					writeFillRect(posX + ascCharWidth, posY, textsize, textsize, textcolor);
+				}
+			}
+			mask >>= 1;
+			posX += textsize;
+		}
+		posY += textsize;
+		pCharMatrix += 2;
+	}
+
+	endWrite();
 	
-	cursor_x += 16;
-	if (wrap && ((cursor_x + 16) > _width))
+	cursor_x += gbkCharWidth;
+	if (wrap && ((cursor_x + gbkCharWidth) > _width))
 	{
 		cursor_x = 0;
-		cursor_y += 20;
+		cursor_y += gbkCharHeight;
 	}
 }
