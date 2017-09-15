@@ -33,6 +33,8 @@
 #endif
 
 
+#define clear(color) fillScreen(color)
+
 typedef struct { // Data stored PER GLYPH
 	uint16_t bitmapOffset;     // Pointer into GFXfont->bitmap
 	uint8_t  width, height;    // Bitmap dimensions in pixels
@@ -175,7 +177,7 @@ protected:
 		_width, _height, // Display w/h as modified by current rotation
 		cursor_x, cursor_y;
 	uint16_t
-		textcolor, textbgcolor;
+		textcolor, textbgcolor, highlightcolor, ascCharWidth, ascCharHeigth, gbkCharWidth, gbkCharHeight;
 	uint8_t
 		textsize,
 		rotation,
@@ -184,8 +186,9 @@ protected:
 	boolean
 		wrap,		// If set, 'wrap' text at right edge of display
 		_cp437,		// If set, use correct CP437 charset (default is off)
-		//fontFileClosed,
-		reversed;
+		hzk16Used,
+		istransparent,
+		highlighted;
 	GFXfont
 		*gfxFont;
 	Hzk16Types
@@ -193,6 +196,7 @@ protected:
 	File  Asc16File, Hzk16File;	// Font file
 	File  *pAsc16File, *pHzk16File;	// Font file
 	uint8_t *pAscCharMatrix, *pGbkCharMatrix;
+	
 
 public:
 	ILI9341(int8_t _CS, int8_t _DC, int8_t _RST = -1);
@@ -343,25 +347,14 @@ public:
 
 
 	// GB2312 font
-	inline void useHzk16(boolean use)
-	{
-#if defined(_ASC16_) && defined(_HZK16_)
-		pAscCharMatrix = (uint8_t*)&ASC16[0];
-		pGbkCharMatrix = (uint8_t*)&HZK16[0];
-#else
-		pAscCharMatrix = NULL;
-		pGbkCharMatrix = NULL;
-#endif
-		initHzk16(use);
-	}
+	void useHzk16(boolean use);
 
-	void writeHzkAsc(const char c);
-	void writeHzkGbk(const uint8_t* c);
-	void writeHzk(const char c);
-	inline void highlight(bool isHighlight) { reversed = isHighlight; }
-
-
-
+	// Highlight the text (Once set to be true, the text background will not be transparent any more)
+	inline void highlight(bool isHighlight) { highlighted = isHighlight; }
+	// Set highlight color
+	inline void setHighlightColor(uint16_t color) { highlightcolor = color; istransparent = false; }
+	// Set background to transparent or not (if not, text will always be drawn with background color set with setTextColor)
+	inline void setTransparentBgColor(bool isTransparent) { istransparent = isTransparent; }
 private:
 	SPIClass _spi;
 	uint32_t _freq;
@@ -392,6 +385,11 @@ private:
 	uint8_t     spiRead(void);
 
 	void initHzk16(boolean use);
+	// Write HZK Ascii codes
+	void writeHzkAsc(const char c);
+	// Write HZK GBK codes
+	void writeHzkGbk(const uint8_t* c);
+	void writeHzk(const char c);
 };
 
 #endif
