@@ -3359,23 +3359,13 @@ void ILI9341::drawJpgFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y, 
 **
 **************************************************************************/
 
-// void ILI9341::useHzk16(boolean use)
-// {
-// 	if (hzk16Used == use)
-// 		return;
-// 
-// 	hzk16Used = use;
-// 
-// #if defined(_ASC16_) && defined(_HZK16_)
-// 	pAscCharMatrix = (uint8_t*)&ASC16[0];
-// 	pGbkCharMatrix = (uint8_t*)&HZK16[0];
-// #else
-// 	pAscCharMatrix = NULL;
-// 	pGbkCharMatrix = NULL;
-// #endif
-// 	initHzk16(use);
-// }
-
+/***************************************************************************************
+** Function name:           loadHzk16
+** Description:             loadHzk16 fonts
+** Params:
+**	HZK16Path: HZK16 file path on TF card. e.g. /HZK16, means file on the root dir of TF card.
+**	ASC16Path: ASC16 file path on TF card.
+***************************************************************************************/
 void ILI9341::loadHzk16(const char* HZK16Path, const char* ASC16Path)
 {
 	if (hzk16Used)
@@ -3402,6 +3392,11 @@ void ILI9341::loadHzk16(const char* HZK16Path, const char* ASC16Path)
 	Serial.println(isHzk16Used());
 }
 
+/***************************************************************************************
+** Function name:           disableHzk16
+** Description:             disable Hzk16 fonts
+** Params:
+***************************************************************************************/
 void ILI9341::disableHzk16()
 {
 	if (hzk16Used)
