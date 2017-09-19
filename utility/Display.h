@@ -348,13 +348,15 @@ public:
 
 	// GB2312 font
 	void useHzk16(boolean use);
-
+	inline bool isHzk16Used(){return hzk16Used;}
 	// Highlight the text (Once set to be true, the text background will not be transparent any more)
 	inline void highlight(bool isHighlight) { highlighted = isHighlight; }
 	// Set highlight color
 	inline void setHighlightColor(uint16_t color) { highlightcolor = color; istransparent = false; }
 	// Set background to transparent or not (if not, text will always be drawn with background color set with setTextColor)
 	inline void setTransparentBgColor(bool isTransparent) { istransparent = isTransparent; }
+	// Get whether is transparent background
+	inline bool isTransparentBg(){return istransparent;}
 private:
 	SPIClass _spi;
 	uint32_t _freq;
