@@ -132,6 +132,23 @@ ILI9341::ILI9341(int16_t w, int16_t h)
 #ifdef LOAD_FONT8
   fontsloaded |= 0x0100; // Bit 8 set
 #endif
+
+
+  // Set default HZK16 and ASC16 font width and height.
+  ascCharWidth = 8;
+  ascCharHeigth = 16;
+  gbkCharWidth = 16;
+  gbkCharHeight = 16;
+
+  // Set default highlight color
+  highlightcolor = RED;
+  highlighted = false;
+
+  // HZK16 is not used by default
+  hzk16Used = false;
+  hzk16Type = DontUsedHzk16;
+  pHzk16File = nullptr;
+  pAsc16File = nullptr;
 }
 
 /***************************************************************************************
@@ -1184,6 +1201,16 @@ void ILI9341::setTextSize(uint8_t s)
   if (s > 7)
     s = 7;                    // Limit the maximum size multiplier so byte variables can be used for rendering
   textsize = (s > 0) ? s : 1; // Don't allow font size 0
+
+
+  // Calculate the text width and height. 
+  // It's 8 pixels wide and 16 pixels high in for ASCII characters, 
+  // and 16 pixels both wide and high for GBK characters in HZK16 mode.
+  ascCharWidth = 8 * textsize;
+  ascCharHeigth = 16 * textsize;
+
+  gbkCharWidth = ascCharHeigth;
+  gbkCharHeight = gbkCharWidth;
 }
 
 /***************************************************************************************
@@ -2065,6 +2092,29 @@ void ILI9341::invertDisplay(boolean i)
 ***************************************************************************************/
 size_t ILI9341::write(uint8_t utf8)
 {
+	// Use HZK fonts
+	// NOTE: When using HZK16, the encoding type here actually SHOULD BE GBK!!!!!!!
+	if(hzk16Used)
+	{
+		if (utf8 < 0xA1)
+		{// ASCII
+			Serial.println("ASCII codec detected.");
+			writeHzkAsc(utf8);
+		}
+		else
+		{// GBK
+			Serial.println("GBK codec detected.");
+			hzkBuf[hzkBufCount++] = utf8;
+			if (hzkBufCount == 2)
+			{
+				writeHzkGbk(hzkBuf);
+				hzkBufCount = 0;
+			}
+		}
+		return 1;
+	}
+	
+	
   if (utf8 == '\r')
     return 1;
 
@@ -3303,6 +3353,308 @@ void ILI9341::drawJpgFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y, 
   jpgDecode(&jpeg, jpgReadFile);
 
   file.close();
+}
+
+/**************************************************************************
+**
+** GBK character support
+**
+**************************************************************************/
+
+// void ILI9341::useHzk16(boolean use)
+// {
+// 	if (hzk16Used == use)
+// 		return;
+// 
+// 	hzk16Used = use;
+// 
+// #if defined(_ASC16_) && defined(_HZK16_)
+// 	pAscCharMatrix = (uint8_t*)&ASC16[0];
+// 	pGbkCharMatrix = (uint8_t*)&HZK16[0];
+// #else
+// 	pAscCharMatrix = NULL;
+// 	pGbkCharMatrix = NULL;
+// #endif
+// 	initHzk16(use);
+// }
+
+void ILI9341::loadHzk16(const char* HZK16Path, const char* ASC16Path)
+{
+	Serial.print("HZK16 path: ");
+	Serial.println(HZK16Path);
+	Serial.print("ASC16 path: ");
+	Serial.println(ASC16Path);
+
+	if (hzk16Used)
+		return;
+
+#if defined(_ASC16_) && defined(_HZK16_)
+	pAscCharMatrix = (uint8_t*)&ASC16[0];
+	pGbkCharMatrix = (uint8_t*)&HZK16[0];
+#else
+	pAscCharMatrix = NULL;
+	pGbkCharMatrix = NULL;
+#endif
+	hzk16Used = initHzk16(true, HZK16Path, ASC16Path);
+
+	Serial.print("HZK16 init result: ");
+	Serial.println(isHzk16Used());
+}
+
+void ILI9341::disableHzk16()
+{
+	if (hzk16Used)
+	{
+		hzk16Used = initHzk16(false);
+	}
+}
+
+bool ILI9341::initHzk16(boolean use, const char* HZK16Path, const char* ASC16Path)
+{
+	bool result = false;
+	if (use == false)
+	{// Do not use HZK16 and ASC16 fonts
+		hzk16Type = DontUsedHzk16;
+		Serial.println("Use default font.");
+	}
+	else if (pAscCharMatrix == NULL || pGbkCharMatrix == NULL)
+	{// Use external HZK16 and ASC16 font on TF card.
+
+		//SD.begin();
+
+		// Check if HZK16 and ASC16 files exist on TF card.
+		if (SD.exists(HZK16Path) && SD.exists(ASC16Path))
+		{// Exists
+			hzk16Type = ExternalHzk16;
+			Serial.println("Use external HZK16 and ASC16 font.");
+		}
+		else
+		{// Not exists
+			hzk16Type = DontUsedHzk16;
+			Serial.println("External font file HZK16/ASC16 lost, use default font.");
+		}
+		
+	}
+	else
+	{// Use internal HZK16 and ASC16 fonts
+		hzk16Type = InternalHzk16;
+		Serial.println("Use internal HZK16 and ASC16 font.");
+	}
+
+	switch (hzk16Type)
+	{
+		case ExternalHzk16:
+		{
+			if (pHzk16File == NULL)
+			{
+				Hzk16File = SD.open(HZK16Path);
+				pHzk16File = &Hzk16File;
+			}
+			if (pAsc16File == NULL)
+			{
+				Asc16File = SD.open(ASC16Path);
+				pAsc16File = &Asc16File;
+			}
+			hzkBufCount = 0;
+			break;
+		}
+		case InternalHzk16:
+		{
+			if (pAscCharMatrix == NULL || pGbkCharMatrix == NULL)
+			{
+				hzk16Type = DontUsedHzk16;
+			}
+
+			if (pHzk16File != NULL)
+			{
+				pHzk16File->close();
+				pHzk16File = NULL;
+			}
+			if(pAsc16File!=NULL)
+			{
+				pAsc16File->close();
+				pAsc16File = NULL;
+			}
+			hzkBufCount = 0;
+			break;
+		}
+		case DontUsedHzk16:
+		{
+			if (pHzk16File != NULL)
+			{
+				pHzk16File->close();
+				pHzk16File = NULL;
+			}
+			if(pAsc16File!=NULL)
+			{
+				pAsc16File->close();
+				pAsc16File = NULL;
+			}
+			break;
+		}
+	}
+	return hzk16Type != DontUsedHzk16;
+}
+
+void ILI9341::writeHzkAsc(const char c)
+{
+	if (c == '\n')
+	{
+		cursor_x = 0;
+		cursor_y += ascCharHeigth;
+	}
+	else if(c!='\r')
+	{
+		uint32_t offset;
+		uint8_t mask;
+		uint16_t posX = cursor_x, posY = cursor_y;
+		uint8_t charMatrix[16];
+		uint8_t* pCharMatrix;
+		
+		offset = (uint32_t)c * 16;
+
+		if (hzk16Type == ExternalHzk16)
+		{
+			pAsc16File->seek(offset, SeekSet);
+			pAsc16File->readBytes((char*)&charMatrix[0], 16);
+			pCharMatrix = &charMatrix[0];
+		}
+		else
+		{
+			if (pAscCharMatrix == NULL)
+			{
+				return;
+			}
+			pCharMatrix = pAscCharMatrix + offset;
+		}
+		
+		//startWrite();
+
+		if (highlighted)
+		{
+			fillRect(cursor_x, cursor_y, ascCharWidth, ascCharHeigth, highlightcolor);
+		}
+		else if (istransparent == false)
+		{
+			fillRect(cursor_x, cursor_y, ascCharWidth, ascCharHeigth, textbgcolor);
+		}
+
+		for (uint8_t row = 0; row < 16; row++)
+		{
+			mask = 0x80;
+			posX = cursor_x;
+			for (uint8_t col = 0; col < 8; col++)
+			{
+				if ((*pCharMatrix & mask) != 0)
+				{
+					if (textsize == 1) 
+					{
+						drawPixel(posX, posY, textcolor);
+					}
+					else
+					{
+						fillRect(posX, posY, textsize, textsize, textcolor);
+					}
+				}
+				posX += textsize;
+				mask >>= 1;
+			}
+			posY += textsize;
+			pCharMatrix++;
+		}
+
+		//endWrite();
+
+		
+		cursor_x += ascCharWidth;
+		if (textwrap && ((cursor_x + ascCharWidth) > _width))
+		{
+			cursor_x = 0;
+			cursor_y += ascCharHeigth;
+		}
+	}
+	
+}
+
+void ILI9341::writeHzkGbk(const uint8_t* c)
+{
+
+	uint32_t offset;
+	uint8_t mask;
+	uint16_t posX = cursor_x, posY = cursor_y;
+	uint8_t charMatrix[32];
+	uint8_t* pCharMatrix;
+
+	offset = (uint32_t)(94 * (uint32_t)(c[0] - 0xA1) + (uint32_t)(c[1] - 0xA1)) * 32;
+	if (hzk16Type == ExternalHzk16)
+	{
+		pHzk16File->seek(offset, SeekSet);
+		pHzk16File->readBytes((char*)&charMatrix[0], 32);
+		pCharMatrix = &charMatrix[0];
+	}
+	else
+	{
+		if (pGbkCharMatrix == NULL)
+		{
+			return;
+		}
+		pCharMatrix = pGbkCharMatrix + offset;
+	}
+	
+	//startWrite();
+
+	if (highlighted)
+	{
+		fillRect(cursor_x, cursor_y, gbkCharWidth, gbkCharHeight, highlightcolor);
+	}
+	else if (istransparent == false)
+	{
+		fillRect(cursor_x, cursor_y, gbkCharWidth, gbkCharHeight, textbgcolor);
+	}
+
+	for (uint8_t row = 0; row < 16; row++)
+	{
+		posX = cursor_x;
+		mask = 0x80;
+		for (uint8_t col = 0; col < 8; col++)
+		{
+			if ((*pCharMatrix & mask) != 0)
+			{
+				if (textsize == 1)
+				{
+					drawPixel(posX, posY, textcolor);
+				}
+				else
+				{
+					fillRect(posX, posY, textsize, textsize, textcolor);
+				}
+			}
+			if ((*(pCharMatrix + 1) & mask) != 0)
+			{
+				if (textsize == 1)
+				{
+					drawPixel(posX + ascCharWidth, posY, textcolor);
+				}
+				else
+				{
+					fillRect(posX + ascCharWidth, posY, textsize, textsize, textcolor);
+				}
+			}
+			mask >>= 1;
+			posX += textsize;
+		}
+		posY += textsize;
+		pCharMatrix += 2;
+	}
+
+	//endWrite();
+	
+	cursor_x += gbkCharWidth;
+	if (textwrap && ((cursor_x + gbkCharWidth) > _width))
+	{
+		cursor_x = 0;
+		cursor_y += gbkCharHeight;
+	}
 }
 
 /***************************************************

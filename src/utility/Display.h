@@ -21,6 +21,7 @@
 
 #include "Arduino.h"
 #include "FS.h"
+#include "SD.h"
 #include "SPI.h"
 #include <Print.h>
 #include <pgmspace.h>
@@ -325,6 +326,22 @@
   
 #endif // #ifdef LOAD_GFXFF
 
+
+/**************************************************************************
+**
+** GBK character support
+** Note: define LOAD_HZK will use internal font predefined in header files.
+**       You may call useHzk16(true) without define LOAD_HZK, but font files
+**       font/ASC16 and font/HZK16 should be copied to your TF card.
+**
+**************************************************************************/
+#ifdef LOAD_HZK
+#include <Fonts/hzk16.h>
+#include <Fonts/asc16.h>
+#endif
+#define clear(color) fillScreen(color)
+
+
 //These enumerate the text plotting alignment (reference datum point)
 #define TL_DATUM 0 // Top left (default)
 #define TC_DATUM 1 // Top centre
@@ -430,7 +447,17 @@ const PROGMEM fontinfo fontdata [] = {
   #endif
 };
 
-
+/**************************************************************************
+**
+** GBK character support
+**
+**************************************************************************/
+typedef enum
+{
+	DontUsedHzk16,
+	InternalHzk16,
+	ExternalHzk16
+}Hzk16Types;
 
 // Class functions and variables
 class ILI9341 : public Print
@@ -609,6 +636,53 @@ boolean locked, inTransaction; // Transaction and mutex lock flags for ESP32
     *gfxFont;
 #endif
 
+
+/**************************************************************************
+**
+** GBK character support
+**
+**************************************************************************/
+public:
+	// GB2312 font
+	void loadHzk16(const char* HZK16Path = "/HZK16", const char* ASC16Path = "/ASC16");
+	void disableHzk16();
+	inline bool isHzk16Used(){return hzk16Used;}
+	// Highlight the text (Once set to be true, the text background will not be transparent any more)
+	inline void highlight(bool isHighlight) { highlighted = isHighlight; }
+	// Set highlight color
+	inline void setHighlightColor(uint16_t color) { highlightcolor = color; istransparent = false; }
+	// Set background to transparent or not (if not, text will always be drawn with background color set with setTextColor)
+	inline void setTransparentBgColor(bool isTransparent) { istransparent = isTransparent; }
+	// Get whether is transparent background
+	inline bool isTransparentBg(){return istransparent;}
+	
+private:
+	uint8_t
+		hzkBufCount,
+		hzkBuf[2];
+	boolean
+		hzk16Used,
+		istransparent,
+		highlighted;
+	Hzk16Types
+		hzk16Type;					// Use of HZK16 and ASC16 font.
+	File
+		Asc16File, Hzk16File,		// Font file
+		*pAsc16File, *pHzk16File;	// Font file pointer
+	uint8_t *pAscCharMatrix, *pGbkCharMatrix;	
+	uint16_t
+		highlightcolor, 
+		ascCharWidth, 
+		ascCharHeigth, 
+		gbkCharWidth, 
+		gbkCharHeight;
+	
+	bool initHzk16(boolean use, const char* HZK16Path = nullptr, const char* ASC16Path = nullptr);
+	// Write HZK Ascii codes
+	void writeHzkAsc(const char c);
+	// Write HZK GBK codes
+	void writeHzkGbk(const uint8_t* c);
+	void writeHzk(const char c);
 };
 
 #ifndef max
