@@ -357,6 +357,10 @@ public:
 	inline void setTransparentBgColor(bool isTransparent) { istransparent = isTransparent; }
 	// Get whether is transparent background
 	inline bool isTransparentBg(){return istransparent;}
+	
+	
+	
+	
 private:
 	SPIClass _spi;
 	uint32_t _freq;
