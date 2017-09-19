@@ -2098,12 +2098,10 @@ size_t ILI9341::write(uint8_t utf8)
 	{
 		if (utf8 < 0xA1)
 		{// ASCII
-			Serial.println("ASCII codec detected.");
 			writeHzkAsc(utf8);
 		}
 		else
 		{// GBK
-			Serial.println("GBK codec detected.");
 			hzkBuf[hzkBufCount++] = utf8;
 			if (hzkBufCount == 2)
 			{
@@ -3380,22 +3378,25 @@ void ILI9341::drawJpgFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y, 
 
 void ILI9341::loadHzk16(const char* HZK16Path, const char* ASC16Path)
 {
-	Serial.print("HZK16 path: ");
-	Serial.println(HZK16Path);
-	Serial.print("ASC16 path: ");
-	Serial.println(ASC16Path);
-
 	if (hzk16Used)
-		return;
+		return;	
 
 #if defined(_ASC16_) && defined(_HZK16_)
 	pAscCharMatrix = (uint8_t*)&ASC16[0];
 	pGbkCharMatrix = (uint8_t*)&HZK16[0];
+	Serial.println("HZK16 path: Internal");
+	Serial.println("ASC16 path: Internal");
+	hzk16Used = initHzk16(true, nullptr, nullptr);
 #else
 	pAscCharMatrix = NULL;
 	pGbkCharMatrix = NULL;
-#endif
+
+	Serial.print("HZK16 path: /SD");
+	Serial.println(HZK16Path);
+	Serial.print("ASC16 path: /SD");
+	Serial.println(ASC16Path);
 	hzk16Used = initHzk16(true, HZK16Path, ASC16Path);
+#endif
 
 	Serial.print("HZK16 init result: ");
 	Serial.println(isHzk16Used());
@@ -3420,8 +3421,6 @@ bool ILI9341::initHzk16(boolean use, const char* HZK16Path, const char* ASC16Pat
 	else if (pAscCharMatrix == NULL || pGbkCharMatrix == NULL)
 	{// Use external HZK16 and ASC16 font on TF card.
 
-		//SD.begin();
-
 		// Check if HZK16 and ASC16 files exist on TF card.
 		if (SD.exists(HZK16Path) && SD.exists(ASC16Path))
 		{// Exists
@@ -3433,7 +3432,6 @@ bool ILI9341::initHzk16(boolean use, const char* HZK16Path, const char* ASC16Pat
 			hzk16Type = DontUsedHzk16;
 			Serial.println("External font file HZK16/ASC16 lost, use default font.");
 		}
-		
 	}
 	else
 	{// Use internal HZK16 and ASC16 fonts

@@ -235,6 +235,21 @@
   #endif
 #endif
 
+/**************************************************************************
+**
+** GBK character support
+** Note: define LOAD_HZK will use internal font predefined in header files.
+**       You may call loadHzk16() without define LOAD_HZK, but font files
+**       font/ASC16 and font/HZK16 should be copied to your TF card.
+**
+**************************************************************************/
+#ifdef LOAD_HZK
+#include <Fonts/hzk16.h>
+#include <Fonts/asc16.h>
+#endif
+
+#define clear(color) fillScreen(color)
+
 //#define DC_C digitalWrite(TFT_DC, HIGH); GPIO.out_w1tc = (1 << TFT_DC)//digitalWrite(TFT_DC, LOW)
 //#define DC_D digitalWrite(TFT_DC, LOW); GPIO.out_w1ts = (1 << TFT_DC)//digitalWrite(TFT_DC, HIGH)
 #define DC_C GPIO.out_w1ts = (1 << TFT_DC); GPIO.out_w1ts = (1 << TFT_DC); GPIO.out_w1tc = (1 << TFT_DC)
@@ -327,19 +342,7 @@
 #endif // #ifdef LOAD_GFXFF
 
 
-/**************************************************************************
-**
-** GBK character support
-** Note: define LOAD_HZK will use internal font predefined in header files.
-**       You may call useHzk16(true) without define LOAD_HZK, but font files
-**       font/ASC16 and font/HZK16 should be copied to your TF card.
-**
-**************************************************************************/
-#ifdef LOAD_HZK
-#include <Fonts/hzk16.h>
-#include <Fonts/asc16.h>
-#endif
-#define clear(color) fillScreen(color)
+
 
 
 //These enumerate the text plotting alignment (reference datum point)

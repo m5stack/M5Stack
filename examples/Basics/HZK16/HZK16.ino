@@ -6,7 +6,8 @@
 void setup() {
   M5.begin();
   // Use HZK16 and ASC16 font set
-  M5.Lcd.useHzk16(true);
+  // NOTE: font file should be copied to your TF card.
+  M5.Lcd.loadHzk16("/Fonts/HZK16","/Fonts/ASC16");
   // Set text with white foreground color and black background color
   M5.Lcd.setTextColor(WHITE, BLACK);
   // Set text with red highlight color
