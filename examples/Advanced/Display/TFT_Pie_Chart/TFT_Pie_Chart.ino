@@ -13,7 +13,7 @@ void setup(void)
 {
   M5.begin();
 
-  // M5.Lcd.setRotation(1);
+  // M5.Lcd.setRotation(1); 
 
   M5.Lcd.fillScreen(TFT_BLACK);
 }
