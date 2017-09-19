@@ -28,6 +28,7 @@ begin	KEYWORD1
 update	KEYWORD1
 startupLogo  KEYWORD1
 Speaker  KEYWORD1
+Lcd  KEYWORD1
 
 ////////////////////////buttons
 pressed	KEYWORD1

@@ -36,16 +36,14 @@
 
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
-// char auth[] = "b991e6eb50e44df6945f459f8ccc1ea1";
 char auth[] = "21735bafd13b47e6ae6908fd240302d1";
-// char ssid[] = "LabNet";
-// char pass[] = "mytradio";
+
 char ssid[] = HAX_SSID;
 char pass[] = HAX_PASSWD;
 
 // You can send commands from Terminal to your hardware. Just use
 uint8_t r,g,b;
-uint8_t radius = 30;
+uint8_t radius = 60;
 
 BLYNK_WRITE(V0)
 {
@@ -58,8 +56,6 @@ BLYNK_WRITE(V3)
     M5.Lcd.fillCircle(ILI9341_TFTWIDTH / 2, ILI9341_TFTHEIGHT / 2, radius, M5.Lcd.color565(r, g, b));
     Serial.print("r = ");
     Serial.println(r);
-    // Serial.print("; Y = ");
-    // Serial.println(y);
 }
 
 BLYNK_WRITE(V4)
@@ -73,30 +69,9 @@ BLYNK_WRITE(V4)
 BLYNK_WRITE(V5)
 {
     b = param[0].asInt();
-
-    // Do something with x and y
-    // Serial.print("X = ");
-    // Serial.println(x);
     M5.Lcd.fillCircle(ILI9341_TFTWIDTH / 2, ILI9341_TFTHEIGHT / 2, radius, M5.Lcd.color565(r, g, b));
     Serial.print("b = ");
     Serial.println(b);
-}
-
-BLYNK_WRITE(V6)
-{
-    static uint8_t prev_rad;
-    radius = param[0].asInt();
-
-    // Do something with x and y
-    // Serial.print("X = ");
-    // Serial.println(x);
-    if(radius < prev_rad)
-        M5.Lcd.fillScreen(BLACK);
-
-    M5.Lcd.fillCircle(ILI9341_TFTWIDTH / 2, ILI9341_TFTHEIGHT / 2, radius, M5.Lcd.color565(r, g, b));
-    Serial.print("radius = ");
-    Serial.println(radius);
-    prev_rad = radius;
 }
 
 void setup()
