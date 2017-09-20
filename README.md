@@ -72,3 +72,26 @@ Starting with 1.6.4, Arduino allows installation of third-party platform package
 - Start Arduino and open Preferences window.
 - Enter ```http://www.m5stack.com/download/package_m5stack_index.json``` into *Additional Board Manager URLs* field. You can add multiple URLs, separating them with commas.
 - Open Boards Manager from Tools > Board menu and install *ESP32* platform (and don't forget to select your ESP32 board from Tools > Board menu after installation).
+
+## Hardware pinout
+### Internal
+Peripheral Devices | ESP32 
+---|---
+ILI9341 RST | GPIO33 
+ILI9341 DC | GPIO27 
+ILI9341 CS | GPIO14
+ILI9341 MOSI | GPIO23
+ILI9341 CLK | GPIO18
+ILI9341 LIGHT | GPIO32
+TFCARD MOSI | GPIO23
+TFCARD MISO | GPIO19
+TFCARD CLK | GPIO18
+TFCARD CS | GPIO4
+BUTTON A | GPIO39
+BUTTON B | GPIO38
+BUTTON C | GPIO37
+SPEAKER | GPIO25
+GOVER SDA | GPIO21
+GOVER SCL | GPIO22
+### M-BUS
+![image](extras/M-BUS.jpg)

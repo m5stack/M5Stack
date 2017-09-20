@@ -1,6 +1,12 @@
+#ifndef _SPEAKER_H_
+#define _SPEAKER_H_
+
 #include "Arduino.h"
 #include "Config.h"
+
+extern "C" {
 #include "esp32-hal-dac.h"
+}
 
 class SPEAKER {
 public:
@@ -25,3 +31,5 @@ private:
     uint16_t _beep_freq;
     bool speaker_on;
 };
+
+#endif

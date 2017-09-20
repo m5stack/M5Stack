@@ -26,8 +26,6 @@
 #include <Print.h>
 #include <pgmspace.h>
 
-#define ILI9341_DRIVER
-
 #define TFT_WIDTH 320
 #define TFT_HEIGHT 240
 
