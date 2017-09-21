@@ -84,14 +84,11 @@
 #include "SD.h"
 
 #include <utility/Display.h> // Graphics and font library for ILI9341 driver chip
-// #include <TFT_eSPI.h>
 #include <utility/Config.h>
 #include <utility/Button.h>
 #include <utility/Speaker.h>
 #include <utility/bmp_map.h>
 #include <utility/music_8bit.h>
-
-// #include <TFT_eSPI.h> // Graphics and font library for ILI9341 driver chip
 
 extern "C" {
 #include "esp32-hal-dac.h"
@@ -109,7 +106,7 @@ class M5Stack {
 
     // Button API
     #define DEBOUNCE_MS 20
-    Button BtnA = Button(BUTTON_A_PIN, true, DEBOUNCE_MS);    //Declare the button
+    Button BtnA = Button(BUTTON_A_PIN, true, DEBOUNCE_MS);
     Button BtnB = Button(BUTTON_B_PIN, true, DEBOUNCE_MS);
     Button BtnC = Button(BUTTON_C_PIN, true, DEBOUNCE_MS);
 
@@ -117,9 +114,7 @@ class M5Stack {
     SPEAKER Speaker;
 
     // LCD
-    // ILI9341 Lcd = ILI9341(TFT_CS_PIN, TFT_DC_PIN, TFT_RST_PIN);
-    // TFT_eSPI Lcd = TFT_eSPI(); // Invoke library, pins defined in User_Setup.h
-    ILI9341 Lcd = ILI9341(); // Invoke library, pins defined in User_Setup.h
+    ILI9341 Lcd = ILI9341();
 
     // UART
     HardwareSerial Serial0 = HardwareSerial(0);
