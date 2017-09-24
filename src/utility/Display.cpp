@@ -1317,7 +1317,7 @@ int16_t ILI9341::textWidth(const char *string)
 int16_t ILI9341::textWidth(const char *string, int font)
 {
   unsigned int str_width = 0;
-  char uniCode;
+  uint8_t uniCode;
   char *widthtable;
 
   if (font > 1 && font < 9)
@@ -1514,7 +1514,7 @@ void ILI9341::drawChar(int32_t x, int32_t y, unsigned char c, uint32_t color, ui
     int8_t xo = pgm_read_byte(&glyph->xOffset),
            yo = pgm_read_byte(&glyph->yOffset);
     uint8_t xx, yy, bits, bit = 0;
-    int16_t xo16, yo16;
+    int16_t xo16 = 0, yo16 = 0;
 
     if (size > 1)
     {

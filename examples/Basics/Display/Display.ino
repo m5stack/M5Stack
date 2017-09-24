@@ -21,7 +21,6 @@ void setup() {
   delay(500);
 
   // text print
-  m5.Lcd.setFont();
   m5.Lcd.fillScreen(BLACK);
   m5.Lcd.setCursor(10, 10);
   m5.Lcd.setTextColor(WHITE);

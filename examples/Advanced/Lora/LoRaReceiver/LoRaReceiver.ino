@@ -4,12 +4,16 @@
 #include <SPI.h>
 #include <LoRa.h>
 
+#define LORA_CS_PIN   5
+#define LORA_RST_PIN  26
+#define LORA_IRQ_PIN  36
+
 void setup() {
   
   M5.begin();
 
   // override the default CS, reset, and IRQ pins (optional)
-  LoRa.setPins(5, 26, 36); // set CS, reset, IRQ pin
+  LoRa.setPins(LORA_CS_PIN, LORA_RST_PIN, LORA_IRQ_PIN); // set CS, reset, IRQ pin
 
   Serial.println("LoRa Receiver");
   M5.Lcd.println("LoRa Receiver");

@@ -519,7 +519,7 @@ public:
       setTextPadding(uint16_t x_width),
 
 #ifdef LOAD_GFXFF
-      setFreeFont(const GFXfont *f = NULL),
+      setFreeFont(const GFXfont *f),
       setTextFont(uint8_t font),
 #else
       setFreeFont(uint8_t font),
