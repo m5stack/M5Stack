@@ -18,7 +18,6 @@ void setup(){
 void loop() {
 
   if(M5.BtnA.wasPressed()) {
-
     M5.powerOFF();
   }
 
