@@ -13,4 +13,7 @@ void setup(){
 // the loop routine runs over and over again forever
 void loop() {
 
+  if(digitalRead(39) == 0) {
+    M5.powerOFF();
+  }
 }

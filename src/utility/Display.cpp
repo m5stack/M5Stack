@@ -3076,6 +3076,11 @@ void ILI9341::setBrightness(uint8_t brightness)
   ledcWrite(2, brightness);
 }
 
+void ILI9341::sleep() {
+  spi_begin();
+  writecommand(ILI9341_SLPIN); // Software reset
+  spi_end();
+}
 /***************************************************
   This library is written to be compatible with Adafruit's ILI9341
   library and automatically detects the display type on ESP_WROVER_KITs
@@ -3212,16 +3217,7 @@ static uint32_t jpgWrite(JDEC *decoder, void *bitmap, JRECT *rect)
     line = w - (oL + oR);
     while (line--)
     {
-      // 012
-      // 021
-      // 102
-      // 120
-      // 210
-      // 201
-
       pixBuf[pixIndex++] = jpgColor(data);
-// #define jpgColorx(c) (((uint16_t)(((uint8_t *)(c))[0] & 0xF8) << 8) | ((uint16_t)(((uint8_t *)(c))[2] & 0xFC) << 3) | ((((uint8_t *)(c))[1] & 0xF8) >> 3))
-      // pixBuf[pixIndex++] = jpgColorx(data);
       data += 3;
       if (pixIndex == 32)
       {

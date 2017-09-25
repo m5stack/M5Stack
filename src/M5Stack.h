@@ -94,6 +94,7 @@ extern "C" {
 #include "esp32-hal-dac.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "esp_sleep.h"
 }
 
 class M5Stack {
@@ -103,6 +104,9 @@ class M5Stack {
     void begin();
     void update();
     void startupLogo();
+
+    void setWakeupButton(uint8_t button);
+    void powerOFF();
 
     // Button API
     #define DEBOUNCE_MS 20
@@ -122,6 +126,7 @@ class M5Stack {
 
  private:
 
+    uint8_t _wakeupPin;
 };
 
 extern M5Stack m5stack;

@@ -8,7 +8,11 @@ void M5Stack::begin() {
     // UART 
     Serial.begin(115200);
     Serial.flush();
-    Serial.println("M5Stack init...");
+    Serial.print("M5Stack initializing...");
+
+    // I2C
+    pinMode(SCL, OUTPUT);
+    digitalWrite(SDA, 1);
 
     // TONE
     Speaker.begin();
@@ -28,6 +32,11 @@ void M5Stack::begin() {
     Lcd.setTextColor(WHITE);
     Lcd.setTextSize(1);
     Lcd.setBrightness(50);
+
+    // Set wakeup button
+    setWakeupButton(BUTTON_A_PIN);
+
+    Serial.println("OK.");
 }
 
 void M5Stack::update() {
@@ -70,6 +79,28 @@ void M5Stack::startupLogo() {
         Lcd.setBrightness(i);
         delay(2);
     }
+}
+
+void M5Stack::setWakeupButton(uint8_t button) {
+    _wakeupPin = button;
+}
+
+void M5Stack::powerOFF() {
+    
+    // power off the Lcd
+    Lcd.setBrightness(0);
+    Lcd.sleep();
+
+    // ESP32 into deep sleep
+    uint64_t _wakeupPin_mask = 1ULL << _wakeupPin;
+    USE_SERIAL.printf("Enabling EXT1 wakeup on pins GPIO%d\n", _wakeupPin);
+    esp_sleep_enable_ext1_wakeup(_wakeupPin_mask , ESP_EXT1_WAKEUP_ALL_LOW);
+    while(digitalRead(_wakeupPin) == LOW) {
+        delay(10);
+    }
+    USE_SERIAL.println("On deep sleep mode.");
+    esp_deep_sleep_start();
+    USE_SERIAL.println("On power OFF fail!");
 }
 
 M5Stack m5stack;

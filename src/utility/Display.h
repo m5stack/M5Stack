@@ -582,6 +582,7 @@ public:
            textWidth(const String& string),
            fontHeight(int16_t font);
 //---
+      void sleep();
       void setBrightness(uint8_t brightness);
       void progressBar(int x, int y, int w, int h, uint8_t val);
       void setAddrWindow(int32_t xs, int32_t ys, int32_t xe, int32_t ye);
