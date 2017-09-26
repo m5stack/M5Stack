@@ -1,46 +1,5 @@
 #include <M5Stack.h>
 
-bool gpio_test_flg = 0;
-void GPIO_test() {
-    // uint8_t gpio_table[] = {23,19,18,3,16,21,2,12,15,26,1,17,22,5,13,0,34};
-    uint8_t gpio_table[] = {12,2,21,16,3,18,19,23,15,0,13,5,22,17,1,26,25};
-    
-    // while(1) 
-    {
-        for (int i = 0; i<=sizeof(gpio_table) / sizeof(gpio_table[0]); i++) {
-            pinMode(gpio_table[i], OUTPUT);
-        }
-        for(int i=0; i<=sizeof(gpio_table)/sizeof(gpio_table[0]); i++) {
-            digitalWrite(gpio_table[i], 1);
-            delay(50);
-            digitalWrite(gpio_table[i], 0);
-            delay(50);
-            digitalWrite(gpio_table[i], 1);
-            delay(50);
-            digitalWrite(gpio_table[i], 0);
-            delay(50);
-            digitalWrite(gpio_table[i], 1);
-            delay(50);
-            digitalWrite(gpio_table[i], 0);
-        }
-    }
-}
-
-void adc_test() {
-    int count = 10;
-    pinMode(35, INPUT);
-    pinMode(36, INPUT);
-    pinMode(34, INPUT);
-    m5.Lcd.fillScreen(BLACK);
-    while(count--) {
-        m5.Lcd.setCursor(0, 10);
-        m5.Lcd.setTextColor(WHITE, BLACK);
-        m5.Lcd.setTextSize(2);
-        m5.Lcd.printf("ADC1:%d\r\nADC2:%d\r\nADC3:%d\r\n", analogRead(35), analogRead(36), analogRead(34));
-        delay(500);
-    }
-}
-
 //TF card test
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
     Serial.printf("Listing directory: %s\n", dirname);
@@ -166,167 +125,43 @@ void wifi_test() {
     m5.lcd.println("");
 }
 
-// the setup routine runs once when M5Stack starts up
-void setup() {
+bool gpio_test_flg = 0;
+void GPIO_test() {
+    // uint8_t gpio_table[] = {23,19,18,3,16,21,2,12,15,26,1,17,22,5,13,0,34};
+    uint8_t gpio_table[] = {12,2,21,16,3,18,19,23,15,0,13,5,22,17,1,26,25};
     
-    //gpio test 
-    pinMode(BUTTON_A_PIN, INPUT_PULLUP);
-    if(digitalRead(BUTTON_A_PIN) == 0) {
-        gpio_test_flg = 1;
-    }
-
-    if (gpio_test_flg) {
-        GPIO_test();
-    }
-
-    // initialize the M5Stack object
-    m5.begin();
-
-    // dac test
-    if (gpio_test_flg)
+    // while(1) 
     {
-        adc_test();
+        for (int i = 0; i<=sizeof(gpio_table) / sizeof(gpio_table[0]); i++) {
+            pinMode(gpio_table[i], OUTPUT);
+        }
+        for(int i=0; i<=sizeof(gpio_table)/sizeof(gpio_table[0]); i++) {
+            digitalWrite(gpio_table[i], 1);
+            delay(50);
+            digitalWrite(gpio_table[i], 0);
+            delay(50);
+            digitalWrite(gpio_table[i], 1);
+            delay(50);
+            digitalWrite(gpio_table[i], 0);
+            delay(50);
+        }
     }
-
-    m5.startupLogo();
-
-    // Lcd display
-    m5.lcd.setBrightness(100);
-    m5.Lcd.fillScreen(BLACK);
-    m5.Lcd.setCursor(10, 10);
-    m5.Lcd.setTextColor(WHITE);
-    m5.Lcd.setTextSize(1);
-    m5.Lcd.printf("Display Test!");
-    delay(300);
-
-    m5.Lcd.fillScreen(WHITE);
-    delay(150);
-    m5.Lcd.fillScreen(RED);
-    delay(150);
-    m5.Lcd.fillScreen(GREEN);
-    delay(150);
-    m5.Lcd.fillScreen(BLUE);
-    delay(150);
-    m5.Lcd.fillScreen(BLACK);
-    delay(150);
-
-    // draw graphic
-    yield();
-    Serial.print(F("Lines                    "));
-    yield();
-    Serial.println(testLines(TFT_CYAN));
-    //total+=testLines(TFT_CYAN);
-    //delay(500);
-
-    yield();
-    Serial.print(F("Horiz/Vert Lines         "));
-    yield();
-    Serial.println(testFastLines(TFT_RED, TFT_BLUE));
-    //total+=testFastLines(TFT_RED, TFT_BLUE);
-    //delay(500);
-
-    yield();
-    Serial.print(F("Rectangles (outline)     "));
-    yield();
-    Serial.println(testRects(TFT_GREEN));
-    //total+=testRects(TFT_GREEN);
-    //delay(500);
-
-    yield();
-    Serial.print(F("Rectangles (filled)      "));
-    yield();
-    Serial.println(testFilledRects(TFT_YELLOW, TFT_MAGENTA));
-    //total+=testFilledRects(TFT_YELLOW, TFT_MAGENTA);
-    //delay(500);
-
-    yield();
-    Serial.print(F("Circles (filled)         "));
-    yield();
-    Serial.println(testFilledCircles(10, TFT_MAGENTA));
-    //total+= testFilledCircles(10, TFT_MAGENTA);
-
-    yield();
-    Serial.print(F("Circles (outline)        "));
-    yield();
-    Serial.println(testCircles(10, TFT_WHITE));
-    //total+=testCircles(10, TFT_WHITE);
-    //delay(500);
-
-    yield();
-    Serial.print(F("Triangles (outline)      "));
-    yield();
-    Serial.println(testTriangles());
-    //total+=testTriangles();
-    //delay(500);
-
-    yield();
-    Serial.print(F("Triangles (filled)       "));
-    yield();
-    Serial.println(testFilledTriangles());
-    //total += testFilledTriangles();
-    //delay(500);
-
-    yield();
-    Serial.print(F("Rounded rects (outline)  "));
-    yield();
-    Serial.println(testRoundRects());
-    //total+=testRoundRects();
-    //delay(500);
-
-    yield();
-    Serial.print(F("Rounded rects (filled)   "));
-    yield();
-    Serial.println(testFilledRoundRects());
-    //total+=testFilledRoundRects();
-    //delay(500);
-
-    yield();
-    Serial.println(F("Done!"));
-    yield();
-
-    //rand draw 
-    int i = 250;
-    while(--i) {
-        m5.Lcd.fillTriangle(random(m5.Lcd.width()-1), random(m5.Lcd.height()-1), random(m5.Lcd.width()-1), random(m5.Lcd.height()-1), random(m5.Lcd.width()-1), random(m5.Lcd.height()-1), random(0xfffe));
-    }
-    for(int i=255; i>=0; i--) {
-        m5.lcd.setBrightness(i);
-        delay(2);
-    }
-
-    //wifi test
-    m5.Lcd.setCursor(0, 10);
-    m5.Lcd.fillScreen(BLACK);
-    for(int i=0; i<200; i++) {
-        m5.lcd.setBrightness(i);
-        delay(2);
-    }
-    m5.Lcd.println("wifi test:");
-    wifi_test();
-    delay(2000);
-
-    // TF card test
-    m5.Lcd.fillScreen(BLACK);
-    m5.Lcd.setCursor(0, 10);
-    m5.Lcd.printf("TF card test:\r\n");
-    // digitalWrite(TFT_CS, 1);
-    listDir(SD, "/", 0);
-    writeFile(SD, "/hello.txt", "Hello world");
-    readFile(SD, "/hello.txt");
-
-    //Button test
-    m5.Lcd.println();
-    m5.Lcd.println();
-    m5.Lcd.print("buttons Test:");
-    m5.Lcd.setTextColor(RED);
 }
 
-// the loop routine runs over and over again forever
-void loop(){
-    buttons_test();
-    m5.update();
+void adc_test() {
+    int count = 10;
+    pinMode(35, INPUT);
+    pinMode(36, INPUT);
+    pinMode(34, INPUT);
+    m5.Lcd.fillScreen(BLACK);
+    while(count--) {
+        m5.Lcd.setCursor(0, 10);
+        m5.Lcd.setTextColor(WHITE, BLACK);
+        m5.Lcd.setTextSize(2);
+        m5.Lcd.printf("ADC1:%d\r\nADC2:%d\r\nADC3:%d\r\n", analogRead(35), analogRead(36), analogRead(34));
+        delay(500);
+    }
 }
-
 
 unsigned long testLines(uint16_t color)
 {
@@ -560,4 +395,165 @@ unsigned long testFilledRoundRects()
     }
 
     return micros() - start;
+}
+
+// the setup routine runs once when M5Stack starts up
+void setup() {
+    
+    //gpio test 
+    pinMode(BUTTON_A_PIN, INPUT_PULLUP);
+    if(digitalRead(BUTTON_A_PIN) == 0) {
+        gpio_test_flg = 1;
+    }
+
+    if (gpio_test_flg) {
+        GPIO_test();
+    }
+
+    // initialize the M5Stack object
+    m5.begin();
+
+    // dac test
+    if (gpio_test_flg)
+    {
+        adc_test();
+    }
+
+    m5.startupLogo();
+
+    // Lcd display
+    m5.lcd.setBrightness(100);
+    m5.Lcd.fillScreen(BLACK);
+    m5.Lcd.setCursor(10, 10);
+    m5.Lcd.setTextColor(WHITE);
+    m5.Lcd.setTextSize(1);
+    m5.Lcd.printf("Display Test!");
+    delay(300);
+
+    m5.Lcd.fillScreen(WHITE);
+    delay(150);
+    m5.Lcd.fillScreen(RED);
+    delay(150);
+    m5.Lcd.fillScreen(GREEN);
+    delay(150);
+    m5.Lcd.fillScreen(BLUE);
+    delay(150);
+    m5.Lcd.fillScreen(BLACK);
+    delay(150);
+
+    // draw graphic
+    yield();
+    Serial.print(F("Lines                    "));
+    yield();
+    Serial.println(testLines(TFT_CYAN));
+    //total+=testLines(TFT_CYAN);
+    //delay(500);
+
+    yield();
+    Serial.print(F("Horiz/Vert Lines         "));
+    yield();
+    Serial.println(testFastLines(TFT_RED, TFT_BLUE));
+    //total+=testFastLines(TFT_RED, TFT_BLUE);
+    //delay(500);
+
+    yield();
+    Serial.print(F("Rectangles (outline)     "));
+    yield();
+    Serial.println(testRects(TFT_GREEN));
+    //total+=testRects(TFT_GREEN);
+    //delay(500);
+
+    yield();
+    Serial.print(F("Rectangles (filled)      "));
+    yield();
+    Serial.println(testFilledRects(TFT_YELLOW, TFT_MAGENTA));
+    //total+=testFilledRects(TFT_YELLOW, TFT_MAGENTA);
+    //delay(500);
+
+    yield();
+    Serial.print(F("Circles (filled)         "));
+    yield();
+    Serial.println(testFilledCircles(10, TFT_MAGENTA));
+    //total+= testFilledCircles(10, TFT_MAGENTA);
+
+    yield();
+    Serial.print(F("Circles (outline)        "));
+    yield();
+    Serial.println(testCircles(10, TFT_WHITE));
+    //total+=testCircles(10, TFT_WHITE);
+    //delay(500);
+
+    yield();
+    Serial.print(F("Triangles (outline)      "));
+    yield();
+    Serial.println(testTriangles());
+    //total+=testTriangles();
+    //delay(500);
+
+    yield();
+    Serial.print(F("Triangles (filled)       "));
+    yield();
+    Serial.println(testFilledTriangles());
+    //total += testFilledTriangles();
+    //delay(500);
+
+    yield();
+    Serial.print(F("Rounded rects (outline)  "));
+    yield();
+    Serial.println(testRoundRects());
+    //total+=testRoundRects();
+    //delay(500);
+
+    yield();
+    Serial.print(F("Rounded rects (filled)   "));
+    yield();
+    Serial.println(testFilledRoundRects());
+    //total+=testFilledRoundRects();
+    //delay(500);
+
+    yield();
+    Serial.println(F("Done!"));
+    yield();
+
+    //rand draw 
+    int i = 250;
+    while(--i) {
+        m5.Lcd.fillTriangle(random(m5.Lcd.width()-1), random(m5.Lcd.height()-1), random(m5.Lcd.width()-1), random(m5.Lcd.height()-1), random(m5.Lcd.width()-1), random(m5.Lcd.height()-1), random(0xfffe));
+    }
+    for(int i=255; i>=0; i--) {
+        m5.lcd.setBrightness(i);
+        delay(2);
+    }
+
+    //wifi test
+    m5.Lcd.setCursor(0, 10);
+    m5.Lcd.fillScreen(BLACK);
+    for(int i=0; i<200; i++) {
+        m5.lcd.setBrightness(i);
+        delay(2);
+    }
+    m5.Lcd.println("wifi test:");
+    wifi_test();
+    delay(2000);
+
+    // TF card test
+    m5.Lcd.fillScreen(BLACK);
+    m5.Lcd.setCursor(0, 10);
+    m5.Lcd.printf("TF card test:\r\n");
+    // digitalWrite(TFT_CS, 1);
+    listDir(SD, "/", 0);
+    writeFile(SD, "/hello.txt", "Hello world");
+    readFile(SD, "/hello.txt");
+
+    //Button test
+    m5.Lcd.println();
+    m5.Lcd.println();
+    m5.Lcd.print("buttons Test:");
+    m5.Lcd.setTextColor(RED);
+}
+
+// the loop routine runs over and over again forever
+void loop(){
+    buttons_test();
+    m5.update();
 }

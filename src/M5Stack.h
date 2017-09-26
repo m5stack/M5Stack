@@ -2,13 +2,13 @@
 
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 /**
- * \par Copyright (C), 2012-2016, M5Stack
+ * \par Copyright (C), 2016-2017, M5Stack
  * \class M5Stack
  * \brief   M5Stack library.
  * @file    M5Stack.h
  * @author  M5Stack
- * @version V1.0.1
- * @date    2016/04/07
+ * @version V0.1.1
+ * @date    2017/03/27
  * @brief   Header for M5Stack.cpp module
  *
  * \par Description
@@ -74,6 +74,8 @@
 #ifndef _M5STACK_H_
 #define _M5STACK_H_
 
+#if defined(ESP32)
+
 #include <Arduino.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -133,6 +135,10 @@ extern M5Stack m5stack;
 #define m5 m5stack
 #define M5 m5stack
 #define lcd Lcd
+
+#else
+#error “This library only supports boards with ESP32 processor.”
+#endif
 
 #endif
 

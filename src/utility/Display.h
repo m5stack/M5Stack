@@ -56,8 +56,8 @@
 // run slightly faster, so leave it commented out unless you need it!
 // Transaction support is needed to work with SD library but not needed with TFT_SdFat
 
-#define SPI_HAS_TRANSACTION  1
-#define SUPPORT_TRANSACTIONS  1
+#define SPI_HAS_TRANSACTION 
+#define SUPPORT_TRANSACTIONS 
 
 // Color definitions for backwards compatibility with old sketches
 // use colour definitions like TFT_BLACK to make sketches more portable
