@@ -94,7 +94,7 @@ extern "C" {
 #include "esp32-hal-dac.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "esp_sleep.h"
+#include "esp_deep_sleep.h"
 }
 
 class M5Stack {
