@@ -26,9 +26,9 @@ buttons	KEYWORD1
 ////////////////////////core
 begin	KEYWORD1
 update	KEYWORD1
-startupLogo  KEYWORD1
-Speaker  KEYWORD1
-Lcd  KEYWORD1
+startupLogo	KEYWORD1
+Speaker	KEYWORD1
+Lcd	KEYWORD1
 
 ////////////////////////buttons
 pressed	KEYWORD1
@@ -39,7 +39,7 @@ timeHeld	KEYWORD1
 BTN_A 	LITERAL1
 BTN_B 	LITERAL1
 BTN_C 	LITERAL1
-LED_PIN LITERAL1
+LED_PIN	LITERAL1
 
 ////////////////////////Display
 getBuffer	KEYWORD1
