@@ -85,18 +85,19 @@
 #include "FS.h"
 #include "SD.h"
 
-#include <utility/Display.h> // Graphics and font library for ILI9341 driver chip
-#include <utility/Config.h>
-#include <utility/Button.h>
-#include <utility/Speaker.h>
-#include <utility/bmp_map.h>
-#include <utility/music_8bit.h>
+#include "utility/Display.h" // Graphics and font library for ILI9341 driver chip
+#include "utility/Config.h"
+#include "utility/Button.h"
+#include "utility/Speaker.h"
+#include "utility/MPU9250.h"
+#include "utility/bmp_map.h"
+#include "utility/music_8bit.h"
 
 extern "C" {
-#include "esp32-hal-dac.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_deep_sleep.h"
+#include "esp32-hal-dac.h"
 }
 
 class M5Stack {
@@ -125,6 +126,11 @@ class M5Stack {
     // UART
     HardwareSerial Serial0 = HardwareSerial(0);
     HardwareSerial Serial2 = HardwareSerial(2);
+
+    // MPU9250
+#ifdef MPU9250_INSDE
+    MPU9250 MPU;
+#endif
 
  private:
 
