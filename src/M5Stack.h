@@ -89,9 +89,11 @@
 #include "utility/Config.h"
 #include "utility/Button.h"
 #include "utility/Speaker.h"
-#include "utility/MPU9250.h"
 #include "utility/bmp_map.h"
 #include "utility/music_8bit.h"
+#ifdef MPU9250_INSDE
+#include "utility/MPU9250.h"
+#endif
 
 extern "C" {
 #include "freertos/FreeRTOS.h"
@@ -103,7 +105,6 @@ extern "C" {
 class M5Stack {
 
  public:
-
     void begin();
     void update();
     void startupLogo();
@@ -128,12 +129,11 @@ class M5Stack {
     HardwareSerial Serial2 = HardwareSerial(2);
 
     // MPU9250
-#ifdef MPU9250_INSDE
-    MPU9250 MPU;
-#endif
+// #ifdef MPU9250_INSDE
+//     MPU9250 MPU = MPU9250();
+// #endif
 
  private:
-
     uint8_t _wakeupPin;
 };
 
