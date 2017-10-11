@@ -3,17 +3,17 @@
 //TF card test
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
     Serial.printf("Listing directory: %s\n", dirname);
-    m5.Lcd.printf("Listing directory: %s\n", dirname);
+    M5.Lcd.printf("Listing directory: %s\n", dirname);
 
     File root = fs.open(dirname);
     if(!root){
         Serial.println("Failed to open directory");
-        m5.Lcd.println("Failed to open directory");
+        M5.Lcd.println("Failed to open directory");
         return;
     }
     if(!root.isDirectory()){
         Serial.println("Not a directory");
-        m5.Lcd.println("Not a directory");
+        M5.Lcd.println("Not a directory");
         return;
     }
 
@@ -21,21 +21,21 @@ void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
     while(file){
         if(file.isDirectory()){
             Serial.print("  DIR : ");
-            m5.Lcd.print("  DIR : ");
+            M5.Lcd.print("  DIR : ");
             Serial.println(file.name());
-            m5.Lcd.println(file.name());
+            M5.Lcd.println(file.name());
             if(levels){
                 listDir(fs, file.name(), levels -1);
             }
         } else {
             Serial.print("  FILE: ");
-            m5.Lcd.print("  FILE: ");
+            M5.Lcd.print("  FILE: ");
             Serial.print(file.name());
-            m5.Lcd.print(file.name());
+            M5.Lcd.print(file.name());
             Serial.print("  SIZE: ");
-            m5.Lcd.print("  SIZE: ");
+            M5.Lcd.print("  SIZE: ");
             Serial.println(file.size());
-            m5.Lcd.println(file.size());
+            M5.Lcd.println(file.size());
         }
         file = root.openNextFile();
     }
@@ -43,40 +43,40 @@ void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
 
 void readFile(fs::FS &fs, const char * path) {
     Serial.printf("Reading file: %s\n", path);
-    m5.Lcd.printf("Reading file: %s\n", path);
+    M5.Lcd.printf("Reading file: %s\n", path);
 
     File file = fs.open(path);
     if(!file){
         Serial.println("Failed to open file for reading");
-        m5.Lcd.println("Failed to open file for reading");
+        M5.Lcd.println("Failed to open file for reading");
         return;
     }
 
     Serial.print("Read from file: ");
-    m5.Lcd.print("Read from file: ");
+    M5.Lcd.print("Read from file: ");
     while(file.available()){
         int ch = file.read();
         Serial.write(ch);
-        m5.Lcd.write(ch);
+        M5.Lcd.write(ch);
     }
 }
 
 void writeFile(fs::FS &fs, const char * path, const char * message){
     Serial.printf("Writing file: %s\n", path);
-    m5.Lcd.printf("Writing file: %s\n", path);
+    M5.Lcd.printf("Writing file: %s\n", path);
 
     File file = fs.open(path, FILE_WRITE);
     if(!file){
         Serial.println("Failed to open file for writing");
-        m5.Lcd.println("Failed to open file for writing");
+        M5.Lcd.println("Failed to open file for writing");
         return;
     }
     if(file.print(message)){
         Serial.println("File written");
-        m5.Lcd.println("File written");
+        M5.Lcd.println("File written");
     } else {
         Serial.println("Write failed");
-        m5.Lcd.println("Write failed");
+        M5.Lcd.println("Write failed");
     }
 }
 
@@ -100,29 +100,29 @@ void wifi_test() {
     WiFi.disconnect();
     delay(100);
 
-    m5.lcd.println("scan start");
+    M5.lcd.println("scan start");
 
     // WiFi.scanNetworks will return the number of networks found
     int n = WiFi.scanNetworks();
-    m5.lcd.println("scan done");
+    M5.lcd.println("scan done");
     if (n == 0) {
-        m5.lcd.println("no networks found");
+        M5.lcd.println("no networks found");
     } else {
-        m5.lcd.print(n);
-        m5.lcd.println(" networks found");
+        M5.lcd.print(n);
+        M5.lcd.println(" networks found");
         for (int i = 0; i < n; ++i) {
             // Print SSID and RSSI for each network found
-            m5.lcd.print(i + 1);
-            m5.lcd.print(": ");
-            m5.lcd.print(WiFi.SSID(i));
-            m5.lcd.print(" (");
-            m5.lcd.print(WiFi.RSSI(i));
-            m5.lcd.print(")");
-            m5.lcd.println((WiFi.encryptionType(i) == WIFI_AUTH_OPEN)?" ":"*");
+            M5.lcd.print(i + 1);
+            M5.lcd.print(": ");
+            M5.lcd.print(WiFi.SSID(i));
+            M5.lcd.print(" (");
+            M5.lcd.print(WiFi.RSSI(i));
+            M5.lcd.print(")");
+            M5.lcd.println((WiFi.encryptionType(i) == WIFI_AUTH_OPEN)?" ":"*");
             delay(5);
         }
     }
-    m5.lcd.println("");
+    M5.lcd.println("");
 }
 
 bool gpio_test_flg = 0;
@@ -153,12 +153,12 @@ void adc_test() {
     pinMode(35, INPUT);
     pinMode(36, INPUT);
     pinMode(34, INPUT);
-    m5.Lcd.fillScreen(BLACK);
+    M5.Lcd.fillScreen(BLACK);
     while(count--) {
-        m5.Lcd.setCursor(0, 10);
-        m5.Lcd.setTextColor(WHITE, BLACK);
-        m5.Lcd.setTextSize(2);
-        m5.Lcd.printf("ADC1:%d\r\nADC2:%d\r\nADC3:%d\r\n", analogRead(35), analogRead(36), analogRead(34));
+        M5.Lcd.setCursor(0, 10);
+        M5.Lcd.setTextColor(WHITE, BLACK);
+        M5.Lcd.setTextSize(2);
+        M5.Lcd.printf("ADC1:%d\r\nADC2:%d\r\nADC3:%d\r\n", analogRead(35), analogRead(36), analogRead(34));
         delay(500);
     }
 }
@@ -411,7 +411,7 @@ void setup() {
     }
 
     // initialize the M5Stack object
-    m5.begin();
+    M5.begin();
 
     // dac test
     if (gpio_test_flg)
@@ -419,26 +419,26 @@ void setup() {
         adc_test();
     }
 
-    m5.startupLogo();
+    M5.startupLogo();
 
     // Lcd display
-    m5.lcd.setBrightness(100);
-    m5.Lcd.fillScreen(BLACK);
-    m5.Lcd.setCursor(10, 10);
-    m5.Lcd.setTextColor(WHITE);
-    m5.Lcd.setTextSize(1);
-    m5.Lcd.printf("Display Test!");
+    M5.lcd.setBrightness(100);
+    M5.Lcd.fillScreen(BLACK);
+    M5.Lcd.setCursor(10, 10);
+    M5.Lcd.setTextColor(WHITE);
+    M5.Lcd.setTextSize(1);
+    M5.Lcd.printf("Display Test!");
     delay(300);
 
-    m5.Lcd.fillScreen(WHITE);
+    M5.Lcd.fillScreen(WHITE);
     delay(150);
-    m5.Lcd.fillScreen(RED);
+    M5.Lcd.fillScreen(RED);
     delay(150);
-    m5.Lcd.fillScreen(GREEN);
+    M5.Lcd.fillScreen(GREEN);
     delay(150);
-    m5.Lcd.fillScreen(BLUE);
+    M5.Lcd.fillScreen(BLUE);
     delay(150);
-    m5.Lcd.fillScreen(BLACK);
+    M5.Lcd.fillScreen(BLACK);
     delay(150);
 
     // draw graphic
@@ -518,42 +518,42 @@ void setup() {
     //rand draw 
     int i = 250;
     while(--i) {
-        m5.Lcd.fillTriangle(random(m5.Lcd.width()-1), random(m5.Lcd.height()-1), random(m5.Lcd.width()-1), random(m5.Lcd.height()-1), random(m5.Lcd.width()-1), random(m5.Lcd.height()-1), random(0xfffe));
+        M5.Lcd.fillTriangle(random(M5.Lcd.width()-1), random(M5.Lcd.height()-1), random(M5.Lcd.width()-1), random(M5.Lcd.height()-1), random(M5.Lcd.width()-1), random(M5.Lcd.height()-1), random(0xfffe));
     }
     for(int i=255; i>=0; i--) {
-        m5.lcd.setBrightness(i);
+        M5.lcd.setBrightness(i);
         delay(2);
     }
 
     //wifi test
-    m5.Lcd.setCursor(0, 10);
-    m5.Lcd.fillScreen(BLACK);
+    M5.Lcd.setCursor(0, 10);
+    M5.Lcd.fillScreen(BLACK);
     for(int i=0; i<200; i++) {
-        m5.lcd.setBrightness(i);
+        M5.lcd.setBrightness(i);
         delay(2);
     }
-    m5.Lcd.println("wifi test:");
+    M5.Lcd.println("wifi test:");
     wifi_test();
     delay(2000);
 
     // TF card test
-    m5.Lcd.fillScreen(BLACK);
-    m5.Lcd.setCursor(0, 10);
-    m5.Lcd.printf("TF card test:\r\n");
+    M5.Lcd.fillScreen(BLACK);
+    M5.Lcd.setCursor(0, 10);
+    M5.Lcd.printf("TF card test:\r\n");
     // digitalWrite(TFT_CS, 1);
     listDir(SD, "/", 0);
     writeFile(SD, "/hello.txt", "Hello world");
     readFile(SD, "/hello.txt");
 
     //Button test
-    m5.Lcd.println();
-    m5.Lcd.println();
-    m5.Lcd.print("buttons Test:");
-    m5.Lcd.setTextColor(RED);
+    M5.Lcd.println();
+    M5.Lcd.println();
+    M5.Lcd.print("buttons Test:");
+    M5.Lcd.setTextColor(RED);
 }
 
 // the loop routine runs over and over again forever
 void loop(){
     buttons_test();
-    m5.update();
+    M5.update();
 }

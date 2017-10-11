@@ -3680,7 +3680,7 @@ void ILI9341::writeHzkGbk(const uint8_t* c)
   issue on GitHub:
 
 
-/***************************************************
+ ***************************************************
   The Adafruit_ILI9341 library has been used as a starting point
   for this library.
 
@@ -3699,9 +3699,9 @@ void ILI9341::writeHzkGbk(const uint8_t* c)
   Written by Limor Fried/Ladyada for Adafruit Industries.
   MIT license, all text above must be included in any redistribution
 
- ****************************************************/
+ ****************************************************
 
-/****************************************************
+ ****************************************************
 
   Some member funtions have been imported from the Adafruit_GFX
   library. The license associated with these is reproduced below.
@@ -3739,9 +3739,9 @@ void ILI9341::writeHzkGbk(const uint8_t* c)
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
 
- ****************************************************/
+ ****************************************************
 
-/****************************************************
+ ****************************************************
 
   In compliance with the licence.txt file for the Adafruit_GFX library the
   following is included.

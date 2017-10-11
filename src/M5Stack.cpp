@@ -37,14 +37,12 @@ void M5Stack::begin() {
     setWakeupButton(BUTTON_A_PIN);
 
     // MPU9250
-#ifdef MPU9250_INSDE
-    // Wire.begin();
-    // MPU.setWire(&Wire);
-    // MPU.beginAccel();
-    // MPU.beginMag();
-#endif
+// #ifdef MPU9250_INSDE
+//     Wire.begin();
+//     IMU.setWire(&Wire);
+// #endif
 
-    Serial.println("OK.");
+    Serial.println("OK");
 }
 
 void M5Stack::update() {
@@ -102,7 +100,7 @@ void M5Stack::powerOFF() {
     // ESP32 into deep sleep
     uint64_t _wakeupPin_mask = 1ULL << _wakeupPin; 
     USE_SERIAL.printf("Enabling EXT1 wakeup on pins GPIO%d\n", _wakeupPin);
-    esp_deep_sleep_enable_ext1_wakeup(_wakeupPin_mask , ESP_EXT1_WAKEUP_ALL_LOW);
+    esp_sleep_enable_ext0_wakeup((gpio_num_t)_wakeupPin_mask , 0);
     
     while(digitalRead(_wakeupPin) == LOW) {
         delay(10);
@@ -112,4 +110,4 @@ void M5Stack::powerOFF() {
     USE_SERIAL.println("On power OFF fail!");
 }
 
-M5Stack m5stack;
+M5Stack M5;
