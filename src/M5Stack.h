@@ -102,6 +102,7 @@ extern "C" {
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp32-hal-dac.h"
+#include "esp_deep_sleep.h"
 }
 
 class M5Stack {
@@ -131,9 +132,9 @@ class M5Stack {
     HardwareSerial Serial2 = HardwareSerial(2);
 
     // MPU9250
-// #ifdef MPU9250_INSDE
-//     MPU9250 IMU = MPU9250();
-// #endif
+#ifdef MPU9250_INSDE
+    MPU9250 IMU = MPU9250();
+#endif
 
  private:
     uint8_t _wakeupPin;

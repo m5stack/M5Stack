@@ -27,16 +27,17 @@
 
 // The scrolling area must be a integral multiple of TEXT_HEIGHT
 #define TEXT_HEIGHT 16 // Height of text to be printed and scrolled
+#define TOP_FIXED_AREA 14 // Number of lines in top fixed area (lines counted from top of screen)
 #define BOT_FIXED_AREA 0 // Number of lines in bottom fixed area (lines counted from bottom of screen)
-#define TOP_FIXED_AREA 16 // Number of lines in top fixed area (lines counted from top of screen)
-#define YMAX 320 // Bottom of screen area
+#define YMAX 240 // Bottom of screen area
 
 // The initial y coordinate of the top of the scrolling area
-uint16_t yStart = TOP_FIXED_AREA;
+uint16_t yStart = 0;
 // yArea must be a integral multiple of TEXT_HEIGHT
 uint16_t yArea = YMAX-TOP_FIXED_AREA-BOT_FIXED_AREA;
 // The initial y coordinate of the top of the bottom text line
-uint16_t yDraw = YMAX - BOT_FIXED_AREA - TEXT_HEIGHT;
+// uint16_t yDraw = YMAX - BOT_FIXED_AREA - TEXT_HEIGHT;
+uint16_t yDraw = 0;
 
 // Keep track of the drawing x coordinate
 uint16_t xPos = 0;
@@ -56,21 +57,22 @@ int blank[19]; // We keep all the strings pixel lengths to optimise the speed of
 void setup() {
   // Setup the TFT display
   M5.begin();
-  M5.Lcd.setRotation(5); // Must be setRotation(0) for this sketch to work correctly
+  // M5.Lcd.setRotation(5); // Must be setRotation(0) for this sketch to work correctly
   M5.Lcd.fillScreen(TFT_BLACK);
   
   // Setup baud rate and draw top banner
   // Serial.begin(115200);
   
   M5.Lcd.setTextColor(TFT_WHITE, TFT_BLUE);
-  M5.Lcd.fillRect(0,0,240,16, TFT_BLUE);
-  M5.Lcd.drawCentreString(" Serial Terminal - 115200 baud ",120,0,2);
+  M5.Lcd.fillRect(0,0,320,TEXT_HEIGHT, TFT_BLUE);
+  M5.Lcd.drawCentreString(" Serial Terminal - 115200 baud ",320/2,0,2);
 
   // Change colour for scrolling zone text
   M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
 
   // Setup scroll area
-  setupScrollArea(TOP_FIXED_AREA, BOT_FIXED_AREA);
+  // setupScrollArea(TOP_FIXED_AREA, BOT_FIXED_AREA);
+  setupScrollArea(0, 0);
 
   // Zero the array
   for (byte i = 0; i<18; i++) blank[i]=0;
@@ -91,13 +93,13 @@ void loop(void) {
   while (Serial.available()) {
     data = Serial.read();
     // If it is a CR or we are near end of line then scroll one line
-    if (data == '\r' || xPos>231) {
+    if (data == '\r' || xPos>311) {
       xPos = 0;
       yDraw = scroll_line(); // It can take 13ms to scroll and blank 16 pixel lines
     }
     if (data > 31 && data < 128) {
       xPos += M5.Lcd.drawChar(data,xPos,yDraw,2);
-      blank[(18+(yStart-TOP_FIXED_AREA)/TEXT_HEIGHT)%19]=xPos; // Keep a record of line lengths
+      // blank[(18+(yStart-TOP_FIXED_AREA)/TEXT_HEIGHT)%19]=xPos; // Keep a record of line lengths
     }
     //change_colour = 1; // Line to indicate buffer is being emptied
   }
@@ -109,12 +111,14 @@ void loop(void) {
 int scroll_line() {
   int yTemp = yStart; // Store the old yStart, this is where we draw the next line
   // Use the record of line lengths to optimise the rectangle size we need to erase the top line
-  M5.Lcd.fillRect(0,yStart,blank[(yStart-TOP_FIXED_AREA)/TEXT_HEIGHT],TEXT_HEIGHT, TFT_BLACK);
+  // M5.Lcd.fillRect(0,yStart,blank[(yStart-TOP_FIXED_AREA)/TEXT_HEIGHT],TEXT_HEIGHT, TFT_BLACK);
+  M5.Lcd.fillRect(0,yStart,320,TEXT_HEIGHT, TFT_BLACK);
 
   // Change the top of the scroll area
   yStart+=TEXT_HEIGHT;
   // The value must wrap around as the screen memory is a circular buffer
-  if (yStart >= YMAX - BOT_FIXED_AREA) yStart = TOP_FIXED_AREA + (yStart - YMAX + BOT_FIXED_AREA);
+  // if (yStart >= YMAX - BOT_FIXED_AREA) yStart = TOP_FIXED_AREA + (yStart - YMAX + BOT_FIXED_AREA);
+  if (yStart >= YMAX) yStart = 0;
   // Now we can scroll the display
   scrollAddress(yStart);
   return  yTemp;
@@ -142,4 +146,3 @@ void scrollAddress(uint16_t vsp) {
   M5.Lcd.writedata(vsp>>8);
   M5.Lcd.writedata(vsp);
 }
-

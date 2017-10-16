@@ -100,28 +100,41 @@ void wifi_test() {
     WiFi.disconnect();
     delay(100);
 
+    Serial.println("scan start");
     M5.lcd.println("scan start");
 
     // WiFi.scanNetworks will return the number of networks found
     int n = WiFi.scanNetworks();
+    Serial.println("scan done");
     M5.lcd.println("scan done");
     if (n == 0) {
+        Serial.println("no networks found");
         M5.lcd.println("no networks found");
     } else {
+        Serial.print(n);
         M5.lcd.print(n);
+        Serial.println(" networks found");
         M5.lcd.println(" networks found");
         for (int i = 0; i < n; ++i) {
             // Print SSID and RSSI for each network found
+            Serial.print(i + 1);
             M5.lcd.print(i + 1);
+            Serial.print(": ");
             M5.lcd.print(": ");
+            Serial.print(WiFi.SSID(i));
             M5.lcd.print(WiFi.SSID(i));
+            Serial.print(" (");
             M5.lcd.print(" (");
+            Serial.print(WiFi.RSSI(i));
             M5.lcd.print(WiFi.RSSI(i));
+            Serial.print(")");
             M5.lcd.print(")");
+            Serial.println((WiFi.encryptionType(i) == WIFI_AUTH_OPEN)?" ":"*");
             M5.lcd.println((WiFi.encryptionType(i) == WIFI_AUTH_OPEN)?" ":"*");
             delay(5);
         }
     }
+    Serial.println("");
     M5.lcd.println("");
 }
 

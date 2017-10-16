@@ -17,11 +17,13 @@
 #include "utility/MPU9250.h"
 #include "utility/quaternionFilters.h"
 
+#define processing_out false
 #define AHRS true         // Set to false for basic data read
 #define SerialDebug true  // Set to true to get Serial output for debugging
 #define LCD
 
 MPU9250 IMU;
+// Kalman kalmanX, kalmanY, kalmanZ; // Create the Kalman instances
 
 void setup()
 {
@@ -323,9 +325,6 @@ void loop()
         Serial.print(" qz = "); Serial.println(*(getQ() + 3));
       }
 
-      // M5.Lcd.setCursor(0, 0);
-      // M5.Lcd.printf("aX:%8.2f   aY:%8.2f   aZ:%8.2f  mg \r\n", (int)1000*IMU.ax, (int)1000*IMU.ay, (int)1000*IMU.az);
-
 // Define output variables from updated quaternion---these are Tait-Bryan
 // angles, commonly used in aircraft orientation. In this coordinate system,
 // the positive z-axis is down toward Earth. Yaw is the angle between Sensor
@@ -358,7 +357,7 @@ void loop()
       IMU.yaw   -= 8.5;
       IMU.roll  *= RAD_TO_DEG;
 
-      if(Serial)
+      if(SerialDebug)
       {
         Serial.print("Yaw, Pitch, Roll: ");
         Serial.print(IMU.yaw, 2);
@@ -415,6 +414,16 @@ void loop()
       IMU.count = millis();
       IMU.sumCount = 0;
       IMU.sum = 0;
+
+#if(processing_out)
+
+      Serial.print(((IMU.yaw)));    Serial.print(";");
+      Serial.print(((IMU.pitch))); Serial.print(";");
+      Serial.print(((IMU.roll)));   Serial.print(";");
+      Serial.print(26.5);    Serial.print(";");
+      Serial.print(0.01);    Serial.print(";");
+      Serial.print(0.02);    Serial.println();
+#endif
     } // if (IMU.delt_t > 500)
   } // if (AHRS)
 }
