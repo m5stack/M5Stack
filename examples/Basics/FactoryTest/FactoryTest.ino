@@ -171,7 +171,7 @@ void adc_test() {
         M5.Lcd.setCursor(0, 10);
         M5.Lcd.setTextColor(WHITE, BLACK);
         M5.Lcd.setTextSize(2);
-        M5.Lcd.printf("ADC1:%d\r\nADC2:%d\r\nADC3:%d\r\n", analogRead(35), analogRead(36), analogRead(34));
+        M5.Lcd.printf("ADC35:%d\r\nADC36:%d\r\nADC34:%d\r\n", analogRead(35), analogRead(36), analogRead(34));
         delay(500);
     }
 }

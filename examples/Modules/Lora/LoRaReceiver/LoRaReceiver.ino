@@ -20,7 +20,7 @@ void setup() {
     while (1);
   }
 
-  LoRa.setSyncWord(0x69);
+  // LoRa.setSyncWord(0x69);
   Serial.println("LoRa init succeeded.");
   M5.Lcd.println("LoRa init succeeded.");
 }
