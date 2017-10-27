@@ -1,4 +1,7 @@
 #include <M5Stack.h>
+#include "utility/MPU9250.h"
+
+MPU9250 IMU;
 
 //TF card test
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
@@ -433,6 +436,7 @@ void setup() {
     }
 
     M5.startupLogo();
+    Wire.begin();
 
     // Lcd display
     M5.lcd.setBrightness(100);
@@ -545,6 +549,19 @@ void setup() {
         M5.lcd.setBrightness(i);
         delay(2);
     }
+
+    byte c = IMU.readByte(MPU9250_ADDRESS, WHO_AM_I_MPU9250);
+    Serial.print("MPU9250 "); Serial.print("I AM "); Serial.print(c, HEX);
+    Serial.print(" I should be "); Serial.println(0x71, HEX);
+    Serial.println("");
+    M5.Lcd.setCursor(20,0); M5.Lcd.print("MPU9250");
+    M5.Lcd.setCursor(0,10); M5.Lcd.print("I AM");
+    M5.Lcd.setCursor(0,20); M5.Lcd.print(c, HEX);
+    M5.Lcd.setCursor(0,30); M5.Lcd.print("I Should Be");
+    M5.Lcd.setCursor(0,40); M5.Lcd.println(0x71, HEX);
+    M5.Lcd.println();
+    delay(500);
+
     M5.Lcd.println("wifi test:");
     wifi_test();
     delay(2000);

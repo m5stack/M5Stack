@@ -91,6 +91,7 @@
 #include "utility/Config.h"
 #include "utility/Button.h"
 #include "utility/Speaker.h"
+#include "utility/M5Timer.h"
 #include "utility/bmp_map.h"
 #include "utility/music_8bit.h"
 #ifdef MPU9250_INSDE
@@ -101,7 +102,7 @@
 extern "C" {
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "esp32-hal-dac.h"
+// #include "esp32-hal-dac.h"
 #include "esp_deep_sleep.h"
 }
 
