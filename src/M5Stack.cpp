@@ -98,8 +98,8 @@ void M5Stack::powerOFF() {
 
     // ESP32 into deep sleep
     uint64_t _wakeupPin_mask = 1ULL << _wakeupPin; 
-    USE_SERIAL.printf("Enabling EXT1 wakeup on pins GPIO%d\n", _wakeupPin);
-    esp_deep_sleep_enable_ext0_wakeup((gpio_num_t)_wakeupPin_mask , 0);
+    USE_SERIAL.printf("Enabling EXT0 wakeup on pins GPIO%d\n", _wakeupPin);
+    esp_deep_sleep_enable_ext0_wakeup((gpio_num_t)_wakeupPin , LOW);
     
     while(digitalRead(_wakeupPin) == LOW) {
         delay(10);

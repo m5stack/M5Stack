@@ -3087,6 +3087,10 @@ void ILI9341::clearDisplay() {
   fillScreen(0x0000);
 }
 
+void ILI9341::clear() {
+  clearDisplay();
+}
+
 void ILI9341::display() {
 }
 /***************************************************

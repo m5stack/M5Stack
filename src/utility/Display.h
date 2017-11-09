@@ -587,7 +587,8 @@ public:
            progressBar(int x, int y, int w, int h, uint8_t val),
            setAddrWindow(int32_t xs, int32_t ys, int32_t xe, int32_t ye),
            display(),
-           clearDisplay();
+           clearDisplay(),
+           clear();
 
       void startWrite(void);
       void endWrite(void);
