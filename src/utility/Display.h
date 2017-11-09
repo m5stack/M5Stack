@@ -246,7 +246,7 @@
 #include <Fonts/asc16.h>
 #endif
 
-#define clear(color) fillScreen(color)
+// #define clear(color) fillScreen(color)
 
 //#define DC_C digitalWrite(TFT_DC, HIGH); GPIO.out_w1tc = (1 << TFT_DC)//digitalWrite(TFT_DC, LOW)
 //#define DC_D digitalWrite(TFT_DC, LOW); GPIO.out_w1ts = (1 << TFT_DC)//digitalWrite(TFT_DC, HIGH)
@@ -581,11 +581,13 @@ public:
            textWidth(const String& string, int font),
            textWidth(const String& string),
            fontHeight(int16_t font);
-//---
-      void sleep();
-      void setBrightness(uint8_t brightness);
-      void progressBar(int x, int y, int w, int h, uint8_t val);
-      void setAddrWindow(int32_t xs, int32_t ys, int32_t xe, int32_t ye);
+
+  void     sleep(),
+           setBrightness(uint8_t brightness),
+           progressBar(int x, int y, int w, int h, uint8_t val),
+           setAddrWindow(int32_t xs, int32_t ys, int32_t xe, int32_t ye),
+           display(),
+           clearDisplay();
 
       void startWrite(void);
       void endWrite(void);
@@ -595,8 +597,9 @@ public:
       void drawJpgFile(fs::FS &fs, const char *path, uint16_t x = 0, uint16_t y = 0, uint16_t maxWidth = 0, uint16_t maxHeight = 0, uint16_t offX = 0, uint16_t offY = 0, jpeg_div_t scale = JPEG_DIV_NONE);
       void drawBmpFile(fs::FS &fs, const char *path, uint16_t x = 0, uint16_t y = 0, uint16_t maxWidth = 0, uint16_t maxHeight = 0, uint16_t offX = 0, uint16_t offY = 0);
       void writeInitData(const uint8_t *data);
-          //----
-          virtual size_t write(uint8_t);
+
+      
+      virtual size_t write(uint8_t);
 
       // #define startWrite spi_begin
       // #define endWrite spi_end

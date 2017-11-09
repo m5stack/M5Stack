@@ -44,14 +44,14 @@
   ```
 - Restart Arduino IDE
 
-#### Installing with Boards Manager(beta)
+~~#### Installing with Boards Manager(beta)~~
 
-Starting with 1.6.4, Arduino allows installation of third-party platform packages using Boards Manager. We have packages available for Windows, Mac OS, and Linux (32 and 64 bit).
+~~Starting with 1.6.4, Arduino allows installation of third-party platform packages using Boards Manager. We have packages available for Windows, Mac OS, and Linux (32 and 64 bit).~~
 
-- Install Arduino 1.8.2 from the [Arduino website](http://www.arduino.cc/en/main/software).
-- Start Arduino and open Preferences window.
-- Enter ```http://www.m5stack.com/download/package_m5stack_index.json``` into *Additional Board Manager URLs* field. You can add multiple URLs, separating them with commas.
-- Open Boards Manager from Tools > Board menu and install *ESP32* platform (and don't forget to select your ESP32 board from Tools > Board menu after installation).
+~~- Install Arduino 1.8.2 from the [Arduino website](http://www.arduino.cc/en/main/software).~~
+~~- Start Arduino and open Preferences window.~~
+~~- Enter ```http://www.m5stack.com/download/package_m5stack_index.json``` into *Additional Board Manager URLs* field. You can add multiple URLs, separating them with commas.~~
+~~- Open Boards Manager from Tools > Board menu and install *ESP32* platform (and don't forget to select your ESP32 board from Tools > Board menu after installation).~~
 
 ## How to use:
 
@@ -82,7 +82,10 @@ BUTTON A | GPIO39
 BUTTON B | GPIO38
 BUTTON C | GPIO37
 SPEAKER | GPIO25
+MPU9250 SDA | GPIO21
+MPU9250 SCL | GPIO22
 GOVER SDA | GPIO21
 GOVER SCL | GPIO22
+
 ### M-BUS
 ![image](extras/M-BUS.jpg)

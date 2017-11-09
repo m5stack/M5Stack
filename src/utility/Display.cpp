@@ -260,7 +260,8 @@ void ILI9341::init(void)
     writedata(0x86);              //--
 
     writecommand(ILI9341_MADCTL); // Memory Access Control
-    writedata(0x48);
+    writedata(0x08);
+    // writedata(0x48);
 
     writecommand(ILI9341_PIXFMT);
     writedata(0x55);
@@ -3080,6 +3081,13 @@ void ILI9341::sleep() {
   spi_begin();
   writecommand(ILI9341_SLPIN); // Software reset
   spi_end();
+}
+
+void ILI9341::clearDisplay() {
+  fillScreen(0x0000);
+}
+
+void ILI9341::display() {
 }
 /***************************************************
   This library is written to be compatible with Adafruit's ILI9341
