@@ -4,13 +4,18 @@
 ### Installing the USB Driver
 - [Download the SiLabs CP2104 Driver](https://www.silabs.com/community/interface/knowledge-base.entry.html/2017/01/10/legacy_os_softwarea-bgvU)
 
-### Using with Arduino IDE
-Espressif’s official ESP32 Arduino core is hosted here on GitHub:
-- [Installing the ESP32 Arduino Core](https://github.com/espressif/arduino-esp32#installation-instructions)
+### Installing the ESP32 Arduino Core
+- Using Arduino IDE
+  + [Instructions for Windows](docs/arduino-ide/windows.md)
+  + [Instructions for Mac](docs/arduino-ide/mac.md)
+  + [Instructions for Debian/Ubuntu Linux](docs/arduino-ide/debian_ubuntu.md)
+  + [Instructions for Fedora](docs/arduino-ide/fedora.md)
+  + [Instructions for openSUSE](docs/arduino-ide/opensuse.md)
+- [Using PlatformIO](docs/platformio.md)
+- [Building with make](docs/make.md)
+- [Using as ESP-IDF component](docs/esp-idf_component.md)
 
 ### Download Library
-
-#### Arduino
 
 #### Using the Arduino IDE Library Manager
 
