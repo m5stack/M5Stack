@@ -3,6 +3,7 @@
 ## Usage
 ### Installing the USB Driver
 - [Download the SiLabs CP2104 Driver](https://www.silabs.com/community/interface/knowledge-base.entry.html/2017/01/10/legacy_os_softwarea-bgvU)
+(Note:If you cannot upload, please try the legacy v4 driver below. Note you will need to uninstall the v5 driver.And try to use the low band: 115200)
 
 ### Installing the ESP32 Arduino Core
 - Using Arduino IDE
