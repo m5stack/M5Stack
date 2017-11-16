@@ -4,10 +4,10 @@
 void setup(){
 
   // Initialize the M5Stack object
-  m5.begin();
+  M5.begin();
 
   // LCD display
-  m5.Lcd.printf("hello world");
+  M5.Lcd.printf("hello world");
 }
 
 // the loop routine runs over and over again forever

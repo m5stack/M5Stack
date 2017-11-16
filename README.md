@@ -1,71 +1,40 @@
 # M5Stack Library
 
-## Installation Instructions
+## Usage
+### Installing the USB Driver
+- [Download the SiLabs CP2104 Driver](https://www.silabs.com/community/interface/knowledge-base.entry.html/2017/01/10/legacy_os_softwarea-bgvU)
 
-### 1. Install the SiLabs CP2104 Driver
-- [Download the SiLabs CP2104 Driver](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers)
+### Using with Arduino IDE
+Espressif’s official ESP32 Arduino core is hosted here on GitHub:
+- [Installing the ESP32 Arduino Core](https://github.com/espressif/arduino-esp32#installation-instructions)
 
-### 2. Using through Arduino IDE
+### Download Library
 
-#### [Instructions for Windows](https://github.com/m5stack/m5stack-board-support/blob/master/doc/windows.md)
+#### Arduino
 
-#### Instructions for Mac
-- Install latest Arduino IDE from [arduino.cc](https://www.arduino.cc/en/Main/Software)
-- Open Terminal and execute the following command (copy->paste and hit enter):
+#### Using the Arduino IDE Library Manager
 
-  ```bash
-  mkdir -p ~/Documents/Arduino/hardware/espressif && \
-  cd ~/Documents/Arduino/hardware/espressif && \
-  git clone https://github.com/espressif/arduino-esp32.git esp32 && \
-  cd esp32/tools/ && \
-  python get.py && \
-  cd ~/Documents/Arduino/libraries && \
-  git clone https://github.com/m5stack/M5Stack.git
-  ```
-- Restart Arduino IDE
+1. Choose ```Sketch``` -> ```Include Library``` -> ```Manage Libraries...```
+2. Type ```m5stack``` into the search box.
+3. Click the row to select the library.
+4. Click the ```Install``` button to install the library.
+5. Click "File-> Examples". Here are some test programs in "M5Stack->"
 
-#### Instructions for Debian/Ubuntu Linux
-- Install latest Arduino IDE from [arduino.cc](https://www.arduino.cc/en/Main/Software)
-- Open Terminal and execute the following command (copy->paste and hit enter):
+#### Using Git
+```sh
+cd ~/Documents/Arduino/libraries/
+git clone https://github.com/m5stack/M5Stack.git
+```
 
-  ```bash
-  sudo usermod -a -G dialout $USER && \
-  sudo apt-get install git && \
-  wget https://bootstrap.pypa.io/get-pip.py && \
-  sudo python get-pip.py && \
-  sudo pip install pyserial && \
-  mkdir -p ~/Arduino/hardware/espressif && \
-  cd ~/Arduino/hardware/espressif && \
-  git clone https://github.com/espressif/arduino-esp32.git esp32 && \
-  cd esp32/tools/ && \
-  python get.py && \
-  cd ~/Arduino/libraries && \
-  git clone https://github.com/m5stack/M5Stack.git
-  ```
-- Restart Arduino IDE
+## API
+See [API.md](https://github.com/m5stack/M5Stack/blob/master/src/M5Stack.h#L19).
 
-~~#### Installing with Boards Manager(beta)~~
-
-~~Starting with 1.6.4, Arduino allows installation of third-party platform packages using Boards Manager. We have packages available for Windows, Mac OS, and Linux (32 and 64 bit).~~
-
-~~- Install Arduino 1.8.2 from the [Arduino website](http://www.arduino.cc/en/main/software).~~
-~~- Start Arduino and open Preferences window.~~
-~~- Enter ```http://www.m5stack.com/download/package_m5stack_index.json``` into *Additional Board Manager URLs* field. You can add multiple URLs, separating them with commas.~~
-~~- Open Boards Manager from Tools > Board menu and install *ESP32* platform (and don't forget to select your ESP32 board from Tools > Board menu after installation).~~
-
-## How to use:
-
-1. Open the Arduino Application. (If it's already open, you will need to restart it to see changes.)
-
-2. Click "File-> Examples". Here are some test programs in "M5Stack->"
-
-3. Depending on the type of board you're using, you need to modify the header file to match.
-   For example, if you're using a M5Stack. 
-   You just `#include <M5Stack.h>`
+## Examples
+See [examples](examples) folder.
 
 
-## Hardware pinout
-### Internal
+## Hardware
+### Pinout
 Peripheral Devices | ESP32 
 ---|---
 ILI9341 RST | GPIO33 

@@ -97,7 +97,6 @@ void M5Stack::powerOFF() {
     Lcd.sleep();
 
     // ESP32 into deep sleep
-    uint64_t _wakeupPin_mask = 1ULL << _wakeupPin; 
     USE_SERIAL.printf("Enabling EXT0 wakeup on pins GPIO%d\n", _wakeupPin);
     esp_deep_sleep_enable_ext0_wakeup((gpio_num_t)_wakeupPin , LOW);
     
