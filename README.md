@@ -57,4 +57,4 @@ GOVER SDA | GPIO21
 GOVER SCL | GPIO22
 
 ### M-BUS
-![image](extras/M-BUS.jpg)
+![image](docs/M-BUS.jpg)
