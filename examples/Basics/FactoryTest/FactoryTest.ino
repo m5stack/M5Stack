@@ -1,5 +1,6 @@
 #include <M5Stack.h>
 #include "utility/MPU9250.h"
+#include "WiFi.h"
 
 MPU9250 IMU;
 

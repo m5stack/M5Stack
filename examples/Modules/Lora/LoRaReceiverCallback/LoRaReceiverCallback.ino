@@ -1,13 +1,14 @@
-#include <SPI.h>
-#include <LoRa.h>
+#include <M5Stack.h>
+#include <M5LoRa.h>
 
 void setup() {
-  Serial.begin(9600);
-  while (!Serial);
+  
+  M5.begin();                  // initialize serial
 
   Serial.println("LoRa Receiver Callback");
 
-  if (!LoRa.begin(915E6)) {
+  // frequency in Hz (433E6, 866E6, 915E6)
+  if (!LoRa.begin(433E6)) {
     Serial.println("Starting LoRa failed!");
     while (1);
   }

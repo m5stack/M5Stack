@@ -100,9 +100,6 @@
 #endif
 
 extern "C" {
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-// #include "esp32-hal-dac.h"
 #include "esp_deep_sleep.h"
 }
 
@@ -117,7 +114,7 @@ class M5Stack {
     void powerOFF();
 
     // Button API
-    #define DEBOUNCE_MS 20
+    #define DEBOUNCE_MS 5
     Button BtnA = Button(BUTTON_A_PIN, true, DEBOUNCE_MS);
     Button BtnB = Button(BUTTON_B_PIN, true, DEBOUNCE_MS);
     Button BtnC = Button(BUTTON_C_PIN, true, DEBOUNCE_MS);

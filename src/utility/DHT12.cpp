@@ -4,11 +4,9 @@
 	Created by Bobadas, July 30,2016.
 	Released into the public domain.
 */
-#include "Arduino.h"
-#include "Wire.h"
 #include "DHT12.h"
 
-DHT12::DHT12(byte scale,byte id)
+DHT12::DHT12(uint8_t scale,uint8_t id)
 {
 	if (id==0 || id>126) _id=0x5c;
 	else _id=id;
@@ -16,12 +14,12 @@ DHT12::DHT12(byte scale,byte id)
 	else _scale=scale;
 }
 
-byte DHT12::read()
+uint8_t DHT12::read()
 {
 	Wire.beginTransmission(_id);
 	Wire.write(0);
 	if (Wire.endTransmission()!=0) return 1;  
-	Wire.requestFrom(_id, 5);
+	Wire.requestFrom(_id, (uint8_t)5);
 	for (int i=0;i<5;i++) {
 		datos[i]=Wire.read();
 	};
@@ -31,10 +29,10 @@ byte DHT12::read()
 	return 0;
 }
 
-float DHT12::readTemperature(byte scale)
+float DHT12::readTemperature(uint8_t scale)
 {
 	float resultado=0;
-	byte error=read();
+	uint8_t error=read();
 	if (error!=0) return (float)error/100;
 	if (scale==0) scale=_scale;
 	switch(scale) {
@@ -54,7 +52,7 @@ float DHT12::readTemperature(byte scale)
 float DHT12::readHumidity()
 {
 	float resultado;
-	byte error=read();
+	uint8_t error=read();
 	if (error!=0) return (float)error/100;
 	resultado=(datos[0]+(float)datos[1]/10);
 	return resultado;

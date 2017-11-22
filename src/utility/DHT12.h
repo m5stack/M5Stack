@@ -16,14 +16,14 @@
 class DHT12
 {
 	public:
-		DHT12(byte scale=0,byte id=0);
-		float readTemperature(byte scale=0);
+		DHT12(uint8_t scale=0,uint8_t id=0);
+		float readTemperature(uint8_t scale=0);
 		float readHumidity();
 	private:
-		byte read();
-		byte datos[5];
-		byte _id;
-		byte _scale;
+		uint8_t read();
+		uint8_t datos[5];
+		uint8_t _id;
+		uint8_t _scale;
 };
 
 #endif
