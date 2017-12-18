@@ -33,13 +33,14 @@ git clone https://github.com/m5stack/M5Stack.git
 ```
 
 ## API
-See [API.md](https://github.com/m5stack/M5Stack/blob/master/src/M5Stack.h#L19).
+See [API](https://github.com/m5stack/M5Stack/blob/master/src/M5Stack.h#L19).
 
 ## Examples
 See [examples](examples) folder.
 
 
 ## Hardware
+[Schematic](https://github.com/m5stack/M5-hardware/blob/master/M5_Core_SCH(20171206).pdf).
 ### Pinout
 Peripheral Devices | ESP32 
 ---|---
@@ -63,4 +64,4 @@ GOVER SDA | GPIO21
 GOVER SCL | GPIO22
 
 ### M-BUS
-![image](docs/M-BUS.jpg)
+![image](docs/M-BUS.jpg = 100x100)
