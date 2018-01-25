@@ -7,7 +7,7 @@
  * \brief   M5Stack library.
  * @file    M5Stack.h
  * @author  M5Stack
- * @version V0.1.1
+ * @version V0.1.5
  * @date    2017/03/27
  * @brief   Header for M5Stack.cpp module
  *
@@ -44,6 +44,13 @@
         M5.Lcd.setTextWrap(boolean w);
         M5.Lcd.printf();
         M5.Lcd.print();
+        M5.Lcd.println();
+        M5.Lcd.drawCentreString(const char *string, int dX, int poY, int font);
+        M5.Lcd.drawRightString(const char *string, int dX, int poY, int font);
+        M5.Lcd.drawJpg(const uint8_t *jpg_data, size_t jpg_len, uint16_t x, uint16_t y);
+        M5.Lcd.drawJpgFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y);
+        M5.Lcd.drawBmpFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y);
+
 
     Button:
         M5.BtnA/B/C.read();

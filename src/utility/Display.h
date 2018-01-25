@@ -12,7 +12,6 @@
 
   The larger fonts are Run Length Encoded to reduce
   their FLASH footprint.
-
  ****************************************************/
 
 // Stop fonts etc being loaded multiple times
@@ -479,6 +478,7 @@ public:
 
       pushColors(uint16_t *data, uint8_t len),
       pushColors(uint8_t *data, uint32_t len),
+      pushRect(uint32_t x0, uint32_t y0, uint32_t w, uint32_t h, uint16_t *data),
 
       fillScreen(uint32_t color),
 
@@ -532,23 +532,8 @@ public:
       writedata(uint8_t d),
       commandList(const uint8_t *addr);
 
-  uint8_t  readcommand8(uint8_t cmd_function, uint8_t index);
-  uint16_t readcommand16(uint8_t cmd_function, uint8_t index);
-  uint32_t readcommand32(uint8_t cmd_function, uint8_t index);
 
-           // Read the colour of a pixel at x,y and return value in 565 format 
-  uint16_t readPixel(int32_t x0, int32_t y0);
-
-           // The next functions can be used as a pair to copy screen blocks (or horizontal/vertical lines) to another location
-           // Read a block of pixels to a data buffer, buffer is 16 bit and the array size must be at least w * h
-  void     readRect(uint32_t x0, uint32_t y0, uint32_t w, uint32_t h, uint16_t *data);
-           // Write a block of pixels to the screen
-  void     pushRect(uint32_t x0, uint32_t y0, uint32_t w, uint32_t h, uint16_t *data);
-
-           // This next function has been used successfully to dump the TFT screen to a PC for documentation purposes
-           // It reads a screen area and returns the RGB 8 bit colour values of each pixel
-           // Set w and h to 1 to read 1 pixel's colour. The data buffer must be at least w * h * 3 bytes
-  void     readRectRGB(int32_t x0, int32_t y0, int32_t w, int32_t h, uint8_t *data);
+public:
 
   uint8_t  getRotation(void);
 
@@ -582,6 +567,7 @@ public:
            textWidth(const String& string),
            fontHeight(int16_t font);
 
+// --------------- M5Stack Define ---------------------
   void     sleep(),
            setBrightness(uint8_t brightness),
            progressBar(int x, int y, int w, int h, uint8_t val),
@@ -590,58 +576,48 @@ public:
            clearDisplay(),
            clear();
 
-      void startWrite(void);
-      void endWrite(void);
-      void writePixel(uint16_t color);
-      void writePixels(uint16_t *colors, uint32_t len);
-      void drawJpg(const uint8_t *jpg_data, size_t jpg_len, uint16_t x = 0, uint16_t y = 0, uint16_t maxWidth = 0, uint16_t maxHeight = 0, uint16_t offX = 0, uint16_t offY = 0, jpeg_div_t scale = JPEG_DIV_NONE);
-      void drawJpgFile(fs::FS &fs, const char *path, uint16_t x = 0, uint16_t y = 0, uint16_t maxWidth = 0, uint16_t maxHeight = 0, uint16_t offX = 0, uint16_t offY = 0, jpeg_div_t scale = JPEG_DIV_NONE);
-      void drawBmpFile(fs::FS &fs, const char *path, uint16_t x = 0, uint16_t y = 0, uint16_t maxWidth = 0, uint16_t maxHeight = 0, uint16_t offX = 0, uint16_t offY = 0);
-      void writeInitData(const uint8_t *data);
+  void     startWrite(void),
+           endWrite(void),
+           writeInitData(const uint8_t *data),
+           writePixel(uint16_t color),
+           writePixels(uint16_t *colors, uint32_t len),
+           drawJpg(const uint8_t *jpg_data, size_t jpg_len, uint16_t x = 0, uint16_t y = 0, uint16_t maxWidth = 0, uint16_t maxHeight = 0, uint16_t offX = 0, uint16_t offY = 0, jpeg_div_t scale = JPEG_DIV_NONE),
+           drawJpgFile(fs::FS &fs, const char *path, uint16_t x = 0, uint16_t y = 0, uint16_t maxWidth = 0, uint16_t maxHeight = 0, uint16_t offX = 0, uint16_t offY = 0, jpeg_div_t scale = JPEG_DIV_NONE),
+           drawBmpFile(fs::FS &fs, const char *path, uint16_t x = 0, uint16_t y = 0, uint16_t maxWidth = 0, uint16_t maxHeight = 0, uint16_t offX = 0, uint16_t offY = 0);
 
       
-      virtual size_t write(uint8_t);
+  virtual size_t write(uint8_t);
+
+
+private:
+
+      uint8_t colstart = 0, rowstart = 0; // some ST7735 displays need this changed
+
+protected:
+      int32_t cursor_x, cursor_y, win_xe, win_ye, padX;
+
+      uint32_t _width, _height; // Display w/h as modified by current rotation
+      uint32_t textcolor, textbgcolor, fontsloaded, addr_row, addr_col;
+
+      uint8_t glyph_ab,     // glyph height above baseline
+              glyph_bb,     // glyph height below baseline
+              textfont,     // Current selected font
+              textsize,     // Current font size multiplier
+              textdatum,    // Text reference datum
+              rotation;     // Display rotation (0-3)
+
+      boolean textwrap; // If set, 'wrap' text at right edge of display
+
+      boolean locked, inTransaction; // Transaction and mutex lock flags for ESP32
+
+      #ifdef LOAD_GFXFF
+        GFXfont *gfxFont;
+      #endif
 
       // #define startWrite spi_begin
       // #define endWrite spi_end
       inline void spi_begin() __attribute__((always_inline));
       inline void spi_end() __attribute__((always_inline));
-
-    private:
-
-void readAddrWindow(int32_t xs, int32_t ys, int32_t xe, int32_t ye);
-
-uint8_t tabcolor,
-    colstart = 0, rowstart = 0; // some ST7735 displays need this changed
-
-volatile uint32_t *dcport, *csport; //, *mosiport, *clkport, *rsport;
-
-uint32_t cspinmask, dcpinmask, wrpinmask; //, mosipinmask, clkpinmask;
-
-uint32_t lastColor = 0xFFFF;
-
-protected:
-int32_t cursor_x, cursor_y, win_xe, win_ye, padX;
-
-uint32_t _width, _height; // Display w/h as modified by current rotation
-uint32_t textcolor, textbgcolor, fontsloaded, addr_row, addr_col;
-
-uint8_t glyph_ab, // glyph height above baseline
-    glyph_bb,     // glyph height below baseline
-    textfont,     // Current selected font
-    textsize,     // Current font size multiplier
-    textdatum,    // Text reference datum
-    rotation;     // Display rotation (0-3)
-
-boolean textwrap; // If set, 'wrap' text at right edge of display
-
-boolean locked, inTransaction; // Transaction and mutex lock flags for ESP32
-
-#ifdef LOAD_GFXFF
-  GFXfont
-    *gfxFont;
-#endif
-
 
 /**************************************************************************
 **
