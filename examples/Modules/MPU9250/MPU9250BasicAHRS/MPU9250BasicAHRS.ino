@@ -61,7 +61,7 @@ void setup()
   delay(1000);
 #endif // LCD
 
-  if (c == 0x71) // WHO_AM_I should always be 0x68
+  // if (c == 0x71) // WHO_AM_I should always be 0x68
   {
     Serial.println("MPU9250 is online...");
 
@@ -149,12 +149,12 @@ void setup()
     delay(1000);
     #endif // LCD
   } // if (c == 0x71)
-  else
-  {
-    Serial.print("Could not connect to MPU9250: 0x");
-    Serial.println(c, HEX);
-    while(1) ; // Loop forever if communication doesn't happen
-  }
+  // else
+  // {
+  //   Serial.print("Could not connect to MPU9250: 0x");
+  //   Serial.println(c, HEX);
+  //   while(1) ; // Loop forever if communication doesn't happen
+  // }
 
   M5.Lcd.setTextSize(1);
   M5.Lcd.setTextColor(GREEN ,BLACK);

@@ -561,9 +561,30 @@ void setup() {
     M5.Lcd.setCursor(0,30); M5.Lcd.print("I Should Be");
     M5.Lcd.setCursor(0,40); M5.Lcd.println(0x71, HEX);
     M5.Lcd.println();
-    delay(500);
+    delay(100);
 
+    IMU.initMPU9250();
+    // Initialize device for active mode read of acclerometer, gyroscope, and
+    // temperature
+    Serial.println("MPU9250 initialized for active data mode....");
+
+    // Read the WHO_AM_I register of the magnetometer, this is a good test of
+    // communication
+    byte d = IMU.readByte(AK8963_ADDRESS, WHO_AM_I_AK8963);
+    Serial.print("AK8963 "); Serial.print("I AM "); Serial.print(d, HEX);
+    Serial.print(" I should be "); Serial.println(0x48, HEX);
+
+    // M5.Lcd.fillScreen(BLACK);
+    M5.Lcd.setCursor(20,100); M5.Lcd.print("AK8963");
+    M5.Lcd.setCursor(0,110); M5.Lcd.print("I AM");
+    M5.Lcd.setCursor(0,120); M5.Lcd.print(d, HEX);
+    M5.Lcd.setCursor(0,130); M5.Lcd.print("I Should Be");
+    M5.Lcd.setCursor(0,140); M5.Lcd.print(0x48, HEX);
+    delay(1000);
+
+    M5.Lcd.setCursor(0, 0);
     M5.Lcd.println("wifi test:");
+    M5.Lcd.fillScreen(BLACK);
     wifi_test();
     delay(2000);
 
