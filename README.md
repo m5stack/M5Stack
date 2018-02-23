@@ -2,7 +2,10 @@
 
 ## Usage
 ### Installing the USB Driver
-- [Download the SiLabs CP2104 Driver](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers)
+- [Download the SiLabs CP2104 Driver](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers) but 
+do NOT use the Windows 10 Universal (v10.1.1) driver! If you happen to download the Universal version, you may need to manually revert to 6.7.1 
+on a regular basis as Windows will repeatedly use the newer, incorrect driver after each Winbdows update.
+
 (Note:If you cannot upload, please try the legacy v4 driver below. Note you will need to uninstall the v5 driver.And try to use the low band: 115200)
 
 ### Installing the ESP32 Arduino Core
