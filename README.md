@@ -79,7 +79,7 @@ MOSI     | GPIO23 | MOSI | shared with TFCARD
 MISO     | GPIO19 | MISO | shared with TFCARD
 SCK      | GPIO18 | SCK | shared with TFCARD
 RFM95_CS | GPIO5 | NSS | pull up before M5.Begin()
-RFM95_RST | GPIO36 | RST | incorrectly labeled GPIO26 in some places
+RFM95_RST | GPIO36 | RST | incorrectly labeled GPIO36 in some places
 RFM95_INT | GPIO26 | DIO0 | incorrectly labeled GPIO26 in some places
 
 
