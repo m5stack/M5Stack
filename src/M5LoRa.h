@@ -8,8 +8,8 @@
 #include <SPI.h>
 
 #define LORA_DEFAULT_SS_PIN    5
-#define LORA_DEFAULT_RESET_PIN 26
-#define LORA_DEFAULT_DIO0_PIN  36
+#define LORA_DEFAULT_RESET_PIN 36
+#define LORA_DEFAULT_DIO0_PIN  26
 
 #define PA_OUTPUT_RFO_PIN      0
 #define PA_OUTPUT_PA_BOOST_PIN 1
