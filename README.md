@@ -2,7 +2,10 @@
 
 ## Usage
 ### Installing the USB Driver
-- [Download the SiLabs CP2104 Driver](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers)
+- [Download the SiLabs CP2104 Driver](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers) but 
+do NOT use the Windows 10 Universal (v10.1.1) driver! If you happen to download the Universal version, you may need to manually revert to 6.7.1 
+on a regular basis as Windows will repeatedly use the newer, incorrect driver after each Windows update.
+
 (Note:If you cannot upload, please try the legacy v4 driver below. Note you will need to uninstall the v5 driver.And try to use the low band: 115200)
 
 ### Installing the ESP32 Arduino Core
@@ -26,11 +29,19 @@
 4. Click the ```Install``` button to install the library.
 5. Click "File-> Examples". Here are some test programs in "M5Stack->"
 
-#### Using Git
+#### Using Git (most environments)
 ```sh
 cd ~/Documents/Arduino/libraries/
 git clone https://github.com/m5stack/M5Stack.git
 ```
+
+#### Using Git (Windows)
+```sh
+c:
+cd %USERPROFILE%\documents\libraries
+git clone https://github.com/m5stack/M5Stack.git
+```
+
 
 ## API
 See [API](https://github.com/m5stack/M5Stack/blob/master/src/M5Stack.h#L19).
@@ -60,8 +71,20 @@ BUTTON C | GPIO37
 SPEAKER | GPIO25
 MPU9250 SDA | GPIO21
 MPU9250 SCL | GPIO22
-GOVER SDA | GPIO21
-GOVER SCL | GPIO22
+GROVE SDA | GPIO21
+GROVE SCL | GPIO22
+
+
+### LoRa module
+Peripheral Devices | ESP32 | RA-02 | Note
+---|---|---|---
+MOSI     | GPIO23 | MOSI | shared with TFCARD
+MISO     | GPIO19 | MISO | shared with TFCARD
+SCK      | GPIO18 | SCK | shared with TFCARD
+RFM95_CS | GPIO5 | NSS | pull up before M5.Begin()
+RFM95_RST | GPIO36 | RST | incorrectly labeled GPIO26 in some places
+RFM95_INT | GPIO26 | DIO0 | incorrectly labeled GPIO36 in some places
+
 
 ### M-BUS
 ![image](http://olcunuug8.bkt.clouddn.com/M-BUS.jpg?imageView/2/w/500/q/100)

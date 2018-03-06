@@ -17,6 +17,7 @@
 #define REG_FIFO_RX_CURRENT_ADDR 0x10
 #define REG_IRQ_FLAGS            0x12
 #define REG_RX_NB_BYTES          0x13
+#define REG_PKT_SNR_VALUE        0x19
 #define REG_PKT_RSSI_VALUE       0x1a
 #define REG_PKT_SNR_VALUE        0x1b
 #define REG_MODEM_CONFIG_1       0x1d
@@ -66,16 +67,18 @@ int LoRaClass::begin(long frequency)
 {
   // setup pins
   pinMode(_ss, OUTPUT);
-  pinMode(_reset, OUTPUT);
-
-  // perform reset
-  digitalWrite(_reset, LOW);
-  delay(10);
-  digitalWrite(_reset, HIGH);
-  delay(10);
-
   // set SS high
   digitalWrite(_ss, HIGH);
+
+  if (_reset != -1) {
+    pinMode(_reset, OUTPUT);
+
+    // perform reset
+    digitalWrite(_reset, LOW);
+    delay(10);
+    digitalWrite(_reset, HIGH);
+    delay(10);
+  }
 
   // start SPI
   SPI.begin();
@@ -144,7 +147,9 @@ int LoRaClass::endPacket()
   writeRegister(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_TX);
 
   // wait for TX done
-  while((readRegister(REG_IRQ_FLAGS) & IRQ_TX_DONE_MASK) == 0);
+  while ((readRegister(REG_IRQ_FLAGS) & IRQ_TX_DONE_MASK) == 0) {
+    yield();
+  }
 
   // clear IRQ's
   writeRegister(REG_IRQ_FLAGS, IRQ_TX_DONE_MASK);
@@ -156,9 +161,6 @@ int LoRaClass::parsePacket(int size)
 {
   int packetLength = 0;
   int irqFlags = readRegister(REG_IRQ_FLAGS);
-
-// Serial.print("irqFlags ");
-// Serial.println(irqFlags, HEX);
 
   if (size > 0) {
     implicitHeaderMode();
@@ -276,10 +278,12 @@ void LoRaClass::flush()
 void LoRaClass::onReceive(void(*callback)(int))
 {
   _onReceive = callback;
-  pinMode(_dio0, INPUT);
 
   if (callback) {
+    pinMode(_dio0, INPUT);
+
     writeRegister(REG_DIO_MAPPING_1, 0x00);
+
     attachInterrupt(digitalPinToInterrupt(_dio0), LoRaClass::onDio0Rise, RISING);
   } else {
     detachInterrupt(digitalPinToInterrupt(_dio0));

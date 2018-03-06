@@ -1,6 +1,9 @@
 // Copyright (c) Sandeep Mistry. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+// 23FEB18 gojimmypi reversed LORA_DEFAULT_RESET_PIN and LORA_DEFAULT_DIO0_PIN pin numbers
+// reset on pin 36; irq on pin 26
+
 #ifndef M5LORA_H
 #define M5LORA_H
 
