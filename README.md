@@ -4,6 +4,8 @@
 ### Installing the USB Driver
 - [Download the SiLabs CP2104 Driver](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers)
 (Note:If you cannot upload, please try the legacy v4 driver below. Note you will need to uninstall the v5 driver.And try to use the low band: 115200)
+- [Download the Silabs CP210X v10 Driver Universal binary for win 10 in case of rebooting problems while flashing procedure] (https://www.silabs.com/documents/public/software/CP210x_Universal_Windows_Driver.zip )
+No need of reinstaling any drivers if were installed before, they should be updated "on the fly"
 
 ### Installing the ESP32 Arduino Core
 - Using Arduino IDE
