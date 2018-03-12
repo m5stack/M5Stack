@@ -22,9 +22,6 @@ void M5Stack::begin() {
     pinMode(BUTTON_B_PIN, INPUT_PULLUP);
     pinMode(BUTTON_C_PIN, INPUT_PULLUP);
 
-    // TF Card
-    SD.begin(TFCARD_CS_PIN);
-
     // M5 LCD INIT
     Lcd.begin();
     Lcd.fillScreen(BLACK);
@@ -33,6 +30,9 @@ void M5Stack::begin() {
     Lcd.setTextSize(1);
     Lcd.setBrightness(50);
 
+    // TF Card
+    SD.begin(TFCARD_CS_PIN);
+    
     // Set wakeup button
     setWakeupButton(BUTTON_A_PIN);
 
@@ -98,7 +98,7 @@ void M5Stack::powerOFF() {
 
     // ESP32 into deep sleep
     USE_SERIAL.printf("Enabling EXT0 wakeup on pins GPIO%d\n", _wakeupPin);
-    esp_deep_sleep_enable_ext0_wakeup((gpio_num_t)_wakeupPin , LOW);
+    esp_sleep_enable_ext0_wakeup((gpio_num_t)_wakeupPin , LOW);
     
     while(digitalRead(_wakeupPin) == LOW) {
         delay(10);
