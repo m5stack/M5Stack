@@ -36,6 +36,7 @@ Block blocks[7] = {
   {{{{-1,0},{0,0},{1,0},{0,-1}},{{0,-1},{0,0},{0,1},{-1,0}},
   {{-1,0},{0,0},{1,0},{0,1}},{{0,-1},{0,0},{0,1},{1,0}}},4,7}
 };
+extern uint8_t tetris_img[];
 //========================================================================
 void setup(void) {
   Serial.begin(115200);         // SERIAL
@@ -53,7 +54,8 @@ void setup(void) {
   make_block( 6, 0xF00F);       // _DD,DD_  LIGHT GREEN
   make_block( 7, 0xF8FC);       // _D_,DDD  PINK
   //----------------------------------------------------------------------
-  M5.Lcd.drawJpgFile(SD, "/tetris.jpg");     // Load background from SD
+  // M5.Lcd.drawJpgFile(SD, "/tetris.jpg");     // Load background from SD
+  M5.Lcd.drawJpg(tetris_img, 34215); // Load background from file data
   PutStartPos();                             // Start Position
   for (int i = 0; i < 4; ++i) screen[pos.X + 
    block.square[rot][i].X][pos.Y + block.square[rot][i].Y] = block.color;

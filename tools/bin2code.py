@@ -14,7 +14,7 @@ file_size = os.path.getsize(in_name)
 
 with open(in_name, 'rb') as infile:
   with open(out_name, 'wb+') as outfile:
-    arrary_name = 'unsigned char ' + out_name[0:out_name.find('.')] + '[' +str(file_size)+'] = {\n'
+    arrary_name = 'const unsigned char ' + out_name[0:out_name.find('.')] + '[' +str(file_size)+'] = {\n'
     outfile.write(arrary_name.encode('utf-8'))
     while True:
       data = infile.read(20)
