@@ -107,7 +107,7 @@
 #endif
 
 extern "C" {
-#include "esp_deep_sleep.h"
+#include "esp_sleep.h"
 }
 
 class M5Stack {
