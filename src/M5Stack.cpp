@@ -31,7 +31,7 @@ void M5Stack::begin() {
     Lcd.setBrightness(50);
 
     // TF Card
-    SD.begin(TFCARD_CS_PIN);
+    SD.begin(TFCARD_CS_PIN, SPI, 27000000);
     
     // Set wakeup button
     setWakeupButton(BUTTON_A_PIN);
