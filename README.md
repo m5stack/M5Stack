@@ -7,7 +7,7 @@ do NOT use the Windows 10 Universal (v10.1.1) driver! If you happen to download 
 on a regular basis as Windows will repeatedly use the newer, incorrect driver after each Windows update.
 
 (Note: If you cannot upload, please try the legacy v4 driver below. You will need to uninstall the v5 driver. And try to use a lower baudrate: 115200)
-- [Download the Silabs CP210X v10 Driver Universal binary for win 10 in case of rebooting problems while flashing procedure] (https://www.silabs.com/documents/public/software/CP210x_Universal_Windows_Driver.zip)
+- [Download the Silabs CP210X v10 Driver Universal binary for win 10 in case of rebooting problems while flashing procedure](https://www.silabs.com/documents/public/software/CP210x_Universal_Windows_Driver.zip)
 No need of reinstalling any drivers if were installed before, they should be updated "on the fly".
 
 ### Installing the ESP32 Arduino Core
