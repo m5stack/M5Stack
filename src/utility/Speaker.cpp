@@ -11,6 +11,10 @@ void SPEAKER::begin() {
     setBeep(1000, 100);
 }
 
+void SPEAKER::end() {
+    ledcDetachPin(SPEAKER_PIN);
+}
+
 void SPEAKER::tone(uint16_t frequency) {
     ledcWriteTone(TONE_PIN_CHANNEL, frequency);
 }

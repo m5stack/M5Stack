@@ -13,6 +13,7 @@ public:
     SPEAKER(void);
     
     void begin();
+    void end();
     void mute();
     void tone(uint16_t frequency);
     void tone(uint16_t frequency, uint32_t duration);
