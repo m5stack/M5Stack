@@ -6,9 +6,9 @@
 do NOT use the Windows 10 Universal (v10.1.1) driver! If you happen to download the Universal version, you may need to manually revert to 6.7.1 
 on a regular basis as Windows will repeatedly use the newer, incorrect driver after each Windows update.
 
-(Note:If you cannot upload, please try the legacy v4 driver below. Note you will need to uninstall the v5 driver.And try to use the low band: 115200)
-- [Download the Silabs CP210X v10 Driver Universal binary for win 10 in case of rebooting problems while flashing procedure] (https://www.silabs.com/documents/public/software/CP210x_Universal_Windows_Driver.zip )
-No need of reinstaling any drivers if were installed before, they should be updated "on the fly"
+(Note: If you cannot upload, please try the legacy v4 driver below. You will need to uninstall the v5 driver. And try to use a lower baudrate: 115200)
+- [Download the Silabs CP210X v10 Driver Universal binary for win 10 in case of rebooting problems while flashing procedure](https://www.silabs.com/documents/public/software/CP210x_Universal_Windows_Driver.zip)
+No need of reinstalling any drivers if were installed before, they should be updated "on the fly".
 
 ### Installing the ESP32 Arduino Core
 - Using Arduino IDE
@@ -44,16 +44,15 @@ cd %USERPROFILE%\documents\libraries
 git clone https://github.com/m5stack/M5Stack.git
 ```
 
-
 ## API
 See [API](https://github.com/m5stack/M5Stack/blob/master/src/M5Stack.h#L19).
 
 ## Examples
 See [examples](examples) folder.
 
-
 ## Hardware
 [Schematic](https://github.com/m5stack/M5-hardware/blob/master/M5_Core_SCH(20171206).pdf).
+
 ### Pinout
 Peripheral Devices | ESP32 
 ---|---
@@ -76,7 +75,6 @@ MPU9250 SCL | GPIO22
 GROVE SDA | GPIO21
 GROVE SCL | GPIO22
 
-
 ### LoRa module
 Peripheral Devices | ESP32 | RA-02 | Note
 ---|---|---|---
@@ -86,7 +84,6 @@ SCK      | GPIO18 | SCK | shared with TFCARD
 RFM95_CS | GPIO5 | NSS | pull up before M5.Begin()
 RFM95_RST | GPIO36 | RST | incorrectly labeled GPIO26 in some places
 RFM95_INT | GPIO26 | DIO0 | incorrectly labeled GPIO36 in some places
-
 
 ### M-BUS
 ![image](docs/M-BUS.jpg)
