@@ -84,16 +84,13 @@
 #if defined(ESP32)
 
 // #define MPU9250_INSDE
-
 #include <Arduino.h>
-#include <WiFi.h>
-#include <WiFiClient.h>
-#include <WiFiMulti.h>
 #include <Wire.h>
 #include <SPI.h>
 #include "FS.h"
 #include "SD.h"
 
+#include "gitTagVersion.h"
 #include "utility/Display.h"
 #include "utility/Config.h"
 #include "utility/Button.h"
