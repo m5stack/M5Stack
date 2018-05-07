@@ -26,7 +26,7 @@ void setup() {
   
   delay(1000);
   // Clear screen
-  M5.Lcd.clear(BLACK);
+  M5.Lcd.clear();
   // Turn highlight off
   M5.Lcd.highlight(false);
   M5.Lcd.setCursor(0,10);
@@ -38,7 +38,7 @@ void setup() {
   M5.Lcd.printf(GbkStr);
   
   delay(1000);
-  M5.Lcd.clear(BLACK);
+  M5.Lcd.clear();
   
   // Set text size to 2
   M5.Lcd.setTextSize(2);
@@ -51,7 +51,7 @@ void setup() {
   M5.Lcd.printf(AscStr);  
   delay(1000);
   
-  M5.Lcd.clear(BLACK);
+  M5.Lcd.clear();
   M5.Lcd.highlight(false);
   M5.Lcd.setCursor(0,10);
   M5.Lcd.printf(GbkStr);
@@ -62,7 +62,7 @@ void setup() {
   
   delay(1000);
   
-  M5.Lcd.clear(NAVY);
+  M5.Lcd.clear();
   M5.Lcd.highlight(false);
   
   // Set text with non-transparent back color, BLACK as set at the beginning.
