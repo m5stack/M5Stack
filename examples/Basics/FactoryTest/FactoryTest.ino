@@ -2,7 +2,45 @@
 #include "utility/MPU9250.h"
 #include "WiFi.h"
 
+extern const unsigned char gImage_logoM5[];
+extern const unsigned char m5stack_startup_music[];
+
+#ifndef min
+  #define min(a,b) (((a) < (b)) ? (a) : (b))
+#endif
+
 MPU9250 IMU;
+
+void startupLogo() {
+    static uint8_t brightness, pre_brightness;
+    uint32_t length = strlen((char*)m5stack_startup_music);
+    M5.Lcd.setBrightness(0);
+    M5.Lcd.pushImage(0, 0, 320, 240, (uint16_t *)gImage_logoM5);
+    for(int i=0; i<length; i++) {
+        dacWrite(SPEAKER_PIN, m5stack_startup_music[i]>>2);
+        delayMicroseconds(40);
+        brightness = (i/157);
+        if(pre_brightness != brightness) {
+            pre_brightness = brightness;
+            M5.Lcd.setBrightness(brightness);
+        }
+    }
+
+    for(int i=255; i>=0; i--) {
+        M5.Lcd.setBrightness(i);
+        if(i<=32) {
+            dacWrite(SPEAKER_PIN, i);
+        }
+        delay(2);
+    }
+
+    M5.Lcd.fillScreen(BLACK);
+    delay(800);
+    for(int i=0; i>=100; i++) {
+        M5.Lcd.setBrightness(i);
+        delay(2);
+    }
+}
 
 //TF card test
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
@@ -142,6 +180,7 @@ void wifi_test() {
     M5.Lcd.println("");
 }
 
+/*
 bool gpio_test_flg = 0;
 void GPIO_test() {
     // uint8_t gpio_table[] = {23,19,18,3,16,21,2,12,15,26,1,17,22,5,13,0,34};
@@ -179,7 +218,7 @@ void adc_test() {
         delay(500);
     }
 }
-
+*/
 unsigned long testLines(uint16_t color)
 {
     unsigned long start, t;
@@ -418,25 +457,25 @@ unsigned long testFilledRoundRects()
 void setup() {
     
     //gpio test 
-    pinMode(BUTTON_A_PIN, INPUT_PULLUP);
-    if(digitalRead(BUTTON_A_PIN) == 0) {
-        gpio_test_flg = 1;
-    }
+    // pinMode(BUTTON_A_PIN, INPUT_PULLUP);
+    // if(digitalRead(BUTTON_A_PIN) == 0) {
+    //     gpio_test_flg = 1;
+    // }
 
-    if (gpio_test_flg) {
-        GPIO_test();
-    }
+    // if (gpio_test_flg) {
+    //     GPIO_test();
+    // }
 
     // initialize the M5Stack object
     M5.begin();
 
     // dac test
-    if (gpio_test_flg)
-    {
-        adc_test();
-    }
+    // if (gpio_test_flg)
+    // {
+    //     adc_test();
+    // }
 
-    M5.startupLogo();
+    startupLogo();
     Wire.begin();
 
     // Lcd display

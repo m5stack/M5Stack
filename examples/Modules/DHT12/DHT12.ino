@@ -1,5 +1,5 @@
 #include <M5Stack.h>
-#include "utility/DHT12.h"
+#include "DHT12.h"
 #include <Wire.h>     //The DHT12 uses I2C comunication.
 DHT12 dht12;          //Preset scale CELSIUS and ID 0x5c.
 

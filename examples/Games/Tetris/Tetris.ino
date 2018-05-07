@@ -39,11 +39,9 @@ Block blocks[7] = {
 extern uint8_t tetris_img[];
 //========================================================================
 void setup(void) {
-  Serial.begin(115200);         // SERIAL
   M5.begin();                   // M5STACK INITIALIZE
   M5.Lcd.setBrightness(200);    // BRIGHTNESS = MAX 255
   M5.Lcd.fillScreen(BLACK);     // CLEAR SCREEN
-  M5.Lcd.setRotation(0);        // SCREEN ROTATION = 0
   //----------------------------// Make Block ----------------------------
   make_block( 0, BLACK);        // Type No, Color
   make_block( 1, 0x00F0);       // DDDD     RED
@@ -76,7 +74,7 @@ void Draw() {                               // Draw 120x240 in the center
   for (int i = 0; i < Width; ++i) for (int j = 0; j < Height; ++j)
    for (int k = 0; k < Length; ++k) for (int l = 0; l < Length; ++l)
     backBuffer[j * Length + l][i * Length + k] = BlockImage[screen[i][j]][k][l];
-    M5.Lcd.drawBitmap(100, 0, 120, 240, (uint16_t *)backBuffer);
+    M5.Lcd.pushImage(100, 0, 120, 240, (uint16_t *)backBuffer);
 }
 //========================================================================
 void PutStartPos() {

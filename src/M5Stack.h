@@ -84,35 +84,30 @@
 #if defined(ESP32)
 
 // #define MPU9250_INSDE
+#include "gitTagVersion.h"
 #include <Arduino.h>
 #include <Wire.h>
 #include <SPI.h>
 #include "FS.h"
 #include "SD.h"
 
-#include "gitTagVersion.h"
-#include "utility/Display.h"
+#include "M5Display.h"
 #include "utility/Config.h"
 #include "utility/Button.h"
 #include "utility/Speaker.h"
 #include "utility/M5Timer.h"
-#include "utility/bmp_map.h"
-#include "utility/music_8bit.h"
+
 #ifdef MPU9250_INSDE
 #include "utility/MPU9250.h"
 #include "utility/quaternionFilters.h"
 #endif
 
-extern "C" {
-#include "esp_sleep.h"
-}
 
 class M5Stack {
 
  public:
-    void begin();
+    void begin(bool LCDEnable=true, bool SDEnable=true);
     void update();
-    void startupLogo();
 
     void setWakeupButton(uint8_t button);
     void powerOFF();
@@ -127,11 +122,11 @@ class M5Stack {
     SPEAKER Speaker;
 
     // LCD
-    ILI9341 Lcd = ILI9341();
+    M5Display Lcd = M5Display();
 
     // UART
-    HardwareSerial Serial0 = HardwareSerial(0);
-    HardwareSerial Serial2 = HardwareSerial(2);
+    // HardwareSerial Serial0 = HardwareSerial(0);
+    // HardwareSerial Serial2 = HardwareSerial(2);
 
     // MPU9250
 #ifdef MPU9250_INSDE
