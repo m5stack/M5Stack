@@ -615,7 +615,7 @@ uint16_t TFT_eSPI::readcommand16(uint8_t cmd_function, uint8_t index)
 {
   uint32_t reg;
 
-  reg |= (readcommand8(cmd_function, index + 0) <<  8);
+  reg  = (readcommand8(cmd_function, index + 0) <<  8);
   reg |= (readcommand8(cmd_function, index + 1) <<  0);
 
   return reg;
@@ -1196,7 +1196,7 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, uint32_t w, uint32_t h, uint8_t *
           //else     drawPixel((dw-len)+xp,h-dh,bitmap_bg);
           xp++;
         }
-        *ptr++;
+        ptr++;
         len -= 8;
       }
 
@@ -1345,7 +1345,7 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, uint32_t w, uint32_t h, uint8_t *
           px++;
           xp++;
         }
-        *ptr++;
+        ptr++;
         len -= 8;
       }
       if (np) pushColor(bitmap_fg, np);
