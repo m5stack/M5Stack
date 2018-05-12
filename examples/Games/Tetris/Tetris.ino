@@ -74,7 +74,7 @@ void Draw() {                               // Draw 120x240 in the center
   for (int i = 0; i < Width; ++i) for (int j = 0; j < Height; ++j)
    for (int k = 0; k < Length; ++k) for (int l = 0; l < Length; ++l)
     backBuffer[j * Length + l][i * Length + k] = BlockImage[screen[i][j]][k][l];
-    M5.Lcd.pushImage(100, 0, 120, 240, (uint16_t *)backBuffer);
+    M5.Lcd.drawBitmap(100, 0, 120, 240, (uint8_t*)backBuffer);
 }
 //========================================================================
 void PutStartPos() {

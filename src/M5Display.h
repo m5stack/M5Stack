@@ -27,13 +27,21 @@ class M5Display : public TFT_eSPI {
 
   inline void startWrite() __attribute__((always_inline));
   inline void endWrite() __attribute__((always_inline));
+  inline void writePixel(uint16_t color) { SPI.write16(color); }
   inline void writePixels(uint16_t *colors, uint32_t len);
+  #define setFont setFreeFont
 
   void qrcode(const char *string, uint16_t x = 50, uint16_t y = 10, uint8_t width = 220, uint8_t version = 6);
   void qrcode(const String &string, uint16_t x = 50, uint16_t y = 10, uint8_t width = 220, uint8_t version = 6);
 
   void drawBmp(fs::FS &fs, const char *path, uint16_t x, uint16_t y);
   void drawBmpFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y);
+
+  void drawBitmap(int16_t x0, int16_t y0, int16_t w, int16_t h, const uint16_t *data);
+  void drawBitmap(int16_t x0, int16_t y0, int16_t w, int16_t h, const uint8_t *data);
+  void drawBitmap(int16_t x0, int16_t y0, int16_t w, int16_t h, uint16_t *data);
+  void drawBitmap(int16_t x0, int16_t y0, int16_t w, int16_t h, uint8_t *data);
+  void drawBitmap(int16_t x0, int16_t y0, int16_t w, int16_t h, const uint16_t *data, uint16_t transparent);
 
   void drawJpg(const uint8_t *jpg_data, size_t jpg_len, uint16_t x = 0,
                uint16_t y = 0, uint16_t maxWidth = 0, uint16_t maxHeight = 0,
