@@ -14,7 +14,7 @@ void M5Display::begin() {
   ledcAttachPin(TFT_BL, BLK_PWM_CHANNEL);
   ledcWrite(BLK_PWM_CHANNEL, 80);
 }
-
+/*
 inline void M5Display::startWrite(void){
 #if defined (SPI_HAS_TRANSACTION) && defined (SUPPORT_TRANSACTIONS) && !defined(ESP32_PARALLEL)
   if (locked) {locked = false; SPI.beginTransaction(SPISettings(SPI_FREQUENCY, MSBFIRST, SPI_MODE0));}
@@ -32,7 +32,7 @@ inline void M5Display::endWrite(void){
 inline void M5Display::writePixels(uint16_t * colors, uint32_t len){
     SPI.writePixels((uint8_t*)colors , len * 2);
 }
-
+*/
 void M5Display::sleep() {
   startWrite();
   writecommand(ILI9341_SLPIN); // Software reset
