@@ -90,9 +90,11 @@ RFM95_INT | GPIO26 | DIO0 | incorrectly labeled GPIO36 in some places
 
 ### Awesome
 - [M5Stack-SD-Updater](https://github.com/tobozo/M5Stack-SD-Updater) - Customizable menu system for M5Stack - loads apps from the Micro SD card
+- [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI) - TFT library for the ESP8266 and ESP32 that supports different driver chips
 - [M5Widgets](https://github.com/Kongduino/M5Widgets) - Widgets for the M5Stack
 - [M5StackSAM](https://github.com/tomsuch/M5StackSAM) - Simple Applications Menu Arduino Library for M5Stack
 - [cfGUI](https://github.com/JF002/cfGUI) - A simple GUI library for M5Stack (ESP32)
+- [GUIslice](https://github.com/ImpulseAdventure/GUIslice) - A lightweight GUI framework suitable for embedded displays
 - [M5Stack MultiApp Advanced](https://github.com/botofancalin/M5Stack-MultiApp-Advanced) - A M5Stack firmware made on PlatformIO
 - [M5Stack ESP32 Oscilloscope](https://github.com/botofancalin/M5Stack-ESP32-Oscilloscope) - A fully functional oscilloscope based on ESP32 M5Stack
 - [M5Stack-Avator](https://github.com/meganetaaan/m5stack-avator) - An M5Stack library for rendering avatar faces
@@ -111,5 +113,6 @@ RFM95_INT | GPIO26 | DIO0 | incorrectly labeled GPIO36 in some places
 - [M5Stack-Tetris](https://github.com/PartsandCircuits/M5Stack-Tetris) - Tetris for M5Stack Ported to M5Stack by macsbug  - https://macsbug.wordpress.com/
 - [M5Stack_FlappyBird_game](https://github.com/pcelli85/M5Stack_FlappyBird_game) - M5Stack FlappyBird Playable
 - [M5Stack-SpaceShooter](https://github.com/PartsandCircuits/M5Stack-SpaceShooter) - Space Invaders knock-off for M5Stack
+- [M5Stack-Pacman-JoyPSP](https://github.com/tobozo/M5Stack-Pacman-JoyPSP) - Pacman on M5Stack/PSP Joypad, with sounds
 - [M5Stack-Thermal-Camera](https://github.com/hkoffer/M5Stack-Thermal-Camera-) - M5Stack Thermal Camera with AMG8833 thermal sensor
 - [M5Stack-3DPrintFiles](https://github.com/PartsandCircuits/M5Stack-3DPrintFiles) - Links to files for 3D printing custom case parts for the M5Stack
