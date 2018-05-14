@@ -25,10 +25,24 @@ class M5Display : public TFT_eSPI {
   void clear(uint32_t color=ILI9341_BLACK) { fillScreen(color); }
   void display() {}
 
-  inline void startWrite() __attribute__((always_inline));
-  inline void endWrite() __attribute__((always_inline));
+  inline void startWrite(void){
+  #if defined (SPI_HAS_TRANSACTION) && defined (SUPPORT_TRANSACTIONS) && !defined(ESP32_PARALLEL)
+    if (locked) {locked = false; SPI.beginTransaction(SPISettings(SPI_FREQUENCY, MSBFIRST, SPI_MODE0));}
+  #endif
+    CS_L;
+  }
+  inline void endWrite(void){
+  #if defined (SPI_HAS_TRANSACTION) && defined (SUPPORT_TRANSACTIONS) && !defined(ESP32_PARALLEL)
+    if(!inTransaction) {if (!locked) {locked = true; SPI.endTransaction();}}
+  #endif
+    CS_H;
+  }
   inline void writePixel(uint16_t color) { SPI.write16(color); }
-  inline void writePixels(uint16_t *colors, uint32_t len);
+  inline void writePixels(uint16_t * colors, uint32_t len){
+      SPI.writePixels((uint8_t*)colors , len * 2);
+  }
+  void progressBar(int x, int y, int w, int h, uint8_t val);
+
   #define setFont setFreeFont
 
   void qrcode(const char *string, uint16_t x = 50, uint16_t y = 10, uint8_t width = 220, uint8_t version = 6);

@@ -15,24 +15,6 @@ void M5Display::begin() {
   ledcWrite(BLK_PWM_CHANNEL, 80);
 }
 
-inline void M5Display::startWrite(void){
-#if defined (SPI_HAS_TRANSACTION) && defined (SUPPORT_TRANSACTIONS) && !defined(ESP32_PARALLEL)
-  if (locked) {locked = false; SPI.beginTransaction(SPISettings(SPI_FREQUENCY, MSBFIRST, SPI_MODE0));}
-#endif
-  CS_L;
-}
-
-inline void M5Display::endWrite(void){
-#if defined (SPI_HAS_TRANSACTION) && defined (SUPPORT_TRANSACTIONS) && !defined(ESP32_PARALLEL)
-  if(!inTransaction) {if (!locked) {locked = true; SPI.endTransaction();}}
-#endif
-  CS_H;
-}
-
-inline void M5Display::writePixels(uint16_t * colors, uint32_t len){
-    SPI.writePixels((uint8_t*)colors , len * 2);
-}
-
 void M5Display::sleep() {
   startWrite();
   writecommand(ILI9341_SLPIN); // Software reset
@@ -62,7 +44,10 @@ void M5Display::drawBitmap(int16_t x0, int16_t y0, int16_t w, int16_t h, const u
 void M5Display::drawBitmap(int16_t x0, int16_t y0, int16_t w, int16_t h, uint8_t *data) {
   pushImage((int32_t)x0, (int32_t)y0, (uint32_t)w, (uint32_t)h, (uint16_t*)data);
 }
-
+void M5Display::progressBar(int x, int y, int w, int h, uint8_t val) {
+  drawRect(x, y, w, h, 0x09F1);
+  fillRect(x + 1, y + 1, w * (((float)val) / 100.0), h - 1, 0x09F1);
+}
 
 #include "utility/qrcode.h"
 void M5Display::qrcode(const char *string, uint16_t x, uint16_t y, uint8_t width, uint8_t version) {
