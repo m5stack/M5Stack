@@ -44,6 +44,7 @@ void M5Display::drawBitmap(int16_t x0, int16_t y0, int16_t w, int16_t h, const u
 void M5Display::drawBitmap(int16_t x0, int16_t y0, int16_t w, int16_t h, uint8_t *data) {
   pushImage((int32_t)x0, (int32_t)y0, (uint32_t)w, (uint32_t)h, (uint16_t*)data);
 }
+
 void M5Display::progressBar(int x, int y, int w, int h, uint8_t val) {
   drawRect(x, y, w, h, 0x09F1);
   fillRect(x + 1, y + 1, w * (((float)val) / 100.0), h - 1, 0x09F1);
@@ -409,9 +410,3 @@ void M5Display::drawJpgFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y
 
   file.close();
 }
-
-// void M5Display::drawJpg(fs::FS &fs, const char *path, uint16_t x, uint16_t y,
-//                           uint16_t maxWidth, uint16_t maxHeight, uint16_t offX,
-//                           uint16_t offY, jpeg_div_t scale) {
-//   drawJpgFile(fs, path, x, y, maxWidth, maxHeight, offX, offY, scale);
-// }

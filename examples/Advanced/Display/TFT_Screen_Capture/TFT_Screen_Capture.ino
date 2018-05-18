@@ -31,7 +31,8 @@
 // Version: 0.06
 
 // MIT licence applies, all text above must be included in derivative works
-#include <M5Stack.h>
+
+#include <M5Stack.h> 
 
 unsigned long targetTime = 0;
 byte red = 31;
@@ -41,13 +42,11 @@ byte state = 0;
 unsigned int colour = red << 11; // Colour order is RGB 5+6+5 bits each
 
 void setup(void) {
-  // Serial.begin(921600);
 
   M5.begin();
-  // M5.Lcd.setRotation(0);
-  M5.Lcd.fillScreen(TFT_BLACK);
+  Serial.begin(921600);
 
-  randomSeed(analogRead(A0));
+  M5.Lcd.fillScreen(TFT_BLACK);
   
   targetTime = millis() + 1000;
 }

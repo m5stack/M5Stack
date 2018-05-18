@@ -5,6 +5,7 @@
 #include <FS.h>
 #include <SPI.h>
 #include "utility/In_eSPI.h"
+#include "utility/Sprite.h"
 
 typedef enum {
   JPEG_DIV_NONE,

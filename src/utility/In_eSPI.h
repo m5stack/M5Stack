@@ -713,5 +713,6 @@ class TFT_eSPI : public Print {
 
 // Load the Sprite Class
 // #include "Extensions/Sprite.h"
+// #include "Sprite.h"
 
 #endif
