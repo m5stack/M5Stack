@@ -26,22 +26,27 @@ void M5Display::setBrightness(uint8_t brightness) {
 }
 
 void M5Display::drawBitmap(int16_t x0, int16_t y0, int16_t w, int16_t h, const uint16_t *data) {
+  setSwapBytes(true);
   pushImage((int32_t)x0, (int32_t)y0, (uint32_t)w, (uint32_t)h, data);
 }
 
 void M5Display::drawBitmap(int16_t x0, int16_t y0, int16_t w, int16_t h, uint16_t *data) {
+  setSwapBytes(true);
   pushImage((int32_t)x0, (int32_t)y0, (uint32_t)w, (uint32_t)h, data);
 }
 
 void M5Display::drawBitmap(int16_t x0, int16_t y0, int16_t w, int16_t h, const uint16_t *data, uint16_t transparent) {
+  setSwapBytes(true);
   pushImage((int32_t)x0, (int32_t)y0, (uint32_t)w, (uint32_t)h, data, transparent);
 }
 
 void M5Display::drawBitmap(int16_t x0, int16_t y0, int16_t w, int16_t h, const uint8_t *data) {
+  setSwapBytes(true);
   pushImage((int32_t)x0, (int32_t)y0, (uint32_t)w, (uint32_t)h, (const uint16_t*)data);
 }
 
 void M5Display::drawBitmap(int16_t x0, int16_t y0, int16_t w, int16_t h, uint8_t *data) {
+  setSwapBytes(true);
   pushImage((int32_t)x0, (int32_t)y0, (uint32_t)w, (uint32_t)h, (uint16_t*)data);
 }
 
