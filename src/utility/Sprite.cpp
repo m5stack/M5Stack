@@ -523,7 +523,8 @@ void TFT_eSprite::pushColor(uint32_t color, uint16_t len)
   else  if (_bpp == 8)
     pixelColor = (color & 0xE000)>>8 | (color & 0x0700)>>6 | (color & 0x0018)>>3;
 
-  // else Nothing to do for 1bpp
+  else
+    pixelColor = color;
 
   while(len--) writeColor(pixelColor);
 }
