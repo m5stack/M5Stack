@@ -10,9 +10,9 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable) {
     Serial.flush();
     Serial.print("M5Stack initializing...");
 
-    // I2C
-    pinMode(SCL, OUTPUT);
-    digitalWrite(SDA, 1);
+    // I2C Startup BUG?
+    // pinMode(SCL, OUTPUT);
+    // digitalWrite(SCL, 1);
 
     // TONE
     Speaker.begin();
@@ -32,9 +32,9 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable) {
     setWakeupButton(BUTTON_A_PIN);
 
     // MPU9250
-#ifdef MPU9250_INSDE
+    #ifdef MPU9250_INSDE
     Wire.begin();
-#endif
+    #endif
 
     Serial.println("OK");
 }
