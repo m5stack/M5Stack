@@ -1,6 +1,7 @@
 # M5Stack Library
 
-## Usage
+English | [中文](docs/getting_started_cn.md)
+## Usage 
 ### Installing the USB Driver
 - [Download the SiLabs CP2104 Driver](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers) but 
 do NOT use the Windows 10 Universal (v10.1.1) driver! If you happen to download the Universal version, you may need to manually revert to 6.7.1 
