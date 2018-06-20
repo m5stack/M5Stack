@@ -111,7 +111,7 @@ USB 线连接 M5Stack 主控，选择串口和一个示例程序，compile and u
 #include <M5Stack.h>
 
 // the setup routine runs once when M5Stack starts up
-void setup(){tack
+void setup(){
 
   // Initialize the M5Stack object
   M5.begin();
