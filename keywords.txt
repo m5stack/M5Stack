@@ -1,79 +1,70 @@
-/*
- * (C) Copyright 2014 Aurélien Rodot. All rights reserved.
- *
- * This file is part of the Gamebuino Library (http://gamebuino.com)
- *
- * The Gamebuino Library is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>
- */
+#######################################
+# Syntax Coloring Map For M5Stack
+#######################################
+
+#######################################
+# Library (KEYWORD3)
+#######################################
 
 M5Stack 	KEYWORD3
 M5 	        KEYWORD3
 m5 	        KEYWORD3
-display	KEYWORD1
-buttons	KEYWORD1
 
-////////////////////////core
-begin	KEYWORD1
-update	KEYWORD1
-startupLogo	KEYWORD1
-Speaker	KEYWORD1
-Lcd	KEYWORD1
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
 
-////////////////////////buttons
-pressed	KEYWORD1
-released	KEYWORD1
-held	KEYWORD1
-repeat	KEYWORD1
-timeHeld	KEYWORD1
-BTN_A 	LITERAL1
-BTN_B 	LITERAL1
-BTN_C 	LITERAL1
-LED_PIN	LITERAL1
+Lcd         KEYWORD1
+Speaker	    KEYWORD1
+BtnA        KEYWORD1
+BtnB        KEYWORD1
+BtnC        KEYWORD1
 
-////////////////////////Display
-getBuffer	KEYWORD1
-setContrast	KEYWORD1
-clear	KEYWORD1
-update	KEYWORD1
-fillScreen	KEYWORD1
-persistence	KEYWORD1
-setColor	KEYWORD1
-drawPixel	KEYWORD1
-getPixel	KEYWORD1
-drawLine	KEYWORD1
-drawFastVLine	KEYWORD1
-drawFastHLine	KEYWORD1
-drawRect	KEYWORD1
-fillRect	KEYWORD1
-drawRoundRect	KEYWORD1
-fillRoundRect	KEYWORD1
-drawCircle	KEYWORD1
-fillCircle	KEYWORD1
-drawCircleHelper	KEYWORD1
-fillCircleHelper	KEYWORD1
-drawTriangle	KEYWORD1
-fillTriangle	KEYWORD1
-drawBitmap	KEYWORD1
-drawChar	KEYWORD1
-print	KEYWORD1
-cursorX	KEYWORD1
-cursorY	KEYWORD1
-fontSize	KEYWORD1
-textWrap	KEYWORD1
-fontWidth	KEYWORD1
-fontHeight	KEYWORD1
-setFont	KEYWORD1
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	    KEYWORD2
+update	    KEYWORD2
+
+pressed	    KEYWORD2
+released    KEYWORD2
+held	    KEYWORD2
+repeat	    KEYWORD2
+timeHeld	KEYWORD2
+
+getBuffer	KEYWORD2
+setContrast	KEYWORD2
+clear	    KEYWORD2
+update	    KEYWORD2
+fillScreen	KEYWORD2
+persistence	KEYWORD2
+setColor	KEYWORD2
+drawPixel	KEYWORD2
+getPixel	KEYWORD2
+drawLine	KEYWORD2
+drawFastVLine	KEYWORD2
+drawFastHLine	KEYWORD2
+drawRect	KEYWORD2
+fillRect	KEYWORD2
+drawRoundRect	KEYWORD2
+fillRoundRect	KEYWORD2
+drawCircle	KEYWORD2
+fillCircle	KEYWORD2
+drawCircleHelper	KEYWORD2
+fillCircleHelper	KEYWORD2
+drawTriangle	KEYWORD2
+fillTriangle	KEYWORD2
+drawBitmap	KEYWORD2
+drawChar	KEYWORD2
+print	KEYWORD2
+cursorX	KEYWORD2
+cursorY	KEYWORD2
+fontSize	KEYWORD2
+textWrap	KEYWORD2
+fontWidth	KEYWORD2
+fontHeight	KEYWORD2
+setFont	KEYWORD2
 
 WHITE 	LITERAL1
 BLACK 	LITERAL1
