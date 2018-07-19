@@ -96,6 +96,7 @@ RFM95_INT | GPIO26 | DIO0 | incorrectly labeled GPIO36 in some places
 - [M5StackSAM](https://github.com/tomsuch/M5StackSAM) - Simple Applications Menu Arduino Library for M5Stack
 - [cfGUI](https://github.com/JF002/cfGUI) - A simple GUI library for M5Stack (ESP32)
 - [GUIslice](https://github.com/ImpulseAdventure/GUIslice) - A lightweight GUI framework suitable for embedded displays
+- [M5ez](https://github.com/ropg/M5ez) - The easy way to program on the M5Stack
 - [M5Stack MultiApp Advanced](https://github.com/botofancalin/M5Stack-MultiApp-Advanced) - A M5Stack firmware made on PlatformIO
 - [M5Stack ESP32 Oscilloscope](https://github.com/botofancalin/M5Stack-ESP32-Oscilloscope) - A fully functional oscilloscope based on ESP32 M5Stack
 - [M5Stack-Avatar](https://github.com/meganetaaan/m5stack-avatar) - An M5Stack library for rendering avatar faces
