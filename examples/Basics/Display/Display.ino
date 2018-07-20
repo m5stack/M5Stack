@@ -5,8 +5,6 @@ void setup() {
   
   // initialize the M5Stack object
   M5.begin();
-  M5.Lcd.drawBitmap(0, 0, 320, 240, (uint16_t *)gImage_logoM5);
-  delay(500);
 
   // Lcd display
   M5.Lcd.fillScreen(WHITE);

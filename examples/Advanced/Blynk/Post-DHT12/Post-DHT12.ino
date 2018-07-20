@@ -22,15 +22,11 @@
     Value Display widget attached to Virtual Pin V5
  *************************************************************/
 
-/* Comment this out to disable prints and save space */
-#define BLYNK_PRINT Serial
-#define BLYNK_DEBUG
-
 #include <M5Stack.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
-#include "utility/DHT12.h"
+#include "DHT12.h"
 #include <Wire.h> //The DHT12 uses I2C comunication.
 DHT12 dht12; //Preset scale CELSIUS and ID 0x5c.
 
