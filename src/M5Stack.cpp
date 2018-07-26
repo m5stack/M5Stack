@@ -13,6 +13,8 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable) {
     // I2C Startup BUG?
     // pinMode(SCL, OUTPUT);
     // digitalWrite(SCL, 1);
+    Wire.begin(21, 22);
+    setPowerBoostKeepOn(true);
 
     // TONE
     Speaker.begin();
@@ -22,7 +24,7 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable) {
     pinMode(BUTTON_B_PIN, INPUT_PULLUP);
     pinMode(BUTTON_C_PIN, INPUT_PULLUP);
 
-    // M5 LCD INIT
+    // M5 LCD INITs
     if (LCDEnable) Lcd.begin();
 
     // TF Card
@@ -50,12 +52,43 @@ void M5Stack::update() {
     Speaker.update();
 }
 
+// ================ Power IC IP5306 ===================
+#define IP5306_ADDR           117
+#define IP5306_REG_SYS_CTL0   0x00
+#define IP5306_REG_READ1      0x71
+#define CHARGE_FULL_BIT       3
+
+void M5Stack::setPowerBoostKeepOn(bool en)
+{
+  Wire.beginTransmission(IP5306_ADDR);
+  Wire.write(IP5306_REG_SYS_CTL0);
+  if (en) Wire.write(0x37); // Set bit1: 1 enable 0 disable boost keep on
+  else Wire.write(0x35);    // 0x37 is default reg value
+  Wire.endTransmission();
+}
+
+uint8_t M5Stack::isChargeFull()
+{
+  uint8_t data;
+  Wire.beginTransmission(IP5306_ADDR);
+  Wire.write(IP5306_REG_READ1);
+  Wire.endTransmission(false);
+  Wire.requestFrom(IP5306_ADDR, 1);
+  data = Wire.read();
+  if (data & (1 << CHARGE_FULL_BIT)) return true;
+  else return false;
+}
+
+
+// ================== Low power mode =====================
 void M5Stack::setWakeupButton(uint8_t button) {
     _wakeupPin = button;
 }
 
 void M5Stack::powerOFF() {
-    
+    // Keep power keep boost on
+    setPowerBoostKeepOn(true);
+
     // power off the Lcd
     Lcd.setBrightness(0);
     Lcd.sleep();
@@ -71,5 +104,6 @@ void M5Stack::powerOFF() {
     esp_deep_sleep_start();
     USE_SERIAL.println("On power OFF fail!");
 }
+
 
 M5Stack M5;
