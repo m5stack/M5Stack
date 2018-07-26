@@ -109,8 +109,11 @@ class M5Stack {
     void begin(bool LCDEnable=true, bool SDEnable=true);
     void update();
 
+    #ifdef M5STACK_FIRE
     void setPowerBoostKeepOn(bool en);
     uint8_t isChargeFull();
+    #endif
+
     void setWakeupButton(uint8_t button);
     void powerOFF();
 

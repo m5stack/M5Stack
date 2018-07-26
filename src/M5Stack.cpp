@@ -13,8 +13,10 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable) {
     // I2C Startup BUG?
     // pinMode(SCL, OUTPUT);
     // digitalWrite(SCL, 1);
+    #ifdef M5STACK_FIRE
     Wire.begin(21, 22);
     setPowerBoostKeepOn(true);
+    #endif
 
     // TONE
     Speaker.begin();
@@ -52,6 +54,7 @@ void M5Stack::update() {
     Speaker.update();
 }
 
+#ifdef M5STACK_FIRE
 // ================ Power IC IP5306 ===================
 #define IP5306_ADDR           117
 #define IP5306_REG_SYS_CTL0   0x00
@@ -78,7 +81,7 @@ uint8_t M5Stack::isChargeFull()
   if (data & (1 << CHARGE_FULL_BIT)) return true;
   else return false;
 }
-
+#endif
 
 // ================== Low power mode =====================
 void M5Stack::setWakeupButton(uint8_t button) {
@@ -86,8 +89,11 @@ void M5Stack::setWakeupButton(uint8_t button) {
 }
 
 void M5Stack::powerOFF() {
+
+    #ifdef M5STACK_FIRE
     // Keep power keep boost on
     setPowerBoostKeepOn(true);
+    #endif
 
     // power off the Lcd
     Lcd.setBrightness(0);
