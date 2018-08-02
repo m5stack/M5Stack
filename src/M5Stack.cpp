@@ -13,10 +13,6 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable) {
     // I2C Startup BUG?
     // pinMode(SCL, OUTPUT);
     // digitalWrite(SCL, 1);
-    #ifdef M5STACK_FIRE
-    Wire.begin(21, 22);
-    setPowerBoostKeepOn(true);
-    #endif
 
     // TONE
     Speaker.begin();
