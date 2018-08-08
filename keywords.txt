@@ -6,37 +6,37 @@
 # Library (KEYWORD3)
 #######################################
 
-M5Stack 	KEYWORD3
-M5 	        KEYWORD3
-m5 	        KEYWORD3
+M5Stack	KEYWORD3
+M5	KEYWORD3
+m5	KEYWORD3
 
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
 
-Lcd         KEYWORD1
-Speaker	    KEYWORD1
-BtnA        KEYWORD1
-BtnB        KEYWORD1
-BtnC        KEYWORD1
+Lcd	KEYWORD1
+Speaker	KEYWORD1
+BtnA	KEYWORD1
+BtnB	KEYWORD1
+BtnC	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
-begin	    KEYWORD2
-update	    KEYWORD2
+begin	KEYWORD2
+update	KEYWORD2
 
-pressed	    KEYWORD2
-released    KEYWORD2
-held	    KEYWORD2
-repeat	    KEYWORD2
+pressed	KEYWORD2
+released	KEYWORD2
+held	KEYWORD2
+repeat	KEYWORD2
 timeHeld	KEYWORD2
 
 getBuffer	KEYWORD2
 setContrast	KEYWORD2
-clear	    KEYWORD2
-update	    KEYWORD2
+clear	KEYWORD2
+update	KEYWORD2
 fillScreen	KEYWORD2
 persistence	KEYWORD2
 setColor	KEYWORD2
@@ -66,10 +66,10 @@ fontWidth	KEYWORD2
 fontHeight	KEYWORD2
 setFont	KEYWORD2
 
-WHITE 	LITERAL1
-BLACK 	LITERAL1
-INVERT 	LITERAL1
-GRAY 	LITERAL1
-RED 	LITERAL1
-BLUE 	LITERAL1
-GREEN 	LITERAL1
+WHITE	LITERAL1
+BLACK	LITERAL1
+INVERT	LITERAL1
+GRAY	LITERAL1
+RED	LITERAL1
+BLUE	LITERAL1
+GREEN	LITERAL1
