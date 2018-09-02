@@ -114,7 +114,7 @@ class M5Stack {
     void powerOFF();
 
     // Button API
-    #define DEBOUNCE_MS 5
+    #define DEBOUNCE_MS 10
     Button BtnA = Button(BUTTON_A_PIN, true, DEBOUNCE_MS);
     Button BtnB = Button(BUTTON_B_PIN, true, DEBOUNCE_MS);
     Button BtnC = Button(BUTTON_C_PIN, true, DEBOUNCE_MS);
