@@ -40,8 +40,10 @@ Button::Button(uint8_t pin, uint8_t invert, uint32_t dbTime)
     _time = millis();
     _lastState = _state;
     _changed = 0;
+    _hold_time = 0;
     _lastTime = _time;
     _lastChange = _time;
+    _pressTime = _time;
 }
 
 /*----------------------------------------------------------------------*
@@ -64,12 +66,13 @@ uint8_t Button::read(void)
     }
     else {
         _lastTime = _time;
+        _time = ms;
         _lastState = _state;
         _state = pinVal;
-        _time = ms;
         if (_state != _lastState)   {
             _lastChange = ms;
             _changed = 1;
+           if (_state) { _pressTime = _time; }
         }
         else {
             _changed = 0;
@@ -83,13 +86,11 @@ uint8_t Button::read(void)
  * read, and return false (0) or true (!=0) accordingly.                *
  * These functions do not cause the button to be read.                  *
  *----------------------------------------------------------------------*/
-uint8_t Button::isPressed(void)
-{
+uint8_t Button::isPressed(void) {
     return _state == 0 ? 0 : 1;
 }
 
-uint8_t Button::isReleased(void)
-{
+uint8_t Button::isReleased(void) {
     return _state == 0 ? 1 : 0;
 }
 
@@ -99,14 +100,17 @@ uint8_t Button::isReleased(void)
  * true (!=0) accordingly.                                              *
  * These functions do not cause the button to be read.                  *
  *----------------------------------------------------------------------*/
-uint8_t Button::wasPressed(void)
-{
+uint8_t Button::wasPressed(void) {
     return _state && _changed;
 }
 
-uint8_t Button::wasReleased(void)
-{
-    return !_state && _changed;
+uint8_t Button::wasReleased(void) {
+    return !_state && _changed && millis() - _pressTime < _hold_time;
+}
+
+uint8_t Button::wasReleasefor(uint32_t ms) {
+	_hold_time = ms;
+	return !_state && _changed && millis() - _pressTime >= ms;
 }
 /*----------------------------------------------------------------------*
  * pressedFor(ms) and releasedFor(ms) check to see if the button is     *
@@ -114,20 +118,17 @@ uint8_t Button::wasReleased(void)
  * time in milliseconds. Returns false (0) or true (1) accordingly.     *
  * These functions do not cause the button to be read.                  *
  *----------------------------------------------------------------------*/
-uint8_t Button::pressedFor(uint32_t ms)
-{
+uint8_t Button::pressedFor(uint32_t ms) {
     return (_state == 1 && _time - _lastChange >= ms) ? 1 : 0;
 }
 
-uint8_t Button::releasedFor(uint32_t ms)
-{
+uint8_t Button::releasedFor(uint32_t ms) {
     return (_state == 0 && _time - _lastChange >= ms) ? 1 : 0;
 }
 /*----------------------------------------------------------------------*
  * lastChange() returns the time the button last changed state,         *
  * in milliseconds.                                                     *
  *----------------------------------------------------------------------*/
-uint32_t Button::lastChange(void)
-{
+uint32_t Button::lastChange(void) {
     return _lastChange;
 }
