@@ -5,7 +5,7 @@
 
   Hardware:
    microcontroller board: M5StackFire
-   amplifier:             Speaker connected to DAC pin 25
+                          speaker amplifier internaly connected to DAC pin 25
 
   September 2018 ChrisMicro
 */
