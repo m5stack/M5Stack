@@ -1,25 +1,61 @@
 /*
- microphone test
+  microphone neopixel VU meter
 
-   hardwware:  M5StackFire 
+  Neopixel LEDS flash dependent on the microphone amplitude
 
- please use the serial plotter in the Arduino IDE to show the signal
- change the baudrate of the plotter to 115200
- 
- September 2018, ChrisMicro
+   hardwware:  M5StackFire
+
+  please install the Adafruit library first!
+
+  September 2018, ChrisMicro, MIT License
+
 */
 
+#include <Adafruit_NeoPixel.h>
+
+#define M5STACK_FIRE_NEO_NUM_LEDS  10
+#define M5STACK_FIRE_NEO_DATA_PIN  15
 #define M5STACKFIRE_MICROPHONE_PIN 34
 
-void setup() 
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(M5STACK_FIRE_NEO_NUM_LEDS, M5STACK_FIRE_NEO_DATA_PIN, NEO_GRB + NEO_KHZ800);
+
+void setup()
 {
   Serial.begin(115200);
+  pixels.begin();
 }
 
-void loop() 
-{
-  int micValue = analogRead(M5STACKFIRE_MICROPHONE_PIN);
+#define NUMBEROFSAMPLES 1000
+uint16_t micValue[NUMBEROFSAMPLES];
 
-  Serial.println(micValue);
-  delay(1);       
+void loop()
+{
+  uint32_t power = 0;
+  uint32_t meanValue = 0;
+  for (uint32_t n = 0; n < NUMBEROFSAMPLES; n++)
+  {
+    int value = analogRead(M5STACKFIRE_MICROPHONE_PIN);
+    micValue[n] = value;
+    meanValue += value;
+    delayMicroseconds(20);
+  }
+  meanValue /= NUMBEROFSAMPLES;
+  for (uint32_t n = 0; n < NUMBEROFSAMPLES; n++)
+  {
+    power += (micValue[n] - meanValue) * (micValue[n] - meanValue);
+  }
+  power /= NUMBEROFSAMPLES;
+
+  Serial.println(power);
+
+  int threshold = 1000;
+  for (uint8_t n = 0; n < M5STACK_FIRE_NEO_NUM_LEDS; n++)
+  {
+    pixels.setPixelColor(n, pixels.Color(0, 0, 1));
+    if (power > threshold)  pixels.setPixelColor(n, pixels.Color(100, 0, 0));
+    threshold *= 5;
+  }
+  pixels.show();
+  delay(10);
+
 }
