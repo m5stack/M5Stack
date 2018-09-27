@@ -4,7 +4,7 @@ English | [中文](docs/getting_started_cn.md)
 
 Welcom to program with M5Stack Core
 
-##1. Get Started
+## 1. Get Started
 
 #### Here is the article to get started
 
@@ -17,11 +17,11 @@ https://m5stack.readthedocs.io/en/latest/get-started/m5stack_core_get_started_Ar
 https://m5stack.readthedocs.io/en/latest/get-started/m5stack_core_get_started_Arduino_Windows.html
 
 
-##2. Example
+## 2. Example
 
-##3. API Reference
+## 3. API Reference
 
-##4. H/W Reference
+## 4. H/W Reference
 
 #### Pinout
 Peripheral Devices | ESP32
@@ -48,7 +48,7 @@ GROVE SCL | GPIO22
 ### M-BUS
 ![image](docs/M-BUS.jpg)
 
-##5. Awesome
+## 5. Awesome
 
 - [M5Stack-SD-Updater](https://github.com/tobozo/M5Stack-SD-Updater) - Customizable menu system for M5Stack - loads apps from the Micro SD card
 - [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI) - TFT library for the ESP8266 and ESP32 that supports different driver chips
