@@ -29,6 +29,7 @@ update	KEYWORD2
 
 pressed	KEYWORD2
 released	KEYWORD2
+releasedFor  KEYWORD2
 held	KEYWORD2
 repeat	KEYWORD2
 timeHeld	KEYWORD2
