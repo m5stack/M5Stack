@@ -23,8 +23,6 @@
   Adafruit_NeoPixel pixels = Adafruit_NeoPixel(M5STACK_FIRE_NEO_NUM_LEDS, M5STACK_FIRE_NEO_DATA_PIN, NEO_GRB + NEO_KHZ800);
 #endif
 
-#define SIGNAL_LENGTH HORIZONTAL_RESOLUTION
-
 void setup()
 {
   M5.Lcd.begin();

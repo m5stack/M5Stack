@@ -1,6 +1,6 @@
 /************************************************************************
 
-  M5StackFire Discovery simple oscilloscope example
+  M5StackFire simple oscilloscope example
 
   The oscilloscope has a auto trigger function to achive a stable
   visual impression when a repeating signal like a sine wave is applied.
