@@ -1,6 +1,5 @@
 #include <M5Stack.h>
 
-HardwareSerial Serial2(2);
 
 void setup() {
   

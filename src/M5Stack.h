@@ -95,25 +95,26 @@
 #include "utility/Config.h"
 #include "utility/Button.h"
 #include "utility/Speaker.h"
-#include "utility/M5Timer.h"
-
-#ifdef MPU9250_INSDE
-#include "utility/MPU9250.h"
-#include "utility/quaternionFilters.h"
-#endif
 
 
 class M5Stack {
 
  public:
-    void begin(bool LCDEnable=true, bool SDEnable=true);
+    M5Stack();
+
+    void begin(bool LCDEnable=true, bool SDEnable=true, bool SerialEnable=true);
     void update();
+
+    #ifdef M5STACK_FIRE
+    void setPowerBoostKeepOn(bool en);
+    uint8_t isChargeFull();
+    #endif
 
     void setWakeupButton(uint8_t button);
     void powerOFF();
 
     // Button API
-    #define DEBOUNCE_MS 5
+    #define DEBOUNCE_MS 10
     Button BtnA = Button(BUTTON_A_PIN, true, DEBOUNCE_MS);
     Button BtnB = Button(BUTTON_B_PIN, true, DEBOUNCE_MS);
     Button BtnC = Button(BUTTON_C_PIN, true, DEBOUNCE_MS);
@@ -134,6 +135,7 @@ class M5Stack {
 #endif
 
  private:
+    bool isInited;
     uint8_t _wakeupPin;
 };
 

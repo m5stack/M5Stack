@@ -26,6 +26,7 @@ class Button
         uint8_t wasReleased();
         uint8_t pressedFor(uint32_t ms);
         uint8_t releasedFor(uint32_t ms);
+        uint8_t wasReleasefor(uint32_t ms);
         uint32_t lastChange();
 
     private:
@@ -39,5 +40,7 @@ class Button
         uint32_t _lastTime;     //time of previous state
         uint32_t _lastChange;   //time of last state change
         uint32_t _dbTime;       //debounce time
+        uint32_t _pressTime;    //press time
+        uint32_t _hold_time;    //hold time call wasreleasefor
 };
 #endif

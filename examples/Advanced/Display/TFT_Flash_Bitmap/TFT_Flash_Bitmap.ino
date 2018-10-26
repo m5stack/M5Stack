@@ -37,7 +37,7 @@ void setup()
   // Draw the icons
   drawIcon(info, 100, 100, infoWidth, infoHeight);
   drawIcon(alert, 140, 100, alertWidth, alertHeight);
-  drawIcon(close, 180, 100, closeWidth, closeHeight);
+  drawIcon(_close, 180, 100, closeWidth, closeHeight);
 
   // Pause here to admire the icons!
   delay(2000);
@@ -49,7 +49,7 @@ void loop()
   // Loop filling and clearing screen
   drawIcon(info,  random(M5.Lcd.width() -  infoWidth), random(M5.Lcd.height() -  infoHeight),  infoWidth,  infoHeight);
   drawIcon(alert, random(M5.Lcd.width() - alertWidth), random(M5.Lcd.height() - alertHeight), alertWidth, alertHeight);
-  drawIcon(close, random(M5.Lcd.width() - closeWidth), random(M5.Lcd.height() - closeHeight), alertWidth, closeHeight);
+  drawIcon(_close, random(M5.Lcd.width() - closeWidth), random(M5.Lcd.height() - closeHeight), alertWidth, closeHeight);
 
   // Clear screen after 100 x 3 = 300 icons drawn
   if (100 == count++) {
