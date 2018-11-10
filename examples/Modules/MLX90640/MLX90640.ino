@@ -119,7 +119,7 @@ void setup()
   Wire.setClock(450000); //Increase I2C clock speed to 400kHz
   Serial.begin(115200);
   M5.Lcd.begin();
-  M5.Lcd.setRotation(1);
+//  M5.Lcd.setRotation(1);
 
   M5.Lcd.fillScreen(TFT_BLACK);
   M5.Lcd.setTextColor(YELLOW, BLACK);
