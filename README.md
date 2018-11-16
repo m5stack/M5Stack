@@ -39,7 +39,7 @@ ESP32 | GPIO33 | GPIO27 | GPIO14 | GPIO23 | GPIO18 | GPIO32 | GPIO23 | GPIO19 | 
 
 ## 5. Awesome
 
-https://m5stack.readthedocs.io/en/latest/m5stack-awesome/index.html
+https://github.com/m5stack/m5-docs/blob/master/docs/en/m5stack_cases.md
 
 #### Note:
 * How to install USB driver for establishing serial port
