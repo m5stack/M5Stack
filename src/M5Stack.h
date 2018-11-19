@@ -7,8 +7,8 @@
  * \brief   M5Stack library.
  * @file    M5Stack.h
  * @author  M5Stack
- * @version V0.1.5
- * @date    2017/03/27
+ * @version V0.2.4
+ * @date    2018/10/29
  * @brief   Header for M5Stack.cpp module
  *
  * \par Description
@@ -58,6 +58,7 @@
         M5.BtnA/B/C.isReleased();
         M5.BtnA/B/C.wasPressed();
         M5.BtnA/B/C.wasReleased();
+        M5.BtnA/B/C.wasreleasedFor()
         M5.BtnA/B/C.pressedFor(uint32_t ms);
         M5.BtnA/B/C.releasedFor(uint32_t ms);
         M5.BtnA/B/C.lastChange();
@@ -74,6 +75,7 @@
  * <pre>
  * `<Author>`         `<Time>`        `<Version>`        `<Descr>`
  * Zibin Zheng         2017/07/14        0.0.1          Rebuild the new.
+ * Bin                 2018/10/29        0.2.4          Add Button API
  * </pre>
  *
  */

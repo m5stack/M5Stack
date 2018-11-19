@@ -27,9 +27,15 @@ BtnC	KEYWORD1
 begin	KEYWORD2
 update	KEYWORD2
 
-pressed	KEYWORD2
-released	KEYWORD2
-releasedFor  KEYWORD2
+isPressed	KEYWORD2
+wasPressed	KEYWORD2
+pressedFor	KEYWORD2
+
+isReleased	KEYWORD2
+wasReleased	KEYWORD2
+releasedFor	KEYWORD2
+wasReleasefor	KEYWORD2
+
 held	KEYWORD2
 repeat	KEYWORD2
 timeHeld	KEYWORD2
@@ -66,6 +72,8 @@ textWrap	KEYWORD2
 fontWidth	KEYWORD2
 fontHeight	KEYWORD2
 setFont	KEYWORD2
+setTextColor	KEYWORD2
+setTextSize	KEYWORD2
 
 WHITE	LITERAL1
 BLACK	LITERAL1

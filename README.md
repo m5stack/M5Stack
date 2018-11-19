@@ -10,11 +10,11 @@ Welcom to program with M5Stack Core
 
 *1.For MacOS*
 
-https://m5stack.readthedocs.io/en/latest/get-started/m5stack_core_get_started_Arduino_MacOS.html
+https://m5stack.github.io/m5-docs/#/en/quick_start/m5core/m5stack_core_get_started_Arduino_MacOS
 
 *2. For Windows*
 
-https://m5stack.readthedocs.io/en/latest/get-started/m5stack_core_get_started_Arduino_Windows.html
+https://m5stack.github.io/m5-docs/#/en/quick_start/m5core/m5stack_core_get_started_Arduino_Windows
 
 
 ## 2. Example
@@ -23,7 +23,7 @@ https://github.com/m5stack/M5Stack/tree/master/examples
 
 ## 3. API Reference
 
-
+https://github.com/m5stack/M5Stack/blob/master/src/M5Stack.h#L19
 
 ## 4. H/W Reference
 
@@ -39,13 +39,13 @@ ESP32 | GPIO33 | GPIO27 | GPIO14 | GPIO23 | GPIO18 | GPIO32 | GPIO23 | GPIO19 | 
 
 ## 5. Awesome
 
-https://m5stack.readthedocs.io/en/latest/m5stack-awesome/index.html
+https://github.com/m5stack/m5-docs/blob/master/docs/en/m5stack_cases.md
 
 #### Note:
 * How to install USB driver for establishing serial port
 
-  https://m5stack.readthedocs.io/en/latest/get-started/establish_serial_connection.html
+  https://m5stack.github.io/m5-docs/#/en/related_documents/establish_serial_connection
 
 * How to upgrade M5Stack Libary
 
-  https://m5stack.readthedocs.io/en/latest/get-started/upgrade_m5stack_lib.html
+  https://m5stack.github.io/m5-docs/#/en/related_documents/upgrade_m5stack_lib
