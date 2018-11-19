@@ -1,6 +1,6 @@
 /************************************************************************
 
-  M5StackFire Discovery simple oscilloscope example
+  M5StackFire simple oscilloscope example
 
   The oscilloscope has a auto trigger function to achive a stable
   visual impression when a repeating signal like a sine wave is applied.
@@ -14,10 +14,11 @@
 #include <M5Stack.h>
 
 #define M5STACKFIRE_MICROPHONE_PIN 34
+#define M5STACKFIRE_SPEAKER_PIN 25 // speaker DAC, only 8 Bit
 
 #define HORIZONTAL_RESOLUTION 320
 #define VERTICAL_RESOLUTION   240
-#define POSITION_OFFSET_Y      30
+#define POSITION_OFFSET_Y      20
 #define SIGNAL_LENGTH HORIZONTAL_RESOLUTION
 
 uint16_t oldSignal[SIGNAL_LENGTH];
@@ -28,6 +29,7 @@ uint16_t adcBuffer[SIGNAL_LENGTH];
 
 void setup()
 {
+  dacWrite(M5STACKFIRE_SPEAKER_PIN, 0); // make sure that the speaker is quite
   M5.Lcd.begin();
   M5.Lcd.fillScreen( BLACK );
   M5.Lcd.fillRect(10, 1, 150, 160, BLACK);
@@ -77,30 +79,29 @@ void showSignal()
 
   int oldx;
   int oldy;
-  int y;
+  int oldSig;
+  int x, y;
 
-  for (n = 1; n < SIGNAL_LENGTH; n++)
+  for (n = 0; n < SIGNAL_LENGTH; n++)
   {
-    y = VERTICAL_RESOLUTION - adcBuffer[n] * ( VERTICAL_RESOLUTION - POSITION_OFFSET_Y) / 4096 - POSITION_OFFSET_Y / 2  ;
+    x = n;
+    y = map(adcBuffer[n], 0, 4096, VERTICAL_RESOLUTION, POSITION_OFFSET_Y);
 
-    if (n == 1)
-    {
-      oldx = n;
-      oldy = y;
-    }
-
-    if (n < SIGNAL_LENGTH - 1)
+    if (n > 0)
     {
       // delete old line element
-      M5.Lcd.drawLine(n - 1 , oldSignal[n - 1], n, oldSignal[n], BLACK );
+      M5.Lcd.drawLine(oldx , oldSig, x, oldSignal[n], BLACK );
 
       // draw new line element
-      M5.Lcd.drawLine(oldx,               oldy, n,            y, GREEN );
+      if (n < SIGNAL_LENGTH - 1) // don't draw last element because it would generate artifacts
+      {
+        M5.Lcd.drawLine(oldx,    oldy, x,            y, GREEN );
+      }
     }
-
-    oldSignal[n - 1] = oldy;
-    oldx = n;
+    oldx = x;
     oldy = y;
+    oldSig = oldSignal[n];
+    oldSignal[n] = y;
   }
 }
 
@@ -112,7 +113,7 @@ void loop(void)
   waitForAutoTrigger();
 
   // record signal
-  for (n = 1; n < SIGNAL_LENGTH; n++)
+  for (n = 0; n < SIGNAL_LENGTH; n++)
   {
     adcBuffer[n] = analogRead( ANALOG_SIGNAL_INPUT );
 
