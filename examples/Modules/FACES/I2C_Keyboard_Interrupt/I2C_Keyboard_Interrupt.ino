@@ -31,7 +31,7 @@ void loop() {
   uint8_t key_val;
   // xQueueReceive(keyboard_queue, &key_val, portMAX_DELAY) // block
   if(xQueueReceive(keyboard_queue, &key_val, 0)) { // Non-blocking
-      if(key_val > 20 && key_val < 0x7F) { // ASCII String
+      if(key_val > 0x20 && key_val < 0x7F) { // ASCII String
         Serial.print((char)key_val);
         M5.Lcd.print((char)key_val);
       } else {
