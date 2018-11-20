@@ -19,7 +19,7 @@ void loop()
     while (Wire.available()) { 
       uint8_t key_val = Wire.read();                  // receive a byte as character
       if(key_val != 0) {
-        if(key_val > 20 && key_val < 0x7F) { // ASCII String
+        if(key_val > 0x20 && key_val < 0x7F) { // ASCII String
           Serial.print((char)key_val);
           M5.Lcd.print((char)key_val);
         } else {
