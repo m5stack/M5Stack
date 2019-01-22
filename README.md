@@ -10,11 +10,11 @@ Welcom to program with M5Stack Core
 
 *1.For MacOS*
 
-https://m5stack.github.io/m5-docs/#/en/quick_start/m5core/m5stack_core_get_started_Arduino_MacOS
+https://docs.m5stack.com/#/en/quick_start/m5core/m5stack_core_get_started_Arduino_MacOS
 
 *2. For Windows*
 
-https://m5stack.github.io/m5-docs/#/en/quick_start/m5core/m5stack_core_get_started_Arduino_Windows
+https://docs.m5stack.com/#/en/quick_start/m5core/m5stack_core_get_started_Arduino_Windows
 
 
 ## 2. Example
@@ -29,9 +29,33 @@ https://github.com/m5stack/M5Stack/blob/master/src/M5Stack.h#L19
 
 #### Pinout
 
-Peripheral Devices | ILI9341 RST | ILI9341 DC | ILI9341 CS | ILI9341 MOSI | ILI9341 CLK | ILI9341 LIGHT | TFCARD MOSI | TFCARD MISO | TFCARD CLK | TFCARD CS | BUTTON A | BUTTON B | BUTTON C | SPEAKER | MPU9250 SDA | MPU9250 SCL | GROVE SDA | GROVE SCL
----|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---
-ESP32 | GPIO33 | GPIO27 | GPIO14 | GPIO23 | GPIO18 | GPIO32 | GPIO23 | GPIO19 | GPIO18 | GPIO4 | GPIO39 | GPIO38 | GPIO37 | GPIO25 | GPIO21 | GPIO22 | GPIO21 | GPIO22
+*We have several kinds of M5Cores, There is [their difference in schematic](https://github.com/m5stack/M5-Schematic/blob/master/Core/hardware_diff_between_m5cores.md).*
+
+**LCD & TF Card**
+
+*LCD Resolution: 320x240*
+
+<table>
+ <tr><td>ESP32 Chip</td><td>GPIO23</td><td>GPIO19</td><td>GPIO18</td><td>GPIO14</td><td>GPIO27</td><td>GPIO33</td><td>GPIO32</td><td>GPIO4</td></tr>
+ <tr><td>ILI9341</td><td>/</td><td>MISO</td><td>CLK</td><td>CS</td><td>DC</td><td>RST</td><td>BL</td><td> </td></tr>
+ <tr><td>TF Card</td><td>MOSI</td><td>MISO</td><td>CLK</td><td> </td><td> </td><td> </td><td> </td><td>CS</td></tr>
+
+</table>
+
+**Button & Speaker**
+
+<table>
+ <tr><td>ESP32 Chip</td><td>GPIO39</td><td>GPIO38</td><td>GPIO37</td><td>GPIO25</td></tr>
+ <tr><td>Button Pin</td><td>BUTTON A</td><td>BUTTON B</td><td>BUTTON C</td></tr>
+ <tr><td>Speaker</td><td> </td><td> </td><td> </td><td>Speaker Pin</td></tr>
+</table>
+
+**GROVE A**
+
+<table>
+ <tr><td>ESP32 Chip</td><td>GPIO22</td><td>GPIO21</td></tr>
+ <tr><td>GROVE A</td><td>SCL</td><td>SDA</td></tr>
+</table>
 
 
 ### M-BUS
@@ -39,13 +63,13 @@ ESP32 | GPIO33 | GPIO27 | GPIO14 | GPIO23 | GPIO18 | GPIO32 | GPIO23 | GPIO19 | 
 
 ## 5. Awesome
 
-https://github.com/m5stack/m5-docs/blob/master/docs/en/m5stack_cases.md
+https://docs.m5stack.com/#/en/case
 
 #### Note:
 * How to install USB driver for establishing serial port
 
-  https://m5stack.github.io/m5-docs/#/en/related_documents/establish_serial_connection
+  https://docs.m5stack.com/#/en/related_documents/establish_serial_connection
 
 * How to upgrade M5Stack Libary
 
-  https://m5stack.github.io/m5-docs/#/en/related_documents/upgrade_m5stack_lib
+  https://docs.m5stack.com/#/en/related_documents/upgrade_m5stack_lib
