@@ -17,12 +17,8 @@
 String outgoing;              // outgoing message
 
 byte msgCount = 0;            // count of outgoing messages
-// byte localAddress = 0xFF;     // address of this device
-// byte destination = 0xBB;      // destination to send to
-
 byte localAddress = 0xBB;     // address of this device
 byte destination = 0xFF;      // destination to send to
-
 long lastSendTime = 0;        // last send time
 int interval = 2000;          // interval between sends
 
@@ -103,3 +99,4 @@ void onReceive(int packetSize) {
   Serial.println("Snr: " + String(LoRa.packetSnr()));
   Serial.println();
 }
+

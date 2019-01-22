@@ -35,13 +35,13 @@ void setup() {
 
 void loop() {
   if(M5.BtnA.wasPressed()) {
-    M5.Lcd.printf("A wasPressed \r\n");
+    M5.Lcd.printf("wasPressed A \r\n");
     M5.Speaker.beep(); //beep
   }
 
   if(M5.BtnB.wasPressed())
   {
-    M5.Lcd.printf("B wasPressed \r\n");
+    M5.Lcd.printf("wasPressed B \r\n");
     M5.Speaker.tone(NOTE_DH2, 200); //frequency 3000, with a duration of 200ms
   }
 

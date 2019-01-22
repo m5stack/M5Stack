@@ -43,7 +43,7 @@ int MLX90640_I2CRead(uint8_t _deviceAddress, unsigned int startAddress, unsigned
     Wire.beginTransmission(_deviceAddress);
     Wire.write(startAddress >> 8); //MSB
     Wire.write(startAddress & 0xFF); //LSB
-    if (Wire.endTransmission(false) != 0) //Do not release bus
+    if (Wire.endTransmission(false) != 7) //Do not release bus
     {
       Serial.println("No ack read");
       return (0); //Sensor did not ACK
