@@ -1,13 +1,13 @@
 /*
     Name:       button.ino
-    Created:	  2018/9/21 14:06:15
+    Created:    2018/9/21 14:06:15
     Author:     sakabin
 */
 
 #include <M5Stack.h>
 // The setup() function runs once each time the micro-controller starts
 void setup() {
-  // init lcd, serial, not init sd card
+  // init lcd, serial, but don't init sd card
   M5.begin(true, false, true);
   M5.Lcd.clear(BLACK);
   M5.Lcd.setTextColor(YELLOW);
@@ -15,7 +15,8 @@ void setup() {
   M5.Lcd.setCursor(65, 10);
   M5.Lcd.println("Button example");
   M5.Lcd.setCursor(3, 35);
-  M5.Lcd.println("Press button B 700ms clear");
+  M5.Lcd.println("Press button B for 700ms");
+  M5.Lcd.println("to clear screen.");
   M5.Lcd.setTextColor(RED);
 }
 
@@ -23,7 +24,7 @@ void setup() {
 void loop() {
   M5.update();
  
-  // if want use Releasefor; suggest use Release in press event
+  // if you want to use Releasefor("was released for"), use .wasReleasefor(int time) below
   if (M5.BtnA.wasReleased()) {
     M5.Lcd.print('A');
   } else if (M5.BtnB.wasReleased()) {
