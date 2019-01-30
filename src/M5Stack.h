@@ -133,6 +133,7 @@ class M5Stack {
 
     // MPU9250
 #ifdef MPU9250_INSDE
+    #include "utility/MPU9250.h"
     MPU9250 IMU = MPU9250();
 #endif
 
