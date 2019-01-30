@@ -1,0 +1,29 @@
+menu "M5Stack"
+
+choice CORE_TYPE
+    prompt "Type of Core"
+    default M5STACK_BASIC
+    help
+        Type of Core.
+
+config M5STICK
+    bool "M5Stick"
+config M5STACK_BASIC
+    bool "M5Stack Basic"
+config M5STACK_GRAY
+    bool "M5Stack Gray"
+config M5STACK_FIRE
+    bool "M5Stack Fire"
+endchoice
+
+config MPU9250_INSDE
+    bool "Enable MPU9250"
+    default "y" if M5STICK="y"
+    default "n" if M5STACK_BASIC="y"
+    default "y" if M5STACK_GRAY="y"
+    default "y" if M5STACK_FIRE="y"
+    default "n"
+    help
+        Select this if your core has MPU9250 inside.
+endmenu
+
