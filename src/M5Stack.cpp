@@ -32,7 +32,7 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable) {
 	}
 
 	// TONE
-	Speaker.begin();
+	// Speaker.begin();
 
 	// Set wakeup button
 	setWakeupButton(BUTTON_A_PIN);
