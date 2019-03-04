@@ -20,6 +20,14 @@
         M5.begin();
         M5.update();
 
+    Power:
+        M5.Power.setPowerBoostKeepOn()
+        M5.Power.setCharge(uint8_t mode);
+        M5.Power.setPowerBoostKeepOn(bool en);
+        M5.Power.isChargeFull();
+        M5.Power.setWakeupButton(uint8_t button);
+        M5.Power.powerOFF();
+
     LCD:
         M5.lcd.setBrightness(uint8_t brightness);
         M5.Lcd.drawPixel(int16_t x, int16_t y, uint16_t color);
@@ -97,23 +105,14 @@
 #include "utility/Config.h"
 #include "utility/Button.h"
 #include "utility/Speaker.h"
-
+#include "utility/Power.h"
 
 class M5Stack {
 
  public:
     M5Stack();
-
-    void begin(bool LCDEnable=true, bool SDEnable=true, bool SerialEnable=true);
+    void begin(bool LCDEnable=true, bool SDEnable=true, bool SerialEnable=true,bool I2CEnable=false);
     void update();
-
-    #ifdef M5STACK_FIRE
-    void setPowerBoostKeepOn(bool en);
-    uint8_t isChargeFull();
-    #endif
-
-    void setWakeupButton(uint8_t button);
-    void powerOFF();
 
     // Button API
     #define DEBOUNCE_MS 10
@@ -127,6 +126,9 @@ class M5Stack {
     // LCD
     M5Display Lcd = M5Display();
 
+    //Power
+    POWER Power;
+
     // UART
     // HardwareSerial Serial0 = HardwareSerial(0);
     // HardwareSerial Serial2 = HardwareSerial(2);
@@ -136,9 +138,16 @@ class M5Stack {
     MPU9250 IMU = MPU9250();
 #endif
 
+  /**
+  * Function has been move to Power class.(for compatibility)
+  * This name will be removed in a future release.
+  */
+    void setPowerBoostKeepOn(bool en);
+    void setWakeupButton(uint8_t button);
+    void powerOFF();
+
  private:
     bool isInited;
-    uint8_t _wakeupPin;
 };
 
 extern M5Stack M5;
