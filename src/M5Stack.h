@@ -111,7 +111,7 @@ class M5Stack {
 
  public:
     M5Stack();
-    void begin(bool LCDEnable=true, bool SDEnable=true, bool SerialEnable=true,bool I2CEnable=true);
+    void begin(bool LCDEnable=true, bool SDEnable=true, bool SerialEnable=true,bool I2CEnable=false);
     void update();
 
     // Button API
