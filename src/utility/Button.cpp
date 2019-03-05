@@ -109,8 +109,8 @@ uint8_t Button::wasReleased(void) {
 }
 
 uint8_t Button::wasReleasefor(uint32_t ms) {
-	_hold_time = ms;
-	return !_state && _changed && millis() - _pressTime >= ms;
+    _hold_time = ms;
+    return !_state && _changed && millis() - _pressTime >= ms;
 }
 /*----------------------------------------------------------------------*
  * pressedFor(ms) and releasedFor(ms) check to see if the button is     *
