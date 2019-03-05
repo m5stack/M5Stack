@@ -113,26 +113,26 @@ void POWER::reset() {
 /* caution: if use off()function on running battery ,
    M5stack can't restart from Power switch.
    (Switch pull up power has down by hard power down)*/
-bool POWER::batteryMode(bool en){
-
-	uint8_t data;
-	Wire.beginTransmission(IP5306_ADDR);
-	Wire.write(IP5306_REG_READ1);
-	Wire.endTransmission();
-
-	if(Wire.requestFrom(IP5306_ADDR, 1))
-	{
-		data = Wire.read();
-
-		Wire.beginTransmission(IP5306_ADDR);
-		Wire.write(IP5306_REG_READ1);
-		if (en) Wire.write(data |  BOOST_ENABLE_BIT);
-		else Wire.write(data &(~BOOST_ENABLE_BIT));
-		Wire.endTransmission();
-		return true;
-	}
-	return false;
-}
+//bool POWER::batteryMode(bool en){
+//
+//	uint8_t data;
+//	Wire.beginTransmission(IP5306_ADDR);
+//	Wire.write(IP5306_REG_READ1);
+//	Wire.endTransmission();
+//
+//	if(Wire.requestFrom(IP5306_ADDR, 1))
+//	{
+//		data = Wire.read();
+//
+//		Wire.beginTransmission(IP5306_ADDR);
+//		Wire.write(IP5306_REG_READ1);
+//		if (en) Wire.write(data |  BOOST_ENABLE_BIT);
+//		else Wire.write(data &(~BOOST_ENABLE_BIT));
+//		Wire.endTransmission();
+//		return true;
+//	}
+//	return false;
+//}
 
 void POWER::deepSleep(){
 
