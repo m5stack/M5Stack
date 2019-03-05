@@ -40,7 +40,7 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable,bool I2CEna
 	// I2C init
 	if(I2CEnable)
 	{
-		Wire.begin(21, 22);
+		Wire.begin(SDA, SCL);
 	}
 
 	if (SerialEnable) {
