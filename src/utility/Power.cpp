@@ -15,6 +15,7 @@
 #define IP5306_REG_READ1      (0x71)
 #define CHARGE_FULL_BIT       (   3)
 #define BOOST_OUT_BIT         (0x02)
+#define LIGHT_LOAD_BIT 		  (0x20)
 #define CHARGE_OUT_BIT        (0x10)
 #define BOOST_ENABLE_BIT      (0x80)
 
@@ -24,8 +25,32 @@ POWER::POWER()
 {
 }
 
-#ifdef M5STACK_FIRE
+/*
+	default: false
+	false: when the current is too small, ip5306 will automatically shut down
+*/
+bool POWER::setKeepLightLoad(bool en) {
+	uint8_t data;
+	Wire.beginTransmission(IP5306_ADDR);
+	Wire.write(IP5306_REG_SYS_CTL0);
+	Wire.endTransmission();
 
+	if(Wire.requestFrom(IP5306_ADDR, 1))
+	{
+		data = Wire.read();
+
+		Wire.beginTransmission(IP5306_ADDR);
+		Wire.write(IP5306_REG_SYS_CTL0);
+		if (!en) Wire.write(data |  LIGHT_LOAD_BIT); 
+		else Wire.write(data &(~LIGHT_LOAD_BIT));  
+		Wire.endTransmission();
+		return true;
+	}
+	return false;
+}
+
+#ifdef M5STACK_FIRE
+// true: Output normally open
 bool POWER::setPowerBoostKeepOn(bool en){
 	uint8_t data;
 	Wire.beginTransmission(IP5306_ADDR);
@@ -47,6 +72,7 @@ bool POWER::setPowerBoostKeepOn(bool en){
 }
 #endif
 
+// if charge full,try set charge enable->disable->enable,can be recharged
 bool POWER::setCharge(bool en){
 	uint8_t data;
 	Wire.beginTransmission(IP5306_ADDR);
@@ -67,6 +93,7 @@ bool POWER::setCharge(bool en){
 	return false;
 }
 
+// full return true, else return false
 bool POWER::isChargeFull(){
 	uint8_t data;
 	Wire.beginTransmission(IP5306_ADDR);
@@ -81,6 +108,7 @@ bool POWER::isChargeFull(){
 	return false;
 }
 
+// test if ip5306 is an i2c version
 bool POWER::canControl(){
 	uint8_t data;
 	Wire.beginTransmission(IP5306_ADDR);
@@ -88,6 +116,7 @@ bool POWER::canControl(){
 	return(Wire.endTransmission()==0);
 }
 
+//true:charge, false:discharge
 bool POWER::isCharging(){
 	uint8_t data;
 	Wire.beginTransmission(IP5306_ADDR);
