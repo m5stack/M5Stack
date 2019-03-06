@@ -21,7 +21,7 @@ class POWER
         bool isChargeFull();
         bool isCharging();
         void setWakeupButton(uint8_t button);
-        bool batteryMode(bool en);
+        //bool batteryMode(bool en);
         void deepSleep();
         void reset();
 
