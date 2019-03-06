@@ -16,6 +16,7 @@ class POWER
         POWER();
         bool setCharge(bool enabled);
 
+        bool setKeepLightLoad(bool en);
         bool setPowerBoostKeepOn(bool en);
         bool canControl();
         bool isChargeFull();
