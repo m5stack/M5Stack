@@ -26,7 +26,7 @@ BtnC	KEYWORD1
 
 begin	KEYWORD2
 update	KEYWORD2
-
+Power	KEYWORD2
 isPressed	KEYWORD2
 wasPressed	KEYWORD2
 pressedFor	KEYWORD2
