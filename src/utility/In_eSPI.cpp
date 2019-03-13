@@ -3917,95 +3917,6 @@ void TFT_eSPI::invertDisplay(boolean i)
 
 
 /***************************************************************************************
-** Function name:           decodeUTF8
-** Description:             Serial UTF-8 decoder with fall-back to extended ASCII
-*************************************************************************************x*/
-#define DECODE_UTF8 // Test only, comment out to stop decoding
-uint16_t TFT_eSPI::decodeUTF8(uint8_t c)
-{
-#ifdef DECODE_UTF8
-  // 7 bit Unicode Code Point
-  if ((c & 0x80) == 0x00) {
-    decoderState = 0;
-    return (uint16_t)c;
-  }
-
-  if (decoderState == 0)
-  {
-    // 11 bit Unicode Code Point
-    if ((c & 0xE0) == 0xC0)
-    {
-      decoderBuffer = ((c & 0x1F)<<6);
-      decoderState = 1;
-      return 0;
-    }
-
-    // 16 bit Unicode Code Point
-    if ((c & 0xF0) == 0xE0)
-    {
-      decoderBuffer = ((c & 0x0F)<<12);
-      decoderState = 2;
-      return 0;
-    }
-    // 21 bit Unicode  Code Point not supported so fall-back to extended ASCII
-    if ((c & 0xF8) == 0xF0) return (uint16_t)c;
-  }
-  else
-  {
-    if (decoderState == 2)
-    {
-      decoderBuffer |= ((c & 0x3F)<<6);
-      decoderState--;
-      return 0;
-    }
-    else
-    {
-      decoderBuffer |= (c & 0x3F);
-      decoderState = 0;
-      return decoderBuffer;
-    }
-  }
-
-  decoderState = 0;
-#endif
-
-  return (uint16_t)c; // fall-back to extended ASCII
-}
-
-
-/***************************************************************************************
-** Function name:           decodeUTF8
-** Description:             Line buffer UTF-8 decoder with fall-back to extended ASCII
-*************************************************************************************x*/
-uint16_t TFT_eSPI::decodeUTF8(uint8_t *buf, uint16_t *index, uint16_t remaining)
-{
-  uint16_t c = buf[(*index)++];
-  //Serial.print("Byte from string = 0x"); Serial.println(c, HEX);
-
-#ifdef DECODE_UTF8
-  // 7 bit Unicode
-  if ((c & 0x80) == 0x00) return c;
-
-  // 11 bit Unicode
-  if (((c & 0xE0) == 0xC0) && (remaining > 1))
-    return ((c & 0x1F)<<6) | (buf[(*index)++]&0x3F);
-
-  // 16 bit Unicode
-  if (((c & 0xF0) == 0xE0) && (remaining > 2))
-  {
-    c = ((c & 0x0F)<<12) | ((buf[(*index)++]&0x3F)<<6);
-    return  c | ((buf[(*index)++]&0x3F));
-  }
-
-  // 21 bit Unicode not supported so fall-back to extended ASCII
-  // if ((c & 0xF8) == 0xF0) return c;
-#endif
-
-  return c; // fall-back to extended ASCII
-}
-
-
-/***************************************************************************************
 ** Function name:           write
 ** Description:             draw characters piped through serial stream
 ***************************************************************************************/
@@ -5292,7 +5203,7 @@ void TFT_eSPI::getSetup(setup_t &tft_settings)
 // #include "Extensions/Sprite.cpp"
 
 #ifdef SMOOTH_FONT
-  #include "../Extensions/Smooth_font.cpp"
+  #include "Extensions/Smooth_font.cpp"
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////////

@@ -805,8 +805,6 @@ class TFT_eSPI : public Print {
   void     writeColor(uint16_t color, uint32_t len); // Write colours without transaction overhead
   void     endWrite(void);                           // End SPI transaction
 
-  uint16_t decodeUTF8(uint8_t *buf, uint16_t *index, uint16_t remaining);
-  uint16_t decodeUTF8(uint8_t c);
   size_t   write(uint8_t);
 
 #ifdef TFT_SDA_READ
@@ -831,9 +829,6 @@ class TFT_eSPI : public Print {
 
   int16_t _xpivot;   // x pivot point coordinate
   int16_t _ypivot;   // x pivot point coordinate
-
-  uint8_t  decoderState = 0;   // UTF8 decoder state
-  uint16_t decoderBuffer;      // Unicode code-point buffer
 
  private:
 
@@ -892,7 +887,7 @@ class TFT_eSPI : public Print {
 
 // Load the Anti-aliased font extension
 #ifdef SMOOTH_FONT
-  #include "../Extensions/Smooth_font.h"
+  #include "Extensions/Smooth_font.h"
 #endif
 
 }; // End of class TFT_eSPI
