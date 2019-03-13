@@ -1,8 +1,8 @@
 # M5Stack Library
 
-English | [中文](docs/getting_started_cn.md)
+English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_started_ja.md)
 
-Welcom to program with M5Stack Core
+Welcome to program with M5Stack Core
 
 ## 1. Get Started
 
@@ -29,7 +29,7 @@ https://github.com/m5stack/M5Stack/blob/master/src/M5Stack.h#L19
 
 #### Pinout
 
-*We have several kinds of M5Cores, There is [their difference in schematic](https://github.com/m5stack/M5-Schematic/blob/master/Core/hardware_diff_between_m5cores.md).*
+*We have several kinds of M5Cores, There is [their difference in schematic](https://github.com/m5stack/M5-Schematic/blob/master/Core/hardware_difference_between_cores.md).*
 
 **LCD & TF Card**
 
