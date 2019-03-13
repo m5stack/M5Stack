@@ -12,24 +12,27 @@
 
 class POWER
 {
-    public:
-        POWER();
-        bool setCharge(bool enabled);
+ public:
+    POWER();
+    bool setCharge(bool enabled);
 
-        bool setKeepLightLoad(bool en);
-        bool setPowerBoostKeepOn(bool en);
-        bool canControl();
-        bool isChargeFull();
-        bool isCharging();
-        int8_t getBatteryLevel();
-        
-        void setWakeupButton(uint8_t button);
-        //bool batteryMode(bool en);
-        void deepSleep();
-        void reset();
+    bool setKeepLightLoad(bool en);
+    bool setPowerBoostKeepOn(bool en);
+    bool setAutoBootOnLoad(bool en);
+    bool canControl();
+    bool isChargeFull();
+    bool isCharging();
+    int8_t getBatteryLevel();
+    
+    void setWakeupButton(uint8_t button);
+    //bool batteryMode(bool en);
+    void deepSleep();
+    void reset();
 
-    private:
-        uint8_t _wakeupPin;
+ private:
+    uint8_t _wakeupPin;
 
+    bool getI2CReg(uint8_t *result, uint8_t address, uint8_t reg);
+    bool setI2CReg(uint8_t address, uint8_t reg, uint8_t value);
 };
 #endif
