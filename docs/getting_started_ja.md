@@ -1,6 +1,6 @@
 # M5Stack Library
 
-English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_started_ja.md)
+[English](../README.md) | [中文](getting_started_cn.md) | 日本語
 
 M5Stack Core のライブラリへようこそ
 
