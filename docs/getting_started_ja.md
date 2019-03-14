@@ -4,9 +4,9 @@ English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_starte
 
 M5Stack Core のライブラリへようこそ
 
-## 1. 始めましょう
+## 1. 始めよう
 
-#### スタートアップ環境を構築しましょう
+#### M5Stackの開発環境を構築しよう
 
 *1.MacOS環境*
 
@@ -29,7 +29,7 @@ https://github.com/m5stack/M5Stack/blob/master/src/M5Stack.h#L19
 
 #### I/Oインタフェイス 
 
-* M5Coresは複数のバリエーションがあります。違いは [こちらの回路図を見てください](https://github.com/m5stack/M5-Schematic/blob/master/Core/hardware_difference_between_cores_ja.md) *
+*M5Coreは複数のバリエーションがあります。違いは [こちら](https://github.com/m5stack/M5-Schematic/blob/master/Core/hardware_difference_between_cores_ja.md)*
 
 **LCD & SDカード**
 
@@ -61,7 +61,7 @@ https://github.com/m5stack/M5Stack/blob/master/src/M5Stack.h#L19
 ### M-バス
 ![image](M-BUS.jpg)
 
-## 5. 素晴らしい実装例
+## 5. 素晴らしい応用例
 
 * [M5Stack-SD-Updater](https://github.com/tobozo/M5Stack-SD-Updater) - カスタマイズ可能な M5Stack用メニュー - アプリはSDカードから読み込めます
   card
@@ -129,10 +129,10 @@ https://github.com/m5stack/M5Stack/blob/master/src/M5Stack.h#L19
 
 #### ノート:
 
-* シリアル通信を行うためのUSBドライバを導入する方法
+* シリアル通信用USBドライバの導入方法
 
   https://docs.m5stack.com/#/ja/related_documents/establish_serial_connection
 
-* M5Stackライブラリを更新する方法
+* M5Stackライブラリの更新方法
 
   https://docs.m5stack.com/#/ja/related_documents/upgrade_m5stack_lib
