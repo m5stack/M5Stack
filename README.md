@@ -1,8 +1,8 @@
 # M5Stack Library
 
-English | [中文](docs/getting_started_cn.md)
+English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_started_ja.md)
 
-Welcom to program with M5Stack Core
+Welcome to program with M5Stack Core
 
 ## 1. Get Started
 
