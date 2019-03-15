@@ -7,8 +7,8 @@
  *----------------------------------------------------------------------*/
 #ifndef Power_h
 #define Power_h
-#include <Arduino.h> 
-#include <Wire.h> 
+#include <Arduino.h>
+#include <Wire.h>
 
 class POWER
 {
@@ -22,7 +22,7 @@ class POWER
     bool isChargeFull();
     bool isCharging();
     int8_t getBatteryLevel();
-    
+
     void setWakeupButton(uint8_t button);
     //bool batteryMode(bool en);
     void deepSleep();
