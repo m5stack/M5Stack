@@ -7,29 +7,28 @@
  *----------------------------------------------------------------------*/
 #ifndef Power_h
 #define Power_h
-#include <Arduino.h> 
-#include <Wire.h> 
+#include <Arduino.h>
+#include <Wire.h>
 
 class POWER
 {
-    public:
-        POWER();
-        bool setCharge(bool enabled);
+ public:
+    POWER();
+    bool setCharge(bool en);
+    bool setKeepLightLoad(bool en);
+    bool setPowerBoostKeepOn(bool en);
+    bool setAutoBootOnLoad(bool en);
+    bool canControl();
+    bool isChargeFull();
+    bool isCharging();
+    int8_t getBatteryLevel();
 
-        bool setKeepLightLoad(bool en);
-        bool setPowerBoostKeepOn(bool en);
-        bool canControl();
-        bool isChargeFull();
-        bool isCharging();
-        int8_t getBatteryLevel();
-        
-        void setWakeupButton(uint8_t button);
-        //bool batteryMode(bool en);
-        void deepSleep();
-        void reset();
+    void setWakeupButton(uint8_t button);
+    //bool batteryMode(bool en);
+    void deepSleep();
+    void reset();
 
-    private:
-        uint8_t _wakeupPin;
-
+ private:
+    uint8_t _wakeupPin;
 };
 #endif
