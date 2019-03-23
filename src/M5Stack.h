@@ -142,9 +142,9 @@ class M5Stack {
   * Function has been move to Power class.(for compatibility)
   * This name will be removed in a future release.
   */
-    void setPowerBoostKeepOn(bool en);
-    void setWakeupButton(uint8_t button);
-    void powerOFF();
+    void setPowerBoostKeepOn(bool en)	  __attribute__ ((deprecated));
+    void setWakeupButton(uint8_t button)  __attribute__ ((deprecated));
+    void powerOFF()						  __attribute__ ((deprecated));
 
  private:
     bool isInited;

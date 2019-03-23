@@ -7,6 +7,8 @@
  *----------------------------------------------------------------------*/
 #include "Power.h"
 #include "../M5Stack.h"
+#include <rom/rtc.h>
+#include <esp_sleep.h>
 
 // ================ Power IC IP5306 ===================
 #define IP5306_ADDR           (117) // 0x75
@@ -139,9 +141,39 @@ void POWER::setWakeupButton(uint8_t button) {
 }
 
 void POWER::reset() {
+
     esp_restart();
 }
 
+bool POWER::isResetbySoftware()
+{
+    RESET_REASON reset_reason=rtc_get_reset_reason(0);
+    return( reset_reason==SW_RESET || 
+            reset_reason==SW_CPU_RESET);
+}
+
+bool POWER::isResetbyWatchdog()
+{
+    RESET_REASON reset_reason=rtc_get_reset_reason(0);
+    return( reset_reason==TG0WDT_SYS_RESET || 
+            reset_reason==TG1WDT_SYS_RESET ||
+            reset_reason==OWDT_RESET       ||            
+            reset_reason==RTCWDT_CPU_RESET ||
+            reset_reason==RTCWDT_RTC_RESET ||
+            reset_reason==TGWDT_CPU_RESET );
+}
+
+bool POWER::isResetbyDeepsleep()
+{
+    RESET_REASON reset_reason=rtc_get_reset_reason(0);
+    return( reset_reason==DEEPSLEEP_RESET);
+}
+
+bool POWER::isResetbyPowerSW()
+{
+    RESET_REASON reset_reason=rtc_get_reset_reason(0);
+    return(reset_reason==POWERON_RESET);
+}
 /* caution: if use off()function on running battery ,
    M5stack can't restart from Power switch.
    (Switch pull up power has down by hard power down)*/
@@ -166,7 +198,7 @@ void POWER::reset() {
 //    return false;
 //}
 
-void POWER::deepSleep(){
+void POWER::deepSleep(uint64_t time_in_us){
 
     #ifdef M5STACK_FIRE
     // Keep power keep boost on
@@ -183,6 +215,36 @@ void POWER::deepSleep(){
     while(digitalRead(_wakeupPin) == LOW) {
         delay(10);
     }
-    esp_deep_sleep_start();
+
+    (time_in_us==0)?esp_deep_sleep_start():esp_deep_sleep(time_in_us);
 }
+
+void POWER::lightSleep(uint64_t time_in_us){
+
+    #ifdef M5STACK_FIRE
+    // Keep power keep boost on
+    setPowerBoostKeepOn(true);
+    #endif
+
+    // power off the Lcd
+    M5.Lcd.setBrightness(0);
+    M5.Lcd.sleep();
+
+    // ESP32 into deep sleep
+    esp_sleep_enable_ext0_wakeup((gpio_num_t)_wakeupPin , LOW);
+    esp_sleep_pd_config(ESP_PD_DOMAIN_RTC_PERIPH,ESP_PD_OPTION_AUTO);
+
+    while(digitalRead(_wakeupPin) == LOW) {
+        delay(10);
+    }
+    if(time_in_us>0){
+        esp_sleep_enable_timer_wakeup(time_in_us);
+    }
+    esp_light_sleep_start();
+
+    // power on the Lcd
+    M5.Lcd.wakeup();    
+    M5.Lcd.setBrightness(200);
+}
+
 

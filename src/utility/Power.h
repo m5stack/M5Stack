@@ -14,18 +14,35 @@ class POWER
 {
  public:
     POWER();
-    bool setCharge(bool en);
+    bool canControl();
+    
+    // -- control for power  
     bool setKeepLightLoad(bool en);
     bool setPowerBoostKeepOn(bool en);
     bool setAutoBootOnLoad(bool en);
-    bool canControl();
+
+    // -- control for battery  
+    bool setCharge(bool en);
     bool isChargeFull();
     bool isCharging();
     int8_t getBatteryLevel();
-
+    
+    // -- configuration for wakeup 
     void setWakeupButton(uint8_t button);
+    
+    // -- get resson for startup 
+    bool isResetbyWatchdog();
+    bool isResetbyDeepsleep();
+    bool isResetbySoftware();
+    bool isResetbyPowerSW();
+
     //bool batteryMode(bool en);
-    void deepSleep();
+
+    // -- sleep
+    void deepSleep(uint64_t time_in_us=0);
+    void lightSleep(uint64_t time_in_us=0);
+
+    // -- software reset
     void reset();
 
  private:

@@ -21,6 +21,12 @@ void M5Display::sleep() {
   endWrite();
 }
 
+void M5Display::wakeup() {
+  startWrite();
+  writecommand(ILI9341_SLPOUT);
+  endWrite();
+}
+
 void M5Display::setBrightness(uint8_t brightness) {
   ledcWrite(BLK_PWM_CHANNEL, brightness);
 }
