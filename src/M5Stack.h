@@ -27,6 +27,11 @@
         M5.Power.isChargeFull();
         M5.Power.setWakeupButton(uint8_t button);
         M5.Power.powerOFF();
+         
+        bool setPowerBoostOnOff(bool en);
+        bool setPowerBoostSet(bool en);
+        bool setPowerVin(bool en);
+        bool setPowerWLEDSet(bool en);
 
     LCD:
         M5.lcd.setBrightness(uint8_t brightness);

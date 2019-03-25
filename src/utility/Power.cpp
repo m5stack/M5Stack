@@ -11,20 +11,34 @@
 // ================ Power IC IP5306 ===================
 #define IP5306_ADDR           (117) // 0x75
 #define IP5306_REG_SYS_CTL0   (0x00)
+#define IP5306_REG_SYS_CTL1   (0x01)
 #define IP5306_REG_READ0      (0x70)
 #define IP5306_REG_READ1      (0x71)
 #define IP5306_REG_READ3      (0x78)
+
+
 #define CHARGE_FULL_BIT       (0x08)
 #define BOOST_OUT_BIT         (0x02)
 #define BOOT_ON_LOAD_BIT      (0x04)
 #define LIGHT_LOAD_BIT        (0x20)
 #define CHARGE_OUT_BIT        (0x10)
-#define BOOST_ENABLE_BIT      (0x80)
+//#define BOOST_ENABLE_BIT      (0x80)
+
+
+#define BOOST_SET_BIT          (0x80)
+#define WLED_SET_BIT           (0x40)
+#define BOOST_ENABLE_BIT       (0x20)
+#define VIN_ENABLE_BIT         (0x04)
+#define BATLOW_ENABLE_BIT      (0x00)
 
 extern M5Stack M5;
 
 POWER::POWER()
 {
+}
+
+void POWER::begin(){
+    Wire.begin(21, 22);
 }
 
 static bool getI2CReg(uint8_t *result, uint8_t address, uint8_t reg)
@@ -45,6 +59,51 @@ static bool setI2CReg(uint8_t address, uint8_t reg, uint8_t value)
     Wire.write(value);
     return (Wire.endTransmission() == 0);
 }
+
+
+bool POWER::setPowerBoostOnOff(bool en) {
+    uint8_t data;
+    if (getI2CReg(&data, IP5306_ADDR, IP5306_REG_SYS_CTL1)) {
+        return setI2CReg(IP5306_ADDR, IP5306_REG_SYS_CTL1
+                        ,en ? (data |  BOOST_SET_BIT)
+                            : (data &(~BOOST_SET_BIT)));
+    }
+    return false;
+}
+
+
+bool POWER::setPowerBoostSet(bool en) {
+    uint8_t data;
+    if (getI2CReg(&data, IP5306_ADDR, IP5306_REG_SYS_CTL1)) {
+        return setI2CReg(IP5306_ADDR, IP5306_REG_SYS_CTL1
+                        ,en ? (data |  BOOST_ENABLE_BIT)
+                            : (data &(~BOOST_ENABLE_BIT)));
+    }
+    return false;
+}
+
+bool POWER::setPowerVin(bool en) {
+    uint8_t data;
+    if (getI2CReg(&data, IP5306_ADDR, IP5306_REG_SYS_CTL1)) {
+        return setI2CReg(IP5306_ADDR, IP5306_REG_SYS_CTL1
+                        ,en ? (data |  VIN_ENABLE_BIT)
+                            : (data &(~VIN_ENABLE_BIT)));
+    }
+    return false;
+}
+
+
+bool POWER::setPowerWLEDSet(bool en) {
+    uint8_t data;
+    if (getI2CReg(&data, IP5306_ADDR, IP5306_REG_SYS_CTL1)) {
+        return setI2CReg(IP5306_ADDR, IP5306_REG_SYS_CTL1
+                        ,en ? (data |  WLED_SET_BIT)
+                            : (data &(~WLED_SET_BIT)));
+    }
+    return false;
+}
+
+
 
 /*
     default: false

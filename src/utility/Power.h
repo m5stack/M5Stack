@@ -14,6 +14,7 @@ class POWER
 {
  public:
     POWER();
+    void begin();
     bool setCharge(bool en);
     bool setKeepLightLoad(bool en);
     bool setPowerBoostKeepOn(bool en);
@@ -27,6 +28,12 @@ class POWER
     //bool batteryMode(bool en);
     void deepSleep();
     void reset();
+
+
+    bool setPowerBoostOnOff(bool en);
+    bool setPowerBoostSet(bool en);
+    bool setPowerVin(bool en);
+    bool setPowerWLEDSet(bool en);
 
  private:
     uint8_t _wakeupPin;
