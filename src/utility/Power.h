@@ -16,7 +16,7 @@ class POWER
     POWER();
     bool canControl();
     void begin();
-    bool setCharge(bool en);
+   // bool setCharge(bool en);
     bool setKeepLightLoad(bool en);
     bool setPowerBoostKeepOn(bool en);
     bool setAutoBootOnLoad(bool en);
