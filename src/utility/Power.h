@@ -15,8 +15,8 @@ class POWER
  public:
     POWER();
     bool canControl();
-    
-    // -- control for power  
+    void begin();
+    bool setCharge(bool en);
     bool setKeepLightLoad(bool en);
     bool setPowerBoostKeepOn(bool en);
     bool setAutoBootOnLoad(bool en);
@@ -44,6 +44,12 @@ class POWER
 
     // -- software reset
     void reset();
+
+
+    bool setPowerBoostOnOff(bool en);
+    bool setPowerBoostSet(bool en);
+    bool setPowerVin(bool en);
+    bool setPowerWLEDSet(bool en);
 
  private:
     uint8_t _wakeupPin;
