@@ -16,16 +16,23 @@ class POWER
     POWER();
     bool canControl();
     void begin();
-   // bool setCharge(bool en);
+	
+    // -- control for power  
     bool setKeepLightLoad(bool en);
     bool setPowerBoostKeepOn(bool en);
     bool setAutoBootOnLoad(bool en);
-
+    bool setLowPowerShutdown(bool en);
+    bool setPowerBoostOnOff(bool en);
+    bool setPowerBoostSet(bool en);
+    bool setPowerVin(bool en);
+    bool setPowerWLEDSet(bool en);
+   
     // -- control for battery  
     bool setCharge(bool en);
     bool isChargeFull();
     bool isCharging();
     int8_t getBatteryLevel();
+    bool batteryMode(bool en);
     
     // -- configuration for wakeup 
     void setWakeupButton(uint8_t button);
@@ -35,9 +42,7 @@ class POWER
     bool isResetbyDeepsleep();
     bool isResetbySoftware();
     bool isResetbyPowerSW();
-
-    //bool batteryMode(bool en);
-
+    
     // -- sleep
     void deepSleep(uint64_t time_in_us=0);
     void lightSleep(uint64_t time_in_us=0);
@@ -46,10 +51,6 @@ class POWER
     void reset();
 
 
-    bool setPowerBoostOnOff(bool en);
-    bool setPowerBoostSet(bool en);
-    bool setPowerVin(bool en);
-    bool setPowerWLEDSet(bool en);
 
  private:
     uint8_t _wakeupPin;

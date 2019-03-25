@@ -18,20 +18,27 @@
 #define IP5306_REG_READ1      (0x71)
 #define IP5306_REG_READ3      (0x78)
 
-
-#define CHARGE_FULL_BIT       (0x08)
-#define BOOST_OUT_BIT         (0x02)
-#define BOOT_ON_LOAD_BIT      (0x04)
-#define LIGHT_LOAD_BIT        (0x20)
+//- REG_CTL0
+#define BOOST_ENABLET_BIT     (0x20)
 #define CHARGE_OUT_BIT        (0x10)
-//#define BOOST_ENABLE_BIT      (0x80)
+#define BOOT_ON_LOAD_BIT      (0x04)
+#define BOOST_OUT_BIT         (0x02)
 
-
+//- REG_CTL1
 #define BOOST_SET_BIT          (0x80)
 #define WLED_SET_BIT           (0x40)
 #define BOOST_ENABLE_BIT       (0x20)
 #define VIN_ENABLE_BIT         (0x04)
-#define BATLOW_ENABLE_BIT      (0x00)
+
+//- REG_READ0
+#define CHARGE_ENABLE_BIT     (0x08)
+
+//- REG_READ1
+#define CHARGE_FULL_BIT       (0x08)
+
+//- REG_READ2
+#define LIGHT_LOAD_BIT        (0x20)
+#define LOWPOWER_SHUTDOWN_BIT (0x01)
 
 extern M5Stack M5;
 
@@ -43,30 +50,21 @@ void POWER::begin(){
     Wire.begin(21, 22);
 }
 
-static bool getI2CReg(uint8_t *result, uint8_t address, uint8_t reg)
+static bool getI2CReg(uint8_t *result, uint8_t address, uint8_t *reg)
 {
-    Wire.beginTransmission(address);
-    Wire.write(reg);
-    if (Wire.endTransmission(false) == 0 && Wire.requestFrom(address, (uint8_t)1)) {
-        *result = Wire.read();
-        return true;
-    }
-    return false;
+	return(M5.I2C.readByte(address,*reg,result));
 }
 
 static bool setI2CReg(uint8_t address, uint8_t reg, uint8_t value)
 {
-    Wire.beginTransmission(address);
-    Wire.write(reg);
-    Wire.write(value);
-    return (Wire.endTransmission() == 0);
+	return(M5.I2C.writeByte(address,reg,value));
 }
 
 
 bool POWER::setPowerBoostOnOff(bool en) {
     uint8_t data;
-    if (getI2CReg(&data, IP5306_ADDR, IP5306_REG_SYS_CTL1)) {
-        return setI2CReg(IP5306_ADDR, IP5306_REG_SYS_CTL1
+    if (M5.I2C.readByte(IP5306_ADDR,IP5306_REG_SYS_CTL1,&data)) {
+        return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1
                         ,en ? (data |  BOOST_SET_BIT)
                             : (data &(~BOOST_SET_BIT)));
     }
@@ -76,8 +74,8 @@ bool POWER::setPowerBoostOnOff(bool en) {
 
 bool POWER::setPowerBoostSet(bool en) {
     uint8_t data;
-    if (getI2CReg(&data, IP5306_ADDR, IP5306_REG_SYS_CTL1)) {
-        return setI2CReg(IP5306_ADDR, IP5306_REG_SYS_CTL1
+    if (M5.I2C.readByte(IP5306_ADDR,IP5306_REG_SYS_CTL1,&data)) {
+        return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1
                         ,en ? (data |  BOOST_ENABLE_BIT)
                             : (data &(~BOOST_ENABLE_BIT)));
     }
@@ -86,8 +84,8 @@ bool POWER::setPowerBoostSet(bool en) {
 
 bool POWER::setPowerVin(bool en) {
     uint8_t data;
-    if (getI2CReg(&data, IP5306_ADDR, IP5306_REG_SYS_CTL1)) {
-        return setI2CReg(IP5306_ADDR, IP5306_REG_SYS_CTL1
+    if (M5.I2C.readByte(IP5306_ADDR,IP5306_REG_SYS_CTL1,&data)) {
+        return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1
                         ,en ? (data |  VIN_ENABLE_BIT)
                             : (data &(~VIN_ENABLE_BIT)));
     }
@@ -97,8 +95,8 @@ bool POWER::setPowerVin(bool en) {
 
 bool POWER::setPowerWLEDSet(bool en) {
     uint8_t data;
-    if (getI2CReg(&data, IP5306_ADDR, IP5306_REG_SYS_CTL1)) {
-        return setI2CReg(IP5306_ADDR, IP5306_REG_SYS_CTL1
+    if (M5.I2C.readByte(IP5306_ADDR,IP5306_REG_SYS_CTL1,&data)) {
+        return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1
                         ,en ? (data |  WLED_SET_BIT)
                             : (data &(~WLED_SET_BIT)));
     }
@@ -113,8 +111,8 @@ bool POWER::setPowerWLEDSet(bool en) {
 */
 bool POWER::setKeepLightLoad(bool en) {
     uint8_t data;
-    if (getI2CReg(&data, IP5306_ADDR, IP5306_REG_SYS_CTL0)) {
-        return setI2CReg(IP5306_ADDR, IP5306_REG_SYS_CTL0
+    if (M5.I2C.readByte(IP5306_ADDR,IP5306_REG_SYS_CTL0,&data)) {
+        return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0
                         ,!en ? (data |  LIGHT_LOAD_BIT)
                              : (data &(~LIGHT_LOAD_BIT)));
     }
@@ -124,23 +122,33 @@ bool POWER::setKeepLightLoad(bool en) {
 // true: Output normally open
 bool POWER::setPowerBoostKeepOn(bool en) {
     uint8_t data;
-    if (getI2CReg(&data, IP5306_ADDR, IP5306_REG_SYS_CTL0)) {
-        return setI2CReg(IP5306_ADDR, IP5306_REG_SYS_CTL0
-                        ,en ? (data |  BOOST_OUT_BIT)
+    if (M5.I2C.readByte(IP5306_ADDR,IP5306_REG_SYS_CTL0,&data)) {
+        return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0
+                        ,!en ? (data |  BOOST_OUT_BIT)
                             : (data &(~BOOST_OUT_BIT)));
     }
     return false;
 }
 
+// true: if come low battery , the system going shutdown
+bool POWER::setLowPowerShutdown(bool en) {
+    uint8_t data;
+    if (M5.I2C.readByte(IP5306_ADDR,IP5306_REG_SYS_CTL1,&data)) {
+        return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1
+                        ,!en ? (data |  LOWPOWER_SHUTDOWN_BIT)
+                            : (data &(~LOWPOWER_SHUTDOWN_BIT)));
+    }
+    return false;
+}
 /*
     default: true
     true: If enough load is connected, the power will turn on.
 */
 bool POWER::setAutoBootOnLoad(bool en) {
     uint8_t data;
-    if (getI2CReg(&data, IP5306_ADDR, IP5306_REG_SYS_CTL0)) {
-        return setI2CReg(IP5306_ADDR, IP5306_REG_SYS_CTL0
-                        ,en ? (data |  BOOT_ON_LOAD_BIT)
+    if (M5.I2C.readByte(IP5306_ADDR,IP5306_REG_SYS_CTL0,&data)) {
+        return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0
+                        ,!en ? (data |  BOOT_ON_LOAD_BIT)
                             : (data &(~BOOT_ON_LOAD_BIT)));
     }
     return false;
@@ -149,9 +157,9 @@ bool POWER::setAutoBootOnLoad(bool en) {
 // if charge full,try set charge enable->disable->enable,can be recharged
 bool POWER::setCharge(bool en){
     uint8_t data;
-    if (getI2CReg(&data, IP5306_ADDR, IP5306_REG_SYS_CTL0)) {
-        return setI2CReg(IP5306_ADDR, IP5306_REG_SYS_CTL0
-                        ,en ? (data |  CHARGE_OUT_BIT)
+    if (M5.I2C.readByte(IP5306_ADDR,IP5306_REG_SYS_CTL0,&data)) {
+        return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0
+                        ,!en ? (data |  CHARGE_OUT_BIT)
                             : (data &(~CHARGE_OUT_BIT)));
     }
     return false;
@@ -160,30 +168,28 @@ bool POWER::setCharge(bool en){
 // full return true, else return false
 bool POWER::isChargeFull(){
     uint8_t data;
-    return (getI2CReg(&data, IP5306_ADDR, IP5306_REG_READ1))
+    return (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_READ1,&data))
          ? (data & CHARGE_FULL_BIT)
          : false;
 }
 
 // test if ip5306 is an i2c version
 bool POWER::canControl(){
-    Wire.beginTransmission(IP5306_ADDR);
-    Wire.write(IP5306_REG_READ0);
-    return (Wire.endTransmission()==0);
+	return M5.I2C.writeCommand(IP5306_ADDR,IP5306_REG_READ0);
 }
 
 //true:charge, false:discharge
 bool POWER::isCharging(){
     uint8_t data;
-    return (getI2CReg(&data, IP5306_ADDR, IP5306_REG_READ0))
-         ? (data & CHARGE_FULL_BIT)
+    return (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_READ0,&data))
+         ? (data & CHARGE_ENABLE_BIT)
          : false;
 }
 
 // Return percentage * 100
 int8_t POWER::getBatteryLevel() {
     uint8_t data;
-    if (getI2CReg(&data, IP5306_ADDR, IP5306_REG_READ3)) {
+    if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_READ3,&data)) {
         switch (data & 0xF0) {
         case 0x00: return 100;
         case 0x80: return 75;
@@ -233,29 +239,6 @@ bool POWER::isResetbyPowerSW()
     RESET_REASON reset_reason=rtc_get_reset_reason(0);
     return(reset_reason==POWERON_RESET);
 }
-/* caution: if use off()function on running battery ,
-   M5stack can't restart from Power switch.
-   (Switch pull up power has down by hard power down)*/
-//bool POWER::batteryMode(bool en){
-//
-//    uint8_t data;
-//    Wire.beginTransmission(IP5306_ADDR);
-//    Wire.write(IP5306_REG_READ1);
-//    Wire.endTransmission();
-//
-//    if(Wire.requestFrom(IP5306_ADDR, 1))
-//    {
-//        data = Wire.read();
-//
-//        Wire.beginTransmission(IP5306_ADDR);
-//        Wire.write(IP5306_REG_READ1);
-//        if (en) Wire.write(data |  BOOST_ENABLE_BIT);
-//        else Wire.write(data &(~BOOST_ENABLE_BIT));
-//        Wire.endTransmission();
-//        return true;
-//    }
-//    return false;
-//}
 
 void POWER::deepSleep(uint64_t time_in_us){
 

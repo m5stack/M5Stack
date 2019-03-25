@@ -1,3 +1,4 @@
+#include "..\M5Stack.h"
 #include "MPU9250.h"
 
 //==============================================================================
@@ -440,35 +441,21 @@ void MPU9250::MPU9250SelfTest(float * destination) // Should return percent devi
   }
 }
 
-        
 // Wire.h read and write protocols
 void MPU9250::writeByte(uint8_t address, uint8_t subAddress, uint8_t data)
 {
-  Wire.beginTransmission(address);  // Initialize the Tx buffer
-  Wire.write(subAddress);           // Put slave register address in Tx buffer
-  Wire.write(data);                 // Put data in Tx buffer
-  Wire.endTransmission();           // Send the Tx buffer
+	M5.I2C.writeByte(address, subAddress, data);
 }
 
 uint8_t MPU9250::readByte(uint8_t address, uint8_t subAddress)
 {
-  uint8_t data; // `data` will store the register data   
-  Wire.beginTransmission(address);         // Initialize the Tx buffer
-  Wire.write(subAddress);                  // Put slave register address in Tx buffer
-  Wire.endTransmission(false);             // Send the Tx buffer, but send a restart to keep connection alive
-  Wire.requestFrom(address, (uint8_t) 1);  // Read one byte from slave register address 
-  data = Wire.read();                      // Fill Rx buffer with result
-  return data;                             // Return data read from slave register
+  uint8_t result;
+  M5.I2C.readByte(address, subAddress,&result);
+  return (result);
 }
 
 void MPU9250::readBytes(uint8_t address, uint8_t subAddress, uint8_t count,
                         uint8_t * dest)
-{  
-  Wire.beginTransmission(address);   // Initialize the Tx buffer
-  Wire.write(subAddress);            // Put slave register address in Tx buffer
-  Wire.endTransmission(false);       // Send the Tx buffer, but send a restart to keep connection alive
-  uint8_t i = 0;
-  Wire.requestFrom(address, count);  // Read bytes from slave register address 
-  while (Wire.available()) {
-    dest[i++] = Wire.read(); }         // Put read results in the Rx buffer
+{
+  M5.I2C.readBytes(address, subAddress,count,dest);
 }

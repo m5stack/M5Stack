@@ -246,9 +246,9 @@ class MPU9250
     void initMPU9250();
     void calibrateMPU9250(float * gyroBias, float * accelBias);
     void MPU9250SelfTest(float * destination);
-    void writeByte(uint8_t, uint8_t, uint8_t);
-    uint8_t readByte(uint8_t, uint8_t);
-    void readBytes(uint8_t, uint8_t, uint8_t, uint8_t *);
+    void writeByte(uint8_t, uint8_t, uint8_t)   __attribute__ ((deprecated));
+    uint8_t readByte(uint8_t, uint8_t)   __attribute__ ((deprecated));
+    void readBytes(uint8_t, uint8_t, uint8_t, uint8_t *)   __attribute__ ((deprecated));
 };  // class MPU9250
 
 #endif // _MPU9250_H_
