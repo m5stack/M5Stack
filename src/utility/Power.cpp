@@ -124,7 +124,7 @@ bool POWER::setPowerBoostKeepOn(bool en) {
     uint8_t data;
     if (M5.I2C.readByte(IP5306_ADDR,IP5306_REG_SYS_CTL0,&data)) {
         return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0
-                        ,!en ? (data |  BOOST_OUT_BIT)
+                        ,en ? (data |  BOOST_OUT_BIT)
                             : (data &(~BOOST_OUT_BIT)));
     }
     return false;
@@ -135,7 +135,7 @@ bool POWER::setLowPowerShutdown(bool en) {
     uint8_t data;
     if (M5.I2C.readByte(IP5306_ADDR,IP5306_REG_SYS_CTL1,&data)) {
         return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1
-                        ,!en ? (data |  LOWPOWER_SHUTDOWN_BIT)
+                        ,en ? (data |  LOWPOWER_SHUTDOWN_BIT)
                             : (data &(~LOWPOWER_SHUTDOWN_BIT)));
     }
     return false;
@@ -148,7 +148,7 @@ bool POWER::setAutoBootOnLoad(bool en) {
     uint8_t data;
     if (M5.I2C.readByte(IP5306_ADDR,IP5306_REG_SYS_CTL0,&data)) {
         return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0
-                        ,!en ? (data |  BOOT_ON_LOAD_BIT)
+                        ,en ? (data |  BOOT_ON_LOAD_BIT)
                             : (data &(~BOOT_ON_LOAD_BIT)));
     }
     return false;
@@ -159,7 +159,7 @@ bool POWER::setCharge(bool en){
     uint8_t data;
     if (M5.I2C.readByte(IP5306_ADDR,IP5306_REG_SYS_CTL0,&data)) {
         return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0
-                        ,!en ? (data |  CHARGE_OUT_BIT)
+                        ,en ? (data |  CHARGE_OUT_BIT)
                             : (data &(~CHARGE_OUT_BIT)));
     }
     return false;
