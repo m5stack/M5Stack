@@ -111,6 +111,7 @@
 #include "utility/Button.h"
 #include "utility/Speaker.h"
 #include "utility/Power.h"
+#include "utility/CommUtil.h"
 
 class M5Stack {
 
@@ -142,6 +143,8 @@ class M5Stack {
 #ifdef MPU9250_INSDE
     MPU9250 IMU = MPU9250();
 #endif
+	// I2C
+	CommUtil I2C = CommUtil();
 
   /**
   * Function has been move to Power class.(for compatibility)
