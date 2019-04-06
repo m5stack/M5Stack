@@ -4,13 +4,12 @@
 #define M5Faces_h
 #include "M5Stack.h"
 
-class M5Faces
-{
-    public:
-		M5Faces();
-		bool canControlFaces();
-		uint8_t getch(void);
-		bool kbhit(void);
-    private:
+class M5Faces{
+  public:
+    M5Faces();
+    bool canControlFaces();
+    uint8_t getch(void);
+    bool kbhit(void);
+  private:
 };
 #endif

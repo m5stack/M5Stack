@@ -113,15 +113,16 @@
 #include "utility/Power.h"
 #include "utility/CommUtil.h"
 
-class M5Stack {
+class M5Stack
+{
 
- public:
+  public:
     M5Stack();
-    void begin(bool LCDEnable=true, bool SDEnable=true, bool SerialEnable=true,bool I2CEnable=false);
+    void begin(bool LCDEnable = true, bool SDEnable = true, bool SerialEnable = true, bool I2CEnable = false);
     void update();
 
-    // Button API
-    #define DEBOUNCE_MS 10
+// Button API
+#define DEBOUNCE_MS 10
     Button BtnA = Button(BUTTON_A_PIN, true, DEBOUNCE_MS);
     Button BtnB = Button(BUTTON_B_PIN, true, DEBOUNCE_MS);
     Button BtnC = Button(BUTTON_C_PIN, true, DEBOUNCE_MS);
@@ -143,18 +144,18 @@ class M5Stack {
 #ifdef MPU9250_INSDE
     MPU9250 IMU = MPU9250();
 #endif
-	// I2C
-	CommUtil I2C = CommUtil();
+    // I2C
+    CommUtil I2C = CommUtil();
 
-  /**
+    /**
   * Function has been move to Power class.(for compatibility)
   * This name will be removed in a future release.
   */
-    void setPowerBoostKeepOn(bool en)	  __attribute__ ((deprecated));
-    void setWakeupButton(uint8_t button)  __attribute__ ((deprecated));
-    void powerOFF()						  __attribute__ ((deprecated));
+    void setPowerBoostKeepOn(bool en) __attribute__((deprecated));
+    void setWakeupButton(uint8_t button) __attribute__((deprecated));
+    void powerOFF() __attribute__((deprecated));
 
- private:
+  private:
     bool isInited;
 };
 
@@ -167,4 +168,3 @@ extern M5Stack M5;
 #endif
 
 #endif
-

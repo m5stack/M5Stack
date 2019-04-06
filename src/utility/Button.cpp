@@ -29,8 +29,7 @@
  * (Note that invert cannot be implied from puEnable since an external  *
  *  pullup could be used.)                                              *
  *----------------------------------------------------------------------*/
-Button::Button(uint8_t pin, uint8_t invert, uint32_t dbTime)
-{
+Button::Button(uint8_t pin, uint8_t invert, uint32_t dbTime){
     _pin = pin;
     _invert = invert;
     _dbTime = dbTime;
@@ -50,8 +49,7 @@ Button::Button(uint8_t pin, uint8_t invert, uint32_t dbTime)
  * read() returns the state of the button, 1==pressed, 0==released,     *
  * does debouncing, captures and maintains times, previous states, etc. *
  *----------------------------------------------------------------------*/
-uint8_t Button::read(void)
-{
+uint8_t Button::read(void){
     static uint32_t ms;
     static uint8_t pinVal;
 
@@ -109,8 +107,8 @@ uint8_t Button::wasReleased(void) {
 }
 
 uint8_t Button::wasReleasefor(uint32_t ms) {
-	_hold_time = ms;
-	return !_state && _changed && millis() - _pressTime >= ms;
+  _hold_time = ms;
+  return !_state && _changed && millis() - _pressTime >= ms;
 }
 /*----------------------------------------------------------------------*
  * pressedFor(ms) and releasedFor(ms) check to see if the button is     *
