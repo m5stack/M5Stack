@@ -33,7 +33,7 @@
   SPIClass spi = SPIClass();
 #endif
 
-  // SUPPORT_TRANSACTIONS is mandatory for ESP32 so the hal mutex is toggled
+// SUPPORT_TRANSACTIONS is mandatory for ESP32 so the hal mutex is toggled
 #if defined (ESP32) && !defined (SUPPORT_TRANSACTIONS)
   #define SUPPORT_TRANSACTIONS
 #endif
@@ -58,7 +58,7 @@ void busDir(uint32_t mask, uint8_t mode);
 // establish settings and protect from interference from other
 // libraries.  Otherwise, they simply do nothing.
 
-inline void TFT_eSPI::spi_begin(void){
+inline void TFT_eSPI::spi_begin(void) {
 #if defined (SPI_HAS_TRANSACTION) && defined (SUPPORT_TRANSACTIONS) && !defined(ESP32_PARALLEL)
   if (locked) {locked = false; spi.beginTransaction(SPISettings(SPI_FREQUENCY, MSBFIRST, TFT_SPI_MODE)); CS_L;}
 #else
@@ -66,49 +66,49 @@ inline void TFT_eSPI::spi_begin(void){
 #endif
 }
 
-inline void TFT_eSPI::spi_end(void){
+inline void TFT_eSPI::spi_end(void) {
 #if defined (SPI_HAS_TRANSACTION) && defined (SUPPORT_TRANSACTIONS) && !defined(ESP32_PARALLEL)
-  if(!inTransaction) {if (!locked) {locked = true; CS_H; spi.endTransaction();}}
+  if (!inTransaction) { if (!locked) { locked = true; CS_H; spi.endTransaction(); } }
 #else
   CS_H;
 #endif
 }
 
-inline void TFT_eSPI::spi_begin_read(void){
+inline void TFT_eSPI::spi_begin_read(void) {
 #if defined (SPI_HAS_TRANSACTION) && defined (SUPPORT_TRANSACTIONS) && !defined(ESP32_PARALLEL)
   if (locked) {locked = false; spi.beginTransaction(SPISettings(SPI_READ_FREQUENCY, MSBFIRST, TFT_SPI_MODE)); CS_L;}
 #else
   #if !defined(ESP32_PARALLEL)
     spi.setFrequency(SPI_READ_FREQUENCY);
   #endif
-   CS_L;
+  CS_L;
 #endif
 }
 
-inline void TFT_eSPI::spi_end_read(void){
+inline void TFT_eSPI::spi_end_read(void) {
 #if defined (SPI_HAS_TRANSACTION) && defined (SUPPORT_TRANSACTIONS) && !defined(ESP32_PARALLEL)
-  if(!inTransaction) {if (!locked) {locked = true; CS_H; spi.endTransaction();}}
+  if (!inTransaction) { if (!locked) { locked = true; CS_H; spi.endTransaction(); } }
 #else
   #if !defined(ESP32_PARALLEL)
     spi.setFrequency(SPI_FREQUENCY);
   #endif
-   CS_H;
+  CS_H;
 #endif
 }
 
 #if defined (TOUCH_CS) && defined (SPI_TOUCH_FREQUENCY) // && !defined(ESP32_PARALLEL)
 
-  inline void TFT_eSPI::spi_begin_touch(void){
+  inline void TFT_eSPI::spi_begin_touch(void) {
   #if defined (SPI_HAS_TRANSACTION) && defined (SUPPORT_TRANSACTIONS)
-    if (locked) {locked = false; spi.beginTransaction(SPISettings(SPI_TOUCH_FREQUENCY, MSBFIRST, SPI_MODE0));}
+    if (locked) { locked = false; spi.beginTransaction(SPISettings(SPI_TOUCH_FREQUENCY, MSBFIRST, SPI_MODE0)); }
   #else
     spi.setFrequency(SPI_TOUCH_FREQUENCY);
   #endif
   }
 
-  inline void TFT_eSPI::spi_end_touch(void){
+  inline void TFT_eSPI::spi_end_touch(void) {
   #if defined (SPI_HAS_TRANSACTION) && defined (SUPPORT_TRANSACTIONS)
-    if(!inTransaction) {if (!locked) {locked = true; spi.endTransaction();}}
+    if (!inTransaction) { if (!locked) { locked = true; spi.endTransaction(); } }
   #else
     spi.setFrequency(SPI_FREQUENCY);
   #endif
@@ -116,12 +116,12 @@ inline void TFT_eSPI::spi_end_read(void){
 
 #endif
 
+
 /***************************************************************************************
 ** Function name:           TFT_eSPI
 ** Description:             Constructor , we must use hardware SPI pins
 ***************************************************************************************/
-TFT_eSPI::TFT_eSPI(int16_t w, int16_t h)
-{
+TFT_eSPI::TFT_eSPI(int16_t w, int16_t h) {
 
 // The control pins are deliberately set to the inactive state (CS high) as setup()
 // might call and initialise other SPI peripherals which would could cause conflicts
@@ -157,17 +157,16 @@ TFT_eSPI::TFT_eSPI(int16_t w, int16_t h)
 #ifdef ESP32_PARALLEL
 
   // Create a bit set lookup table for data bus - wastes 1kbyte of RAM but speeds things up dramatically
-  for (int32_t c = 0; c<256; c++)
-  {
+  for (int32_t c = 0; c < 256; c++) {
     xset_mask[c] = 0;
-    if ( c & 0x01 ) xset_mask[c] |= (1 << TFT_D0);
-    if ( c & 0x02 ) xset_mask[c] |= (1 << TFT_D1);
-    if ( c & 0x04 ) xset_mask[c] |= (1 << TFT_D2);
-    if ( c & 0x08 ) xset_mask[c] |= (1 << TFT_D3);
-    if ( c & 0x10 ) xset_mask[c] |= (1 << TFT_D4);
-    if ( c & 0x20 ) xset_mask[c] |= (1 << TFT_D5);
-    if ( c & 0x40 ) xset_mask[c] |= (1 << TFT_D6);
-    if ( c & 0x80 ) xset_mask[c] |= (1 << TFT_D7);
+    if (c & 0x01) xset_mask[c] |= (1 << TFT_D0);
+    if (c & 0x02) xset_mask[c] |= (1 << TFT_D1);
+    if (c & 0x04) xset_mask[c] |= (1 << TFT_D2);
+    if (c & 0x08) xset_mask[c] |= (1 << TFT_D3);
+    if (c & 0x10) xset_mask[c] |= (1 << TFT_D4);
+    if (c & 0x20) xset_mask[c] |= (1 << TFT_D5);
+    if (c & 0x40) xset_mask[c] |= (1 << TFT_D6);
+    if (c & 0x80) xset_mask[c] |= (1 << TFT_D7);
   }
 
   // Make sure read is high before we set the bus to output
@@ -247,9 +246,8 @@ TFT_eSPI::TFT_eSPI(int16_t w, int16_t h)
 ** Function name:           begin
 ** Description:             Included for backwards compatibility
 ***************************************************************************************/
-void TFT_eSPI::begin(uint8_t tc)
-{
- init(tc);
+void TFT_eSPI::begin(uint8_t tc) {
+  init(tc);
 }
 
 
@@ -257,10 +255,8 @@ void TFT_eSPI::begin(uint8_t tc)
 ** Function name:           init (tc is tab colour for ST7735 displays only)
 ** Description:             Reset, then initialise the TFT display registers
 ***************************************************************************************/
-void TFT_eSPI::init(uint8_t tc)
-{
-  if (_booted)
-  {
+void TFT_eSPI::init(uint8_t tc) {
+  if (_booted) {
 #if !defined (ESP32)
   #ifdef TFT_CS
     cspinmask = (uint32_t) digitalPinToBitMask(TFT_CS);
@@ -417,8 +413,7 @@ void TFT_eSPI::init(uint8_t tc)
 ** Function name:           setRotation
 ** Description:             rotate the screen orientation m = 0-3 or 4-7 for BMP drawing
 ***************************************************************************************/
-void TFT_eSPI::setRotation(uint8_t m)
-{
+void TFT_eSPI::setRotation(uint8_t m) {
 
   spi_begin();
 
@@ -471,8 +466,7 @@ void TFT_eSPI::setRotation(uint8_t m)
 ** Function name:           commandList, used for FLASH based lists only (e.g. ST7735)
 ** Description:             Get initialisation commands from FLASH and send to TFT
 ***************************************************************************************/
-void TFT_eSPI::commandList (const uint8_t *addr)
-{
+void TFT_eSPI::commandList (const uint8_t *addr) {
   uint8_t  numCommands;
   uint8_t  numArgs;
   uint8_t  ms;
@@ -481,22 +475,19 @@ void TFT_eSPI::commandList (const uint8_t *addr)
 
   numCommands = pgm_read_byte(addr++);   // Number of commands to follow
 
-  while (numCommands--)                  // For each command...
-  {
+  while (numCommands--) {                // For each command...
     writecommand(pgm_read_byte(addr++)); // Read, issue command
     numArgs = pgm_read_byte(addr++);     // Number of args to follow
     ms = numArgs & TFT_INIT_DELAY;       // If hibit set, delay follows args
     numArgs &= ~TFT_INIT_DELAY;          // Mask out delay bit
 
-    while (numArgs--)                    // For each argument...
-    {
+    while (numArgs--) {                  // For each argument...
       writedata(pgm_read_byte(addr++));  // Read, issue argument
     }
 
-    if (ms)
-    {
+    if (ms) {
       ms = pgm_read_byte(addr++);        // Read post-command delay time (ms)
-      delay( (ms==255 ? 500 : ms) );
+      delay((ms == 255 ? 500 : ms));
     }
   }
   spi_end();
@@ -507,8 +498,7 @@ void TFT_eSPI::commandList (const uint8_t *addr)
 ** Function name:           spiwrite
 ** Description:             Write 8 bits to SPI port (legacy support only)
 ***************************************************************************************/
-void TFT_eSPI::spiwrite(uint8_t c)
-{
+void TFT_eSPI::spiwrite(uint8_t c) {
   tft_Write_8(c);
 }
 
@@ -517,8 +507,7 @@ void TFT_eSPI::spiwrite(uint8_t c)
 ** Function name:           writecommand
 ** Description:             Send an 8 bit command to the TFT
 ***************************************************************************************/
-void TFT_eSPI::writecommand(uint8_t c)
-{
+void TFT_eSPI::writecommand(uint8_t c) {
   spi_begin(); // CS_L;
 
   DC_C;
@@ -528,7 +517,6 @@ void TFT_eSPI::writecommand(uint8_t c)
   DC_D;
 
   spi_end();  // CS_H;
-
 }
 
 
@@ -536,8 +524,7 @@ void TFT_eSPI::writecommand(uint8_t c)
 ** Function name:           writedata
 ** Description:             Send a 8 bit data value to the TFT
 ***************************************************************************************/
-void TFT_eSPI::writedata(uint8_t d)
-{
+void TFT_eSPI::writedata(uint8_t d) {
   spi_begin(); // CS_L;
 
   DC_D;        // Play safe, but should already be in data mode
@@ -554,8 +541,7 @@ void TFT_eSPI::writedata(uint8_t d)
 ** Function name:           readcommand8
 ** Description:             Read a 8 bit data value from an indexed command register
 ***************************************************************************************/
-uint8_t TFT_eSPI::readcommand8(uint8_t cmd_function, uint8_t index)
-{
+uint8_t TFT_eSPI::readcommand8(uint8_t cmd_function, uint8_t index) {
   uint8_t reg = 0;
 #ifdef ESP32_PARALLEL
 
@@ -600,8 +586,7 @@ uint8_t TFT_eSPI::readcommand8(uint8_t cmd_function, uint8_t index)
 ** Function name:           readcommand16
 ** Description:             Read a 16 bit data value from an indexed command register
 ***************************************************************************************/
-uint16_t TFT_eSPI::readcommand16(uint8_t cmd_function, uint8_t index)
-{
+uint16_t TFT_eSPI::readcommand16(uint8_t cmd_function, uint8_t index) {
   uint32_t reg;
 
   reg  = (readcommand8(cmd_function, index + 0) <<  8);
@@ -615,8 +600,7 @@ uint16_t TFT_eSPI::readcommand16(uint8_t cmd_function, uint8_t index)
 ** Function name:           readcommand32
 ** Description:             Read a 32 bit data value from an indexed command register
 ***************************************************************************************/
-uint32_t TFT_eSPI::readcommand32(uint8_t cmd_function, uint8_t index)
-{
+uint32_t TFT_eSPI::readcommand32(uint8_t cmd_function, uint8_t index) {
   uint32_t reg;
 
   reg  = (readcommand8(cmd_function, index + 0) << 24);
@@ -632,8 +616,7 @@ uint32_t TFT_eSPI::readcommand32(uint8_t cmd_function, uint8_t index)
 ** Function name:           read pixel (for SPI Interface II i.e. IM [3:0] = "1101")
 ** Description:             Read 565 pixel colours from a pixel
 ***************************************************************************************/
-uint16_t TFT_eSPI::readPixel(int32_t x0, int32_t y0)
-{
+uint16_t TFT_eSPI::readPixel(int32_t x0, int32_t y0) {
 #if defined(ESP32_PARALLEL)
 
   readAddrWindow(x0, y0, 1, 1); // Sets CS low
@@ -670,7 +653,7 @@ uint16_t TFT_eSPI::readPixel(int32_t x0, int32_t y0)
   busDir(dir_mask, OUTPUT);
 
   // Swap Red and Blue (could check MADCTL setting to see if this is needed)
-  return  (bgr>>11) | (bgr<<11) | (bgr & 0x7E0);
+  return  (bgr >> 11) | (bgr << 11) | (bgr & 0x7E0);
   #endif
 
 #else // Not ESP32_PARALLEL
@@ -717,13 +700,13 @@ uint16_t TFT_eSPI::readPixel(int32_t x0, int32_t y0)
 #endif
 }
 
+
 /***************************************************************************************
 ** Function name:           read byte  - supports class functions
 ** Description:             Read a byte from ESP32 8 bit data port
 ***************************************************************************************/
 // Bus MUST be set to input before calling this function!
-uint8_t readByte(void)
-{
+uint8_t readByte(void) {
   uint8_t b = 0;
 
 #ifdef ESP32_PARALLEL
@@ -735,25 +718,25 @@ uint8_t readByte(void)
   RD_H;
 
   // Check GPIO bits used and build value
-  b  = (((reg>>TFT_D0)&1) << 0);
-  b |= (((reg>>TFT_D1)&1) << 1);
-  b |= (((reg>>TFT_D2)&1) << 2);
-  b |= (((reg>>TFT_D3)&1) << 3);
-  b |= (((reg>>TFT_D4)&1) << 4);
-  b |= (((reg>>TFT_D5)&1) << 5);
-  b |= (((reg>>TFT_D6)&1) << 6);
-  b |= (((reg>>TFT_D7)&1) << 7);
+  b  = (((reg >> TFT_D0)&1) << 0);
+  b |= (((reg >> TFT_D1)&1) << 1);
+  b |= (((reg >> TFT_D2)&1) << 2);
+  b |= (((reg >> TFT_D3)&1) << 3);
+  b |= (((reg >> TFT_D4)&1) << 4);
+  b |= (((reg >> TFT_D5)&1) << 5);
+  b |= (((reg >> TFT_D6)&1) << 6);
+  b |= (((reg >> TFT_D7)&1) << 7);
 #endif
 
   return b;
 }
 
+
 /***************************************************************************************
 ** Function name:           masked GPIO direction control  - supports class functions
 ** Description:             Set masked ESP32 GPIO pins to input or output
 ***************************************************************************************/
-void busDir(uint32_t mask, uint8_t mode)
-{
+void busDir(uint32_t mask, uint8_t mode) {
 #ifdef ESP32_PARALLEL
 
   // Supports GPIO 0 - 31 on ESP32 only
@@ -772,12 +755,12 @@ void busDir(uint32_t mask, uint8_t mode)
 #endif
 }
 
+
 /***************************************************************************************
 ** Function name:           read rectangle (for SPI Interface II i.e. IM [3:0] = "1101")
 ** Description:             Read 565 pixel colours from a defined area
 ***************************************************************************************/
-void TFT_eSPI::readRect(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *data)
-{
+void TFT_eSPI::readRect(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *data) {
   if ((x > _width) || (y > _height) || (w == 0) || (h == 0)) return;
 
 #if defined(ESP32_PARALLEL)
@@ -800,7 +783,7 @@ void TFT_eSPI::readRect(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *da
     uint16_t rgb = ((readByte() & 0xF8) << 8) | ((readByte() & 0xFC) << 3) | (readByte() >> 3);
 
     // Swapped byte order for compatibility with pushRect()
-    *data++ = (rgb<<8) | (rgb>>8);
+    *data++ = (rgb << 8) | (rgb >> 8);
   }
 #else // ILI9481 reads as 16 bits
   // Fetch the 16 bit BRG pixels
@@ -809,10 +792,10 @@ void TFT_eSPI::readRect(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *da
     uint16_t bgr = (readByte() << 8) | readByte();
 
     // Swap Red and Blue (could check MADCTL setting to see if this is needed)
-    uint16_t rgb = (bgr>>11) | (bgr<<11) | (bgr & 0x7E0);
+    uint16_t rgb = (bgr >> 11) | (bgr << 11) | (bgr & 0x7E0);
 
     // Swapped byte order for compatibility with pushRect()
-    *data++ = (rgb<<8) | (rgb>>8);
+    *data++ = (rgb << 8) | (rgb >> 8);
   }
 #endif
   CS_H;
@@ -870,13 +853,13 @@ void TFT_eSPI::readRect(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *da
 #endif
 }
 
+
 /***************************************************************************************
 ** Function name:           tft_Read_8
 ** Description:             Software SPI to read bidirectional SDA line
 ***************************************************************************************/
 #if defined (ESP8266) && defined (TFT_SDA_READ)
-uint8_t TFT_eSPI::tft_Read_8(void)
-{
+uint8_t TFT_eSPI::tft_Read_8(void) {
   uint8_t  ret = 0;
   uint32_t reg = 0;
 
@@ -891,13 +874,13 @@ uint8_t TFT_eSPI::tft_Read_8(void)
 }
 #endif
 
+
 /***************************************************************************************
 ** Function name:           beginSDA
 ** Description:             Detach SPI from pin to permit software SPI
 ***************************************************************************************/
 #ifdef TFT_SDA_READ
-void TFT_eSPI::begin_SDA_Read(void)
-{
+void TFT_eSPI::begin_SDA_Read(void) {
   #ifdef ESP32
     pinMatrixOutDetach(TFT_MOSI, false, false);
     pinMode(TFT_MOSI, INPUT);
@@ -912,13 +895,13 @@ void TFT_eSPI::begin_SDA_Read(void)
 }
 #endif
 
+
 /***************************************************************************************
 ** Function name:           endSDA
 ** Description:             Attach SPI pins after software SPI
 ***************************************************************************************/
 #ifdef TFT_SDA_READ
-void TFT_eSPI::end_SDA_Read(void)
-{
+void TFT_eSPI::end_SDA_Read(void) {
   #ifdef ESP32
     pinMode(TFT_MOSI, OUTPUT);
     pinMatrixOutAttach(TFT_MOSI, VSPID_OUT_IDX, false, false);
@@ -934,12 +917,12 @@ void TFT_eSPI::end_SDA_Read(void)
 }
 #endif
 
+
 /***************************************************************************************
 ** Function name:           push rectangle (for SPI Interface II i.e. IM [3:0] = "1101")
 ** Description:             push 565 pixel colours into a defined area
 ***************************************************************************************/
-void TFT_eSPI::pushRect(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *data)
-{
+void TFT_eSPI::pushRect(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *data) {
   // Function deprecated, remains for backwards compatibility
   // pushImage() is better as it will crop partly off-screen image blocks
   pushImage(x, y, w, h, data);
@@ -950,8 +933,7 @@ void TFT_eSPI::pushRect(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *da
 ** Function name:           pushImage
 ** Description:             plot 16 bit colour sprite or image onto TFT
 ***************************************************************************************/
-void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *data)
-{
+void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *data) {
 
   if ((x >= _width) || (y >= _height)) return;
 
@@ -975,8 +957,7 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *d
 
   data += dx + dy * w;
 
-  while (dh--)
-  {
+  while (dh--) {
     pushColors(data, dw, _swapBytes);
     data += w;
   }
@@ -985,12 +966,12 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *d
   spi_end();
 }
 
+
 /***************************************************************************************
 ** Function name:           pushImage
 ** Description:             plot 16 bit sprite or image with 1 colour being transparent
 ***************************************************************************************/
-void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *data, uint16_t transp)
-{
+void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *data, uint16_t transp) {
 
   if ((x >= _width) || (y >= _height)) return;
 
@@ -1018,29 +999,23 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *d
 
   if (!_swapBytes) transp = transp >> 8 | transp << 8;
 
-  while (dh--)
-  {
+  while (dh--) {
     int32_t len = dw;
     uint16_t* ptr = data;
     int32_t px = x;
     boolean move = true;
     uint16_t np = 0;
 
-    while (len--)
-    {
-      if (transp != *ptr)
-      {
+    while (len--) {
+      if (transp != *ptr) {
         if (move) { move = false; setWindow(px, y, xe, ye); }
         lineBuf[np] = *ptr;
         np++;
-      }
-      else
-      {
+      } else {
         move = true;
-        if (np)
-        {
-           pushColors((uint16_t*)lineBuf, np, _swapBytes);
-           np = 0;
+        if (np) {
+          pushColors((uint16_t*)lineBuf, np, _swapBytes);
+          np = 0;
         }
       }
       px++;
@@ -1061,8 +1036,7 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *d
 ** Function name:           pushImage - for FLASH (PROGMEM) stored images
 ** Description:             plot 16 bit image
 ***************************************************************************************/
-void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, const uint16_t *data)
-{
+void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, const uint16_t *data) {
 #ifdef ESP32
   pushImage(x, y, w, h, (uint16_t*)data);
 #else
@@ -1108,8 +1082,7 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, const uint1
 
   // Send any partial buffer left over
   if (np) {
-    for (int32_t i = 0; i < np; i++)
-    {
+    for (int32_t i = 0; i < np; i++) {
       pix_buffer[i] = pgm_read_word(&data[nb * 64 + i]);
     }
     pushColors(pix_buffer, np, _swapBytes);
@@ -1125,8 +1098,7 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, const uint1
 ** Function name:           pushImage - for FLASH (PROGMEM) stored images
 ** Description:             plot 16 bit image with 1 colour being transparent
 ***************************************************************************************/
-void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, const uint16_t *data, uint16_t transp)
-{
+void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, const uint16_t *data, uint16_t transp) {
 #ifdef ESP32
   pushImage(x, y, w, h, (uint16_t*) data, transp);
 #else
@@ -1157,8 +1129,7 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, const uint1
 
   if (!_swapBytes) transp = transp >> 8 | transp << 8;
 
-  while (dh--)
-  {
+  while (dh--) {
     int32_t len = dw;
     uint16_t* ptr = (uint16_t*)data;
     int32_t px = x;
@@ -1166,22 +1137,17 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, const uint1
 
     uint16_t np = 0;
 
-    while (len--)
-    {
+    while (len--) {
       uint16_t color = pgm_read_word(ptr);
-      if (transp != color)
-      {
+      if (transp != color) {
         if (move) { move = false; setWindow(px, y, xe, ye); }
         lineBuf[np] = color;
         np++;
-      }
-      else
-      {
+      } else {
         move = true;
-        if (np)
-        {
-           pushColors(lineBuf, np, _swapBytes);
-           np = 0;
+        if (np) {
+          pushColors(lineBuf, np, _swapBytes);
+          np = 0;
         }
       }
       px++;
@@ -1203,8 +1169,7 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, const uint1
 ** Function name:           pushImage
 ** Description:             plot 8 bit image or sprite using a line buffer
 ***************************************************************************************/
-void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t *data, bool bpp8)
-{
+void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t *data, bool bpp8) {
   if ((x >= _width) || (y >= (int32_t)_height)) return;
 
   int32_t dx = 0;
@@ -1228,9 +1193,8 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t *da
   // Line buffer makes plotting faster
   uint16_t  lineBuf[dw];
 
-  if (bpp8)
-  {
-    uint8_t  blue[] = {0, 11, 21, 31}; // blue 2 to 5 bit colour lookup table
+  if (bpp8) {
+    uint8_t  blue[] = { 0, 11, 21, 31 }; // blue 2 to 5 bit colour lookup table
 
     _lastColor = -1; // Set to illegal value
 
@@ -1239,14 +1203,12 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t *da
     uint8_t lsbColor = 0;
 
     data += dx + dy * w;
-    while (dh--)
-    {
+    while (dh--) {
       uint32_t len = dw;
       uint8_t* ptr = data;
       uint8_t* linePtr = (uint8_t*)lineBuf;
 
-      while(len--)
-      {
+      while(len--) {
         uint32_t color = *ptr++;
 
         // Shifts are slow so check if colour has changed first
@@ -1266,28 +1228,23 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t *da
 
       data += w;
     }
-  }
-  else
-  {
-    while (dh--)
-    {
+  } else {
+    while (dh--) {
       w =  (w+7) & 0xFFF8;
 
       int32_t len = dw;
       uint8_t* ptr = data;
       uint8_t* linePtr = (uint8_t*)lineBuf;
       uint8_t  bits = 8;
-      while(len>0)
-      {
+      while(len > 0) {
         if (len < 8) bits = len;
         uint32_t xp = dx;
-        for (uint16_t i = 0; i < bits; i++)
-        {
+        for (uint16_t i = 0; i < bits; i++) {
           uint8_t col = (ptr[(xp + dy * w)>>3] << (xp & 0x7)) & 0x80;
-          if (col) {*linePtr++ = bitmap_fg>>8; *linePtr++ = (uint8_t) bitmap_fg;}
-          else     {*linePtr++ = bitmap_bg>>8; *linePtr++ = (uint8_t) bitmap_bg;}
-          //if (col) drawPixel((dw-len)+xp,h-dh,bitmap_fg);
-          //else     drawPixel((dw-len)+xp,h-dh,bitmap_bg);
+          if (col) {*linePtr++ = bitmap_fg >> 8; *linePtr++ = (uint8_t) bitmap_fg;}
+          else     {*linePtr++ = bitmap_bg >> 8; *linePtr++ = (uint8_t) bitmap_bg;}
+          //if (col) drawPixel((dw-len)+xp, h-dh, bitmap_fg);
+          //else     drawPixel((dw-len)+xp, h-dh, bitmap_bg);
           xp++;
         }
         ptr++;
@@ -1309,8 +1266,7 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t *da
 ** Function name:           pushImage
 ** Description:             plot 8 or 1 bit image or sprite with a transparent colour
 ***************************************************************************************/
-void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t *data, uint8_t transp, bool bpp8)
-{
+void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t *data, uint8_t transp, bool bpp8) {
   if ((x >= _width) || (y >= _height)) return;
 
   int32_t dx = 0;
@@ -1334,11 +1290,10 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t *da
   // Line buffer makes plotting faster
   uint16_t  lineBuf[dw];
 
-  if (bpp8)
-  {
+  if (bpp8) {
     data += dx + dy * w;
 
-    uint8_t  blue[] = {0, 11, 21, 31}; // blue 2 to 5 bit colour lookup table
+    uint8_t  blue[] = { 0, 11, 21, 31 }; // blue 2 to 5 bit colour lookup table
 
     _lastColor = -1; // Set to illegal value
 
@@ -1348,8 +1303,7 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t *da
 
     //int32_t spx = x, spy = y;
 
-    while (dh--)
-    {
+    while (dh--) {
       int32_t len = dw;
       uint8_t* ptr = data;
       uint8_t* linePtr = (uint8_t*)lineBuf;
@@ -1358,10 +1312,8 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t *da
       boolean move = true;
       uint16_t np = 0;
 
-      while (len--)
-      {
-        if (transp != *ptr)
-        {
+      while (len--) {
+        if (transp != *ptr) {
           if (move) { move = false; setWindow(px, y, xe, ye);}
           uint8_t color = *ptr;
 
@@ -1376,12 +1328,9 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t *da
           *linePtr++ = msbColor;
           *linePtr++ = lsbColor;
           np++;
-        }
-        else
-        {
+        } else {
           move = true;
-          if (np)
-          {
+          if (np) {
             pushColors(lineBuf, np, false);
             linePtr = (uint8_t*)lineBuf;
             np = 0;
@@ -1396,39 +1345,29 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t *da
       y++;
       data += w;
     }
-  }
-  else
-  {
+  } else {
     w =  (w+7) & 0xFFF8;
-    while (dh--)
-    {
+    while (dh--) {
       int32_t px = x;
       boolean move = true;
       uint16_t np = 0;
       int32_t len = dw;
       uint8_t* ptr = data;
       uint8_t  bits = 8;
-      while(len>0)
-      {
+      while(len > 0) {
         if (len < 8) bits = len;
         uint32_t xp = dx;
         uint32_t yp = (dy * w)>>3;
-        for (uint16_t i = 0; i < bits; i++)
-        {
+        for (uint16_t i = 0; i < bits; i++) {
           //uint8_t col = (ptr[(xp + dy * w)>>3] << (xp & 0x7)) & 0x80;
-          if ((ptr[(xp>>3) + yp] << (xp & 0x7)) & 0x80)
-          {
-            if (move)
-            {
+          if ((ptr[(xp >> 3) + yp] << (xp & 0x7)) & 0x80) {
+            if (move) {
               move = false;
               setWindow(px, y, xe, ye);
             }
             np++;
-          }
-          else
-          {
-            if (np)
-            {
+          } else {
+            if (np) {
               pushColor(bitmap_fg, np);
               np = 0;
               move = true;
@@ -1455,8 +1394,7 @@ void TFT_eSPI::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t *da
 ** Function name:           setSwapBytes
 ** Description:             Used by 16 bit pushImage() to swap byte order in colours
 ***************************************************************************************/
-void TFT_eSPI::setSwapBytes(bool swap)
-{
+void TFT_eSPI::setSwapBytes(bool swap) {
   _swapBytes = swap;
 }
 
@@ -1465,18 +1403,17 @@ void TFT_eSPI::setSwapBytes(bool swap)
 ** Function name:           getSwapBytes
 ** Description:             Return the swap byte order for colours
 ***************************************************************************************/
-bool TFT_eSPI::getSwapBytes(void)
-{
+bool TFT_eSPI::getSwapBytes(void) {
   return _swapBytes;
 }
+
 
 /***************************************************************************************
 ** Function name:           read rectangle (for SPI Interface II i.e. IM [3:0] = "1101")
 ** Description:             Read RGB pixel colours from a defined area
 ***************************************************************************************/
 // If w and h are 1, then 1 pixel is read, *data array size must be 3 bytes per pixel
-void  TFT_eSPI::readRectRGB(int32_t x0, int32_t y0, int32_t w, int32_t h, uint8_t *data)
-{
+void  TFT_eSPI::readRectRGB(int32_t x0, int32_t y0, int32_t w, int32_t h, uint8_t *data) {
 #if defined(ESP32_PARALLEL)
 
   // ESP32 parallel bus supported yet
@@ -1535,12 +1472,11 @@ void  TFT_eSPI::readRectRGB(int32_t x0, int32_t y0, int32_t w, int32_t h, uint8_
 ** Description:             Draw a circle outline
 ***************************************************************************************/
 // Optimised midpoint circle algorithm
-void TFT_eSPI::drawCircle(int32_t x0, int32_t y0, int32_t r, uint32_t color)
-{
+void TFT_eSPI::drawCircle(int32_t x0, int32_t y0, int32_t r, uint32_t color) {
   int32_t  x  = 0;
   int32_t  dx = 1;
   int32_t  dy = r+r;
-  int32_t  p  = -(r>>1);
+  int32_t  p  = -(r >> 1);
 
   spi_begin();
   inTransaction = true;
@@ -1552,16 +1488,16 @@ void TFT_eSPI::drawCircle(int32_t x0, int32_t y0, int32_t r, uint32_t color)
   drawPixel(x0, y0 - r, color);
   drawPixel(x0, y0 + r, color);
 
-  while(x<r){
+  while(x < r) {
 
-    if(p>=0) {
+    if (p>=0) {
       dy-=2;
       p-=dy;
       r--;
     }
 
-    dx+=2;
-    p+=dx;
+    dx += 2;
+    p += dx;
 
     x++;
 
@@ -1587,8 +1523,7 @@ void TFT_eSPI::drawCircle(int32_t x0, int32_t y0, int32_t r, uint32_t color)
 ** Function name:           drawCircleHelper
 ** Description:             Support function for circle drawing
 ***************************************************************************************/
-void TFT_eSPI::drawCircleHelper( int32_t x0, int32_t y0, int32_t r, uint8_t cornername, uint32_t color)
-{
+void TFT_eSPI::drawCircleHelper( int32_t x0, int32_t y0, int32_t r, uint8_t cornername, uint32_t color) {
   int32_t f     = 1 - r;
   int32_t ddF_x = 1;
   int32_t ddF_y = -2 * r;
@@ -1628,28 +1563,27 @@ void TFT_eSPI::drawCircleHelper( int32_t x0, int32_t y0, int32_t r, uint8_t corn
 ** Description:             draw a filled circle
 ***************************************************************************************/
 // Optimised midpoint circle algorithm, changed to horizontal lines (faster in sprites)
-void TFT_eSPI::fillCircle(int32_t x0, int32_t y0, int32_t r, uint32_t color)
-{
+void TFT_eSPI::fillCircle(int32_t x0, int32_t y0, int32_t r, uint32_t color) {
   int32_t  x  = 0;
   int32_t  dx = 1;
   int32_t  dy = r+r;
-  int32_t  p  = -(r>>1);
+  int32_t  p  = -(r >> 1);
 
   spi_begin();
   inTransaction = true;
 
   drawFastHLine(x0 - r, y0, dy+1, color);
 
-  while(x<r){
+  while(x < r) {
 
-    if(p>=0) {
+    if (p>=0) {
       dy-=2;
       p-=dy;
       r--;
     }
 
-    dx+=2;
-    p+=dx;
+    dx += 2;
+    p += dx;
 
     x++;
 
@@ -1670,8 +1604,7 @@ void TFT_eSPI::fillCircle(int32_t x0, int32_t y0, int32_t r, uint32_t color)
 ** Description:             Support function for filled circle drawing
 ***************************************************************************************/
 // Used to support drawing roundrects, changed to horizontal lines (faster in sprites)
-void TFT_eSPI::fillCircleHelper(int32_t x0, int32_t y0, int32_t r, uint8_t cornername, int32_t delta, uint32_t color)
-{
+void TFT_eSPI::fillCircleHelper(int32_t x0, int32_t y0, int32_t r, uint8_t cornername, int32_t delta, uint32_t color) {
   int32_t f     = 1 - r;
   int32_t ddF_x = 1;
   int32_t ddF_y = -r - r;
@@ -1689,8 +1622,7 @@ void TFT_eSPI::fillCircleHelper(int32_t x0, int32_t y0, int32_t r, uint8_t corne
     ddF_x += 2;
     f     += ddF_x;
 
-    if (cornername & 0x1)
-    {
+    if (cornername & 0x1) {
       drawFastHLine(x0 - r, y0 + y, r + r + delta, color);
       drawFastHLine(x0 - y, y0 + r, y + y + delta, color);
     }
@@ -1706,10 +1638,9 @@ void TFT_eSPI::fillCircleHelper(int32_t x0, int32_t y0, int32_t r, uint8_t corne
 ** Function name:           drawEllipse
 ** Description:             Draw a ellipse outline
 ***************************************************************************************/
-void TFT_eSPI::drawEllipse(int16_t x0, int16_t y0, int32_t rx, int32_t ry, uint16_t color)
-{
-  if (rx<2) return;
-  if (ry<2) return;
+void TFT_eSPI::drawEllipse(int16_t x0, int16_t y0, int32_t rx, int32_t ry, uint16_t color) {
+  if (rx < 2) return;
+  if (ry < 2) return;
   int32_t x, y;
   int32_t rx2 = rx * rx;
   int32_t ry2 = ry * ry;
@@ -1720,32 +1651,28 @@ void TFT_eSPI::drawEllipse(int16_t x0, int16_t y0, int32_t rx, int32_t ry, uint1
   spi_begin();
   inTransaction = true;
 
-  for (x = 0, y = ry, s = 2*ry2+rx2*(1-2*ry); ry2*x <= rx2*y; x++)
-  {
+  for (x = 0, y = ry, s = 2*ry2+rx2*(1-2*ry); ry2*x <= rx2*y; x++) {
     // These are ordered to minimise coordinate changes in x or y
     // drawPixel can then send fewer bounding box commands
     drawPixel(x0 + x, y0 + y, color);
     drawPixel(x0 - x, y0 + y, color);
     drawPixel(x0 - x, y0 - y, color);
     drawPixel(x0 + x, y0 - y, color);
-    if (s >= 0)
-    {
+    if (s >= 0) {
       s += fx2 * (1 - y);
       y--;
     }
     s += ry2 * ((4 * x) + 6);
   }
 
-  for (x = rx, y = 0, s = 2*rx2+ry2*(1-2*rx); rx2*y <= ry2*x; y++)
-  {
+  for (x = rx, y = 0, s = 2*rx2+ry2*(1-2*rx); rx2*y <= ry2*x; y++) {
     // These are ordered to minimise coordinate changes in x or y
     // drawPixel can then send fewer bounding box commands
     drawPixel(x0 + x, y0 + y, color);
     drawPixel(x0 - x, y0 + y, color);
     drawPixel(x0 - x, y0 - y, color);
     drawPixel(x0 + x, y0 - y, color);
-    if (s >= 0)
-    {
+    if (s >= 0) {
       s += fy2 * (1 - x);
       x--;
     }
@@ -1761,10 +1688,9 @@ void TFT_eSPI::drawEllipse(int16_t x0, int16_t y0, int32_t rx, int32_t ry, uint1
 ** Function name:           fillEllipse
 ** Description:             draw a filled ellipse
 ***************************************************************************************/
-void TFT_eSPI::fillEllipse(int16_t x0, int16_t y0, int32_t rx, int32_t ry, uint16_t color)
-{
-  if (rx<2) return;
-  if (ry<2) return;
+void TFT_eSPI::fillEllipse(int16_t x0, int16_t y0, int32_t rx, int32_t ry, uint16_t color) {
+  if (rx < 2) return;
+  if (ry < 2) return;
   int32_t x, y;
   int32_t rx2 = rx * rx;
   int32_t ry2 = ry * ry;
@@ -1775,26 +1701,22 @@ void TFT_eSPI::fillEllipse(int16_t x0, int16_t y0, int32_t rx, int32_t ry, uint1
   spi_begin();
   inTransaction = true;
 
-  for (x = 0, y = ry, s = 2*ry2+rx2*(1-2*ry); ry2*x <= rx2*y; x++)
-  {
+  for (x = 0, y = ry, s = 2*ry2+rx2*(1-2*ry); ry2*x <= rx2*y; x++) {
     drawFastHLine(x0 - x, y0 - y, x + x + 1, color);
     drawFastHLine(x0 - x, y0 + y, x + x + 1, color);
 
-    if (s >= 0)
-    {
+    if (s >= 0) {
       s += fx2 * (1 - y);
       y--;
     }
     s += ry2 * ((4 * x) + 6);
   }
 
-  for (x = rx, y = 0, s = 2*rx2+ry2*(1-2*rx); rx2*y <= ry2*x; y++)
-  {
+  for (x = rx, y = 0, s = 2*rx2+ry2*(1-2*rx); rx2*y <= ry2*x; y++) {
     drawFastHLine(x0 - x, y0 - y, x + x + 1, color);
     drawFastHLine(x0 - x, y0 + y, x + x + 1, color);
 
-    if (s >= 0)
-    {
+    if (s >= 0) {
       s += fy2 * (1 - x);
       x--;
     }
@@ -1810,8 +1732,7 @@ void TFT_eSPI::fillEllipse(int16_t x0, int16_t y0, int32_t rx, int32_t ry, uint1
 ** Function name:           fillScreen
 ** Description:             Clear the screen to defined colour
 ***************************************************************************************/
-void TFT_eSPI::fillScreen(uint32_t color)
-{
+void TFT_eSPI::fillScreen(uint32_t color) {
   fillRect(0, 0, _width, _height, color);
 }
 
@@ -1821,8 +1742,7 @@ void TFT_eSPI::fillScreen(uint32_t color)
 ** Description:             Draw a rectangle outline
 ***************************************************************************************/
 // Draw a rectangle
-void TFT_eSPI::drawRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color)
-{
+void TFT_eSPI::drawRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color) {
   spi_begin();
   inTransaction = true;
 
@@ -1841,8 +1761,7 @@ void TFT_eSPI::drawRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t col
 ** Description:             Draw a rounded corner rectangle outline
 ***************************************************************************************/
 // Draw a rounded rectangle
-void TFT_eSPI::drawRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, uint32_t color)
-{
+void TFT_eSPI::drawRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, uint32_t color) {
   spi_begin();
   inTransaction = true;
 
@@ -1867,8 +1786,7 @@ void TFT_eSPI::drawRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t
 ** Description:             Draw a rounded corner filled rectangle
 ***************************************************************************************/
 // Fill a rounded rectangle, changed to horizontal lines (faster in sprites)
-void TFT_eSPI::fillRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, uint32_t color)
-{
+void TFT_eSPI::fillRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, uint32_t color) {
   spi_begin();
   inTransaction = true;
 
@@ -1889,8 +1807,7 @@ void TFT_eSPI::fillRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t
 ** Description:             Draw a triangle outline using 3 arbitrary points
 ***************************************************************************************/
 // Draw a triangle
-void TFT_eSPI::drawTriangle(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint32_t color)
-{
+void TFT_eSPI::drawTriangle(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint32_t color) {
   spi_begin();
   inTransaction = true;
 
@@ -1908,8 +1825,7 @@ void TFT_eSPI::drawTriangle(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int3
 ** Description:             Draw a filled triangle using 3 arbitrary points
 ***************************************************************************************/
 // Fill a triangle - original Adafruit function works well and code footprint is small
-void TFT_eSPI::fillTriangle ( int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint32_t color)
-{
+void TFT_eSPI::fillTriangle ( int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint32_t color) {
   int32_t a, b, y, last;
 
   // Sort coordinates by Y order (y2 >= y1 >= y0)
@@ -1952,8 +1868,8 @@ void TFT_eSPI::fillTriangle ( int32_t x0, int32_t y0, int32_t x1, int32_t y1, in
   // error there), otherwise scanline y1 is skipped here and handled
   // in the second loop...which also avoids a /0 error here if y0=y1
   // (flat-topped triangle).
-  if (y1 == y2) last = y1;  // Include y1 scanline
-  else         last = y1 - 1; // Skip it
+  if (y1 == y2) last = y1;     // Include y1 scanline
+  else          last = y1 - 1; // Skip it
 
   for (y = y0; y <= last; y++) {
     a   = x0 + sa / dy01;
@@ -1988,8 +1904,7 @@ void TFT_eSPI::fillTriangle ( int32_t x0, int32_t y0, int32_t x1, int32_t y1, in
 ** Function name:           drawBitmap
 ** Description:             Draw an image stored in an array on the TFT
 ***************************************************************************************/
-void TFT_eSPI::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint16_t color)
-{
+void TFT_eSPI::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint16_t color) {
   spi_begin();
   inTransaction = true;
 
@@ -2012,8 +1927,7 @@ void TFT_eSPI::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w
 ** Function name:           drawXBitmap
 ** Description:             Draw an image stored in an XBM array onto the TFT
 ***************************************************************************************/
-void TFT_eSPI::drawXBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint16_t color)
-{
+void TFT_eSPI::drawXBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint16_t color) {
   spi_begin();
   inTransaction = true;
 
@@ -2036,8 +1950,7 @@ void TFT_eSPI::drawXBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t 
 ** Function name:           drawXBitmap
 ** Description:             Draw an XBM image with foreground and background colors
 ***************************************************************************************/
-void TFT_eSPI::drawXBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint16_t color, uint16_t bgcolor)
-{
+void TFT_eSPI::drawXBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint16_t color, uint16_t bgcolor) {
   spi_begin();
   inTransaction = true;
 
@@ -2060,8 +1973,7 @@ void TFT_eSPI::drawXBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t 
 ** Function name:           setCursor
 ** Description:             Set the text cursor x,y position
 ***************************************************************************************/
-void TFT_eSPI::setCursor(int16_t x, int16_t y)
-{
+void TFT_eSPI::setCursor(int16_t x, int16_t y) {
   cursor_x = x;
   cursor_y = y;
 }
@@ -2071,8 +1983,7 @@ void TFT_eSPI::setCursor(int16_t x, int16_t y)
 ** Function name:           setCursor
 ** Description:             Set the text cursor x,y position and font
 ***************************************************************************************/
-void TFT_eSPI::setCursor(int16_t x, int16_t y, uint8_t font)
-{
+void TFT_eSPI::setCursor(int16_t x, int16_t y, uint8_t font) {
   textfont = font;
   cursor_x = x;
   cursor_y = y;
@@ -2083,17 +1994,16 @@ void TFT_eSPI::setCursor(int16_t x, int16_t y, uint8_t font)
 ** Function name:           getCursorX
 ** Description:             Get the text cursor x position
 ***************************************************************************************/
-int16_t TFT_eSPI::getCursorX(void)
-{
+int16_t TFT_eSPI::getCursorX(void) {
   return cursor_x;
 }
+
 
 /***************************************************************************************
 ** Function name:           getCursorY
 ** Description:             Get the text cursor y position
 ***************************************************************************************/
-int16_t TFT_eSPI::getCursorY(void)
-{
+int16_t TFT_eSPI::getCursorY(void) {
   return cursor_y;
 }
 
@@ -2102,9 +2012,8 @@ int16_t TFT_eSPI::getCursorY(void)
 ** Function name:           setTextSize
 ** Description:             Set the text size multiplier
 ***************************************************************************************/
-void TFT_eSPI::setTextSize(uint8_t s)
-{
-  if (s>7) s = 7; // Limit the maximum size multiplier so byte variables can be used for rendering
+void TFT_eSPI::setTextSize(uint8_t s) {
+  if (s > 7) s = 7; // Limit the maximum size multiplier so byte variables can be used for rendering
   textsize = (s > 0) ? s : 1; // Don't allow font size 0
 }
 
@@ -2113,8 +2022,7 @@ void TFT_eSPI::setTextSize(uint8_t s)
 ** Function name:           setTextColor
 ** Description:             Set the font foreground colour (background is transparent)
 ***************************************************************************************/
-void TFT_eSPI::setTextColor(uint16_t c)
-{
+void TFT_eSPI::setTextColor(uint16_t c) {
   // For 'transparent' background, we'll set the bg
   // to the same as fg instead of using a flag
   textcolor = textbgcolor = c;
@@ -2125,8 +2033,7 @@ void TFT_eSPI::setTextColor(uint16_t c)
 ** Function name:           setTextColor
 ** Description:             Set the font foreground and background colour
 ***************************************************************************************/
-void TFT_eSPI::setTextColor(uint16_t c, uint16_t b)
-{
+void TFT_eSPI::setTextColor(uint16_t c, uint16_t b) {
   textcolor   = c;
   textbgcolor = b;
 }
@@ -2136,8 +2043,7 @@ void TFT_eSPI::setTextColor(uint16_t c, uint16_t b)
 ** Function name:           setPivot
 ** Description:             Set the pivot point on the TFT
 *************************************************************************************x*/
-void TFT_eSPI::setPivot(int16_t x, int16_t y)
-{
+void TFT_eSPI::setPivot(int16_t x, int16_t y) {
   _xpivot = x;
   _ypivot = y;
 }
@@ -2147,8 +2053,7 @@ void TFT_eSPI::setPivot(int16_t x, int16_t y)
 ** Function name:           getPivotX
 ** Description:             Get the x pivot position
 ***************************************************************************************/
-int16_t TFT_eSPI::getPivotX(void)
-{
+int16_t TFT_eSPI::getPivotX(void) {
   return _xpivot;
 }
 
@@ -2157,8 +2062,7 @@ int16_t TFT_eSPI::getPivotX(void)
 ** Function name:           getPivotY
 ** Description:             Get the y pivot position
 ***************************************************************************************/
-int16_t TFT_eSPI::getPivotY(void)
-{
+int16_t TFT_eSPI::getPivotY(void) {
   return _ypivot;
 }
 
@@ -2167,8 +2071,7 @@ int16_t TFT_eSPI::getPivotY(void)
 ** Function name:           setBitmapColor
 ** Description:             Set the foreground foreground and background colour
 ***************************************************************************************/
-void TFT_eSPI::setBitmapColor(uint16_t c, uint16_t b)
-{
+void TFT_eSPI::setBitmapColor(uint16_t c, uint16_t b) {
   if (c == b) b = ~c;
   bitmap_fg = c;
   bitmap_bg = b;
@@ -2179,8 +2082,7 @@ void TFT_eSPI::setBitmapColor(uint16_t c, uint16_t b)
 ** Function name:           setTextWrap
 ** Description:             Define if text should wrap at end of line
 ***************************************************************************************/
-void TFT_eSPI::setTextWrap(boolean wrapX, boolean wrapY)
-{
+void TFT_eSPI::setTextWrap(boolean wrapX, boolean wrapY) {
   textwrapX = wrapX;
   textwrapY = wrapY;
 }
@@ -2190,8 +2092,7 @@ void TFT_eSPI::setTextWrap(boolean wrapX, boolean wrapY)
 ** Function name:           setTextDatum
 ** Description:             Set the text position reference datum
 ***************************************************************************************/
-void TFT_eSPI::setTextDatum(uint8_t d)
-{
+void TFT_eSPI::setTextDatum(uint8_t d) {
   textdatum = d;
 }
 
@@ -2200,8 +2101,7 @@ void TFT_eSPI::setTextDatum(uint8_t d)
 ** Function name:           setTextPadding
 ** Description:             Define padding width (aids erasing old text and numbers)
 ***************************************************************************************/
-void TFT_eSPI::setTextPadding(uint16_t x_width)
-{
+void TFT_eSPI::setTextPadding(uint16_t x_width) {
   padX = x_width;
 }
 
@@ -2210,17 +2110,16 @@ void TFT_eSPI::setTextPadding(uint16_t x_width)
 ** Function name:           getRotation
 ** Description:             Return the rotation value (as used by setRotation())
 ***************************************************************************************/
-uint8_t TFT_eSPI::getRotation(void)
-{
+uint8_t TFT_eSPI::getRotation(void) {
   return rotation;
 }
+
 
 /***************************************************************************************
 ** Function name:           getTextDatum
 ** Description:             Return the text datum value (as used by setTextDatum())
 ***************************************************************************************/
-uint8_t TFT_eSPI::getTextDatum(void)
-{
+uint8_t TFT_eSPI::getTextDatum(void) {
   return textdatum;
 }
 
@@ -2230,8 +2129,7 @@ uint8_t TFT_eSPI::getTextDatum(void)
 ** Description:             Return the pixel width of display (per current rotation)
 ***************************************************************************************/
 // Return the size of the display (per current rotation)
-int16_t TFT_eSPI::width(void)
-{
+int16_t TFT_eSPI::width(void) {
   return _width;
 }
 
@@ -2240,8 +2138,7 @@ int16_t TFT_eSPI::width(void)
 ** Function name:           height
 ** Description:             Return the pixel height of display (per current rotation)
 ***************************************************************************************/
-int16_t TFT_eSPI::height(void)
-{
+int16_t TFT_eSPI::height(void) {
   return _height;
 }
 
@@ -2250,47 +2147,38 @@ int16_t TFT_eSPI::height(void)
 ** Function name:           textWidth
 ** Description:             Return the width in pixels of a string in a given font
 ***************************************************************************************/
-int16_t TFT_eSPI::textWidth(const String& string)
-{
+int16_t TFT_eSPI::textWidth(const String& string) {
   int16_t len = string.length() + 2;
   char buffer[len];
   string.toCharArray(buffer, len);
   return textWidth(buffer, textfont);
 }
 
-int16_t TFT_eSPI::textWidth(const String& string, uint8_t font)
-{
+int16_t TFT_eSPI::textWidth(const String& string, uint8_t font) {
   int16_t len = string.length() + 2;
   char buffer[len];
   string.toCharArray(buffer, len);
   return textWidth(buffer, font);
 }
 
-int16_t TFT_eSPI::textWidth(const char *string)
-{
+int16_t TFT_eSPI::textWidth(const char *string) {
   return textWidth(string, textfont);
 }
 
-int16_t TFT_eSPI::textWidth(const char *string, uint8_t font)
-{
+int16_t TFT_eSPI::textWidth(const char *string, uint8_t font) {
   int32_t str_width  = 0;
 
 #ifdef SMOOTH_FONT
-  if(fontLoaded)
-  {
-    while (*string)
-    {
+  if (fontLoaded) {
+    while (*string) {
       uint16_t unicode = decodeUTF8(*string++);
-      if (unicode)
-      {
+      if (unicode) {
         if (unicode == 0x20) str_width += gFont.spaceWidth;
-        else
-        {
+        else {
           uint16_t gNum = 0;
           bool found = getUnicodeIndex(unicode, &gNum);
-          if (found)
-          {
-            if(str_width == 0 && gdX[gNum] < 0) str_width -= gdX[gNum];
+          if (found) {
+            if (str_width == 0 && gdX[gNum] < 0) str_width -= gdX[gNum];
             if (*string || isDigits) str_width += gxAdvance[gNum];
             else str_width += (gdX[gNum] + gWidth[gNum]);
           }
@@ -2306,29 +2194,23 @@ int16_t TFT_eSPI::textWidth(const char *string, uint8_t font)
   unsigned char uniCode;
   char *widthtable;
 
-  if (font>1 && font<9)
-  {
+  if (font > 1 && font < 9) {
     widthtable = (char *)pgm_read_dword( &(fontdata[font].widthtbl ) ) - 32; //subtract the 32 outside the loop
 
-    while (*string)
-    {
+    while (*string) {
       uniCode = *(string++);
       if (uniCode > 31 && uniCode < 128)
-      str_width += pgm_read_byte( widthtable + uniCode); // Normally we need to subract 32 from uniCode
-      else str_width += pgm_read_byte( widthtable + 32); // Set illegal character = space width
+      str_width += pgm_read_byte(widthtable + uniCode); // Normally we need to subract 32 from uniCode
+      else str_width += pgm_read_byte(widthtable + 32); // Set illegal character = space width
     }
-  }
-  else
-  {
+  } else {
 
 #ifdef LOAD_GFXFF
-    if(gfxFont) // New font
+    if (gfxFont) // New font
     {
-      while (*string)
-      {
+      while (*string) {
         uniCode = *(string++);
-        if ((uniCode >= (uint8_t)pgm_read_byte(&gfxFont->first)) && (uniCode <= (uint8_t)pgm_read_byte(&gfxFont->last )))
-        {
+        if ((uniCode >= (uint8_t)pgm_read_byte(&gfxFont->first)) && (uniCode <= (uint8_t)pgm_read_byte(&gfxFont->last ))) {
           uniCode -= pgm_read_byte(&gfxFont->first);
           GFXglyph *glyph  = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[uniCode]);
           // If this is not the  last character or is a digit then use xAdvance
@@ -2357,8 +2239,7 @@ int16_t TFT_eSPI::textWidth(const char *string, uint8_t font)
 ***************************************************************************************/
 // Returns a value showing which fonts are loaded (bit N set =  Font N loaded)
 
-uint16_t TFT_eSPI::fontsLoaded(void)
-{
+uint16_t TFT_eSPI::fontsLoaded(void) {
   return fontsloaded;
 }
 
@@ -2367,16 +2248,14 @@ uint16_t TFT_eSPI::fontsLoaded(void)
 ** Function name:           fontHeight
 ** Description:             return the height of a font (yAdvance for free fonts)
 ***************************************************************************************/
-int16_t TFT_eSPI::fontHeight(int16_t font)
-{
+int16_t TFT_eSPI::fontHeight(int16_t font) {
 #ifdef SMOOTH_FONT
-  if(fontLoaded) return gFont.yAdvance;
+  if (fontLoaded) return gFont.yAdvance;
 #endif
 
 #ifdef LOAD_GFXFF
-  if (font==1)
-  {
-    if(gfxFont) // New font
+  if (font == 1) {
+    if (gfxFont) // New font
     {
       return pgm_read_byte(&gfxFont->yAdvance) * textsize;
     }
@@ -2385,17 +2264,16 @@ int16_t TFT_eSPI::fontHeight(int16_t font)
   return pgm_read_byte( &fontdata[font].height ) * textsize;
 }
 
-int16_t TFT_eSPI::fontHeight(void)
-{
+int16_t TFT_eSPI::fontHeight(void) {
   return fontHeight(textfont);
 }
+
 
 /***************************************************************************************
 ** Function name:           drawChar
 ** Description:             draw a single character in the Adafruit GLCD font
 ***************************************************************************************/
-void TFT_eSPI::drawChar(int32_t x, int32_t y, unsigned char c, uint32_t color, uint32_t bg, uint8_t size)
-{
+void TFT_eSPI::drawChar(int32_t x, int32_t y, unsigned char c, uint32_t color, uint32_t bg, uint8_t size) {
   if ((x >= _width)            || // Clip right
       (y >= _height)           || // Clip bottom
       ((x + 6 * size - 1) < 0) || // Clip left
@@ -2406,14 +2284,13 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, unsigned char c, uint32_t color, u
 #ifdef LOAD_GLCD
 //>>>>>>>>>>>>>>>>>>
 #ifdef LOAD_GFXFF
-  if(!gfxFont) { // 'Classic' built-in font
+  if (!gfxFont) { // 'Classic' built-in font
 #endif
 //>>>>>>>>>>>>>>>>>>
 
   boolean fillbg = (bg != color);
 
-  if ((size==1) && fillbg)
-  {
+  if ((size == 1) && fillbg) {
     uint8_t column[6];
     uint8_t mask = 0x1;
     spi_begin();
@@ -2460,9 +2337,7 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, unsigned char c, uint32_t color, u
 #endif
 
     spi_end();
-  }
-  else
-  {
+  } else {
     spi_begin();
     inTransaction = true;
     for (int8_t i = 0; i < 6; i++ ) {
@@ -2500,8 +2375,7 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, unsigned char c, uint32_t color, u
 
 #ifdef LOAD_GFXFF
     // Filter out bad characters not present in font
-    if ((c >= (uint8_t)pgm_read_byte(&gfxFont->first)) && (c <= (uint8_t)pgm_read_byte(&gfxFont->last )))
-    {
+    if ((c >= (uint8_t)pgm_read_byte(&gfxFont->first)) && (c <= (uint8_t)pgm_read_byte(&gfxFont->last ))) {
       spi_begin();
       inTransaction = true;
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -2519,7 +2393,7 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, unsigned char c, uint32_t color, u
       uint8_t  xx, yy, bits=0, bit=0;
       int16_t  xo16 = 0, yo16 = 0;
 
-      if(size > 1) {
+      if (size > 1) {
         xo16 = xo;
         yo16 = yo;
       }
@@ -2543,30 +2417,30 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, unsigned char c, uint32_t color, u
 //FIXED_SIZE is an option in User_Setup.h that only works with FAST_LINE enabled
 
 #ifdef FIXED_SIZE
-      x+=xo; // Save 88 bytes of FLASH
-      y+=yo;
+      x += xo; // Save 88 bytes of FLASH
+      y += yo;
 #endif
 
 #ifdef FAST_HLINE
 
   #ifdef FAST_SHIFT
       uint16_t hpc = 0; // Horizontal foreground pixel count
-      for(yy=0; yy<h; yy++) {
-        for(xx=0; xx<w; xx++) {
-          if(bit == 0) {
+      for (yy = 0; yy < h; yy++) {
+        for (xx = 0; xx < w; xx++) {
+          if (bit == 0) {
             bits = pgm_read_byte(&bitmap[bo++]);
             bit  = 0x80;
           }
-          if(bits & bit) hpc++;
+          if (bits & bit) hpc++;
           else {
-           if (hpc) {
+            if (hpc) {
 #ifndef FIXED_SIZE
-              if(size == 1) drawFastHLine(x+xo+xx-hpc, y+yo+yy, hpc, color);
-              else fillRect(x+(xo16+xx-hpc)*size, y+(yo16+yy)*size, size*hpc, size, color);
+              if (size == 1) drawFastHLine(x + xo + xx - hpc, y + yo + yy, hpc, color);
+              else fillRect(x + (xo16 + xx - hpc) * size, y + (yo16 + yy) * size, size * hpc, size, color);
 #else
-              drawFastHLine(x+xx-hpc, y+yy, hpc, color);
+              drawFastHLine(x + xx - hpc, y + yy, hpc, color);
 #endif
-              hpc=0;
+              hpc = 0;
             }
           }
           bit >>= 1;
@@ -2574,51 +2448,51 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, unsigned char c, uint32_t color, u
       // Draw pixels for this line as we are about to increment yy
         if (hpc) {
 #ifndef FIXED_SIZE
-          if(size == 1) drawFastHLine(x+xo+xx-hpc, y+yo+yy, hpc, color);
-          else fillRect(x+(xo16+xx-hpc)*size, y+(yo16+yy)*size, size*hpc, size, color);
+          if (size == 1) drawFastHLine(x + xo + xx - hpc, y + yo + yy, hpc, color);
+          else fillRect(x + (xo16 + xx - hpc) * size, y + (yo16 + yy) * size, size * hpc, size, color);
 #else
-          drawFastHLine(x+xx-hpc, y+yy, hpc, color);
+          drawFastHLine(x + xx - hpc, y + yy, hpc, color);
 #endif
-          hpc=0;
+          hpc = 0;
         }
       }
   #else
       uint16_t hpc = 0; // Horizontal foreground pixel count
-      for(yy=0; yy<h; yy++) {
-        for(xx=0; xx<w; xx++) {
-          if(!(bit++ & 7)) {
+      for (yy = 0; yy < h; yy++) {
+        for (xx = 0; xx < w; xx++) {
+          if (!(bit++ & 7)) {
             bits = pgm_read_byte(&bitmap[bo++]);
           }
-          if(bits & 0x80) hpc++;
+          if (bits & 0x80) hpc++;
           else {
             if (hpc) {
-              if(size == 1) drawFastHLine(x+xo+xx-hpc, y+yo+yy, hpc, color);
-              else fillRect(x+(xo16+xx-hpc)*size, y+(yo16+yy)*size, size*hpc, size, color);
-              hpc=0;
+              if (size == 1) drawFastHLine(x + xo + xx - hpc, y + yo + yy, hpc, color);
+              else fillRect(x + (xo16 + xx - hpc) * size, y + (yo16 + yy) * size, size * hpc, size, color);
+              hpc = 0;
             }
           }
           bits <<= 1;
         }
         // Draw pixels for this line as we are about to increment yy
         if (hpc) {
-          if(size == 1) drawFastHLine(x+xo+xx-hpc, y+yo+yy, hpc, color);
-          else fillRect(x+(xo16+xx-hpc)*size, y+(yo16+yy)*size, size*hpc, size, color);
-          hpc=0;
+          if (size == 1) drawFastHLine(x + xo + xx - hpc, y + yo + yy, hpc, color);
+          else fillRect(x + (xo16 + xx - hpc) * size, y + (yo16 + yy) * size, size * hpc, size, color);
+          hpc = 0;
         }
       }
   #endif
 
 #else
-      for(yy=0; yy<h; yy++) {
-        for(xx=0; xx<w; xx++) {
-          if(!(bit++ & 7)) {
+      for (yy = 0; yy < h; yy++) {
+        for (xx = 0; xx < w; xx++) {
+          if (!(bit++ & 7)) {
             bits = pgm_read_byte(&bitmap[bo++]);
           }
-          if(bits & 0x80) {
-            if(size == 1) {
-              drawPixel(x+xo+xx, y+yo+yy, color);
+          if (bits & 0x80) {
+            if (size == 1) {
+              drawPixel(x + xo + xx, y + yo + yy, color);
             } else {
-              fillRect(x+(xo16+xx)*size, y+(yo16+yy)*size, size, size, color);
+              fillRect(x + (xo16 + xx) * size, y + (yo16 + yy) * size, size, size, color);
             }
           }
           bits <<= 1;
@@ -2630,13 +2504,11 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, unsigned char c, uint32_t color, u
     }
 #endif
 
-
 #ifdef LOAD_GLCD
   #ifdef LOAD_GFXFF
   } // End classic vs custom font
   #endif
 #endif
-
 }
 
 
@@ -2645,8 +2517,7 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, unsigned char c, uint32_t color, u
 ** Description:             define an area to receive a stream of pixels
 ***************************************************************************************/
 // Chip select is high at the end of this function
-void TFT_eSPI::setAddrWindow(int32_t x0, int32_t y0, int32_t w, int32_t h)
-{
+void TFT_eSPI::setAddrWindow(int32_t x0, int32_t y0, int32_t w, int32_t h) {
   spi_begin();
 
   setWindow(x0, y0, x0 + w - 1, y0 + h - 1);
@@ -2661,15 +2532,14 @@ void TFT_eSPI::setAddrWindow(int32_t x0, int32_t y0, int32_t w, int32_t h)
 ***************************************************************************************/
 // Chip select stays low, call spi_begin first. Use setAddrWindow() from sketches
 #if defined (ESP8266) && !defined (RPI_WRITE_STROBE) && !defined (RPI_ILI9486_DRIVER)
-void TFT_eSPI::setWindow(int32_t xs, int32_t ys, int32_t xe, int32_t ye)
-{
+void TFT_eSPI::setWindow(int32_t xs, int32_t ys, int32_t xe, int32_t ye) {
   //spi_begin(); // Must be called before setWimdow
 
 #ifdef CGRAM_OFFSET
-  xs+=colstart;
-  xe+=colstart;
-  ys+=rowstart;
-  ye+=rowstart;
+  xs += colstart;
+  xe += colstart;
+  ys += rowstart;
+  ye += rowstart;
 #endif
 
   // Column addr set
@@ -2692,7 +2562,7 @@ void TFT_eSPI::setWindow(int32_t xs, int32_t ys, int32_t xe, int32_t ye)
 
   SPI1U1 = mask | (31 << SPILMOSI) | (31 << SPILMISO);
   // Load the two coords as a 32 bit value and shift in one go
-  SPI1W0 = (xs >> 8) | (uint16_t)(xs << 8) | ((uint8_t)(xe >> 8)<<16 | (xe << 24));
+  SPI1W0 = (xs >> 8) | (uint16_t)(xs << 8) | ((uint8_t)(xe >> 8) << 16 | (xe << 24));
   SPI1CMD |= SPIBUSY;
   while(SPI1CMD & SPIBUSY) {}
 
@@ -2709,7 +2579,7 @@ void TFT_eSPI::setWindow(int32_t xs, int32_t ys, int32_t xe, int32_t ye)
 
   SPI1U1 = mask | (31 << SPILMOSI) | (31 << SPILMISO);
   // Load the two coords as a 32 bit value and shift in one go
-  SPI1W0 = (ys >> 8) | (uint16_t)(ys << 8) | ((uint8_t)(ye >> 8)<<16 | (ye << 24));
+  SPI1W0 = (ys >> 8) | (uint16_t)(ys << 8) | ((uint8_t)(ye >> 8) << 16 | (ye << 24));
   SPI1CMD |= SPIBUSY;
   while(SPI1CMD & SPIBUSY) {}
 
@@ -2728,8 +2598,7 @@ void TFT_eSPI::setWindow(int32_t xs, int32_t ys, int32_t xe, int32_t ye)
 
 #elif defined (ESP8266) && !defined (RPI_WRITE_STROBE) && defined (RPI_ILI9486_DRIVER) // This is for the RPi display that needs 16 bits
 
-void TFT_eSPI::setWindow(int32_t xs, int32_t ys, int32_t xe, int32_t ye)
-{
+void TFT_eSPI::setWindow(int32_t xs, int32_t ys, int32_t xe, int32_t ye) {
   //spi_begin(); // Must be called before setWimdow
 
   addr_col = 0xFFFF;
@@ -2743,13 +2612,13 @@ void TFT_eSPI::setWindow(int32_t xs, int32_t ys, int32_t xe, int32_t ye)
 
   SPI1U1 = mask | (CMD_BITS << SPILMOSI) | (CMD_BITS << SPILMISO);
 
-  SPI1W0 = TFT_CASET<<8;
+  SPI1W0 = TFT_CASET << 8;
   SPI1CMD |= SPIBUSY;
   while(SPI1CMD & SPIBUSY) {}
 
   DC_D;
 
-  uint8_t xb[] = { 0, (uint8_t) (xs>>8), 0, (uint8_t) (xs>>0), 0, (uint8_t) (xe>>8), 0, (uint8_t) (xe>>0), };
+  uint8_t xb[] = { 0, (uint8_t) (xs >> 8), 0, (uint8_t) (xs >> 0), 0, (uint8_t) (xe >> 8), 0, (uint8_t) (xe >> 0), };
   spi.writePattern(&xb[0], 8, 1);
 
   // Row addr set
@@ -2757,20 +2626,20 @@ void TFT_eSPI::setWindow(int32_t xs, int32_t ys, int32_t xe, int32_t ye)
 
   SPI1U1 = mask | (CMD_BITS << SPILMOSI) | (CMD_BITS << SPILMISO);
 
-  SPI1W0 = TFT_PASET<<8;
+  SPI1W0 = TFT_PASET << 8;
   SPI1CMD |= SPIBUSY;
   while(SPI1CMD & SPIBUSY) {}
 
   DC_D;
 
-  uint8_t yb[] = { 0, (uint8_t) (ys>>8), 0, (uint8_t) (ys>>0), 0, (uint8_t) (ye>>8), 0, (uint8_t) (ye>>0), };
+  uint8_t yb[] = { 0, (uint8_t) (ys >> 8), 0, (uint8_t) (ys >> 0), 0, (uint8_t) (ye >> 8), 0, (uint8_t) (ye >> 0), };
   spi.writePattern(&yb[0], 8, 1);
 
   // write to RAM
   DC_C;
 
   SPI1U1 = mask | (CMD_BITS << SPILMOSI) | (CMD_BITS << SPILMISO);
-  SPI1W0 = TFT_RAMWR<<8;
+  SPI1W0 = TFT_RAMWR << 8;
   SPI1CMD |= SPIBUSY;
   while(SPI1CMD & SPIBUSY) {}
 
@@ -2782,8 +2651,7 @@ void TFT_eSPI::setWindow(int32_t xs, int32_t ys, int32_t xe, int32_t ye)
 #else
 
 #if defined (ESP8266) && defined (RPI_ILI9486_DRIVER) // This is for the RPi display that needs 16 bits
-void TFT_eSPI::setWindow(int32_t x0, int32_t y0, int32_t x1, int32_t y1)
-{
+void TFT_eSPI::setWindow(int32_t x0, int32_t y0, int32_t x1, int32_t y1) {
   //spi_begin(); // Must be called before setWimdow
 
   uint32_t mask = ~((SPIMMOSI << SPILMOSI) | (SPIMMISO << SPILMISO));
@@ -2858,18 +2726,17 @@ void TFT_eSPI::setWindow(int32_t x0, int32_t y0, int32_t x1, int32_t y1)
 
 #else // This is for the ESP32
 
-void TFT_eSPI::setWindow(int32_t x0, int32_t y0, int32_t x1, int32_t y1)
-{
+void TFT_eSPI::setWindow(int32_t x0, int32_t y0, int32_t x1, int32_t y1) {
   //spi_begin(); // Must be called before setWimdow
 
   addr_col = 0xFFFF;
   addr_row = 0xFFFF;
 
 #ifdef CGRAM_OFFSET
-  x0+=colstart;
-  x1+=colstart;
-  y0+=rowstart;
-  y1+=rowstart;
+  x0 += colstart;
+  x1 += colstart;
+  y0 += rowstart;
+  y1 += rowstart;
 #endif
 
   DC_C;
@@ -2879,7 +2746,7 @@ void TFT_eSPI::setWindow(int32_t x0, int32_t y0, int32_t x1, int32_t y1)
   DC_D;
 
 #if defined (RPI_ILI9486_DRIVER)
-  uint8_t xb[] = { 0, (uint8_t) (x0>>8), 0, (uint8_t) (x0>>0), 0, (uint8_t) (x1>>8), 0, (uint8_t) (x1>>0), };
+  uint8_t xb[] = { 0, (uint8_t) (x0 >> 8), 0, (uint8_t) (x0 >> 0), 0, (uint8_t) (x1 >> 8), 0, (uint8_t) (x1 >> 0), };
   spi.writePattern(&xb[0], 8, 1);
 #else
   tft_Write_32(SPI_32(x0, x1));
@@ -2893,7 +2760,7 @@ void TFT_eSPI::setWindow(int32_t x0, int32_t y0, int32_t x1, int32_t y1)
   DC_D;
 
 #if defined (RPI_ILI9486_DRIVER)
-  uint8_t yb[] = { 0, (uint8_t) (y0>>8), 0, (uint8_t) (y0>>0), 0, (uint8_t) (y1>>8), 0, (uint8_t) (y1>>0), };
+  uint8_t yb[] = { 0, (uint8_t) (y0 >> 8), 0, (uint8_t) (y0 >> 0), 0, (uint8_t) (y1 >> 8), 0, (uint8_t) (y1 >> 0), };
   spi.writePattern(&yb[0], 8, 1);
 #else
   tft_Write_32(SPI_32(y0, y1));
@@ -2918,8 +2785,7 @@ void TFT_eSPI::setWindow(int32_t x0, int32_t y0, int32_t x1, int32_t y1)
 ***************************************************************************************/
 // Chip select stays low
 #if defined (ESP8266) && !defined (RPI_WRITE_STROBE)
-void TFT_eSPI::readAddrWindow(int32_t xs, int32_t ys, int32_t w, int32_t h)
-{
+void TFT_eSPI::readAddrWindow(int32_t xs, int32_t ys, int32_t w, int32_t h) {
   spi_begin();
 
   int32_t xe = xs + w - 1;
@@ -2951,7 +2817,7 @@ void TFT_eSPI::readAddrWindow(int32_t xs, int32_t ys, int32_t w, int32_t h)
 
   SPI1U1 = mask | (31 << SPILMOSI) | (31 << SPILMISO);
   // Load the two coords as a 32 bit value and shift in one go
-  SPI1W0 = (xs >> 8) | (uint16_t)(xs << 8) | ((uint8_t)(xe >> 8)<<16 | (xe << 24));
+  SPI1W0 = (xs >> 8) | (uint16_t)(xs << 8) | ((uint8_t)(xe >> 8) << 16 | (xe << 24));
   SPI1CMD |= SPIBUSY;
   while(SPI1CMD & SPIBUSY) {}
 
@@ -2968,7 +2834,7 @@ void TFT_eSPI::readAddrWindow(int32_t xs, int32_t ys, int32_t w, int32_t h)
 
   SPI1U1 = mask | (31 << SPILMOSI) | (31 << SPILMISO);
   // Load the two coords as a 32 bit value and shift in one go
-  SPI1W0 = (ys >> 8) | (uint16_t)(ys << 8) | ((uint8_t)(ye >> 8)<<16 | (ye << 24));
+  SPI1W0 = (ys >> 8) | (uint16_t)(ys << 8) | ((uint8_t)(ye >> 8) << 16 | (ye << 24));
   SPI1CMD |= SPIBUSY;
   while(SPI1CMD & SPIBUSY) {}
 
@@ -2986,8 +2852,7 @@ void TFT_eSPI::readAddrWindow(int32_t xs, int32_t ys, int32_t w, int32_t h)
 
 #else //ESP32
 
-void TFT_eSPI::readAddrWindow(int32_t xs, int32_t ys, int32_t w, int32_t h)
-{
+void TFT_eSPI::readAddrWindow(int32_t xs, int32_t ys, int32_t w, int32_t h) {
   spi_begin();
 
   int32_t xe = xs + w - 1;
@@ -3032,19 +2897,19 @@ ye += rowstart;
 
 #endif
 
+
 /***************************************************************************************
 ** Function name:           drawPixel
 ** Description:             push a single pixel at an arbitrary position
 ***************************************************************************************/
 #if defined (ESP8266) && !defined (RPI_WRITE_STROBE)
-void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint32_t color)
-{
+void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint32_t color) {
   // Range checking
   if ((x < 0) || (y < 0) ||(x >= _width) || (y >= _height)) return;
 
 #ifdef CGRAM_OFFSET
-  x+=colstart;
-  y+=rowstart;
+  x += colstart;
+  y += rowstart;
 #endif
 
   spi_begin();
@@ -3064,7 +2929,7 @@ void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint32_t color)
     DC_D;
 
 #if defined (RPI_ILI9486_DRIVER) // This is for the RPi display that needs 16 bits per byte
-    uint8_t cBin[] = { 0, (uint8_t) (x>>8), 0, (uint8_t) (x>>0)};
+    uint8_t cBin[] = { 0, (uint8_t) (x >> 8), 0, (uint8_t) (x >> 0)};
     spi.writePattern(&cBin[0], 4, 2);
 #else
     SPI1U1 = mask | (31 << SPILMOSI) | (31 << SPILMISO);
@@ -3092,7 +2957,7 @@ void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint32_t color)
     DC_D;
 
 #if defined (RPI_ILI9486_DRIVER) // This is for the RPi display that needs 16 bits per byte
-    uint8_t cBin[] = { 0, (uint8_t) (y>>8), 0, (uint8_t) (y>>0)};
+    uint8_t cBin[] = { 0, (uint8_t) (y >> 8), 0, (uint8_t) (y >> 0)};
     spi.writePattern(&cBin[0], 4, 2);
 #else
     SPI1U1 = mask | (31 << SPILMOSI) | (31 << SPILMISO);
@@ -3133,8 +2998,7 @@ void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint32_t color)
 
 #if defined (ESP8266) && defined (RPI_ILI9486_DRIVER) // This is for the RPi display that needs 16 bits
 
-void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint32_t color)
-{
+void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint32_t color) {
   // Range checking
   if ((x < 0) || (y < 0) ||(x >= _width) || (y >= _height)) return;
 
@@ -3216,16 +3080,15 @@ void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint32_t color)
 
 #else // ESP32
 
-void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint32_t color)
-{
+void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint32_t color) {
   // Range checking
   if ((x < 0) || (y < 0) ||(x >= _width) || (y >= _height)) return;
 
   spi_begin();
 
 #ifdef CGRAM_OFFSET
-  x+=colstart;
-  y+=rowstart;
+  x += colstart;
+  y += rowstart;
 #endif
 
   DC_C;
@@ -3238,7 +3101,7 @@ void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint32_t color)
     DC_D;
 
 #if defined (RPI_ILI9486_DRIVER)
-    uint8_t xb[] = { 0, (uint8_t) (x>>8), 0, (uint8_t) (x>>0), 0, (uint8_t) (x>>8), 0, (uint8_t) (x>>0), };
+    uint8_t xb[] = { 0, (uint8_t) (x >> 8), 0, (uint8_t) (x >> 0), 0, (uint8_t) (x >> 8), 0, (uint8_t) (x >> 0), };
     spi.writePattern(&xb[0], 8, 1);
 #else
     tft_Write_32(SPI_32(x, x));
@@ -3257,7 +3120,7 @@ void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint32_t color)
     DC_D;
 
 #if defined (RPI_ILI9486_DRIVER)
-    uint8_t yb[] = { 0, (uint8_t) (y>>8), 0, (uint8_t) (y>>0), 0, (uint8_t) (y>>8), 0, (uint8_t) (y>>0), };
+    uint8_t yb[] = { 0, (uint8_t) (y >> 8), 0, (uint8_t) (y >> 0), 0, (uint8_t) (y >> 8), 0, (uint8_t) (y >> 0), };
     spi.writePattern(&yb[0], 8, 1);
 #else
     tft_Write_32(SPI_32(y, y));
@@ -3267,7 +3130,6 @@ void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint32_t color)
 
     addr_row = y;
   }
-
 
   tft_Write_8(TFT_RAMWR);
 
@@ -3285,8 +3147,7 @@ void TFT_eSPI::drawPixel(int32_t x, int32_t y, uint32_t color)
 ** Function name:           pushColor
 ** Description:             push a single pixel
 ***************************************************************************************/
-void TFT_eSPI::pushColor(uint16_t color)
-{
+void TFT_eSPI::pushColor(uint16_t color) {
   spi_begin();
 
   tft_Write_16(color);
@@ -3299,13 +3160,12 @@ void TFT_eSPI::pushColor(uint16_t color)
 ** Function name:           pushColor
 ** Description:             push a single colour to "len" pixels
 ***************************************************************************************/
-void TFT_eSPI::pushColor(uint16_t color, uint32_t len)
-{
+void TFT_eSPI::pushColor(uint16_t color, uint32_t len) {
   spi_begin();
 
 #ifdef RPI_WRITE_STROBE
   uint8_t colorBin[] = { (uint8_t) (color >> 8), (uint8_t) color };
-  if(len) spi.writePattern(&colorBin[0], 2, 1); len--;
+  if (len) spi.writePattern(&colorBin[0], 2, 1); len--;
   while(len--) {WR_L; WR_H;}
 #else
   #if defined (ESP32_PARALLEL)
@@ -3317,36 +3177,36 @@ void TFT_eSPI::pushColor(uint16_t color, uint32_t len)
 
   spi_end();
 }
+
 
 /***************************************************************************************
 ** Function name:           startWrite
 ** Description:             begin transaction with CS low, MUST later call endWrite
 ***************************************************************************************/
-void TFT_eSPI::startWrite(void)
-{
+void TFT_eSPI::startWrite(void) {
   spi_begin();
   inTransaction = true;
 }
+
 
 /***************************************************************************************
 ** Function name:           endWrite
 ** Description:             end transaction with CS high
 ***************************************************************************************/
-void TFT_eSPI::endWrite(void)
-{
+void TFT_eSPI::endWrite(void) {
   inTransaction = false;
   spi_end();
 }
+
 
 /***************************************************************************************
 ** Function name:           writeColor (use startWrite() and endWrite() before & after)
 ** Description:             raw write of "len" pixels avoiding transaction check
 ***************************************************************************************/
-void TFT_eSPI::writeColor(uint16_t color, uint32_t len)
-{
+void TFT_eSPI::writeColor(uint16_t color, uint32_t len) {
 #ifdef RPI_WRITE_STROBE
   uint8_t colorBin[] = { (uint8_t) (color >> 8), (uint8_t) color };
-  if(len) spi.writePattern(&colorBin[0], 2, 1); len--;
+  if (len) spi.writePattern(&colorBin[0], 2, 1); len--;
   while(len--) {WR_L; WR_H;}
 #else
   #if defined (ESP32_PARALLEL)
@@ -3356,6 +3216,7 @@ void TFT_eSPI::writeColor(uint16_t color, uint32_t len)
   #endif
 #endif
 }
+
 
 /***************************************************************************************
 ** Function name:           pushColors
@@ -3363,19 +3224,18 @@ void TFT_eSPI::writeColor(uint16_t color, uint32_t len)
 ***************************************************************************************/
 // Assumed that setAddrWindow() has previously been called
 
-void TFT_eSPI::pushColors(uint8_t *data, uint32_t len)
-{
+void TFT_eSPI::pushColors(uint8_t *data, uint32_t len) {
   spi_begin();
 
 #if defined (RPI_WRITE_STROBE)
-  while ( len >=64 ) {spi.writePattern(data, 64, 1); data += 64; len -= 64; }
+  while (len >= 64) {spi.writePattern(data, 64, 1); data += 64; len -= 64; }
   if (len) spi.writePattern(data, len, 1);
 #else
   #ifdef ESP32_PARALLEL
     while (len--) {tft_Write_8(*data); data++;}
   #elif  defined (ILI9488_DRIVER)
     uint16_t color;
-    while (len>1) {color = (*data++) | ((*data++)<<8); tft_Write_16(color); len-=2;}
+    while (len > 1) {color = (*data++) | ((*data++)<<8); tft_Write_16(color); len-=2;}
   #else
     #if (SPI_FREQUENCY == 80000000)
       while ( len >=64 ) {spi.writePattern(data, 64, 1); data += 64; len -= 64; }
@@ -3394,8 +3254,7 @@ void TFT_eSPI::pushColors(uint8_t *data, uint32_t len)
 ** Function name:           pushColors
 ** Description:             push an array of pixels, for image drawing
 ***************************************************************************************/
-void TFT_eSPI::pushColors(uint16_t *data, uint32_t len, bool swap)
-{
+void TFT_eSPI::pushColors(uint16_t *data, uint32_t len, bool swap) {
   spi_begin();
 
 #if defined (ESP32) || defined (ILI9488_DRIVER)
@@ -3403,8 +3262,8 @@ void TFT_eSPI::pushColors(uint16_t *data, uint32_t len, bool swap)
     if (swap) while ( len-- ) {tft_Write_16(*data); data++;}
     else while ( len-- ) {tft_Write_16S(*data); data++;}
   #else
-    if (swap) spi.writePixels(data,len<<1);
-    else spi.writeBytes((uint8_t*)data,len<<1);
+    if (swap) spi.writePixels(data, len << 1);
+    else spi.writeBytes((uint8_t*)data, len << 1);
   #endif
 #else
 
@@ -3414,25 +3273,20 @@ void TFT_eSPI::pushColors(uint16_t *data, uint32_t len, bool swap)
 
   SPI1U1 = (SPI1U1 & mask) | (255 << SPILMOSI) | (255 << SPILMISO);
 
-  while(len>15)
-  {
+  while(len > 15) {
 
-    if (swap)
-    {
+    if (swap) {
       uint32_t i = 0;
-      while(i<8)
-      {
+      while(i < 8) {
         color[i]  = (*data >> 8) | (uint16_t)(*data << 8);
         data++;
         color[i] |= ((*data >> 8) | (*data << 8)) << 16;
         data++;
         i++;
       }
-    }
-    else
-    {
-      memcpy(color,data,32);
-      data+=16;
+    } else {
+      memcpy(color, data, 32);
+      data += 16;
     }
 
     len -= 16;
@@ -3450,21 +3304,16 @@ void TFT_eSPI::pushColors(uint16_t *data, uint32_t len, bool swap)
     SPI1CMD |= SPIBUSY;
   }
 
-  if(len)
-  {
+  if (len) {
     uint32_t bits = (len*16-1); // bits left to shift - 1
-    if (swap)
-    {
+    if (swap) {
       uint16_t* ptr = (uint16_t*)color;
-      while(len--)
-      {
+      while(len--) {
         *ptr++ = (*(data) >> 8) | (uint16_t)(*(data) << 8);
         data++;
       }
-    }
-    else
-    {
-      memcpy(color,data,len<<1);
+    } else {
+      memcpy(color, data, len << 1);
     }
     while(SPI1CMD & SPIBUSY) {}
     SPI1U1 = (SPI1U1 & mask) | (bits << SPILMOSI) | (bits << SPILMISO);
@@ -3496,8 +3345,7 @@ void TFT_eSPI::pushColors(uint16_t *data, uint32_t len, bool swap)
 
 #if defined (RPI_ILI9486_DRIVER) || defined (ESP32) || defined (RPI_WRITE_STROBE) || defined (HX8357D_DRIVER) || defined (ILI9488_DRIVER)
 
-void TFT_eSPI::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t color)
-{
+void TFT_eSPI::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t color) {
   spi_begin();
   inTransaction = true;
   boolean steep = abs(y1 - y0) > abs(x1 - x0);
@@ -3530,9 +3378,7 @@ void TFT_eSPI::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t
       }
     }
     if (dlen) drawFastVLine(y0, xs, dlen, color);
-  }
-  else
-  {
+  } else {
     for (; x0 <= x1; x0++) {
       dlen++;
       err -= dy;
@@ -3552,9 +3398,7 @@ void TFT_eSPI::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t
 #else
 
 // This is a weeny bit faster
-void TFT_eSPI::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t color)
-{
-
+void TFT_eSPI::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t color) {
   boolean steep = abs(y1 - y0) > abs(x1 - x0);
 
   if (steep) {
@@ -3583,8 +3427,7 @@ void TFT_eSPI::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t
   SPI1U = SPIUMOSI | SPIUSSE;
   int16_t swapped_color = (color >> 8) | (color << 8);
 
-  if (steep)  // y increments every iteration (y0 is x-axis, and x0 is y-axis)
-  {
+  if (steep) { // y increments every iteration (y0 is x-axis, and x0 is y-axis)
     if (x1 >= (int32_t)_height) x1 = _height - 1;
 
     for (; x0 <= x1; x0++) {
@@ -3596,7 +3439,7 @@ void TFT_eSPI::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t
       }
     }
 
-    if (x0 > x1) {spi_end(); return;}
+    if (x0 > x1) { spi_end(); return; }
 
     setWindow(y0, x0, y0, _height);
     SPI1U1 = mask;
@@ -3616,17 +3459,15 @@ void TFT_eSPI::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t
         SPI1W0 = swapped_color;
       }
     }
-  }
-  else    // x increments every iteration (x0 is x-axis, and y0 is y-axis)
-  {
+  } else { // x increments every iteration (x0 is x-axis, and y0 is y-axis)
     if (x1 >= _width) x1 = _width - 1;
 
     for (; x0 <= x1; x0++) {
       if ((x0 >= 0) && (y0 >= 0) && (y0 < (int32_t)_height)) break;
       err -= dy;
       if (err < 0) {
-          err += dx;
-          y0 += ystep;
+        err += dx;
+        y0 += ystep;
       }
     }
 
@@ -3666,8 +3507,7 @@ void TFT_eSPI::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t
 ** Description:             draw a vertical line
 ***************************************************************************************/
 #if defined (ESP8266) && !defined (RPI_WRITE_STROBE)
-void TFT_eSPI::drawFastVLine(int32_t x, int32_t y, int32_t h, uint32_t color)
-{
+void TFT_eSPI::drawFastVLine(int32_t x, int32_t y, int32_t h, uint32_t color) {
   // Clipping
   if ((x < 0) || (x >= _width) || (y >= _height)) return;
 
@@ -3688,8 +3528,7 @@ void TFT_eSPI::drawFastVLine(int32_t x, int32_t y, int32_t h, uint32_t color)
 
 #else
 
-void TFT_eSPI::drawFastVLine(int32_t x, int32_t y, int32_t h, uint32_t color)
-{
+void TFT_eSPI::drawFastVLine(int32_t x, int32_t y, int32_t h, uint32_t color) {
   // Clipping
   if ((x < 0) || (x >= _width) || (y >= _height)) return;
 
@@ -3726,13 +3565,13 @@ void TFT_eSPI::drawFastVLine(int32_t x, int32_t y, int32_t h, uint32_t color)
 }
 #endif
 
+
 /***************************************************************************************
 ** Function name:           drawFastHLine
 ** Description:             draw a horizontal line
 ***************************************************************************************/
 #if defined (ESP8266) && !defined (RPI_WRITE_STROBE)
-void TFT_eSPI::drawFastHLine(int32_t x, int32_t y, int32_t w, uint32_t color)
-{
+void TFT_eSPI::drawFastHLine(int32_t x, int32_t y, int32_t w, uint32_t color) {
   // Clipping
   if ((y < 0) || (x >= _width) || (y >= _height)) return;
 
@@ -3753,8 +3592,7 @@ void TFT_eSPI::drawFastHLine(int32_t x, int32_t y, int32_t w, uint32_t color)
 
 #else
 
-void TFT_eSPI::drawFastHLine(int32_t x, int32_t y, int32_t w, uint32_t color)
-{
+void TFT_eSPI::drawFastHLine(int32_t x, int32_t y, int32_t w, uint32_t color) {
   // Clipping
   if ((y < 0) || (x >= _width) || (y >= _height)) return;
 
@@ -3791,13 +3629,13 @@ void TFT_eSPI::drawFastHLine(int32_t x, int32_t y, int32_t w, uint32_t color)
 }
 #endif
 
+
 /***************************************************************************************
 ** Function name:           fillRect
 ** Description:             draw a filled rectangle
 ***************************************************************************************/
 #if defined (ESP8266) && !defined (RPI_WRITE_STROBE)
-void TFT_eSPI::fillRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color)
-{
+void TFT_eSPI::fillRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color) {
   // Clipping
   if ((x >= _width) || (y >= _height)) return;
 
@@ -3820,8 +3658,7 @@ void TFT_eSPI::fillRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t col
 
 #else
 
-void TFT_eSPI::fillRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color)
-{
+void TFT_eSPI::fillRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color) {
 
   // Clipping
   if ((x >= _width) || (y >= _height)) return;
@@ -3845,14 +3682,11 @@ void TFT_eSPI::fillRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t col
   while(n--) {WR_L; WR_H;}
 #else
   #ifdef ESP32_PARALLEL
-    if (color>>8 == (uint8_t)color)
-    {
+    if (color >> 8 == (uint8_t)color) {
       tft_Write_8(color);
       n--; WR_L; WR_H;
       while (n) {WR_L; WR_H; n--; WR_L; WR_H;}
-    }
-    else
-    {
+    } else {
       while (n--) {tft_Write_16(color);}
     }
   #else
@@ -3864,12 +3698,12 @@ void TFT_eSPI::fillRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t col
 }
 #endif
 
+
 /***************************************************************************************
 ** Function name:           color565
 ** Description:             convert three 8 bit RGB levels to a 16 bit colour value
 ***************************************************************************************/
-uint16_t TFT_eSPI::color565(uint8_t r, uint8_t g, uint8_t b)
-{
+uint16_t TFT_eSPI::color565(uint8_t r, uint8_t g, uint8_t b) {
   return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
 }
 
@@ -3878,8 +3712,7 @@ uint16_t TFT_eSPI::color565(uint8_t r, uint8_t g, uint8_t b)
 ** Function name:           color16to8
 ** Description:             convert 16 bit colour to an 8 bit 332 RGB colour value
 ***************************************************************************************/
-uint8_t TFT_eSPI::color16to8(uint16_t c)
-{
+uint8_t TFT_eSPI::color16to8(uint16_t c) {
   return ((c & 0xE000)>>8) | ((c & 0x0700)>>6) | ((c & 0x0018)>>3);
 }
 
@@ -3888,9 +3721,8 @@ uint8_t TFT_eSPI::color16to8(uint16_t c)
 ** Function name:           color8to16
 ** Description:             convert 8 bit colour to a 16 bit 565 colour value
 ***************************************************************************************/
-uint16_t TFT_eSPI::color8to16(uint8_t color)
-{
-  uint8_t  blue[] = {0, 11, 21, 31}; // blue 2 to 5 bit colour lookup table
+uint16_t TFT_eSPI::color8to16(uint8_t color) {
+  uint8_t  blue[] = { 0, 11, 21, 31 }; // blue 2 to 5 bit colour lookup table
   uint16_t color16 = 0;
 
   //        =====Green=====     ===============Red==============
@@ -3906,8 +3738,7 @@ uint16_t TFT_eSPI::color8to16(uint8_t color)
 ** Function name:           invertDisplay
 ** Description:             invert the display colours i = 1 invert, i = 0 normal
 ***************************************************************************************/
-void TFT_eSPI::invertDisplay(boolean i)
-{
+void TFT_eSPI::invertDisplay(boolean i) {
   spi_begin();
   // Send the command twice as otherwise it does not always work!
   writecommand(i ? TFT_INVON : TFT_INVOFF);
@@ -3920,13 +3751,11 @@ void TFT_eSPI::invertDisplay(boolean i)
 ** Function name:           write
 ** Description:             draw characters piped through serial stream
 ***************************************************************************************/
-size_t TFT_eSPI::write(uint8_t utf8)
-{
+size_t TFT_eSPI::write(uint8_t utf8) {
   if (utf8 == '\r') return 1;
 
 #ifdef SMOOTH_FONT
-  if(fontLoaded)
-  {
+  if (fontLoaded) {
     uint16_t unicode = decodeUTF8(utf8);
 
     //Serial.print("UniCode="); Serial.println(unicode);
@@ -3936,7 +3765,7 @@ size_t TFT_eSPI::write(uint8_t utf8)
 
     //fontFile = SPIFFS.open( _gFontFilename, "r" );
 
-    //if(!fontFile)
+    //if (!fontFile)
     //{
     //  fontLoaded = false;
     //  return 1;
@@ -3950,7 +3779,7 @@ size_t TFT_eSPI::write(uint8_t utf8)
 #endif
 
   uint8_t uniCode = utf8;        // Work with a copy
-  if (utf8 == '\n') uniCode+=22; // Make it a valid space character to stop errors
+  if (utf8 == '\n') uniCode += 22; // Make it a valid space character to stop errors
   else if (utf8 < 32) return 1;
 
   uint16_t width = 0;
@@ -3964,13 +3793,12 @@ size_t TFT_eSPI::write(uint8_t utf8)
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #ifdef LOAD_GFXFF
-  if(!gfxFont) {
+  if (!gfxFont) {
 #endif
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 #ifdef LOAD_FONT2
-  if (textfont == 2)
-  {
+  if (textfont == 2) {
     if (utf8 > 127) return 1;
     // This is 20us faster than using the fontdata structure (0.443ms per character instead of 0.465ms)
     width = pgm_read_byte(widtbl_f16 + uniCode-32);
@@ -3986,8 +3814,7 @@ size_t TFT_eSPI::write(uint8_t utf8)
 
 #ifdef LOAD_RLE
   {
-    if ((textfont>2) && (textfont<9))
-    {
+    if ((textfont > 2) && (textfont < 9)) {
       if (utf8 > 127) return 1;
       // Uses the fontinfo struct array to avoid lots of 'if' or 'switch' statements
       // A tad slower than above but this is not significant and is more convenient for the RLE fonts
@@ -3998,13 +3825,12 @@ size_t TFT_eSPI::write(uint8_t utf8)
 #endif
 
 #ifdef LOAD_GLCD
-  if (textfont==1)
-  {
+  if (textfont == 1) {
       width =  6;
       height = 8;
   }
 #else
-  if (textfont==1) return 1;
+  if (textfont == 1) return 1;
 #endif
 
   height = height * textsize;
@@ -4012,11 +3838,8 @@ size_t TFT_eSPI::write(uint8_t utf8)
   if (utf8 == '\n') {
     cursor_y += height;
     cursor_x  = 0;
-  }
-  else
-  {
-    if (textwrapX && (cursor_x + width * textsize > _width))
-    {
+  } else {
+    if (textwrapX && (cursor_x + width * textsize > _width)) {
       cursor_y += height;
       cursor_x = 0;
     }
@@ -4026,11 +3849,8 @@ size_t TFT_eSPI::write(uint8_t utf8)
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #ifdef LOAD_GFXFF
-  } // Custom GFX font
-  else
-  {
-
-    if(utf8 == '\n') {
+  } else { // Custom GFX font
+    if (utf8 == '\n') {
       cursor_x  = 0;
       cursor_y += (int16_t)textsize *
                   (uint8_t)pgm_read_byte(&gfxFont->yAdvance);
@@ -4042,9 +3862,9 @@ size_t TFT_eSPI::write(uint8_t utf8)
       GFXglyph *glyph = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[c2]);
       uint8_t   w     = pgm_read_byte(&glyph->width),
                 h     = pgm_read_byte(&glyph->height);
-      if((w > 0) && (h > 0)) { // Is there an associated bitmap?
+      if ((w > 0) && (h > 0)) { // Is there an associated bitmap?
         int16_t xo = (int8_t)pgm_read_byte(&glyph->xOffset);
-        if(textwrapX && ((cursor_x + textsize * (xo + w)) > _width)) {
+        if (textwrapX && ((cursor_x + textsize * (xo + w)) > _width)) {
           // Drawing character would go off right edge; wrap to new line
           cursor_x  = 0;
           cursor_y += (int16_t)textsize *
@@ -4067,16 +3887,13 @@ size_t TFT_eSPI::write(uint8_t utf8)
 ** Function name:           drawChar
 ** Description:             draw a Unicode onto the screen
 ***************************************************************************************/
-int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y)
-{
-    return drawChar(uniCode, x, y, textfont);
+int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y) {
+  return drawChar(uniCode, x, y, textfont);
 }
 
-int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
-{
+int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font) {
 
-  if (font==1)
-  {
+  if (font == 1) {
 #ifdef LOAD_GLCD
   #ifndef LOAD_GFXFF
     drawChar(x, y, uniCode, textcolor, textbgcolor, textsize);
@@ -4090,30 +3907,25 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
 
 #ifdef LOAD_GFXFF
     drawChar(x, y, uniCode, textcolor, textbgcolor, textsize);
-    if(!gfxFont) { // 'Classic' built-in font
+    if (!gfxFont) { // 'Classic' built-in font
     #ifdef LOAD_GLCD
       return 6 * textsize;
     #else
       return 0;
     #endif
-    }
-    else
-    {
-      if((uniCode >= pgm_read_byte(&gfxFont->first)) && (uniCode <= pgm_read_byte(&gfxFont->last) ))
-      {
+    } else {
+      if ((uniCode >= pgm_read_byte(&gfxFont->first)) && (uniCode <= pgm_read_byte(&gfxFont->last))) {
         uint8_t   c2    = uniCode - pgm_read_byte(&gfxFont->first);
         GFXglyph *glyph = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[c2]);
         return pgm_read_byte(&glyph->xAdvance) * textsize;
-      }
-      else
-      {
+      } else {
         return 0;
       }
     }
 #endif
   }
 
-  if ((font>1) && (font<9) && ((uniCode < 32) || (uniCode > 127))) return 0;
+  if ((font > 1) && (font < 9) && ((uniCode < 32) || (uniCode > 127))) return 0;
 
   int32_t width  = 0;
   int32_t height = 0;
@@ -4121,8 +3933,7 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
   uniCode -= 32;
 
 #ifdef LOAD_FONT2
-  if (font == 2)
-  {
+  if (font == 2) {
     // This is faster than using the fontdata structure
     flash_address = pgm_read_dword(&chrtbl_f16[uniCode]);
     width = pgm_read_byte(widtbl_f16 + uniCode);
@@ -4135,8 +3946,7 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
 
 #ifdef LOAD_RLE
   {
-    if ((font>2) && (font<9))
-    {
+    if ((font > 2) && (font < 9)) {
       // This is slower than above but is more convenient for the RLE fonts
       flash_address = pgm_read_dword( pgm_read_dword( &(fontdata[font].chartbl ) ) + uniCode*sizeof(void *) );
       width = pgm_read_byte( (uint8_t *)pgm_read_dword( &(fontdata[font].widthtbl ) ) + uniCode );
@@ -4160,12 +3970,10 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
       spi_begin();
       inTransaction = true;
 
-      for (int32_t i = 0; i < height; i++)
-      {
+      for (int32_t i = 0; i < height; i++) {
         if (textcolor != textbgcolor) fillRect(x, pY, width * textsize, textsize, textbgcolor);
 
-        for (int32_t k = 0; k < w; k++)
-        {
+        for (int32_t k = 0; k < w; k++) {
           line = pgm_read_byte((uint8_t *)flash_address + w * i + k);
           if (line) {
             if (textsize == 1) {
@@ -4178,8 +3986,7 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
               if (line & 0x04) drawPixel(pX + 5, pY, textcolor);
               if (line & 0x02) drawPixel(pX + 6, pY, textcolor);
               if (line & 0x01) drawPixel(pX + 7, pY, textcolor);
-            }
-            else {
+            } else {
               pX = x + k * 8 * textsize;
               if (line & 0x80) fillRect(pX, pY, textsize, textsize, textcolor);
               if (line & 0x40) fillRect(pX + textsize, pY, textsize, textsize, textcolor);
@@ -4197,19 +4004,14 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
 
       inTransaction = false;
       spi_end();
-    }
-    else
-      // Faster drawing of characters and background using block write
-    {
+    } else { // Faster drawing of characters and background using block write
       spi_begin();
 
       setWindow(x, y, (x + w * 8) - 1, y + height - 1);
 
       uint8_t mask;
-      for (int32_t i = 0; i < height; i++)
-      {
-        for (int32_t k = 0; k < w; k++)
-        {
+      for (int32_t i = 0; i < height; i++) {
+        for (int32_t k = 0; k < w; k++) {
           line = pgm_read_byte((uint8_t *)flash_address + w * i + k);
           pX = x + k * 8;
           mask = 0x80;
@@ -4247,8 +4049,7 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
       uint8_t ts = textsize - 1; // Temporary copy of textsize
       // 16 bit pixel count so maximum font size is equivalent to 180x180 pixels in area
       // w is total number of pixels to plot to fill character block
-      while (pc < w)
-      {
+      while (pc < w) {
         line = pgm_read_byte((uint8_t *)flash_address);
         flash_address++;
         if (line & 0x80) {
@@ -4257,40 +4058,38 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
           if (ts) {
             px = x + textsize * (pc % width); // Keep these px and py calculations outside the loop as they are slow
             py = y + textsize * (pc / width);
-          }
-          else {
+          } else {
             px = x + pc % width; // Keep these px and py calculations outside the loop as they are slow
             py = y + pc / width;
           }
           while (line--) { // In this case the while(line--) is faster
-            pc++; // This is faster than putting pc+=line before while()?
+            pc++; // This is faster than putting pc += line before while()?
             setWindow(px, py, px + ts, py + ts);
 
             if (ts) {
               tnp = np;
               while (tnp--) {tft_Write_16(textcolor);}
+            } else {
+              tft_Write_16(textcolor);
             }
-            else {tft_Write_16(textcolor);}
             px += textsize;
 
-            if (px >= (x + width * textsize))
-            {
+            if (px >= (x + width * textsize)) {
               px = x;
               py += textsize;
             }
           }
-        }
-        else {
+        } else {
           line++;
           pc += line;
         }
       }
 
       spi_end();
-    }
-    else // Text colour != background && textsize = 1
-         // so use faster drawing of characters and background using block write
-    {
+    } else {
+      // Text colour != background && textsize = 1
+      // so use faster drawing of characters and background using block write
+
       //spi_begin();
       setWindow(x, y, x + width - 1, y + height - 1);
 
@@ -4300,8 +4099,7 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
 #endif
 
       // Maximum font size is equivalent to 180x180 pixels in area
-      while (w > 0)
-      {
+      while (w > 0) {
         line = pgm_read_byte((uint8_t *)flash_address++); // 8 bytes smaller when incrementing here
         if (line & 0x80) {
           line &= 0x7F;
@@ -4313,11 +4111,10 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
           #ifdef ESP32_PARALLEL
             while (line--) {tft_Write_16(textcolor);}
           #else
-            writeBlock(textcolor,line);
+            writeBlock(textcolor, line);
           #endif
 #endif
-        }
-        else {
+        } else {
           line++; w -= line;
 #ifdef RPI_WRITE_STROBE
           spi.writePattern(&textbgcolorBin[0], 2, 1); line--;
@@ -4326,7 +4123,7 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
           #ifdef ESP32_PARALLEL
             while (line--) {tft_Write_16(textbgcolor);}
           #else
-            writeBlock(textbgcolor,line);
+            writeBlock(textbgcolor, line);
           #endif
 #endif
         }
@@ -4346,16 +4143,14 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
 ** Description :            draw string with padding if it is defined
 ***************************************************************************************/
 // Without font number, uses font set by setTextFont()
-int16_t TFT_eSPI::drawString(const String& string, int32_t poX, int32_t poY)
-{
+int16_t TFT_eSPI::drawString(const String& string, int32_t poX, int32_t poY) {
   int16_t len = string.length() + 2;
   char buffer[len];
   string.toCharArray(buffer, len);
   return drawString(buffer, poX, poY, textfont);
 }
 // With font number
-int16_t TFT_eSPI::drawString(const String& string, int32_t poX, int32_t poY, uint8_t font)
-{
+int16_t TFT_eSPI::drawString(const String& string, int32_t poX, int32_t poY, uint8_t font) {
   int16_t len = string.length() + 2;
   char buffer[len];
   string.toCharArray(buffer, len);
@@ -4363,14 +4158,12 @@ int16_t TFT_eSPI::drawString(const String& string, int32_t poX, int32_t poY, uin
 }
 
 // Without font number, uses font set by setTextFont()
-int16_t TFT_eSPI::drawString(const char *string, int32_t poX, int32_t poY)
-{
+int16_t TFT_eSPI::drawString(const char *string, int32_t poX, int32_t poY) {
   return drawString(string, poX, poY, textfont);
 }
 
 // With font number
-int16_t TFT_eSPI::drawString(const char *string, int32_t poX, int32_t poY, uint8_t font)
-{
+int16_t TFT_eSPI::drawString(const char *string, int32_t poX, int32_t poY, uint8_t font) {
   int16_t sumX = 0;
   uint8_t padding = 1, baseline = 0;
   uint16_t cwidth = textWidth(string, font); // Find the pixel width of the string in the font
@@ -4396,10 +4189,9 @@ int16_t TFT_eSPI::drawString(const char *string, int32_t poX, int32_t poY, uint8
   }
 #endif
 
-
   // If it is not font 1 (GLCD or free font) get the baseline and pixel height of the font
 #ifdef SMOOTH_FONT
-  if(fontLoaded) {
+  if (fontLoaded) {
     baseline = gFont.maxAscent;
     cheight  = fontHeight();
   }
@@ -4410,8 +4202,7 @@ int16_t TFT_eSPI::drawString(const char *string, int32_t poX, int32_t poY, uint8
     cheight = fontHeight(font);
   }
 
-  if (textdatum || padX)
-  {
+  if (textdatum || padX) {
 
     switch(textdatum) {
       case TC_DATUM:
@@ -4472,16 +4263,13 @@ int16_t TFT_eSPI::drawString(const char *string, int32_t poX, int32_t poY, uint8
     if (poY+cheight-baseline> height()) poY = height() - cheight;
   }
 
-
   int8_t xo = 0;
 #ifdef LOAD_GFXFF
-  if (freeFont && (textcolor!=textbgcolor))
-    {
+  if (freeFont && (textcolor!=textbgcolor)) {
       cheight = (glyph_ab + glyph_bb) * textsize;
       // Get the offset for the first character only to allow for negative offsets
       uint8_t   c2    = *string;
-      if((c2 >= pgm_read_byte(&gfxFont->first)) && (c2 <= pgm_read_byte(&gfxFont->last) ))
-      {
+      if ((c2 >= pgm_read_byte(&gfxFont->first)) && (c2 <= pgm_read_byte(&gfxFont->last) )) {
         c2 -= pgm_read_byte(&gfxFont->first);
         GFXglyph *glyph = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[c2]);
         xo = pgm_read_byte(&glyph->xOffset) * textsize;
@@ -4498,19 +4286,17 @@ int16_t TFT_eSPI::drawString(const char *string, int32_t poX, int32_t poY, uint8
 #endif
 
 #ifdef SMOOTH_FONT
-  if(fontLoaded)
-  {
+  if (fontLoaded) {
     if (textcolor!=textbgcolor) fillRect(poX, poY, cwidth, cheight, textbgcolor);
     //drawLine(poX - 5, poY, poX + 5, poY, TFT_GREEN);
     //drawLine(poX, poY - 5, poX, poY + 5, TFT_GREEN);
     //fontFile = SPIFFS.open( _gFontFilename, "r");
-    if(!fontFile) return 0;
+    if (!fontFile) return 0;
     uint16_t len = strlen(string);
     uint16_t n = 0;
     setCursor(poX, poY);
 
-    while (n < len)
-    {
+    while (n < len) {
       uint16_t unicode = decodeUTF8((uint8_t*)string, &n, len - n);
       drawGlyph(unicode);
     }
@@ -4528,33 +4314,30 @@ int16_t TFT_eSPI::drawString(const char *string, int32_t poX, int32_t poY, uint8
 #ifndef PADDING_DEBUG
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ DEBUG ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  if((padX>cwidth) && (textcolor!=textbgcolor))
-  {
+  if ((padX > cwidth) && (textcolor!=textbgcolor)) {
     int16_t padXc = poX+cwidth+xo;
 #ifdef LOAD_GFXFF
-    if (freeFont)
-    {
+    if (freeFont) {
       poX +=xo; // Adjust for negative offset start character
       poY -= glyph_ab * textsize;
     }
 #endif
     switch(padding) {
       case 1:
-        fillRect(padXc,poY,padX-cwidth,cheight, textbgcolor);
+        fillRect(padXc, poY, padX-cwidth, cheight, textbgcolor);
         break;
       case 2:
-        fillRect(padXc,poY,(padX-cwidth)>>1,cheight, textbgcolor);
+        fillRect(padXc, poY,(padX-cwidth)>>1, cheight, textbgcolor);
         padXc = (padX-cwidth)>>1;
-        if (padXc>poX) padXc = poX;
-        fillRect(poX - padXc,poY,(padX-cwidth)>>1,cheight, textbgcolor);
+        if (padXc > poX) padXc = poX;
+        fillRect(poX - padXc, poY,(padX-cwidth)>>1, cheight, textbgcolor);
         break;
       case 3:
-        if (padXc>padX) padXc = padX;
-        fillRect(poX + cwidth - padXc,poY,padXc-cwidth,cheight, textbgcolor);
+        if (padXc > padX) padXc = padX;
+        fillRect(poX + cwidth - padXc, poY, padXc-cwidth, cheight, textbgcolor);
         break;
     }
   }
-
 
 #else
 
@@ -4562,26 +4345,25 @@ int16_t TFT_eSPI::drawString(const char *string, int32_t poX, int32_t poY, uint8
 // This is debug code to show text (green box) and blanked (white box) areas
 // It shows that the padding areas are being correctly sized and positioned
 
-  if((padX>sumX) && (textcolor!=textbgcolor))
-  {
+  if ((padX > sumX) && (textcolor!=textbgcolor)) {
     int16_t padXc = poX+sumX; // Maximum left side padding
 #ifdef LOAD_GFXFF
     if ((font == 1) && (gfxFont)) poY -= glyph_ab;
 #endif
-    drawRect(poX,poY,sumX,cheight, TFT_GREEN);
+    drawRect(poX, poY, sumX, cheight, TFT_GREEN);
     switch(padding) {
       case 1:
-        drawRect(padXc,poY,padX-sumX,cheight, TFT_WHITE);
+        drawRect(padXc, poY, padX-sumX, cheight, TFT_WHITE);
         break;
       case 2:
-        drawRect(padXc,poY,(padX-sumX)>>1, cheight, TFT_WHITE);
+        drawRect(padXc, poY,(padX-sumX)>>1, cheight, TFT_WHITE);
         padXc = (padX-sumX)>>1;
-        if (padXc>poX) padXc = poX;
-        drawRect(poX - padXc,poY,(padX-sumX)>>1,cheight, TFT_WHITE);
+        if (padXc > poX) padXc = poX;
+        drawRect(poX - padXc, poY,(padX-sumX)>>1, cheight, TFT_WHITE);
         break;
       case 3:
-        if (padXc>padX) padXc = padX;
-        drawRect(poX + sumX - padXc,poY,padXc-sumX,cheight, TFT_WHITE);
+        if (padXc > padX) padXc = padX;
+        drawRect(poX + sumX - padXc, poY, padXc-sumX, cheight, TFT_WHITE);
         break;
     }
   }
@@ -4596,16 +4378,14 @@ return sumX;
 ** Function name:           drawCentreString (deprecated, use setTextDatum())
 ** Descriptions:            draw string centred on dX
 ***************************************************************************************/
-int16_t TFT_eSPI::drawCentreString(const String& string, int32_t dX, int32_t poY, uint8_t font)
-{
+int16_t TFT_eSPI::drawCentreString(const String& string, int32_t dX, int32_t poY, uint8_t font) {
   int16_t len = string.length() + 2;
   char buffer[len];
   string.toCharArray(buffer, len);
   return drawCentreString(buffer, dX, poY, font);
 }
 
-int16_t TFT_eSPI::drawCentreString(const char *string, int32_t dX, int32_t poY, uint8_t font)
-{
+int16_t TFT_eSPI::drawCentreString(const char *string, int32_t dX, int32_t poY, uint8_t font) {
   uint8_t tempdatum = textdatum;
   int32_t sumX = 0;
   textdatum = TC_DATUM;
@@ -4619,16 +4399,14 @@ int16_t TFT_eSPI::drawCentreString(const char *string, int32_t dX, int32_t poY, 
 ** Function name:           drawRightString (deprecated, use setTextDatum())
 ** Descriptions:            draw string right justified to dX
 ***************************************************************************************/
-int16_t TFT_eSPI::drawRightString(const String& string, int32_t dX, int32_t poY, uint8_t font)
-{
+int16_t TFT_eSPI::drawRightString(const String& string, int32_t dX, int32_t poY, uint8_t font) {
   int16_t len = string.length() + 2;
   char buffer[len];
   string.toCharArray(buffer, len);
   return drawRightString(buffer, dX, poY, font);
 }
 
-int16_t TFT_eSPI::drawRightString(const char *string, int32_t dX, int32_t poY, uint8_t font)
-{
+int16_t TFT_eSPI::drawRightString(const char *string, int32_t dX, int32_t poY, uint8_t font) {
   uint8_t tempdatum = textdatum;
   int16_t sumX = 0;
   textdatum = TR_DATUM;
@@ -4642,16 +4420,14 @@ int16_t TFT_eSPI::drawRightString(const char *string, int32_t dX, int32_t poY, u
 ** Function name:           drawNumber
 ** Description:             draw a long integer
 ***************************************************************************************/
-int16_t TFT_eSPI::drawNumber(long long_num, int32_t poX, int32_t poY)
-{
+int16_t TFT_eSPI::drawNumber(long long_num, int32_t poX, int32_t poY) {
   isDigits = true; // Eliminate jiggle in monospaced fonts
   char str[12];
   ltoa(long_num, str, 10);
   return drawString(str, poX, poY, textfont);
 }
 
-int16_t TFT_eSPI::drawNumber(long long_num, int32_t poX, int32_t poY, uint8_t font)
-{
+int16_t TFT_eSPI::drawNumber(long long_num, int32_t poX, int32_t poY, uint8_t font) {
   isDigits = true; // Eliminate jiggle in monospaced fonts
   char str[12];
   ltoa(long_num, str, 10);
@@ -4665,13 +4441,11 @@ int16_t TFT_eSPI::drawNumber(long long_num, int32_t poX, int32_t poY, uint8_t fo
 ***************************************************************************************/
 // Assemble and print a string, this permits alignment relative to a datum
 // looks complicated but much more compact and actually faster than using print class
-int16_t TFT_eSPI::drawFloat(float floatNumber, uint8_t dp, int32_t poX, int32_t poY)
-{
+int16_t TFT_eSPI::drawFloat(float floatNumber, uint8_t dp, int32_t poX, int32_t poY) {
   return drawFloat(floatNumber, dp, poX, poY, textfont);
 }
 
-int16_t TFT_eSPI::drawFloat(float floatNumber, uint8_t dp, int32_t poX, int32_t poY, uint8_t font)
-{
+int16_t TFT_eSPI::drawFloat(float floatNumber, uint8_t dp, int32_t poX, int32_t poY, uint8_t font) {
   isDigits = true;
   char str[14];               // Array to contain decimal string
   uint8_t ptr = 0;            // Initialise pointer for array
@@ -4720,8 +4494,7 @@ int16_t TFT_eSPI::drawFloat(float floatNumber, uint8_t dp, int32_t poX, int32_t 
   // Get decimal digits one by one and put in array
   // Limit digit count so we don't get a false sense of resolution
   uint8_t i = 0;
-  while ((i < dp) && (digits < 9)) // while (i < dp) for no limit but array size must be increased
-  {
+  while ((i < dp) && (digits < 9)) { // while (i < dp) for no limit but array size must be increased
     i++;
     floatNumber *= 10;       // for the next decimal
     temp = floatNumber;      // get the decimal
@@ -4742,8 +4515,7 @@ int16_t TFT_eSPI::drawFloat(float floatNumber, uint8_t dp, int32_t poX, int32_t 
 
 #ifdef LOAD_GFXFF
 
-void TFT_eSPI::setFreeFont(const GFXfont *f)
-{
+void TFT_eSPI::setFreeFont(const GFXfont *f) {
   textfont = 1;
   gfxFont = (GFXfont *)f;
 
@@ -4752,8 +4524,7 @@ void TFT_eSPI::setFreeFont(const GFXfont *f)
   uint8_t numChars = pgm_read_byte(&gfxFont->last) - pgm_read_byte(&gfxFont->first);
 
   // Find the biggest above and below baseline offsets
-  for (uint8_t c = 0; c < numChars; c++)
-  {
+  for (uint8_t c = 0; c < numChars; c++) {
     GFXglyph *glyph1  = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[c]);
     int8_t ab = -pgm_read_byte(&glyph1->yOffset);
     if (ab > glyph_ab) glyph_ab = ab;
@@ -4767,8 +4538,7 @@ void TFT_eSPI::setFreeFont(const GFXfont *f)
 ** Function name:           setTextFont
 ** Description:             Set the font for the print stream
 ***************************************************************************************/
-void TFT_eSPI::setTextFont(uint8_t f)
-{
+void TFT_eSPI::setTextFont(uint8_t f) {
   textfont = (f > 0) ? f : 1; // Don't allow font 0
   gfxFont = NULL;
 }
@@ -4782,8 +4552,7 @@ void TFT_eSPI::setTextFont(uint8_t f)
 ***************************************************************************************/
 
 // Alternative to setTextFont() so we don't need two different named functions
-void TFT_eSPI::setFreeFont(uint8_t font)
-{
+void TFT_eSPI::setFreeFont(uint8_t font) {
   setTextFont(font);
 }
 
@@ -4792,8 +4561,7 @@ void TFT_eSPI::setFreeFont(uint8_t font)
 ** Function name:           setTextFont
 ** Description:             Set the font for the print stream
 ***************************************************************************************/
-void TFT_eSPI::setTextFont(uint8_t f)
-{
+void TFT_eSPI::setTextFont(uint8_t f) {
   textfont = (f > 0) ? f : 1; // Don't allow font 0
 }
 
@@ -4811,8 +4579,7 @@ void TFT_eSPI::setTextFont(uint8_t f)
 //       Adafruit_GFX   19.62%              14.31%           7.94%
 //
 #if defined (ESP8266) && !defined (ILI9488_DRIVER)
-void writeBlock(uint16_t color, uint32_t repeat)
-{
+void writeBlock(uint16_t color, uint32_t repeat) {
   uint16_t color16 = (color >> 8) | (color << 8);
   uint32_t color32 = color16 | color16 << 16;
   uint32_t mask = ~(SPIMMOSI << SPILMOSI);
@@ -4823,34 +4590,29 @@ void writeBlock(uint16_t color, uint32_t repeat)
   SPI1W1 = color32;
   SPI1W2 = color32;
   SPI1W3 = color32;
-  if (repeat > 8)
-  {
+  if (repeat > 8) {
     SPI1W4 = color32;
     SPI1W5 = color32;
     SPI1W6 = color32;
     SPI1W7 = color32;
   }
-  if (repeat > 16)
-  {
+  if (repeat > 16) {
     SPI1W8 = color32;
     SPI1W9 = color32;
     SPI1W10 = color32;
     SPI1W11 = color32;
   }
-  if (repeat > 24)
-  {
+  if (repeat > 24) {
     SPI1W12 = color32;
     SPI1W13 = color32;
     SPI1W14 = color32;
     SPI1W15 = color32;
   }
-  if (repeat > 31)
-  {
+  if (repeat > 31) {
     SPI1U1 = mask | (511 << SPILMOSI);
-    while(repeat>31)
-    {
+    while(repeat > 31) {
 #if defined SPI_FREQUENCY && (SPI_FREQUENCY == 80000000)
-      if(SPI1CMD & SPIBUSY) // added to sync with flag change
+      if (SPI1CMD & SPIBUSY) // added to sync with flag change
 #endif
       while(SPI1CMD & SPIBUSY) {}
       SPI1CMD |= SPIBUSY;
@@ -4859,8 +4621,7 @@ void writeBlock(uint16_t color, uint32_t repeat)
     while(SPI1CMD & SPIBUSY) {}
   }
 
-  if (repeat)
-  {
+  if (repeat) {
     repeat = (repeat << 4) - 1;
     SPI1U1 = mask | (repeat << SPILMOSI);
     SPI1CMD |= SPIBUSY;
@@ -4873,8 +4634,7 @@ void writeBlock(uint16_t color, uint32_t repeat)
 #elif defined (ILI9488_DRIVER)
 
 #ifdef ESP8266
-void writeBlock(uint16_t color, uint32_t repeat)
-{
+void writeBlock(uint16_t color, uint32_t repeat) {
 
   uint32_t mask = ~(SPIMMOSI << SPILMOSI);
   mask = SPI1U1 & mask;
@@ -4885,28 +4645,25 @@ void writeBlock(uint16_t color, uint32_t repeat)
   uint8_t g = (color & 0x07E0)>>3;
   uint8_t b = (color & 0x001F)<<3;
   // Concatenate 4 pixels into three 32 bit blocks
-  uint32_t r0 = r<<24 | b<<16 | g<<8 | r;
-  uint32_t r1 = g<<24 | r<<16 | b<<8 | g;
-  uint32_t r2 = b<<24 | g<<16 | r<<8 | b;
+  uint32_t r0 = r << 24 | b << 16 | g << 8 | r;
+  uint32_t r1 = g << 24 | r << 16 | b << 8 | g;
+  uint32_t r2 = b << 24 | g << 16 | r << 8 | b;
 
   SPI1W0 = r0;
   SPI1W1 = r1;
   SPI1W2 = r2;
 
-  if (repeat > 4)
-  {
+  if (repeat > 4) {
     SPI1W3 = r0;
     SPI1W4 = r1;
     SPI1W5 = r2;
   }
-  if (repeat > 8)
-  {
+  if (repeat > 8) {
     SPI1W6 = r0;
     SPI1W7 = r1;
     SPI1W8 = r2;
   }
-  if (repeat > 12)
-  {
+  if (repeat > 12) {
     SPI1W9  = r0;
     SPI1W10 = r1;
     SPI1W11 = r2;
@@ -4916,11 +4673,9 @@ void writeBlock(uint16_t color, uint32_t repeat)
     SPI1W15 = r0;
   }
 
-  if (repeat > 20)
-  {
+  if (repeat > 20) {
     SPI1U1 = mask | (503 << SPILMOSI);
-    while(repeat>20)
-    {
+    while(repeat > 20) {
       while(SPI1CMD & SPIBUSY) {}
       SPI1CMD |= SPIBUSY;
       repeat -= 21;
@@ -4928,8 +4683,7 @@ void writeBlock(uint16_t color, uint32_t repeat)
     while(SPI1CMD & SPIBUSY) {}
   }
 
-  if (repeat)
-  {
+  if (repeat) {
     repeat = (repeat * 24) - 1;
     SPI1U1 = mask | (repeat << SPILMOSI);
     SPI1CMD |= SPIBUSY;
@@ -4940,23 +4694,20 @@ void writeBlock(uint16_t color, uint32_t repeat)
 }
 #else // Now the code for ESP32 and ILI9488
 
-void writeBlock(uint16_t color, uint32_t repeat)
-{
+void writeBlock(uint16_t color, uint32_t repeat) {
   // Split out the colours
   uint32_t r = (color & 0xF800)>>8;
   uint32_t g = (color & 0x07E0)<<5;
   uint32_t b = (color & 0x001F)<<19;
   // Concatenate 4 pixels into three 32 bit blocks
-  uint32_t r0 = r<<24 | b | g | r;
-  uint32_t r1 = r0>>8 | g<<16;
-  uint32_t r2 = r1>>8 | b<<8;
+  uint32_t r0 = r << 24 | b | g | r;
+  uint32_t r1 = r0 >> 8 | g << 16;
+  uint32_t r2 = r1 >> 8 | b << 8;
 
-  if (repeat > 19)
-  {
+  if (repeat > 19) {
     SET_PERI_REG_BITS(SPI_MOSI_DLEN_REG(SPI_PORT), SPI_USR_MOSI_DBITLEN, 479, SPI_USR_MOSI_DBITLEN_S);
 
-    while(repeat>19)
-    {
+    while(repeat > 19) {
       while (READ_PERI_REG(SPI_CMD_REG(SPI_PORT))&SPI_USR);
       WRITE_PERI_REG(SPI_W0_REG(SPI_PORT), r0);
       WRITE_PERI_REG(SPI_W1_REG(SPI_PORT), r1);
@@ -4979,8 +4730,7 @@ void writeBlock(uint16_t color, uint32_t repeat)
     while (READ_PERI_REG(SPI_CMD_REG(SPI_PORT))&SPI_USR);
   }
 
-  if (repeat)
-  {
+  if (repeat) {
     SET_PERI_REG_BITS(SPI_MOSI_DLEN_REG(SPI_PORT), SPI_USR_MOSI_DBITLEN, (repeat * 24) - 1, SPI_USR_MOSI_DBITLEN_S);
     WRITE_PERI_REG(SPI_W0_REG(SPI_PORT), r0);
     WRITE_PERI_REG(SPI_W1_REG(SPI_PORT), r1);
@@ -4988,8 +4738,7 @@ void writeBlock(uint16_t color, uint32_t repeat)
     WRITE_PERI_REG(SPI_W3_REG(SPI_PORT), r0);
     WRITE_PERI_REG(SPI_W4_REG(SPI_PORT), r1);
     WRITE_PERI_REG(SPI_W5_REG(SPI_PORT), r2);
-    if (repeat > 8 )
-    {
+    if (repeat > 8 ) {
       WRITE_PERI_REG(SPI_W6_REG(SPI_PORT), r0);
       WRITE_PERI_REG(SPI_W7_REG(SPI_PORT), r1);
       WRITE_PERI_REG(SPI_W8_REG(SPI_PORT), r2);
@@ -5010,15 +4759,12 @@ void writeBlock(uint16_t color, uint32_t repeat)
 
 #else // Low level register based ESP32 code for 16 bit colour SPI TFTs
 
-void writeBlock(uint16_t color, uint32_t repeat)
-{
+void writeBlock(uint16_t color, uint32_t repeat) {
   uint32_t color32 = COL_32(color, color);
 
-  if (repeat > 31) // Revert legacy toggle buffer change
-  {
+  if (repeat > 31) { // Revert legacy toggle buffer change
     WRITE_PERI_REG(SPI_MOSI_DLEN_REG(SPI_PORT), 511);
-    while(repeat>31)
-    {
+    while(repeat > 31) {
       while (READ_PERI_REG(SPI_CMD_REG(SPI_PORT))&SPI_USR);
       WRITE_PERI_REG(SPI_W0_REG(SPI_PORT), color32);
       WRITE_PERI_REG(SPI_W1_REG(SPI_PORT), color32);
@@ -5042,11 +4788,10 @@ void writeBlock(uint16_t color, uint32_t repeat)
     while (READ_PERI_REG(SPI_CMD_REG(SPI_PORT))&SPI_USR);
   }
 
-  if (repeat)
-  {
+  if (repeat) {
     // Revert toggle buffer change
     WRITE_PERI_REG(SPI_MOSI_DLEN_REG(SPI_PORT), (repeat << 4) - 1);
-    for (uint32_t i=0; i <= (repeat>>1); i++) WRITE_PERI_REG((SPI_W0_REG(SPI_PORT) + (i << 2)), color32);
+    for (uint32_t i=0; i <= (repeat >> 1); i++) WRITE_PERI_REG((SPI_W0_REG(SPI_PORT) + (i << 2)), color32);
     SET_PERI_REG_MASK(SPI_CMD_REG(SPI_PORT), SPI_USR);
     while (READ_PERI_REG(SPI_CMD_REG(SPI_PORT))&SPI_USR);
   }
@@ -5058,8 +4803,7 @@ void writeBlock(uint16_t color, uint32_t repeat)
 ** Function name:           getSetup
 ** Description:             Get the setup details for diagnostic and sketch access
 ***************************************************************************************/
-void TFT_eSPI::getSetup(setup_t &tft_settings)
-{
+void TFT_eSPI::getSetup(setup_t &tft_settings) {
 // tft_settings.version is set in header file
 
 #if defined (ESP8266)

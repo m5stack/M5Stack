@@ -7,7 +7,6 @@
 #include "In_eSPI.h"
 
 class TFT_eSprite : public TFT_eSPI {
-
   public:
 
     TFT_eSprite(TFT_eSPI *tft);
@@ -143,5 +142,4 @@ class TFT_eSprite : public TFT_eSPI {
     int32_t  _iwidth, _iheight; // Sprite memory image bit width and height (swapped during rotations)
     int32_t  _dwidth, _dheight; // Real display width and height (for <8bpp Sprites)
     int32_t  _bitwidth;         // Sprite image bit width for drawPixel (for <8bpp Sprites, not swapped)
-
 };

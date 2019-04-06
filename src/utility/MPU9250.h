@@ -177,7 +177,7 @@
     #define AK8963_ADDRESS  0x0C   // Address of magnetometer
   #endif // AD0
 
-  class MPU9250{
+  class MPU9250 {
     protected:
       // Set initial input parameters
       enum Ascale {
@@ -231,7 +231,7 @@
       float SelfTest[6];
       // Stores the 16-bit signed accelerometer sensor output
       int16_t accelCount[3];
-      
+
     public:
       void getMres();
       void getGres();
@@ -249,5 +249,5 @@
       uint8_t readByte(uint8_t, uint8_t)   __attribute__ ((deprecated));
       void readBytes(uint8_t, uint8_t, uint8_t, uint8_t *)   __attribute__ ((deprecated));
   };  // class MPU9250
-  
+
 #endif // _MPU9250_H_

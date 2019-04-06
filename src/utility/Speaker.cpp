@@ -58,14 +58,14 @@ void SPEAKER::write(uint8_t value) {
 
 void SPEAKER::playMusic(const uint8_t* music_data, uint16_t sample_rate) {
   uint32_t length = strlen((char*)music_data);
-  uint16_t delay_interval = ((uint32_t)1000000/sample_rate);
+  uint16_t delay_interval = ((uint32_t)1000000 / sample_rate);
   if(_volume != 11) {
-    for(int i=0; i<length; i++) {
-      dacWrite(SPEAKER_PIN, music_data[i]/_volume);
+    for(int i = 0; i < length; i++) {
+      dacWrite(SPEAKER_PIN, music_data[i] / _volume);
       delayMicroseconds(delay_interval);
     }
-    
-    for(int t=music_data[length-1]/_volume; t>=0; t--) {
+
+    for(int t = music_data[length - 1] / _volume; t >= 0; t--) {
       dacWrite(SPEAKER_PIN, t);
       delay(2);
     }

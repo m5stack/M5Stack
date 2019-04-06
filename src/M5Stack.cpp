@@ -3,20 +3,19 @@
 
 #include "M5Stack.h"
 
-M5Stack::M5Stack() : isInited(0){
+M5Stack::M5Stack() : isInited(0) {
 }
 
-void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable, bool I2CEnable){
-
+void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable, bool I2CEnable) {
   // Correct init once
-  if (isInited == true){
+  if (isInited == true) {
     return;
-  }else{
+  } else {
     isInited = true;
   }
 
   // UART
-  if (SerialEnable == true){
+  if (SerialEnable == true) {
     Serial.begin(115200);
     Serial.flush();
     delay(50);
@@ -24,12 +23,12 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable, bool I2CEn
   }
 
   // LCD INIT
-  if (LCDEnable == true){
+  if (LCDEnable == true) {
     Lcd.begin();
   }
 
   // TF Card
-  if (SDEnable == true){
+  if (SDEnable == true) {
     SD.begin(TFCARD_CS_PIN, SPI, 40000000);
   }
 
@@ -40,17 +39,16 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable, bool I2CEn
   Power.setWakeupButton(BUTTON_A_PIN);
 
   // I2C init
-  if (I2CEnable == true){
+  if (I2CEnable == true) {
     Wire.begin(21, 22);
   }
 
-  if (SerialEnable == true){
+  if (SerialEnable == true) {
     Serial.println("OK");
   }
 }
 
-void M5Stack::update(){
-
+void M5Stack::update() {
   //Button update
   BtnA.read();
   BtnB.read();
@@ -64,21 +62,21 @@ void M5Stack::update(){
   * Function has been move to Power class.(for compatibility)
   * This name will be removed in a future release.
   */
-void M5Stack::setPowerBoostKeepOn(bool en){
+void M5Stack::setPowerBoostKeepOn(bool en) {
   M5.Power.setPowerBoostKeepOn(en);
 }
 /**
   * Function has been move to Power class.(for compatibility)
   * This name will be removed in a future release.
   */
-void M5Stack::setWakeupButton(uint8_t button){
+void M5Stack::setWakeupButton(uint8_t button) {
   M5.Power.setWakeupButton(button);
 }
 /**
   * Function has been move to Power class.(for compatibility)
   * This name will be removed in a future release.
   */
-void M5Stack::powerOFF(){
+void M5Stack::powerOFF() {
   M5.Power.deepSleep();
 }
 
