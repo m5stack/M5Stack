@@ -236,7 +236,7 @@ void MPU9250::calibrateMPU9250(float * gyroBias, float * accelBias) {
   writeByte(MPU9250_ADDRESS, FIFO_EN, 0x00);  // Disable gyro and accelerometer sensors for FIFO
   readBytes(MPU9250_ADDRESS, FIFO_COUNTH, 2, &data[0]); // read FIFO sample count
   fifo_count = ((uint16_t)data[0] << 8) | data[1];
-  packet_count = fifo_count / 12; / / How many sets of full gyro and accelerometer data for averaging
+  packet_count = fifo_count / 12; // How many sets of full gyro and accelerometer data for averaging
 
   for (ii = 0; ii < packet_count; ii++) {
     int16_t accel_temp[3] = { 0, 0, 0 }, gyro_temp[3] = { 0, 0, 0 };
