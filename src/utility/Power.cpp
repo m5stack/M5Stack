@@ -42,48 +42,48 @@
 
 extern M5Stack M5;
 
-POWER::POWER(){
+POWER::POWER() {
 }
 
-void POWER::begin(){
+void POWER::begin() {
   Wire.begin(21, 22);
 }
 
-static bool getI2CReg(uint8_t *result, uint8_t address, uint8_t *reg){
+static bool getI2CReg(uint8_t *result, uint8_t address, uint8_t *reg) {
   return (M5.I2C.readByte(address, *reg, result));
 }
 
-static bool setI2CReg(uint8_t address, uint8_t reg, uint8_t value){
+static bool setI2CReg(uint8_t address, uint8_t reg, uint8_t value) {
   return (M5.I2C.writeByte(address, reg, value));
 }
 
-bool POWER::setPowerBoostOnOff(bool en){
+bool POWER::setPowerBoostOnOff(bool en) {
   uint8_t data;
-  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true){
+  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true) {
     return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, en ? (data | BOOST_SET_BIT) : (data & (~BOOST_SET_BIT)));
   }
   return false;
 }
 
-bool POWER::setPowerBoostSet(bool en){
+bool POWER::setPowerBoostSet(bool en) {
   uint8_t data;
-  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true){
+  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true) {
     return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, en ? (data | BOOST_ENABLE_BIT) : (data & (~BOOST_ENABLE_BIT)));
   }
   return false;
 }
 
-bool POWER::setPowerVin(bool en){
+bool POWER::setPowerVin(bool en) {
   uint8_t data;
-  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true){
+  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true) {
     return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, en ? (data | VIN_ENABLE_BIT) : (data & (~VIN_ENABLE_BIT)));
   }
   return false;
 }
 
-bool POWER::setPowerWLEDSet(bool en){
+bool POWER::setPowerWLEDSet(bool en) {
   uint8_t data;
-  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true){
+  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true) {
       return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, en ? (data | WLED_SET_BIT) : (data & (~WLED_SET_BIT)));
   }
   return false;
@@ -93,27 +93,27 @@ bool POWER::setPowerWLEDSet(bool en){
   default: false
   false: when the current is too small, ip5306 will automatically shut down
 */
-bool POWER::setKeepLightLoad(bool en){
+bool POWER::setKeepLightLoad(bool en) {
   uint8_t data;
-  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, &data) == true){
+  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, &data) == true) {
       return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, !en ? (data | LIGHT_LOAD_BIT) : (data & (~LIGHT_LOAD_BIT)));
   }
   return false;
 }
 
 // true: Output normally open
-bool POWER::setPowerBoostKeepOn(bool en){
+bool POWER::setPowerBoostKeepOn(bool en) {
   uint8_t data;
-  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, &data) == true){
+  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, &data) == true) {
       return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, en ? (data | BOOST_OUT_BIT) : (data & (~BOOST_OUT_BIT)));
   }
   return false;
 }
 
 // true: if come low battery , the system going shutdown
-bool POWER::setLowPowerShutdown(bool en){
+bool POWER::setLowPowerShutdown(bool en) {
   uint8_t data;
-  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true){
+  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true) {
     return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, en ? (data | LOWPOWER_SHUTDOWN_BIT) : (data & (~LOWPOWER_SHUTDOWN_BIT)));
   }
   return false;
@@ -122,25 +122,25 @@ bool POWER::setLowPowerShutdown(bool en){
   default: true
   true: If enough load is connected, the power will turn on.
 */
-bool POWER::setAutoBootOnLoad(bool en){
+bool POWER::setAutoBootOnLoad(bool en) {
   uint8_t data;
-  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, &data) == true){
+  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, &data) == true) {
     return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, en ? (data | BOOT_ON_LOAD_BIT) : (data & (~BOOT_ON_LOAD_BIT)));
   }
   return false;
 }
 
 // if charge full,try set charge enable->disable->enable,can be recharged
-bool POWER::setCharge(bool en){
+bool POWER::setCharge(bool en) {
   uint8_t data;
-  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, &data) == true){
+  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, &data) == true) {
       return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, en ? (data | CHARGE_OUT_BIT) : (data & (~CHARGE_OUT_BIT)));
   }
   return false;
 }
 
 // full return true, else return false
-bool POWER::isChargeFull(){
+bool POWER::isChargeFull() {
   uint8_t data;
   return (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_READ1, &data))
          ? (data & CHARGE_FULL_BIT)
@@ -148,12 +148,12 @@ bool POWER::isChargeFull(){
 }
 
 // test if ip5306 is an i2c version
-bool POWER::canControl(){
+bool POWER::canControl() {
   return M5.I2C.writeCommand(IP5306_ADDR, IP5306_REG_READ0);
 }
 
 //true:charge, false:discharge
-bool POWER::isCharging(){
+bool POWER::isCharging() {
   uint8_t data;
   return (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_READ0, &data))
          ? (data & CHARGE_ENABLE_BIT)
@@ -161,10 +161,10 @@ bool POWER::isCharging(){
 }
 
 // Return percentage * 100
-int8_t POWER::getBatteryLevel(){
+int8_t POWER::getBatteryLevel() {
   uint8_t data;
-  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_READ3, &data) == true){
-    switch (data & 0xF0){
+  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_READ3, &data) == true) {
+    switch (data & 0xF0) {
       case 0x00:
         return 100;
       case 0x80:
@@ -180,21 +180,21 @@ int8_t POWER::getBatteryLevel(){
   return -1;
 }
 
-void POWER::setWakeupButton(uint8_t button){
+void POWER::setWakeupButton(uint8_t button) {
   _wakeupPin = button;
 }
 
-void POWER::reset(){
+void POWER::reset() {
   esp_restart();
 }
 
-bool POWER::isResetbySoftware(){
+bool POWER::isResetbySoftware() {
   RESET_REASON reset_reason = rtc_get_reset_reason(0);
   return (reset_reason == SW_RESET ||
       reset_reason == SW_CPU_RESET);
 }
 
-bool POWER::isResetbyWatchdog(){
+bool POWER::isResetbyWatchdog() {
   RESET_REASON reset_reason = rtc_get_reset_reason(0);
   return (reset_reason == TG0WDT_SYS_RESET ||
       reset_reason == TG1WDT_SYS_RESET ||
@@ -204,17 +204,17 @@ bool POWER::isResetbyWatchdog(){
       reset_reason == TGWDT_CPU_RESET);
 }
 
-bool POWER::isResetbyDeepsleep(){
+bool POWER::isResetbyDeepsleep() {
   RESET_REASON reset_reason = rtc_get_reset_reason(0);
   return (reset_reason == DEEPSLEEP_RESET);
 }
 
-bool POWER::isResetbyPowerSW(){
+bool POWER::isResetbyPowerSW() {
   RESET_REASON reset_reason = rtc_get_reset_reason(0);
   return (reset_reason == POWERON_RESET);
 }
 
-void POWER::deepSleep(uint64_t time_in_us){
+void POWER::deepSleep(uint64_t time_in_us) {
 
 #ifdef M5STACK_FIRE
   // Keep power keep boost on
@@ -228,14 +228,14 @@ void POWER::deepSleep(uint64_t time_in_us){
   // ESP32 into deep sleep
   esp_sleep_enable_ext0_wakeup((gpio_num_t)_wakeupPin, LOW);
 
-  while (digitalRead(_wakeupPin) == LOW){
+  while (digitalRead(_wakeupPin) == LOW) {
     delay(10);
   }
 
   (time_in_us == 0) ? esp_deep_sleep_start() : esp_deep_sleep(time_in_us);
 }
 
-void POWER::lightSleep(uint64_t time_in_us){
+void POWER::lightSleep(uint64_t time_in_us) {
 
 #ifdef M5STACK_FIRE
   // Keep power keep boost on
@@ -250,10 +250,10 @@ void POWER::lightSleep(uint64_t time_in_us){
   esp_sleep_enable_ext0_wakeup((gpio_num_t)_wakeupPin, LOW);
   esp_sleep_pd_config(ESP_PD_DOMAIN_RTC_PERIPH, ESP_PD_OPTION_AUTO);
 
-  while (digitalRead(_wakeupPin) == LOW){
+  while (digitalRead(_wakeupPin) == LOW) {
     delay(10);
   }
-  if (time_in_us > 0){
+  if (time_in_us > 0) {
     esp_sleep_enable_timer_wakeup(time_in_us);
   }
   esp_light_sleep_start();

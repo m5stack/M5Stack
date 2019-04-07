@@ -11,11 +11,11 @@
 #ifndef Button_h
 #define Button_h
 // #if ARDUINO >= 100
-#include <Arduino.h> 
+#include <Arduino.h>
 // #else
-// #include <WProgram.h> 
+// #include <WProgram.h>
 // #endif
-class Button{
+class Button {
   public:
     Button(uint8_t pin, uint8_t invert, uint32_t dbTime);
     uint8_t read();

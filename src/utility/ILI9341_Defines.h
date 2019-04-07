@@ -3,7 +3,6 @@
 #define TFT_WIDTH  240
 #define TFT_HEIGHT 320
 
-
 // Color definitions for backwards compatibility with old sketches
 // use colour definitions like TFT_BLACK to make sketches more portable
 #define ILI9341_BLACK       0x0000      /*   0,   0,   0 */

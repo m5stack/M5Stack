@@ -34,7 +34,6 @@
   typedef std::function<void(void)> timer_callback;
 
   class M5Timer {
-
     public:
       // maximum number of timers
       const static int MAX_TIMERS = 10;

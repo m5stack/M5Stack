@@ -10,13 +10,13 @@
   #include <Arduino.h>
   #include <Wire.h>
 
-  class POWER{
+  class POWER {
     public:
       POWER();
       bool canControl();
       void begin();
-      
-      // -- control for power  
+
+      // -- control for power
       bool setKeepLightLoad(bool en);
       bool setPowerBoostKeepOn(bool en);
       bool setAutoBootOnLoad(bool en);
@@ -25,30 +25,30 @@
       bool setPowerBoostSet(bool en);
       bool setPowerVin(bool en);
       bool setPowerWLEDSet(bool en);
-      
-      // -- control for battery  
+
+      // -- control for battery
       bool setCharge(bool en);
       bool isChargeFull();
       bool isCharging();
       int8_t getBatteryLevel();
       bool batteryMode(bool en);
-      
-      // -- configuration for wakeup 
+
+      // -- configuration for wakeup
       void setWakeupButton(uint8_t button);
-      
-      // -- get resson for startup 
+
+      // -- get resson for startup
       bool isResetbyWatchdog();
       bool isResetbyDeepsleep();
       bool isResetbySoftware();
       bool isResetbyPowerSW();
-      
+
       // -- sleep
       void deepSleep(uint64_t time_in_us=0);
       void lightSleep(uint64_t time_in_us=0);
-      
+
       // -- software reset
       void reset();
-      
+
     private:
       uint8_t _wakeupPin;
   };

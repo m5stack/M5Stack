@@ -15,7 +15,7 @@
  * This file is a drive for M5Stack core.
  *
  * \par Method List:
- *    
+ *
  *  System:
         M5.begin();
         M5.update();
@@ -27,7 +27,7 @@
         M5.Power.isChargeFull();
         M5.Power.setWakeupButton(uint8_t button);
         M5.Power.powerOFF();
-         
+
         bool setPowerBoostOnOff(bool en);
         bool setPowerBoostSet(bool en);
         bool setPowerVin(bool en);
@@ -63,7 +63,6 @@
         M5.Lcd.drawJpg(const uint8_t *jpg_data, size_t jpg_len, uint16_t x, uint16_t y);
         M5.Lcd.drawJpgFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y);
         M5.Lcd.drawBmpFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y);
-
 
     Button:
         M5.BtnA/B/C.read();
@@ -115,7 +114,6 @@
 
 class M5Stack
 {
-
   public:
     M5Stack();
     void begin(bool LCDEnable = true, bool SDEnable = true, bool SerialEnable = true, bool I2CEnable = false);

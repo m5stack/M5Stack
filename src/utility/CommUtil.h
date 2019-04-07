@@ -7,10 +7,11 @@
  *----------------------------------------------------------------------*/
 #ifndef CommUtil_h
 #define CommUtil_h
+
 #include <Arduino.h>
 #include <Wire.h>
 
-class CommUtil{
+class CommUtil {
   public:
     CommUtil();
     bool writeCommand(uint8_t address, uint8_t subAddress);
@@ -22,6 +23,5 @@ class CommUtil{
     bool readBytes(uint8_t address, uint8_t subAddress, uint8_t count, uint8_t * dest);
     void scanID(bool *result);
   private:
-  
 };
 #endif
