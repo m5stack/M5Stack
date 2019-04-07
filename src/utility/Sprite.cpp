@@ -106,6 +106,8 @@ void* TFT_eSprite::callocSprite(int16_t w, int16_t h, uint8_t frames) {
     if (psramFound()) {
       ptr8 = (uint8_t *)ps_calloc(w * h + 1, sizeof(uint16_t));
     } else {
+  #else
+    {
   #endif
       ptr8 = (uint8_t*) calloc(w * h + 1, sizeof(uint16_t));
     }
@@ -115,7 +117,7 @@ void* TFT_eSprite::callocSprite(int16_t w, int16_t h, uint8_t frames) {
         ptr8 = (uint8_t*) ps_calloc(w * h + 1, sizeof(uint8_t));
       } else {
     #else
-    {
+      {
     #endif
       ptr8 = (uint8_t*) calloc(w * h + 1, sizeof(uint8_t));
     }
@@ -1797,7 +1799,7 @@ int16_t TFT_eSprite::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t fo
       w = w / 8;
       if (x + width * textsize >= _iwidth) {
         return width * textsize ;
-
+      }
       for (int32_t i = 0; i < height; i++) {
         if (textcolor != textbgcolor) {
           fillRect(x, pY, width * textsize, textsize, textbgcolor);
