@@ -24,11 +24,10 @@ uint8_t M5Faces::getch(void) {
 
   if (kbhit()) {
 
-    while (data==0x00)
-    {
-        if (!M5.I2C.readByte(KEYBOARD_I2C_ADDR,&data)) {
-          return 0x00;
-        }
+    while (data==0x00){
+      if (!M5.I2C.readByte(KEYBOARD_I2C_ADDR,&data)) {
+        return 0x00;
+      }
       delay(1);
     }
     return data;
