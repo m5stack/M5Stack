@@ -1,0 +1,21 @@
+{
+    "name": "M5Stack",
+    "provides": "M5Stack.h",
+    "license": "LICENSE",
+    "readme": "README.md",
+    "description": "M5STack Library",
+    "category": "System",
+    "subcategory": "Support",
+    "maintainer": "Zibin Zheng <bin@m5stack.com>",
+    "version": "0.2.5",
+    "family": "esp32",
+    "core": "esp32",
+    "install": {
+        "src": "/",
+        "examples": "/",
+        "library.properties": "/",
+        "keywords.txt": "/",
+        "LICENSE": "/", 
+        "README.md": "/"
+    }
+}
