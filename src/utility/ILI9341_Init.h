@@ -41,18 +41,18 @@
   writedata(0x00);
   writedata(0x00);
 
-  writecommand(ILI9341_PWCTR1);    //Power control
-  writedata(0x23);   //VRH[5:0]
+  writecommand(ILI9341_PWCTR1);    // Power control
+  writedata(0x23);   // VRH[5:0]
 
-  writecommand(ILI9341_PWCTR2);    //Power control
-  writedata(0x10);   //SAP[2:0];BT[3:0]
+  writecommand(ILI9341_PWCTR2);    // Power control
+  writedata(0x10);   // SAP[2:0];BT[3:0]
 
-  writecommand(ILI9341_VMCTR1);    //VCM control
+  writecommand(ILI9341_VMCTR1);    // VCM control
   writedata(0x3e);
   writedata(0x28);
 
-  writecommand(ILI9341_VMCTR2);    //VCM control2
-  writedata(0x86);  //--
+  writecommand(ILI9341_VMCTR2);    // VCM control2
+  writedata(0x86);  // --
 
   writecommand(ILI9341_MADCTL);    // Memory Access Control
 #ifdef M5STACK
@@ -76,10 +76,10 @@
   writecommand(0xF2);    // 3Gamma Function Disable
   writedata(0x00);
 
-  writecommand(ILI9341_GAMMASET);    //Gamma curve selected
+  writecommand(ILI9341_GAMMASET);    // Gamma curve selected
   writedata(0x01);
 
-  writecommand(ILI9341_GMCTRP1);    //Set Gamma
+  writecommand(ILI9341_GMCTRP1);    // Set Gamma
   writedata(0x0F);
   writedata(0x31);
   writedata(0x2B);
@@ -96,7 +96,7 @@
   writedata(0x09);
   writedata(0x00);
 
-  writecommand(ILI9341_GMCTRN1);    //Set Gamma
+  writecommand(ILI9341_GMCTRN1);    // Set Gamma
   writedata(0x00);
   writedata(0x0E);
   writedata(0x14);
@@ -113,12 +113,11 @@
   writedata(0x36);
   writedata(0x0F);
 
-  writecommand(ILI9341_SLPOUT);    //Exit Sleep
- 
+  writecommand(ILI9341_SLPOUT);    // Exit Sleep
+
   spi_end();
   delay(120);
   spi_begin();
-  
-  writecommand(ILI9341_DISPON);    //Display on
 
+  writecommand(ILI9341_DISPON);    // Display on
 }

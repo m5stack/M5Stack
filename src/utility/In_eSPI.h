@@ -165,8 +165,8 @@
       #endif
     #endif
   #else
-    #define DC_C GPOC=dcpinmask
-    #define DC_D GPOS=dcpinmask
+    #define DC_C GPOC = dcpinmask
+    #define DC_D GPOS = dcpinmask
   #endif
 #endif
 
@@ -212,8 +212,8 @@
       #endif
     #endif
   #else
-    #define CS_L GPOC=cspinmask
-    #define CS_H GPOS=cspinmask
+    #define CS_L GPOC = cspinmask
+    #define CS_H GPOS = cspinmask
   #endif
 #endif
 
@@ -252,8 +252,8 @@
     #define WR_L GPIO.out_w1tc = (1 << TFT_WR)
     #define WR_H GPIO.out_w1ts = (1 << TFT_WR)
   #else
-    #define WR_L GPOC=wrpinmask
-    #define WR_H GPOS=wrpinmask
+    #define WR_L GPOC = wrpinmask
+    #define WR_H GPOS = wrpinmask
   #endif
 #endif
 
@@ -385,8 +385,8 @@
   // Read from display using SPI or software SPI
   #if defined (ESP8266) && defined (TFT_SDA_READ)
     // Use a bit banged function call for ESP8266 and bi-directional SDA pin
-    #define SCLK_L GPOC=sclkpinmask
-    #define SCLK_H GPOS=sclkpinmask
+    #define SCLK_L GPOC = sclkpinmask
+    #define SCLK_H GPOS = sclkpinmask
   #else
     // Use a SPI read transfer
     #define tft_Read_8() spi.transfer(0)
@@ -531,59 +531,58 @@ swap_coord(T& a, T& b) { T t = a; a = b; b = t; }
 
 // This structure allows sketches to retrieve the user setup parameters at runtime
 // by calling getSetup(), zero impact on code size unless used, mainly for diagnostics
-typedef struct
-{
-String  version = TFT_ESPI_VERSION;
-int16_t esp;
-uint8_t trans;
-uint8_t serial;
-uint8_t overlap;
+typedef struct {
+  String  version = TFT_ESPI_VERSION;
+  int16_t esp;
+  uint8_t trans;
+  uint8_t serial;
+  uint8_t overlap;
 
-#if defined (ESP32)
-  #if defined (USE_HSPI_PORT)
-    uint8_t  port = HSPI;
-  #else
-    uint8_t  port = VSPI;
+  #if defined (ESP32)
+    #if defined (USE_HSPI_PORT)
+      uint8_t  port = HSPI;
+    #else
+      uint8_t  port = VSPI;
+    #endif
   #endif
-#endif
 
-uint16_t tft_driver; // Hexadecimal code
-uint16_t tft_width;  // Rotation 0 width and height
-uint16_t tft_height;
+  uint16_t tft_driver; // Hexadecimal code
+  uint16_t tft_width;  // Rotation 0 width and height
+  uint16_t tft_height;
 
-uint8_t r0_x_offset; // Offsets, not all used yet
-uint8_t r0_y_offset;
-uint8_t r1_x_offset;
-uint8_t r1_y_offset;
-uint8_t r2_x_offset;
-uint8_t r2_y_offset;
-uint8_t r3_x_offset;
-uint8_t r3_y_offset;
+  uint8_t r0_x_offset; // Offsets, not all used yet
+  uint8_t r0_y_offset;
+  uint8_t r1_x_offset;
+  uint8_t r1_y_offset;
+  uint8_t r2_x_offset;
+  uint8_t r2_y_offset;
+  uint8_t r3_x_offset;
+  uint8_t r3_y_offset;
 
-int8_t pin_tft_mosi;
-int8_t pin_tft_miso;
-int8_t pin_tft_clk;
-int8_t pin_tft_cs;
+  int8_t pin_tft_mosi;
+  int8_t pin_tft_miso;
+  int8_t pin_tft_clk;
+  int8_t pin_tft_cs;
 
-int8_t pin_tft_dc;
-int8_t pin_tft_rd;
-int8_t pin_tft_wr;
-int8_t pin_tft_rst;
+  int8_t pin_tft_dc;
+  int8_t pin_tft_rd;
+  int8_t pin_tft_wr;
+  int8_t pin_tft_rst;
 
-int8_t pin_tft_d0;
-int8_t pin_tft_d1;
-int8_t pin_tft_d2;
-int8_t pin_tft_d3;
-int8_t pin_tft_d4;
-int8_t pin_tft_d5;
-int8_t pin_tft_d6;
-int8_t pin_tft_d7;
+  int8_t pin_tft_d0;
+  int8_t pin_tft_d1;
+  int8_t pin_tft_d2;
+  int8_t pin_tft_d3;
+  int8_t pin_tft_d4;
+  int8_t pin_tft_d5;
+  int8_t pin_tft_d6;
+  int8_t pin_tft_d7;
 
-int8_t pin_tch_cs;
+  int8_t pin_tch_cs;
 
-int16_t tft_spi_freq;
-int16_t tft_rd_freq;
-int16_t tch_spi_freq;
+  int16_t tft_spi_freq;
+  int16_t tft_rd_freq;
+  int16_t tch_spi_freq;
 } setup_t;
 
 // This is a structure to conveniently hold information on the default fonts
@@ -595,11 +594,11 @@ PROGMEM const uint8_t chr_null[1] = {0};
 PROGMEM const uint8_t* const chrtbl_null[1] = {chr_null};
 
 typedef struct {
-    const uint8_t *chartbl;
-    const uint8_t *widthtbl;
-    uint8_t height;
-    uint8_t baseline;
-    } fontinfo;
+  const uint8_t *chartbl;
+  const uint8_t *widthtbl;
+  uint8_t height;
+  uint8_t baseline;
+} fontinfo;
 
 // Now fill the structure
 const PROGMEM fontinfo fontdata [] = {
@@ -652,7 +651,7 @@ const PROGMEM fontinfo fontdata [] = {
 // Class functions and variables
 class TFT_eSPI : public Print {
 
- public:
+public:
 
   TFT_eSPI(int16_t _W = TFT_WIDTH, int16_t _H = TFT_HEIGHT);
 
@@ -830,7 +829,7 @@ class TFT_eSPI : public Print {
   int16_t _xpivot;   // x pivot point coordinate
   int16_t _ypivot;   // x pivot point coordinate
 
- private:
+private:
 
   inline void spi_begin() __attribute__((always_inline));
   inline void spi_end()   __attribute__((always_inline));
@@ -854,7 +853,7 @@ class TFT_eSPI : public Print {
   uint32_t lastColor = 0xFFFF;
 
 
- protected:
+protected:
 
   int32_t  win_xe, win_ye;
 
