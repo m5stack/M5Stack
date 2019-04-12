@@ -282,14 +282,12 @@ static uint32_t jpgWrite(JDEC *decoder, void *bitmap, JRECT *rect) {
   uint8_t pixIndex = 0;
   uint16_t line;
 
-  jpeg->tft->startWrite();
-  // jpeg->tft->setAddrWindow(x - jpeg->offX + jpeg->x + oL, y - jpeg->offY +
-  // jpeg->y, w - (oL + oR), h);
   jpeg->tft->setAddrWindow(x - jpeg->offX + jpeg->x + oL,
                            y - jpeg->offY + jpeg->y,
-                           x - jpeg->offX + jpeg->x + oL + w - (oL + oR) - 1,
-                           y - jpeg->offY + jpeg->y + h - 1);
+                           w - (oL + oR),
+                           h);
 
+  jpeg->tft->startWrite();
   while (h--) {
     data += 3 * oL;
     line = w - (oL + oR);
