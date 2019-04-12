@@ -25,6 +25,7 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable, bool I2CEn
   // LCD INIT
   if (LCDEnable == true) {
     Lcd.begin();
+	dacWrite(SPEAKER_PIN, 0);
   }
 
   // TF Card
@@ -33,7 +34,7 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable, bool I2CEn
   }
 
   // TONE
-  // Speaker.begin();
+  //Speaker.begin();
 
   // Set wakeup button
   Power.setWakeupButton(BUTTON_A_PIN);
