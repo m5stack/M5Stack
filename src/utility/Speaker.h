@@ -35,6 +35,7 @@
       uint8_t _volume;
       uint16_t _beep_duration;
       uint16_t _beep_freq;
+      bool _begun;
       bool speaker_on;
   };
 #endif

@@ -2,20 +2,24 @@
 
 SPEAKER::SPEAKER(void) {
   _volume = 8;
+  _begun = false;
 }
 
 void SPEAKER::begin() {
+  _begun = true;
   ledcSetup(TONE_PIN_CHANNEL, 0, 13);
   ledcAttachPin(SPEAKER_PIN, TONE_PIN_CHANNEL);
-  // digitalWrite(SPEAKER_PIN, 0);
   setBeep(1000, 100);
 }
 
 void SPEAKER::end() {
+  mute();
   ledcDetachPin(SPEAKER_PIN);
+  _begun = false;
 }
 
 void SPEAKER::tone(uint16_t frequency) {
+  if(!_begun) begin();
   ledcWriteTone(TONE_PIN_CHANNEL, frequency);
 }
 
@@ -26,6 +30,7 @@ void SPEAKER::tone(uint16_t frequency, uint32_t duration) {
 }
 
 void SPEAKER::beep() {
+  if(!_begun) begin();
   tone(_beep_freq, _beep_duration);
 }
 
