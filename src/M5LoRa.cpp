@@ -124,7 +124,7 @@ int LoRaClass::beginPacket(int implicitHeader) {
   // put in standby mode
   idle();
 
-  if (implicitHeader == true) {
+  if (implicitHeader) {
     implicitHeaderMode();
   } else {
     explicitHeaderMode();
@@ -172,7 +172,7 @@ int LoRaClass::parsePacket(int size) {
     _packetIndex = 0;
 
     // read packet length
-    if (_implicitHeaderMode == true) {
+    if (_implicitHeaderMode) {
       packetLength = readRegister(REG_PAYLOAD_LENGTH);
     } else {
       packetLength = readRegister(REG_RX_NB_BYTES);
@@ -232,7 +232,7 @@ int LoRaClass::available() {
 }
 
 int LoRaClass::read() {
-  if (!available() == true) {
+  if (!available()) {
     return -1;
   }
 
@@ -242,7 +242,7 @@ int LoRaClass::read() {
 }
 
 int LoRaClass::peek() {
-  if (!available() == true) {
+  if (!available()) {
     return -1;
   }
 
