@@ -105,7 +105,7 @@ void midline() {
   if ((ball_x<dashline_x-ball_w) && (ball_x > dashline_x+dashline_w)) return;
 
   // Quick way to draw a dashed line
-  M5.Lcd.setWindow(dashline_x,0,dashline_x+dashline_w-1,h);
+  M5.Lcd.setAddrWindow(dashline_x, 0, dashline_w, h);
   
   for(int16_t i = 0; i < dashline_n; i+=2) {
     M5.Lcd.pushColor(WHITE, dashline_w*dashline_h); // push dash pixels
