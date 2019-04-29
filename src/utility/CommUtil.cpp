@@ -99,7 +99,7 @@ bool CommUtil::readByte(uint8_t address, uint8_t subAddress,uint8_t *result) {
 
   Wire.beginTransmission(address);         // Initialize the Tx buffer
   Wire.write(subAddress);                  // Put slave register address in Tx buffer
-  if (Wire.endTransmission(false) == 0 && Wire.requestFrom(address, (uint8_t)1) == true) {
+  if (Wire.endTransmission(false) == 0 && Wire.requestFrom(address, (uint8_t)1)) {
     *result = Wire.read();                 // Fill Rx buffer with result
     #ifdef I2C_DEBUG_TO_SERIAL
       Serial.printf("%02x\n",*result);
@@ -120,8 +120,8 @@ bool CommUtil::readBytes(uint8_t address, uint8_t subAddress, uint8_t count,uint
   Wire.beginTransmission(address);   // Initialize the Tx buffer
   Wire.write(subAddress);            // Put slave register address in Tx buffer
   uint8_t i = 0;
-  if (Wire.endTransmission(false) == 0 && Wire.requestFrom(address, (uint8_t)count) == true) {
-    while (Wire.available() == true) {
+  if (Wire.endTransmission(false) == 0 && Wire.requestFrom(address, (uint8_t)count)) {
+    while (Wire.available()) {
       dest[i++] = Wire.read();// Put read results in the Rx buffer
       #ifdef I2C_DEBUG_TO_SERIAL
         Serial.printf("%02x ", dest[i-1]);
@@ -141,7 +141,7 @@ bool CommUtil::readBytes(uint8_t address, uint8_t subAddress, uint8_t count,uint
 bool CommUtil::readBytes(uint8_t address, uint8_t count,uint8_t * dest) {
   uint8_t i = 0;
   if (Wire.requestFrom(address, (uint8_t)count)) {
-    while (Wire.available() == true) {
+    while (Wire.available()) {
       // Put read results in the Rx buffer
       dest[i++] = Wire.read();
     }
