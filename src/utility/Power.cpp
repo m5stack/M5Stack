@@ -89,15 +89,24 @@ bool POWER::setPowerWLEDSet(bool en) {
   return false;
 }
 
+bool POWER::setPowerBtnEn(bool en) {
+  uint8_t data;
+  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, &data) == true) {
+      return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, en ? (data | 0x01) : (data & (~0x01)));
+  }
+  return false;
+}
+
 /*
   default: false
   false: when the current is too small, ip5306 will automatically shut down
+  note: it seem not work and has problems
 */
 bool POWER::setKeepLightLoad(bool en) {
-  uint8_t data;
-  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, &data) == true) {
-      return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, !en ? (data | LIGHT_LOAD_BIT) : (data & (~LIGHT_LOAD_BIT)));
-  }
+  // uint8_t data;
+  // if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, &data) == true) {
+  //     return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, !en ? (data | LIGHT_LOAD_BIT) : (data & (~LIGHT_LOAD_BIT)));
+  // }
   return false;
 }
 
@@ -105,7 +114,7 @@ bool POWER::setKeepLightLoad(bool en) {
 bool POWER::setPowerBoostKeepOn(bool en) {
   uint8_t data;
   if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, &data) == true) {
-      return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, en ? (data | BOOST_OUT_BIT) : (data & (~BOOST_OUT_BIT)));
+    return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, en ? (data | BOOST_OUT_BIT)  : (data & (~BOOST_OUT_BIT)));
   }
   return false;
 }
@@ -216,10 +225,8 @@ bool POWER::isResetbyPowerSW() {
 
 void POWER::deepSleep(uint64_t time_in_us) {
 
-#ifdef M5STACK_FIRE
   // Keep power keep boost on
   setPowerBoostKeepOn(true);
-#endif
 
   // power off the Lcd
   M5.Lcd.setBrightness(0);
@@ -237,10 +244,8 @@ void POWER::deepSleep(uint64_t time_in_us) {
 
 void POWER::lightSleep(uint64_t time_in_us) {
 
-#ifdef M5STACK_FIRE
   // Keep power keep boost on
   setPowerBoostKeepOn(true);
-#endif
 
   // power off the Lcd
   M5.Lcd.setBrightness(0);

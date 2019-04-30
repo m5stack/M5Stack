@@ -25,6 +25,7 @@
       bool setPowerBoostSet(bool en);
       bool setPowerVin(bool en);
       bool setPowerWLEDSet(bool en);
+      bool setPowerBtnEn(bool en);
 
       // -- control for battery
       bool setCharge(bool en);
