@@ -16,6 +16,15 @@
       bool canControl();
       void begin();
 
+      // -- SleepParam
+      enum SleepTime
+      {
+        SLEEP_8S = 0,
+        SLEEP_16S,
+        SLEEP_32S,
+        SLEEP_64S
+      };
+      
       // -- control for power
       bool setKeepLightLoad(bool en);
       bool setPowerBoostKeepOn(bool en);
@@ -26,6 +35,7 @@
       bool setPowerVin(bool en);
       bool setPowerWLEDSet(bool en);
       bool setPowerBtnEn(bool en);
+      bool setLowCurrentShutdownTime(SleepTime time);
 
       // -- control for battery
       bool setCharge(bool en);
