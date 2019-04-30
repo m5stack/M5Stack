@@ -1179,7 +1179,7 @@ uint8_t TFT_eSprite::getRotation(void) {
 *************************************************************************************x*/
 void TFT_eSprite::drawPixel(int32_t x, int32_t y, uint32_t color) {
   // Range checking
-  if ((x < 0) || (y < 0) ||(x >= _width) || (y >= _height) || !_created) {
+  if ((x < 0) || (y < 0) ||(x >= width()) || (y >= height()) || !_created) {
     return;
   }
   if (_bpp == 16) {
