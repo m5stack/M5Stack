@@ -58,9 +58,6 @@ void POWER::begin() {
   
   //Initial I2C 
   Wire.begin(21, 22);
-
-  // SleepTime setting
-  setLowCurrentShutdownTime(SleepTime::SLEEP_64S);
 }
 
 static bool getI2CReg(uint8_t *result, uint8_t address, uint8_t *reg) {
@@ -265,7 +262,11 @@ bool POWER::isResetbyPowerSW() {
   return (reset_reason == POWERON_RESET);
 }
 
-void POWER::deepSleep(uint64_t time_in_us) {
+//note:
+//If the IP5306 I2C communication is not available,
+//such as the old model, there is a limit to the maximum time for sleep return.
+//When using this function, pay attention to the constraints.
+void POWER::deepSleep(uint64_t time_in_us){
 
   // Keep power keep boost on
   setPowerBoostKeepOn(true);
@@ -284,6 +285,10 @@ void POWER::deepSleep(uint64_t time_in_us) {
   (time_in_us == 0) ? esp_deep_sleep_start() : esp_deep_sleep(time_in_us);
 }
 
+//note:
+//If the IP5306 I2C communication is not available, 
+//such as the old model, there is a limit to the maximum time for sleep return. 
+//When using this function, pay attention to the constraints.
 void POWER::lightSleep(uint64_t time_in_us) {
 
   // Keep power keep boost on
@@ -308,4 +313,33 @@ void POWER::lightSleep(uint64_t time_in_us) {
   // power on the Lcd
   M5.Lcd.wakeup();
   M5.Lcd.setBrightness(200);
+}
+
+//note:
+//To ensure that the power is turned off,
+//reduce the power consumption according to the specifications of the power supply IC. 
+//Otherwise, the power supply IC will continue to supply power.
+void POWER::powerOFF(){
+  uint8_t data;
+  // power off the Lcd
+  M5.Lcd.setBrightness(0);
+  M5.Lcd.sleep();
+
+  //Power off request
+  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true)
+  {
+    M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, (data & (~BOOST_ENABLET_BIT)));
+  }
+
+  esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_ALL);
+  gpio_deep_sleep_hold_dis();
+
+  // Keep power keep boost on
+  setPowerBoostKeepOn(false);
+
+  // SleepTime setting
+  setLowCurrentShutdownTime(SleepTime::SLEEP_8S);
+  
+  //wait shutdown from IP5306 (low-current shutdown)
+  esp_deep_sleep_start();
 }

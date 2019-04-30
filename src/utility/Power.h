@@ -57,6 +57,9 @@
       void deepSleep(uint64_t time_in_us=0);
       void lightSleep(uint64_t time_in_us=0);
 
+      // -- power off
+      void powerOFF();
+      
       // -- software reset
       void reset();
 
