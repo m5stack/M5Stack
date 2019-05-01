@@ -271,6 +271,7 @@ bool POWER::isResetbyPowerSW() {
 void POWER::deepSleep(uint64_t time_in_us){
 
   // Keep power keep boost on
+  setLowPowerShutdown(false);
   setPowerBoostKeepOn(true);
 
   // power off the Lcd
@@ -279,6 +280,12 @@ void POWER::deepSleep(uint64_t time_in_us){
 
   // ESP32 into deep sleep
   esp_sleep_enable_ext0_wakeup((gpio_num_t)_wakeupPin, LOW);
+
+  if (time_in_us > 0){
+    esp_sleep_enable_timer_wakeup(time_in_us);
+  }else{
+    esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_TIMER);
+  }
 
   while (digitalRead(_wakeupPin) == LOW) {
     delay(10);
@@ -294,6 +301,7 @@ void POWER::deepSleep(uint64_t time_in_us){
 void POWER::lightSleep(uint64_t time_in_us) {
 
   // Keep power keep boost on
+  setLowPowerShutdown(false);
   setPowerBoostKeepOn(true);
 
   // power off the Lcd
@@ -307,8 +315,10 @@ void POWER::lightSleep(uint64_t time_in_us) {
   while (digitalRead(_wakeupPin) == LOW) {
     delay(10);
   }
-  if (time_in_us > 0) {
+  if (time_in_us > 0){
     esp_sleep_enable_timer_wakeup(time_in_us);
+  }else{
+    esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_TIMER);
   }
   esp_light_sleep_start();
 
@@ -328,8 +338,7 @@ void POWER::powerOFF(){
   M5.Lcd.sleep();
 
   //Power off request
-  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true)
-  {
+  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true){
     M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, (data & (~BOOST_ENABLET_BIT)));
   }
   
