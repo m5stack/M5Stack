@@ -32,10 +32,10 @@
       };
 
       // -- control for power
-      bool setKeepLightLoad(bool en);
+      bool setKeepLightLoad(bool en) __attribute__((deprecated));
       bool setPowerBoostKeepOn(bool en);
       bool setAutoBootOnLoad(bool en);
-      bool setLowPowerShutdown(bool en);
+      bool setLowPowerShutdown(bool en) __attribute__((deprecated));    
       bool setLowPowerShutdownTime(ShutdownTime time);
       bool setPowerBoostOnOff(bool en);
       bool setPowerBoostSet(bool en);

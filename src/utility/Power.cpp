@@ -22,7 +22,7 @@
 #define IP5306_REG_READ3 (0x78)
 
 //- REG_CTL0
-#define BOOST_ENABLET_BIT (0x20)
+#define BOOST_ENABLE_BIT (0x20)
 #define CHARGE_OUT_BIT (0x10)
 #define BOOT_ON_LOAD_BIT (0x04)
 #define BOOST_OUT_BIT (0x02)
@@ -31,7 +31,7 @@
 //- REG_CTL1
 #define BOOST_SET_BIT (0x80)
 #define WLED_SET_BIT (0x40)
-#define BOOST_ENABLE_BIT (0x20)
+#define SHORT_BOOST_BIT (0x20)
 #define VIN_ENABLE_BIT (0x04)
 
 //- REG_CTL2
@@ -82,7 +82,7 @@ bool POWER::setPowerBoostOnOff(bool en) {
 bool POWER::setPowerBoostSet(bool en) {
   uint8_t data;
   if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true) {
-    return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, en ? (data | BOOST_ENABLE_BIT) : (data & (~BOOST_ENABLE_BIT)));
+    return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, en ? (data | SHORT_BOOST_BIT) : (data & (~SHORT_BOOST_BIT)));
   }
   return false;
 }
@@ -142,8 +142,11 @@ bool POWER::setLowPowerShutdownTime(ShutdownTime time)
   default: false
   false: when the current is too small, ip5306 will automatically shut down
   note: it seem not work and has problems
+        Function has disabled.(Stab for compatibility)
+        This function will be removed in a future release.
 */
-bool POWER::setKeepLightLoad(bool en) {
+bool POWER::setKeepLightLoad(bool en)
+{
   // uint8_t data;
   // if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, &data) == true) {
   //     return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, !en ? (data | LIGHT_LOAD_BIT) : (data & (~LIGHT_LOAD_BIT)));
@@ -160,13 +163,17 @@ bool POWER::setPowerBoostKeepOn(bool en) {
   return false;
 }
 
-// true: if come low battery , the system going shutdown
-bool POWER::setLowPowerShutdown(bool en) {
-  uint8_t data;
-  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true) {
-    return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, en ? (data | LOWPOWER_SHUTDOWN_BIT) : (data & (~LOWPOWER_SHUTDOWN_BIT)));
-  }
-  return false;
+/**
+* Function has disabled.(Stab for compatibility)
+* This function will be removed in a future release.
+*/
+bool POWER::setLowPowerShutdown(bool en)
+{
+  //uint8_t data;
+  //if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true) {
+  //  return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, en ? (data | LOWPOWER_SHUTDOWN_BIT) : (data & (~LOWPOWER_SHUTDOWN_BIT)));
+  //}
+  return setPowerBoostKeepOn(!en);
 }
 /*
   default: true
@@ -241,17 +248,18 @@ void POWER::reset() {
 bool POWER::isResetbySoftware() {
   RESET_REASON reset_reason = rtc_get_reset_reason(0);
   return (reset_reason == SW_RESET ||
-      reset_reason == SW_CPU_RESET);
+          reset_reason == SW_CPU_RESET);
 }
 
 bool POWER::isResetbyWatchdog() {
   RESET_REASON reset_reason = rtc_get_reset_reason(0);
   return (reset_reason == TG0WDT_SYS_RESET ||
-      reset_reason == TG1WDT_SYS_RESET ||
-      reset_reason == OWDT_RESET ||
-      reset_reason == RTCWDT_CPU_RESET ||
-      reset_reason == RTCWDT_RTC_RESET ||
-      reset_reason == TGWDT_CPU_RESET);
+          reset_reason == TG1WDT_SYS_RESET ||
+          reset_reason == OWDT_RESET ||
+          reset_reason == RTCWDT_SYS_RESET ||
+          reset_reason == RTCWDT_CPU_RESET ||
+          reset_reason == RTCWDT_RTC_RESET ||
+          reset_reason == TGWDT_CPU_RESET);
 }
 
 bool POWER::isResetbyDeepsleep() {
@@ -301,7 +309,6 @@ void POWER::deepSleep(uint64_t time_in_us){
 void POWER::lightSleep(uint64_t time_in_us) {
 
   // Keep power keep boost on
-  setLowPowerShutdown(false);
   setPowerBoostKeepOn(true);
 
   // power off the Lcd
@@ -339,7 +346,7 @@ void POWER::powerOFF(){
 
   //Power off request
   if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true){
-    M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, (data & (~BOOST_ENABLET_BIT)));
+    M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, (data & (~BOOST_ENABLE_BIT)));
   }
   
   //stop wifi
@@ -355,7 +362,6 @@ void POWER::powerOFF(){
 
   // Shutdown setting
   setPowerBoostKeepOn(false);
-  setLowPowerShutdown(true);
   setLowPowerShutdownTime(ShutdownTime::SHUTDOWN_8S);
   setPowerBtnEn(true);
 
