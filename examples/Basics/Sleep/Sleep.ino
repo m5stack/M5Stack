@@ -24,9 +24,15 @@ void loop() {
   delay(2500);
   // call this fun, power btn will Invalid
   // Restore power btn please call M5.Power.setPowerBoostKeepOn(false)
+  M5.Power.lightSleep(SLEEP_SEC(5));
+  
+  M5.Lcd.printf("Go lightSleep (press buttonA)\n");
+  delay(2500);
+  // call this fun, power btn will Invalid
+  // Restore power btn please call M5.Power.setPowerBoostKeepOn(false)
   M5.Power.lightSleep(0);
   
-  M5.Lcd.printf("resume.\n\nGo deepSleep (5s or press buttonA) ");
+  M5.Lcd.printf("resume.\n\nGo deepSleep (press buttonA) ");
   delay(2500);
   // call this fun, power btn will Invalid
   M5.Power.deepSleep(0);

@@ -9,6 +9,8 @@
 #include "../M5Stack.h"
 #include <rom/rtc.h>
 #include <esp_sleep.h>
+#include <esp_bt_main.h>
+#include <esp_wifi.h>
 
 // ================ Power IC IP5306 ===================
 #define IP5306_ADDR (117) // 0x75
@@ -60,6 +62,7 @@ void POWER::begin() {
   Wire.begin(21, 22);
 }
 
+
 static bool getI2CReg(uint8_t *result, uint8_t address, uint8_t *reg) {
   return (M5.I2C.readByte(address, *reg, result));
 }
@@ -108,27 +111,26 @@ bool POWER::setPowerBtnEn(bool en) {
   return false;
 }
 
-bool POWER::setLowCurrentShutdownTime(SleepTime time)
+bool POWER::setLowPowerShutdownTime(ShutdownTime time)
 {
   uint8_t data;
   bool ret;
   if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL2, &data) == true){
     switch (time){
-      case SleepTime::SLEEP_8S:
-        ret= M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL2, ((data & (~SHUTDOWNTIME_MASK)) | SHUTDOWNTIME_8S));
+      case ShutdownTime::SHUTDOWN_8S:
+        ret = M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL2, ((data & (~SHUTDOWNTIME_MASK)) | SHUTDOWNTIME_8S));
         break;
-      case SleepTime::SLEEP_16S:
+      case ShutdownTime::SHUTDOWN_16S:
         ret = M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL2, ((data & (~SHUTDOWNTIME_MASK)) | SHUTDOWNTIME_16S));
         break;
-      case SleepTime::SLEEP_32S:
+      case ShutdownTime::SHUTDOWN_32S:
         ret = M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL2, ((data & (~SHUTDOWNTIME_MASK)) | SHUTDOWNTIME_32S));
         break;
-      case SleepTime::SLEEP_64S:
+      case ShutdownTime::SHUTDOWN_64S:
         ret = M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL2, ((data & (~SHUTDOWNTIME_MASK)) | SHUTDOWNTIME_64S));
         break;
-
       default:
-        ret =false;
+        ret = false;
         break;
     }
     return ret;
@@ -330,16 +332,25 @@ void POWER::powerOFF(){
   {
     M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, (data & (~BOOST_ENABLET_BIT)));
   }
+  
+  //stop wifi
+  esp_wifi_disconnect();
+  esp_wifi_stop();
+  
+  //stop bt
+  esp_bluedroid_disable();
 
+  //disable interrupt/peripheral
   esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_ALL);
   gpio_deep_sleep_hold_dis();
 
-  // Keep power keep boost on
+  // Shutdown setting
   setPowerBoostKeepOn(false);
+  setLowPowerShutdown(true);
+  setLowPowerShutdownTime(ShutdownTime::SHUTDOWN_8S);
+  setPowerBtnEn(true);
 
-  // SleepTime setting
-  setLowCurrentShutdownTime(SleepTime::SLEEP_8S);
-  
+
   //wait shutdown from IP5306 (low-current shutdown)
   esp_deep_sleep_start();
 }
