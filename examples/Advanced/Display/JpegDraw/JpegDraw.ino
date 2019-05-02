@@ -4,7 +4,7 @@ void setup(void) {
 
   M5.begin();
 
-  //Draw the jpeg file form TF card
+  //Draw the jpeg file "p2.jpg" from TF(SD) card
   M5.Lcd.setBrightness(200);
   M5.Lcd.drawJpgFile(SD, "/p2.jpg");
   // M5.Lcd.drawJpgFile(SD, "/p1.jpg", 20, 30, 40, 50);
