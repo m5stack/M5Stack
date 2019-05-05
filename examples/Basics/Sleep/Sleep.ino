@@ -20,15 +20,22 @@ void loop() {
   M5.Lcd.printf("<<Sleep test>>\n");
   M5.Lcd.printf("power-on triggered at:%s%s\n\n",c?"POWER-SW":"",d?"DeepSleep-end":"");
   
-  M5.Lcd.printf("Go lightSleep (5s or press buttonA)\n");
+  M5.Lcd.printf("Go lightSleep (5s or press buttonA wake up)\n");
+  delay(2500);
+  // call this fun, power btn will Invalid
+  // Restore power btn please call M5.Power.setPowerBoostKeepOn(false)
+  M5.Power.lightSleep(SLEEP_SEC(5));
+  
+  M5.Lcd.printf("Go lightSleep (press buttonA wake up)\n");
   delay(2500);
   // call this fun, power btn will Invalid
   // Restore power btn please call M5.Power.setPowerBoostKeepOn(false)
   M5.Power.lightSleep(0);
   
-  M5.Lcd.printf("resume.\n\nGo deepSleep (5s or press buttonA) ");
+  M5.Lcd.printf("resume.\n\nGo deepSleep (press buttonA wake up) ");
   delay(2500);
   // call this fun, power btn will Invalid
+  // Restore power btn please call M5.Power.setPowerBoostKeepOn(false)
   M5.Power.deepSleep(0);
   
 }

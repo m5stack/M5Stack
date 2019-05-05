@@ -21,6 +21,8 @@ https://github.com/m5stack/M5Stack/tree/master/examples
 
 https://github.com/m5stack/M5Stack/blob/master/src/M5Stack.h#L19
 
+https://docs.m5stack.com/#/zh_CN/api
+
 ## 4. H/W 参考
 
 #### 管脚映射

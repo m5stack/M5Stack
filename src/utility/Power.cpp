@@ -9,26 +9,37 @@
 #include "../M5Stack.h"
 #include <rom/rtc.h>
 #include <esp_sleep.h>
+#include <esp_bt_main.h>
+#include <esp_wifi.h>
 
 // ================ Power IC IP5306 ===================
 #define IP5306_ADDR (117) // 0x75
 #define IP5306_REG_SYS_CTL0 (0x00)
 #define IP5306_REG_SYS_CTL1 (0x01)
+#define IP5306_REG_SYS_CTL2 (0x02)
 #define IP5306_REG_READ0 (0x70)
 #define IP5306_REG_READ1 (0x71)
 #define IP5306_REG_READ3 (0x78)
 
 //- REG_CTL0
-#define BOOST_ENABLET_BIT (0x20)
+#define BOOST_ENABLE_BIT (0x20)
 #define CHARGE_OUT_BIT (0x10)
 #define BOOT_ON_LOAD_BIT (0x04)
 #define BOOST_OUT_BIT (0x02)
+#define BOOST_BUTTON_EN_BIT (0x01)
 
 //- REG_CTL1
 #define BOOST_SET_BIT (0x80)
 #define WLED_SET_BIT (0x40)
-#define BOOST_ENABLE_BIT (0x20)
+#define SHORT_BOOST_BIT (0x20)
 #define VIN_ENABLE_BIT (0x04)
+
+//- REG_CTL2
+#define SHUTDOWNTIME_MASK (0x0c)
+#define SHUTDOWNTIME_64S (0x0c)
+#define SHUTDOWNTIME_32S (0x04)
+#define SHUTDOWNTIME_16S (0x08)
+#define SHUTDOWNTIME_8S  (0x00)
 
 //- REG_READ0
 #define CHARGE_ENABLE_BIT (0x08)
@@ -46,8 +57,11 @@ POWER::POWER() {
 }
 
 void POWER::begin() {
+  
+  //Initial I2C 
   Wire.begin(21, 22);
 }
+
 
 static bool getI2CReg(uint8_t *result, uint8_t address, uint8_t *reg) {
   return (M5.I2C.readByte(address, *reg, result));
@@ -68,7 +82,7 @@ bool POWER::setPowerBoostOnOff(bool en) {
 bool POWER::setPowerBoostSet(bool en) {
   uint8_t data;
   if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true) {
-    return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, en ? (data | BOOST_ENABLE_BIT) : (data & (~BOOST_ENABLE_BIT)));
+    return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, en ? (data | SHORT_BOOST_BIT) : (data & (~SHORT_BOOST_BIT)));
   }
   return false;
 }
@@ -92,7 +106,34 @@ bool POWER::setPowerWLEDSet(bool en) {
 bool POWER::setPowerBtnEn(bool en) {
   uint8_t data;
   if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, &data) == true) {
-      return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, en ? (data | 0x01) : (data & (~0x01)));
+    return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, en ? (data | BOOST_BUTTON_EN_BIT) : (data & (~BOOST_BUTTON_EN_BIT)));
+  }
+  return false;
+}
+
+bool POWER::setLowPowerShutdownTime(ShutdownTime time)
+{
+  uint8_t data;
+  bool ret;
+  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL2, &data) == true){
+    switch (time){
+      case ShutdownTime::SHUTDOWN_8S:
+        ret = M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL2, ((data & (~SHUTDOWNTIME_MASK)) | SHUTDOWNTIME_8S));
+        break;
+      case ShutdownTime::SHUTDOWN_16S:
+        ret = M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL2, ((data & (~SHUTDOWNTIME_MASK)) | SHUTDOWNTIME_16S));
+        break;
+      case ShutdownTime::SHUTDOWN_32S:
+        ret = M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL2, ((data & (~SHUTDOWNTIME_MASK)) | SHUTDOWNTIME_32S));
+        break;
+      case ShutdownTime::SHUTDOWN_64S:
+        ret = M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL2, ((data & (~SHUTDOWNTIME_MASK)) | SHUTDOWNTIME_64S));
+        break;
+      default:
+        ret = false;
+        break;
+    }
+    return ret;
   }
   return false;
 }
@@ -101,8 +142,11 @@ bool POWER::setPowerBtnEn(bool en) {
   default: false
   false: when the current is too small, ip5306 will automatically shut down
   note: it seem not work and has problems
+        Function has disabled.(Stab for compatibility)
+        This function will be removed in a future release.
 */
-bool POWER::setKeepLightLoad(bool en) {
+bool POWER::setKeepLightLoad(bool en)
+{
   // uint8_t data;
   // if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, &data) == true) {
   //     return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL0, !en ? (data | LIGHT_LOAD_BIT) : (data & (~LIGHT_LOAD_BIT)));
@@ -119,13 +163,17 @@ bool POWER::setPowerBoostKeepOn(bool en) {
   return false;
 }
 
-// true: if come low battery , the system going shutdown
-bool POWER::setLowPowerShutdown(bool en) {
-  uint8_t data;
-  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true) {
-    return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, en ? (data | LOWPOWER_SHUTDOWN_BIT) : (data & (~LOWPOWER_SHUTDOWN_BIT)));
-  }
-  return false;
+/**
+* Function has disabled.(Stab for compatibility)
+* This function will be removed in a future release.
+*/
+bool POWER::setLowPowerShutdown(bool en)
+{
+  //uint8_t data;
+  //if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true) {
+  //  return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, en ? (data | LOWPOWER_SHUTDOWN_BIT) : (data & (~LOWPOWER_SHUTDOWN_BIT)));
+  //}
+  return setPowerBoostKeepOn(!en);
 }
 /*
   default: true
@@ -200,17 +248,18 @@ void POWER::reset() {
 bool POWER::isResetbySoftware() {
   RESET_REASON reset_reason = rtc_get_reset_reason(0);
   return (reset_reason == SW_RESET ||
-      reset_reason == SW_CPU_RESET);
+          reset_reason == SW_CPU_RESET);
 }
 
 bool POWER::isResetbyWatchdog() {
   RESET_REASON reset_reason = rtc_get_reset_reason(0);
   return (reset_reason == TG0WDT_SYS_RESET ||
-      reset_reason == TG1WDT_SYS_RESET ||
-      reset_reason == OWDT_RESET ||
-      reset_reason == RTCWDT_CPU_RESET ||
-      reset_reason == RTCWDT_RTC_RESET ||
-      reset_reason == TGWDT_CPU_RESET);
+          reset_reason == TG1WDT_SYS_RESET ||
+          reset_reason == OWDT_RESET ||
+          reset_reason == RTCWDT_SYS_RESET ||
+          reset_reason == RTCWDT_CPU_RESET ||
+          reset_reason == RTCWDT_RTC_RESET ||
+          reset_reason == TGWDT_CPU_RESET);
 }
 
 bool POWER::isResetbyDeepsleep() {
@@ -223,9 +272,14 @@ bool POWER::isResetbyPowerSW() {
   return (reset_reason == POWERON_RESET);
 }
 
-void POWER::deepSleep(uint64_t time_in_us) {
+//note:
+//If the IP5306 I2C communication is not available,
+//such as the old model, there is a limit to the maximum time for sleep return.
+//When using this function, pay attention to the constraints.
+void POWER::deepSleep(uint64_t time_in_us){
 
   // Keep power keep boost on
+  setLowPowerShutdown(false);
   setPowerBoostKeepOn(true);
 
   // power off the Lcd
@@ -235,6 +289,12 @@ void POWER::deepSleep(uint64_t time_in_us) {
   // ESP32 into deep sleep
   esp_sleep_enable_ext0_wakeup((gpio_num_t)_wakeupPin, LOW);
 
+  if (time_in_us > 0){
+    esp_sleep_enable_timer_wakeup(time_in_us);
+  }else{
+    esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_TIMER);
+  }
+
   while (digitalRead(_wakeupPin) == LOW) {
     delay(10);
   }
@@ -242,6 +302,10 @@ void POWER::deepSleep(uint64_t time_in_us) {
   (time_in_us == 0) ? esp_deep_sleep_start() : esp_deep_sleep(time_in_us);
 }
 
+//note:
+//If the IP5306 I2C communication is not available, 
+//such as the old model, there is a limit to the maximum time for sleep return. 
+//When using this function, pay attention to the constraints.
 void POWER::lightSleep(uint64_t time_in_us) {
 
   // Keep power keep boost on
@@ -258,12 +322,50 @@ void POWER::lightSleep(uint64_t time_in_us) {
   while (digitalRead(_wakeupPin) == LOW) {
     delay(10);
   }
-  if (time_in_us > 0) {
+  if (time_in_us > 0){
     esp_sleep_enable_timer_wakeup(time_in_us);
+  }else{
+    esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_TIMER);
   }
   esp_light_sleep_start();
 
   // power on the Lcd
   M5.Lcd.wakeup();
   M5.Lcd.setBrightness(200);
+}
+
+//note:
+//To ensure that the power is turned off,
+//reduce the power consumption according to the specifications of the power supply IC. 
+//Otherwise, the power supply IC will continue to supply power.
+void POWER::powerOFF(){
+  uint8_t data;
+  // power off the Lcd
+  M5.Lcd.setBrightness(0);
+  M5.Lcd.sleep();
+
+  //Power off request
+  if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true){
+    M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, (data & (~BOOST_ENABLE_BIT)));
+  }
+  
+  //stop wifi
+  esp_wifi_disconnect();
+  esp_wifi_stop();
+  
+  //stop bt
+  esp_bluedroid_disable();
+
+  //disable interrupt/peripheral
+  esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_ALL);
+  gpio_deep_sleep_hold_dis();
+
+  // Shutdown setting
+  setPowerBoostKeepOn(false);
+  setLowPowerShutdownTime(ShutdownTime::SHUTDOWN_8S);
+  setPowerBtnEn(true);
+
+
+  //wait shutdown from IP5306 (low-current shutdown)
+  esp_deep_sleep_start();
 }
