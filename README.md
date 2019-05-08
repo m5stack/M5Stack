@@ -63,7 +63,7 @@ https://docs.m5stack.com/#/en/api
 ### M-BUS
 ![image](docs/M-BUS.jpg)
 
-## 5. Awesome
+## 5. USER CASES
 
 * [M5Stack-SD-Updater](https://github.com/tobozo/M5Stack-SD-Updater) - Customizable menu system for M5Stack - loads apps from the Micro SD
   card
