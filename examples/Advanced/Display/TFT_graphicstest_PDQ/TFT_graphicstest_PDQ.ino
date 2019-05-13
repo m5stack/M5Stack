@@ -20,7 +20,7 @@ unsigned long tn = 0;
 
 void setup() {
 	M5.begin();
-	
+	M5.Lcd.setRotation(0);
 	Serial.println(""); Serial.println("");
 	Serial.println("Bodmer's M5Stack library Test!"); 
 }
@@ -334,7 +334,7 @@ uint32_t testHaD()
 	
 	for (int i = 0; i < 0x10; i++)
 	{
-		M5.Lcd.setWindow(0, 0, 240-1, 320-1);
+		M5.Lcd.setAddrWindow(0, 0, 240, 320);
 
 		uint16_t cnt = 0;
 		uint16_t color = M5.Lcd.color565((i << 4) | i, (i << 4) | i, (i << 4) | i);

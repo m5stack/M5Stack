@@ -38,12 +38,11 @@ static float beta = sqrt(3.0f / 4.0f) * GyroMeasError;   // Compute beta
 static float zeta = sqrt(3.0f / 4.0f) * GyroMeasDrift;
 
 // Vector to hold integral error for Mahony method
-static float eInt[3] = {0.0f, 0.0f, 0.0f};
+static float eInt[3] = { 0.0f, 0.0f, 0.0f };
 // Vector to hold quaternion
-static float q[4] = {1.0f, 0.0f, 0.0f, 0.0f};
+static float q[4] = { 1.0f, 0.0f, 0.0f, 0.0f };
 
-void MadgwickQuaternionUpdate(float ax, float ay, float az, float gx, float gy, float gz, float mx, float my, float mz, float deltat)
-{
+void MadgwickQuaternionUpdate(float ax, float ay, float az, float gx, float gy, float gz, float mx, float my, float mz, float deltat){
   // short name local variable for readability
   float q1 = q[0], q2 = q[1], q3 = q[2], q4 = q[3];
   float norm;
@@ -77,16 +76,20 @@ void MadgwickQuaternionUpdate(float ax, float ay, float az, float gx, float gy, 
 
   // Normalise accelerometer measurement
   norm = sqrt(ax * ax + ay * ay + az * az);
-  if (norm == 0.0f) return; // handle NaN
-  norm = 1.0f/norm;
+  if (norm == 0.0f) {
+    return; // handle NaN
+  }
+  norm = 1.0f / norm;
   ax *= norm;
   ay *= norm;
   az *= norm;
 
   // Normalise magnetometer measurement
   norm = sqrt(mx * mx + my * my + mz * mz);
-  if (norm == 0.0f) return; // handle NaN
-  norm = 1.0f/norm;
+  if (norm == 0.0f) {
+    return; // handle NaN
+  }
+  norm = 1.0f / norm;
   mx *= norm;
   my *= norm;
   mz *= norm;
@@ -110,7 +113,7 @@ void MadgwickQuaternionUpdate(float ax, float ay, float az, float gx, float gy, 
   s3 = -_2q1 * (2.0f * q2q4 - _2q1q3 - ax) + _2q4 * (2.0f * q1q2 + _2q3q4 - ay) - 4.0f * q3 * (1.0f - 2.0f * q2q2 - 2.0f * q3q3 - az) + (-_4bx * q3 - _2bz * q1) * (_2bx * (0.5f - q3q3 - q4q4) + _2bz * (q2q4 - q1q3) - mx) + (_2bx * q2 + _2bz * q4) * (_2bx * (q2q3 - q1q4) + _2bz * (q1q2 + q3q4) - my) + (_2bx * q1 - _4bz * q3) * (_2bx * (q1q3 + q2q4) + _2bz * (0.5f - q2q2 - q3q3) - mz);
   s4 = _2q2 * (2.0f * q2q4 - _2q1q3 - ax) + _2q3 * (2.0f * q1q2 + _2q3q4 - ay) + (-_4bx * q4 + _2bz * q2) * (_2bx * (0.5f - q3q3 - q4q4) + _2bz * (q2q4 - q1q3) - mx) + (-_2bx * q1 + _2bz * q3) * (_2bx * (q2q3 - q1q4) + _2bz * (q1q2 + q3q4) - my) + _2bx * q2 * (_2bx * (q1q3 + q2q4) + _2bz * (0.5f - q2q2 - q3q3) - mz);
   norm = sqrt(s1 * s1 + s2 * s2 + s3 * s3 + s4 * s4);    // normalise step magnitude
-  norm = 1.0f/norm;
+  norm = 1.0f / norm;
   s1 *= norm;
   s2 *= norm;
   s3 *= norm;
@@ -128,7 +131,7 @@ void MadgwickQuaternionUpdate(float ax, float ay, float az, float gx, float gy, 
   q3 += qDot3 * deltat;
   q4 += qDot4 * deltat;
   norm = sqrt(q1 * q1 + q2 * q2 + q3 * q3 + q4 * q4);    // normalise quaternion
-  norm = 1.0f/norm;
+  norm = 1.0f / norm;
   q[0] = q1 * norm;
   q[1] = q2 * norm;
   q[2] = q3 * norm;
@@ -139,8 +142,7 @@ void MadgwickQuaternionUpdate(float ax, float ay, float az, float gx, float gy, 
 
 // Similar to Madgwick scheme but uses proportional and integral filtering on
 // the error between estimated reference vectors and measured ones.
-void MahonyQuaternionUpdate(float ax, float ay, float az, float gx, float gy, float gz, float mx, float my, float mz, float deltat)
-{
+void MahonyQuaternionUpdate(float ax, float ay, float az, float gx, float gy, float gz, float mx, float my, float mz, float deltat){
   // short name local variable for readability
   float q1 = q[0], q2 = q[1], q3 = q[2], q4 = q[3];
   float norm;
@@ -163,7 +165,9 @@ void MahonyQuaternionUpdate(float ax, float ay, float az, float gx, float gy, fl
 
   // Normalise accelerometer measurement
   norm = sqrt(ax * ax + ay * ay + az * az);
-  if (norm == 0.0f) return; // Handle NaN
+  if (norm == 0.0f) {
+    return; // Handle NaN
+  }
   norm = 1.0f / norm;       // Use reciprocal for division
   ax *= norm;
   ay *= norm;
@@ -171,7 +175,9 @@ void MahonyQuaternionUpdate(float ax, float ay, float az, float gx, float gy, fl
 
   // Normalise magnetometer measurement
   norm = sqrt(mx * mx + my * my + mz * mz);
-  if (norm == 0.0f) return; // Handle NaN
+  if (norm == 0.0f) {
+    return; // Handle NaN
+  }
   norm = 1.0f / norm;       // Use reciprocal for division
   mx *= norm;
   my *= norm;
@@ -195,14 +201,11 @@ void MahonyQuaternionUpdate(float ax, float ay, float az, float gx, float gy, fl
   ex = (ay * vz - az * vy) + (my * wz - mz * wy);
   ey = (az * vx - ax * vz) + (mz * wx - mx * wz);
   ez = (ax * vy - ay * vx) + (mx * wy - my * wx);
-  if (Ki > 0.0f)
-  {
+  if (Ki > 0.0f){
     eInt[0] += ex;      // accumulate integral error
     eInt[1] += ey;
     eInt[2] += ez;
-  }
-  else
-  {
+  }else{
     eInt[0] = 0.0f;     // prevent integral wind up
     eInt[1] = 0.0f;
     eInt[2] = 0.0f;
@@ -212,7 +215,7 @@ void MahonyQuaternionUpdate(float ax, float ay, float az, float gx, float gy, fl
   gx = gx + Kp * ex + Ki * eInt[0];
   gy = gy + Kp * ey + Ki * eInt[1];
   gz = gz + Kp * ez + Ki * eInt[2];
- 
+
   // Integrate rate of change of quaternion
   pa = q2;
   pb = q3;
@@ -231,4 +234,6 @@ void MahonyQuaternionUpdate(float ax, float ay, float az, float gx, float gy, fl
   q[3] = q4 * norm;
 }
 
-const float * getQ () { return q; }
+const float * getQ () {
+  return q;
+}

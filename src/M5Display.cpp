@@ -1,6 +1,6 @@
 #include "M5Display.h"
 
-#define BLK_PWM_CHANNEL 7 //LEDC_CHANNEL_7
+#define BLK_PWM_CHANNEL 7 // LEDC_CHANNEL_7
 
 M5Display::M5Display() : TFT_eSPI() {}
 
@@ -10,7 +10,7 @@ void M5Display::begin() {
   fillScreen(0);
 
   // Init the back-light LED PWM
-  ledcSetup(BLK_PWM_CHANNEL, 10000, 8);
+  ledcSetup(BLK_PWM_CHANNEL, 44100, 8);
   ledcAttachPin(TFT_BL, BLK_PWM_CHANNEL);
   ledcWrite(BLK_PWM_CHANNEL, 80);
 }
@@ -18,6 +18,12 @@ void M5Display::begin() {
 void M5Display::sleep() {
   startWrite();
   writecommand(ILI9341_SLPIN); // Software reset
+  endWrite();
+}
+
+void M5Display::wakeup() {
+  startWrite();
+  writecommand(ILI9341_SLPOUT);
   endWrite();
 }
 
@@ -57,12 +63,12 @@ void M5Display::progressBar(int x, int y, int w, int h, uint8_t val) {
 
 #include "utility/qrcode.h"
 void M5Display::qrcode(const char *string, uint16_t x, uint16_t y, uint8_t width, uint8_t version) {
-  
+
   // Create the QR code
   QRCode qrcode;
   uint8_t qrcodeData[qrcode_getBufferSize(version)];
   qrcode_initText(&qrcode, qrcodeData, version, 0, string);
-  
+
   // Top quiet zone
   uint8_t thickness = width / qrcode.size;
   uint16_t lineLength = qrcode.size * thickness;
@@ -107,7 +113,6 @@ uint32_t read32(fs::File &f) {
 
 // Bodmers BMP image rendering function
 void M5Display::drawBmpFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y) {
-    
   if ((x >= width()) || (y >= height())) return;
 
   // Open requested file on SD card
@@ -178,7 +183,7 @@ void M5Display::drawBmpFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y
 
 /*
  * JPEG
- * */
+ */
 
 #include "rom/tjpgd.h"
 
@@ -280,10 +285,10 @@ static uint32_t jpgWrite(JDEC *decoder, void *bitmap, JRECT *rect) {
   jpeg->tft->startWrite();
   // jpeg->tft->setAddrWindow(x - jpeg->offX + jpeg->x + oL, y - jpeg->offY +
   // jpeg->y, w - (oL + oR), h);
-  jpeg->tft->setAddrWindow(x - jpeg->offX + jpeg->x + oL,
-                           y - jpeg->offY + jpeg->y,
-                           x - jpeg->offX + jpeg->x + oL + w - (oL + oR) - 1,
-                           y - jpeg->offY + jpeg->y + h - 1);
+  jpeg->tft->setWindow(x - jpeg->offX + jpeg->x + oL,
+                       y - jpeg->offY + jpeg->y,
+                       x - jpeg->offX + jpeg->x + oL + w - (oL + oR) - 1,
+                       y - jpeg->offY + jpeg->y + h - 1);
 
   while (h--) {
     data += 3 * oL;
@@ -344,8 +349,8 @@ static bool jpgDecode(jpg_file_decoder_t *jpeg,
 }
 
 void M5Display::drawJpg(const uint8_t *jpg_data, size_t jpg_len, uint16_t x,
-                      uint16_t y, uint16_t maxWidth, uint16_t maxHeight,
-                      uint16_t offX, uint16_t offY, jpeg_div_t scale) {
+                        uint16_t y, uint16_t maxWidth, uint16_t maxHeight,
+                        uint16_t offX, uint16_t offY, jpeg_div_t scale) {
   if ((x + maxWidth) > width() || (y + maxHeight) > height()) {
     log_e("Bad dimensions given");
     return;
@@ -375,10 +380,9 @@ void M5Display::drawJpg(const uint8_t *jpg_data, size_t jpg_len, uint16_t x,
   jpgDecode(&jpeg, jpgRead);
 }
 
-
 void M5Display::drawJpgFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y,
-                          uint16_t maxWidth, uint16_t maxHeight, uint16_t offX,
-                          uint16_t offY, jpeg_div_t scale) {
+                            uint16_t maxWidth, uint16_t maxHeight, uint16_t offX,
+                            uint16_t offY, jpeg_div_t scale) {
   if ((x + maxWidth) > width() || (y + maxHeight) > height()) {
     log_e("Bad dimensions given");
     return;
