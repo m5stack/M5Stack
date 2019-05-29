@@ -1,6 +1,7 @@
-//the original code by Ted Meyers
-//posted here: https://groups.google.com/d/msg/diyrovers/lc7NUZYuJOg/ICPrYNJGBgAJ
+//  the original code by Ted Meyers
+//  posted here: https://groups.google.com/d/msg/diyrovers/lc7NUZYuJOg/ICPrYNJGBgAJ
 
+//  if your tof have some problem, please see https://docs.m5stack.com/#/en/unit/tof 
 #include <M5Stack.h>
 #include <Wire.h>
 
