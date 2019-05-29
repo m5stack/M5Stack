@@ -362,7 +362,14 @@ void TFT_eSPI::init(uint8_t tc)
   // Toggle RST low to reset
   spi_begin();
 
+  bool lcd_version = 0;
 #ifdef TFT_RST
+  pinMode(TFT_RST, INPUT_PULLDOWN);
+  delay(1);
+  if(digitalRead(TFT_RST)) {
+    lcd_version = 1;
+  } 
+  pinMode(TFT_RST, OUTPUT);
   if (TFT_RST >= 0) {
     digitalWrite(TFT_RST, HIGH);
     delay(5);
@@ -430,7 +437,9 @@ void TFT_eSPI::init(uint8_t tc)
 #endif
 
   spi_end();
-
+  if(lcd_version) {
+    writecommand(0x21);
+  }
   setRotation(rotation);
 
 #if defined (TFT_BL) && defined (TFT_BACKLIGHT_ON)
