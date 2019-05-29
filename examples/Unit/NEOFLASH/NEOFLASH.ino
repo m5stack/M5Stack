@@ -35,8 +35,8 @@ CRGB leds[NUM_LEDS];
 static TaskHandle_t FastLEDshowTaskHandle = 0;
 static TaskHandle_t userTaskHandle = 0;
 
-const char* ssid       = "M5";
-const char* password   = "12345678";
+const char* ssid       = "***";
+const char* password   = "********";
 
 const char* ntpServer = "pool.ntp.org";
 const long  gmtOffset_sec = 28800;
