@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // The example shows how to retrieve raw values from the sensor
 // experimenting with the most relevant configuration parameters.
 // Use the "Serial Plotter" app from arduino IDE 1.6.7+ to plot the output
-
+//First step installation MAX30100lib
 #include <Wire.h>
 #include "MAX30100.h"
 
