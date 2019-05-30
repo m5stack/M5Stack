@@ -1,3 +1,8 @@
+/*
+  Please add MCP_CAN_LIB to your library first........
+  MCP_CAN_LIB file in M5stack lib examples -> modules -> COMMU -> MCP_CAN_lib.rar
+*/
+
 #include <M5Stack.h>
 #include <mcp_can.h>
 #include "m5_logo.h"

@@ -1,5 +1,6 @@
 /*
-    Install FastLED library first.
+    Please install FastLED library first.
+    In arduino library manage search FastLED
  */
 #include <M5Stack.h>
 #include "FastLED.h"

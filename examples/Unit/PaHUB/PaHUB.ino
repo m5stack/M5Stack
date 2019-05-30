@@ -9,7 +9,6 @@
 #define X_OFFSET 160
 #define Y_OFFSET 30
 
-#define UART_BAUD 9600
 #define PaHub_I2C_ADDRESS	0x70
 
 ClosedCube::Wired::TCA9548A tca9548a;
