@@ -13,11 +13,13 @@ public:
 	void setOffset(long offset);
 	void setScale(float scale = 742.f);
 	float getGram();
+	void IncreaseGain(int Gain = 128);
 
 private:
 	const uint8_t _pin_dout;
 	const uint8_t _pin_slk;
 	long _offset;
+	int _Gain;
 	float _scale;
 };
 

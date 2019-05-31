@@ -38,6 +38,11 @@ long HX711::averageValue(byte times)
 	return sum / times;
 }
 
+void HX711::IncreaseGain(int Gain){
+	_Gain = Gain;
+}
+
+
 long HX711::getValue()
 {
 	byte data[3];
@@ -57,6 +62,15 @@ long HX711::getValue()
 
 	digitalWrite(_pin_slk, HIGH);
 	digitalWrite(_pin_slk, LOW);
+
+
+	if(_Gain == 64){
+		digitalWrite(_pin_slk, HIGH);
+		digitalWrite(_pin_slk, LOW);
+
+		digitalWrite(_pin_slk, HIGH);
+		digitalWrite(_pin_slk, LOW);
+	}
 
 	return ((long) data[2] << 16) | ((long) data[1] << 8) | (long) data[0];
 }
