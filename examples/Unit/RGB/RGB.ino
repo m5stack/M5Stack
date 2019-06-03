@@ -5,6 +5,7 @@
     Install the AdaFruit NeoPixel library first
  */
 #include <Adafruit_NeoPixel.h>
+#include <M5Stack.h>
 
 // Which pin on the Arduino is connected to the NeoPixels?
 // On a Trinket or Gemma we suggest changing this to 1
@@ -20,7 +21,11 @@ Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ80
 int delayval = 150; // delay for half a second
 
 void setup() {
+  M5.begin();
   pixels.begin(); // This initializes the NeoPixel library.
+  M5.Lcd.setTextFont(4);
+  M5.Lcd.setCursor(70, 100, 4);
+  M5.Lcd.println(("RGB Example"));
 }
 
 void loop() {

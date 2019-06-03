@@ -9,6 +9,9 @@ void setup() {
 
   Serial.println("hello");
   termInit();
+  M5.Lcd.setTextFont(4);
+  M5.Lcd.setCursor(50, 100, 4);
+  M5.Lcd.println(("GPS Raw Example"));
 } 
 
 void loop() {

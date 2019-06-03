@@ -5,6 +5,8 @@ void setup() {
   M5.Lcd.clear(BLACK);
   M5.Lcd.setTextFont(4);
   M5.Lcd.setTextColor(YELLOW, BLACK);
+  M5.Lcd.setCursor(50, 0, 4);
+  M5.Lcd.println(("Relay Example"));
   //disable the speak noise
   dacWrite(25, 0);
   pinMode(26, OUTPUT);
