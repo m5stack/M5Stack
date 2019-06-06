@@ -39,6 +39,7 @@ void setup()
     M5.begin();
     Wire.begin();
     Serial.begin(115200);
+    dacWrite(25, 0);
     M5.Lcd.setTextFont(2);
     M5.Lcd.println("FACES ENCODER I2C Read Example");
     Serial.println("FACES ENCODER I2C Read Example");

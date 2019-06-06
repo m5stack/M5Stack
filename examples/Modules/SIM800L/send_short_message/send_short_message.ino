@@ -1,3 +1,4 @@
+//Reset resistance is not soldered. If necessary, weld it yourself.
 #include <M5Stack.h>
 #define RX_PIN      16
 #define TX_PIN      17

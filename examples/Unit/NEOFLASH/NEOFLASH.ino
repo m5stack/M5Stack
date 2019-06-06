@@ -40,7 +40,7 @@ const char* password   = "********";
 
 const char* ntpServer = "pool.ntp.org";
 const long  gmtOffset_sec = 28800;
-const int   daylightOffset_sec = 7200;
+const int   daylightOffset_sec = 0;
 
 // This is GandiStandardSSLCA2.pem, the root Certificate Authority that signed
 // the server certifcate for the demo server https://jigsaw.w3.org in this
