@@ -2,12 +2,12 @@
 #include <M5Stack.h>
 #include "ClosedCube_TCA9548A.h"
 
-#define FRONT 4
+#define FRONT 2
 
-#define X_LOCAL 40
-#define Y_LOCAL 10
+#define X_LOCAL 100
+#define Y_LOCAL 35
 #define X_OFFSET 160
-#define Y_OFFSET 30
+#define Y_OFFSET 34
 
 #define PaHub_I2C_ADDRESS	0x70
 
@@ -19,7 +19,12 @@ void setup()
     Wire.begin();
 	M5.Lcd.fillScreen(TFT_BLACK); 
     tca9548a.address(PaHub_I2C_ADDRESS);
+	M5.Lcd.setTextFont(4);
+	M5.Lcd.setCursor(70, 0, 4);
+	M5.Lcd.setTextColor(YELLOW,TFT_BLACK);
+	M5.Lcd.println(("PaHUB Example"));
 	M5.Lcd.setTextColor(TFT_WHITE,TFT_BLACK);
+	
 }
 
 void PaHUB(void){
@@ -42,7 +47,7 @@ void PaHUB(void){
 				} 
 			}    
 		}
-		delay(100);
+		delay(200);
     	 
     }
 }

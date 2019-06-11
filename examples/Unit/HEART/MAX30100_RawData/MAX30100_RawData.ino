@@ -19,10 +19,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // The example shows how to retrieve raw values from the sensor
 // experimenting with the most relevant configuration parameters.
 // Use the "Serial Plotter" app from arduino IDE 1.6.7+ to plot the output
-
+//First step installation MAX30100lib
 #include <Wire.h>
 #include "MAX30100.h"
-
+#include <M5Stack.h>
 // Sampling is tightly related to the dynamic range of the ADC.
 // refer to the datasheet for further info
 #define SAMPLING_RATE                       MAX30100_SAMPRATE_100HZ
@@ -45,18 +45,22 @@ MAX30100 sensor;
 void setup()
 {
     Serial.begin(115200);
-
+    M5.begin();
     Serial.print("Initializing MAX30100..");
 
     // Initialize the sensor
     // Failures are generally due to an improper I2C wiring, missing power supply
     // or wrong target chip
-    if (!sensor.begin()) {
-        Serial.println("FAILED");
-        for(;;);
-    } else {
-        Serial.println("SUCCESS");
-    }
+    while (!sensor.begin()) {
+        Serial.println("Sensor not found");
+        M5.Lcd.setTextFont(4);
+        M5.Lcd.setCursor(50, 100, 4);
+        M5.Lcd.println("Sensor not found");
+        delay(1000);
+    } 
+
+    Serial.println("SUCCESS");
+    
 
     // Set up the wanted parameters
     sensor.setMode(MAX30100_MODE_SPO2_HR);
@@ -73,6 +77,12 @@ void loop()
     sensor.update();
 
     while (sensor.getRawValues(&ir, &red)) {
+        M5.Lcd.setTextFont(4);
+        M5.Lcd.setCursor(100, 100, 4);
+        M5.Lcd.printf("IR:%d               ",ir);
+        M5.Lcd.setCursor(100, 130, 4);
+        M5.Lcd.printf("RED:%d              ",red);
+
         Serial.print(ir);
         Serial.print('\t');
         Serial.println(red);

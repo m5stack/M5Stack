@@ -11,9 +11,10 @@ void setup() {
   
   M5.begin();
   GPSRaw.begin(9600);
-
   Serial.println("hello");
   termInit();
+  M5.Lcd.setTextFont(4);
+  M5.Lcd.println(("GPS Raw Example"));
 }
 
 void loop() {

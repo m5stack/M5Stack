@@ -2,13 +2,14 @@
 // select the input pin for the potentiometer
 int sensorPin = 36;
 // last variable to store the value coming from the sensor
-int last_sensorValue = 0;
+int last_sensorValue = 100;
 // current variable to store the value coming from the sensor
 int cur_sensorValue = 0;
 
 void setup() {
   M5.begin();
   pinMode(sensorPin, INPUT);
+  dacWrite(25, 0);
   M5.Lcd.setTextSize(2);
   M5.Lcd.setCursor(0, 0);
   M5.Lcd.print("the value of ANGLE: ");

@@ -12,7 +12,7 @@ void setup() {
     M5.Lcd.clear(BLACK);
     M5.Lcd.setTextColor(YELLOW);
     M5.Lcd.setTextSize(2);
-    M5.Lcd.setCursor(40, 0);
+    M5.Lcd.setCursor(80, 0);
     M5.Lcd.println("TRACE example");
     M5.Lcd.setTextColor(WHITE);
 }

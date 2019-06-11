@@ -16,7 +16,7 @@ void key_scan(void *arg)
     while (1)
     {
         onReceive();
-        // delay(10);
+        delay(10);
         // lora.loraDebug();
     }
     vTaskDelete(NULL);
@@ -34,7 +34,7 @@ void setup(void)
     M5.Lcd.setTextColor(BLUE);
     int core = xPortGetCoreID();
     // M5.Lcd.println(core);
-    xTaskCreatePinnedToCore(key_scan, "key_scan", 2048, NULL, 0, NULL, 0);
+    xTaskCreatePinnedToCore(key_scan, "key_scan", 3096, NULL, 5, NULL, 0);
 }
 
 void loop(void)

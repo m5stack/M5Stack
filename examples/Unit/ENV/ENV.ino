@@ -19,10 +19,11 @@ void setup() {
 
     Serial.println(F("ENV Unit(DHT12 and BMP280) test..."));
 
-    if (!bme.begin(0x76)){  
+    while (!bme.begin(0x76)){  
       Serial.println("Could not find a valid BMP280 sensor, check wiring!");
-      while (1);
+      M5.Lcd.println("Could not find a valid BMP280 sensor, check wiring!");
     }
+    M5.Lcd.clear(BLACK);
     M5.Lcd.println("ENV Unit test...");
 }
 

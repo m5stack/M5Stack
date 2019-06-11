@@ -47,9 +47,9 @@ void loop(){
     weight =scale.getGram();
     Serial.println(weight);
     M5.Lcd.setCursor(X_LOCAL+X_F,Y_LOCAL+Y_F*2,FRONT);
-    M5.Lcd.printf("                             ");
-    M5.Lcd.setCursor(X_LOCAL+X_F,Y_LOCAL+Y_F*2,FRONT);
-    M5.Lcd.printf("weight:%0.2f g     ",weight);
+    // M5.Lcd.printf("                             ");
+    // M5.Lcd.setCursor(X_LOCAL+X_F,Y_LOCAL+Y_F*2,FRONT);
+    M5.Lcd.printf("weight:%0.2f g          ",weight);
 }
 
 

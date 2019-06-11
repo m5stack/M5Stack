@@ -8,6 +8,8 @@ FingerPrint::FingerPrint(void){
 
 FingerPrint FP;
 
+#define F_Time 7000
+
 uint8_t FingerPrint::fpm_sendAndReceive(uint16_t timeout)
 {
     uint8_t  i, j;
@@ -174,19 +176,19 @@ uint8_t FingerPrint::fpm_addUser(uint8_t userNum, uint8_t userPermission)
     FP.TxBuf[P2] = userNum;
     FP.TxBuf[P3] = userPermission;
     
-    res = fpm_sendAndReceive(30000);
+    res = fpm_sendAndReceive(F_Time);
     
     if(res == ACK_SUCCESS) {
         if(FP.RxBuf[Q3] == ACK_SUCCESS) {
         FP.TxBuf[CMD] = CMD_ADD_2;
         
-        res = fpm_sendAndReceive(30000);
+        res = fpm_sendAndReceive(F_Time);
         
         if(res == ACK_SUCCESS) {
             if(FP.RxBuf[Q3] == ACK_SUCCESS) {
             FP.TxBuf[CMD] = CMD_ADD_3;
             
-            res = fpm_sendAndReceive(30000);
+            res = fpm_sendAndReceive(F_Time);
             
             if(res == ACK_SUCCESS) {
                 return FP.RxBuf[Q3];
@@ -208,7 +210,7 @@ uint8_t FingerPrint::fpm_compareFinger(void)
     FP.TxBuf[P2] = 0;
     FP.TxBuf[P3] = 0;
     
-    res = fpm_sendAndReceive(30000);
+    res = fpm_sendAndReceive(8000);
     
     if(res == ACK_SUCCESS) 
     {

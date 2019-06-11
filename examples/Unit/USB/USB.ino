@@ -1,5 +1,7 @@
 /*
-  note: need add library USB Host Shield Library 2.0 from library manage
+   This sample code demonstrates the normal use of a USB_Host_SHield_Library_2.0 object.
+   USB_Host_SHield_Library_2.0 file in M5stack lib examples -> Unit -> USB -> USB_Host_SHield_Library_2.0
+   Please uncompress it to xx\xx\Arduino\libraries\.
 */
 
 #include <M5Stack.h>

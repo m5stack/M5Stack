@@ -22,9 +22,23 @@ byte destination = 0xFF;      // destination to send to
 long lastSendTime = 0;        // last send time
 int interval = 2000;          // interval between sends
 
+void header(const char *string, uint16_t color){
+    M5.Lcd.fillScreen(color);
+    M5.Lcd.setTextSize(1);
+    M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLUE);
+    M5.Lcd.fillRect(0, 0, 320, 30, TFT_BLUE);
+    M5.Lcd.setTextDatum(TC_DATUM);
+    M5.Lcd.drawString(string, 160, 3, 4);
+}
+
 void setup() {
   M5.begin();                   // initialize serial
   while (!Serial);
+
+  header("LoRa Duplex with callback", TFT_BLACK);
+  M5.Lcd.setTextFont(2);
+  M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
+  M5.Lcd.drawString("Please use serial port to view data.",0, 35, 2);
 
   Serial.println("LoRa Duplex with callback");
 

@@ -43,6 +43,7 @@ LoRaWanClass::LoRaWanClass(void)
 void LoRaWanClass::init(void)
 {
     Serial2.begin(9600, SERIAL_8N1, 16, 17);
+    // Serial2.begin(9600, SERIAL_8N1, 2, 5);
     // SerialLoRa.begin(9600);
 }
 

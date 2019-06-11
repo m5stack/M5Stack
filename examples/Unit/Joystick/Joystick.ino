@@ -5,6 +5,10 @@
 void setup() {
   M5.begin();
   M5.Lcd.clear();
+
+  M5.Lcd.setTextFont(4);
+  M5.Lcd.setCursor(70, 0, 4);
+  M5.Lcd.println(("Joystick Test"));
   //disable the speak noise
   dacWrite(25, 0);
 
@@ -24,6 +28,13 @@ void loop() {
     button_data = Wire.read();
     sprintf(data, "x:%d y:%d button:%d\n", x_data, y_data, button_data);
     Serial.print(data);
+
+    M5.Lcd.setCursor(100, 50, 4);
+    M5.Lcd.printf("X:%d      ",x_data);
+    M5.Lcd.setCursor(100, 80, 4);
+    M5.Lcd.printf("Y:%d      ",y_data);
+    M5.Lcd.setCursor(100, 110, 4);
+    M5.Lcd.printf("B:%d      ",button_data);
   }
   delay(200);
 }

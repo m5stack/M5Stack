@@ -6,7 +6,7 @@
 MFRC522 mfrc522(0x28);   // Create MFRC522 instance.
 
 void setup() {
-  M5.Lcd.begin();
+  M5.begin();
   M5.Lcd.fillScreen( BLACK );
   M5.Lcd.setCursor(0, 0);
   M5.Lcd.setTextColor(YELLOW);  
@@ -17,7 +17,7 @@ void setup() {
   M5.Lcd.println("M5StackFire MFRC522");
   Serial.begin(115200);           // Initialize serial communications with the PC
   Wire.begin();                   // Initialize I2C
-  M5.begin();
+  
   mfrc522.PCD_Init();             // Init MFRC522
   ShowReaderDetails();            // Show details of PCD - MFRC522 Card Reader details
   Serial.println(F("Scan PICC to see UID, type, and data blocks..."));
