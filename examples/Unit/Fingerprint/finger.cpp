@@ -8,7 +8,7 @@ FingerPrint::FingerPrint(void){
 
 FingerPrint FP;
 
-#define F_Time 7000
+#define F_Time 10000
 
 uint8_t FingerPrint::fpm_sendAndReceive(uint16_t timeout)
 {
@@ -18,16 +18,16 @@ uint8_t FingerPrint::fpm_sendAndReceive(uint16_t timeout)
     FP.RxCnt = 0;
 	FP.TxBuf[5] = 0;
   
-    Serial2.write(CMD_HEAD);		
+    Serial2.write(CMD_HEAD);	   
     for (i = 1; i < 6; i++)       
     {
         Serial2.write(FP.TxBuf[i]);		 
         checkSum ^= FP.TxBuf[i];
     }
     Serial2.write(checkSum);    
-    Serial2.write(CMD_TAIL);    
-    
-    while (FP.RxCnt < 8 && timeout > 0)
+    Serial2.write(CMD_TAIL);        
+
+    while ((!Serial2.available()) && timeout > 0)         
     {
         delay(1);
         timeout--;		   
@@ -113,15 +113,15 @@ uint16_t FingerPrint::fpm_getUserNum(void)
 {
     uint8_t res;
     
-    FP.TxBuf[CMD] = CMD_USER_CNT;
+    FP.TxBuf[CMD] = CMD_USER_CNT;    
     FP.TxBuf[P1] = 0;
     FP.TxBuf[P2] = 0;
     FP.TxBuf[P3] = 0;
     
     res = fpm_sendAndReceive(200);
     
-    if(res == ACK_SUCCESS && RxBuf[Q3] == ACK_SUCCESS) {
-        return RxBuf[Q2];
+    if(res == ACK_SUCCESS && FP.RxBuf[Q3] == ACK_SUCCESS) {                   
+        return FP.RxBuf[Q2];
     }
     else {
         return 0XFF;

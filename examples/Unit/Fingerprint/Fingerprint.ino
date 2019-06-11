@@ -17,7 +17,7 @@ void CleanScreen()
 
 void setup() {
     M5.begin();
-    Serial.begin(19200);
+    Serial.begin(115200);
     Serial2.begin(19200, SERIAL_8N1, 16, 17);
     M5.Lcd.clear(BLACK);
     M5.Lcd.setTextColor(YELLOW);
@@ -25,11 +25,12 @@ void setup() {
     M5.Lcd.setTextSize(3);
     M5.Lcd.setCursor(20, 0); 
     M5.Lcd.println("Finger example");
+    Serial.printf("Finger example\n");
     M5.Lcd.setTextColor(WHITE);
     M5.Lcd.fillRect(0,50,400,300,BLACK);
     M5.Lcd.setCursor(0, 50); 
     M5.Lcd.setTextSize(2);
-    userNum = FP_M.fpm_getUserNum();
+    userNum = FP_M.fpm_getUserNum();  
     M5.Lcd.print("userNum:");
     M5.Lcd.println(userNum);
 }
