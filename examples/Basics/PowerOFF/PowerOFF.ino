@@ -18,7 +18,7 @@ void setup(){
 void loop() {
 
   if(M5.BtnA.wasPressed()) {
-    M5.Power.deepSleep();
+    M5.Power.powerOFF();
   }
 
   M5.update();
