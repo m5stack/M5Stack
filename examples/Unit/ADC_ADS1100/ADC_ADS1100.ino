@@ -74,6 +74,9 @@ void loop(void)
         Serial.println(" ");
         Serial.println("        ************        ");
         Serial.println(" ");
+        M5.Lcd.setTextFont(4);
+        M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
+        M5.Lcd.drawString("No Found ADC sensor.",20, 100, 4);
     }
 
     delay(1000);

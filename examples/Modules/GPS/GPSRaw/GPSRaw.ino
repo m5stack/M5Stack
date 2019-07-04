@@ -1,3 +1,8 @@
+/*
+  please add TinyGPSPlus to your library first........
+  TinyGPSPlus file in M5stack lib examples -> modules -> GPS -> TinyGPSPlus-1.0.2.zip
+*/
+
 #include <M5Stack.h>
 
 HardwareSerial GPSRaw(2);
@@ -6,9 +11,10 @@ void setup() {
   
   M5.begin();
   GPSRaw.begin(9600);
-
   Serial.println("hello");
   termInit();
+  M5.Lcd.setTextFont(4);
+  M5.Lcd.println(("GPS Raw Example"));
 }
 
 void loop() {

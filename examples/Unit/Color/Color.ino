@@ -33,12 +33,12 @@ void setup() {
   M5.begin(true, false, false);
   Serial.begin(115200);
   Serial.println("Color View Test!");
-
-  if (tcs.begin()) {
-    Serial.println("Found sensor");
-  } else {
-    Serial.println("No TCS34725 found ... check your connections");
-    while (1); // halt!
+  while(!tcs.begin()){
+      Serial.println("No TCS34725 found ... check your connections");
+      M5.Lcd.setTextFont(4);
+      M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
+      M5.Lcd.drawString("No Found sensor.",50, 100, 4);
+      delay(1000);
   }
   tcs.setIntegrationTime(TCS34725_INTEGRATIONTIME_154MS);
   tcs.setGain(TCS34725_GAIN_4X);

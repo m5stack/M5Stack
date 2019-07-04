@@ -1,6 +1,7 @@
-//the original code by Ted Meyers
-//posted here: https://groups.google.com/d/msg/diyrovers/lc7NUZYuJOg/ICPrYNJGBgAJ
+//  the original code by Ted Meyers
+//  posted here: https://groups.google.com/d/msg/diyrovers/lc7NUZYuJOg/ICPrYNJGBgAJ
 
+//  if your tof have some problem, please see https://docs.m5stack.com/#/en/unit/tof 
 #include <M5Stack.h>
 #include <Wire.h>
 
@@ -25,9 +26,10 @@ void setup() {
   //---osmar
   M5.begin();
   M5.Lcd.fillScreen(BLACK);
-  M5.Lcd.setCursor(10, 10);
+  M5.Lcd.setTextColor(YELLOW);
+  M5.Lcd.setCursor(50, 0, 4);
+  M5.Lcd.println(("VLX53LOX Example"));
   M5.Lcd.setTextColor(WHITE);
-  M5.Lcd.setTextSize(10);
   //---osmar
 }
 
@@ -36,7 +38,7 @@ void loop() {
   test();
   Serial.println("----- END TEST ----");
   Serial.println("");
-  delay(1000);
+  delay(500);
 }
 
 void test() {
@@ -77,9 +79,14 @@ void test() {
   Serial.print("distance ");       Serial.println(dist);
   Serial.print("status: ");        Serial.println(DeviceRangeStatusInternal);
   
-  M5.Lcd.setCursor(0, 0);
-  M5.Lcd.fillScreen(BLACK);
-  M5.Lcd.print( dist);
+  // M5.Lcd.fillScreen(BLACK);
+  // M5.Lcd.setTextColor(YELLOW);
+  // M5.Lcd.setCursor(50, 0, 4);
+  // M5.Lcd.println(("GPS Raw Example"));
+  M5.Lcd.fillRect(0, 80, 319, 239, BLACK);
+  M5.Lcd.setTextColor(WHITE);
+  M5.Lcd.setCursor(100, 100, 4);
+  M5.Lcd.printf("D:%d ",dist);
   
 }
 

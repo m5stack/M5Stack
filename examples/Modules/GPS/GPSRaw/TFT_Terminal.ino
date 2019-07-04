@@ -69,11 +69,10 @@ void termInit() {
 
   // Change colour for scrolling zone text
   M5.Lcd.setTextColor(GREEN, TFT_BLACK);
-
+  
   // Setup scroll area
   // setupScrollArea(TOP_FIXED_AREA, BOT_FIXED_AREA);
   setupScrollArea(0, 0);
-
   // Zero the array
   // for (byte i = 0; i<18; i++) blank[i]=0;
 }

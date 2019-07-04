@@ -1,10 +1,10 @@
-/*
-  Web Server
-  Need to install Ethernet2 arduino library
-  If new arduino esp32 or make error, need go to c:\Program Files (x86)\Arduino\hardware\espressif\arduino-esp32\cores\esp32\Server.h 
-  Change virtual void begin(uint16_t port = 0) = 0; to virtual void begin() = 0;
-  Other example can see https://github.com/adafruit/Ethernet2
- */
+/**
+* Web Server
+* Need to install Ethernet2 arduino library
+* Please don`t install it by arduino library manange
+* If install, delete it
+* Ethernet2 file in M5stack lib examples -> modules -> W5500 -> Ethernet2.zip
+*/
 #include <M5Stack.h>
 #include <SPI.h>
 #include <Ethernet2.h>
