@@ -1,6 +1,7 @@
 set(COMPONENT_SRCDIRS "src" "src/utility" "src/Fonts")
-set(COMPONENT_ADD_INCLUDEDIRS "src")
+set(COMPONENT_ADD_INCLUDEDIRS "src" "$ENV{IDF_PATH}/components/bt/bluedroid/api/include/api")
 list(APPEND COMPONENT_REQUIRES "arduino")
+
 
 register_component()
 
