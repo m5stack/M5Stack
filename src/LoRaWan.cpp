@@ -137,7 +137,7 @@ void LoRaWanClass::setKey(char *NwkSKey, char *AppSKey, char *AppKey)
 bool LoRaWanClass::setDataRate(_data_rate_t dataRate, _physical_type_t physicalType)
 {
     char cmd[32];
-    const char *str;
+    // const char *str;
 
     if ((physicalType <= UNINIT) && (physicalType >= UNDEF)) {
       myType = UNINIT;
@@ -706,7 +706,7 @@ bool LoRaWanClass::setDeviceMode(_device_mode_t mode)
 //  setDeviceMode should have been called before this.
 bool LoRaWanClass::setOTAAJoin(_otaa_join_cmd_t command, unsigned char timeout)
 {
-    char *ptr;
+    // char *ptr;
     short count;
     bool joined = false;
 
@@ -920,7 +920,7 @@ void LoRaWanClass::loraDebug(void)
 //
 //  timeout is the total amount of time allowed for collecting data
 //  Would it make more sense if it was the time w/o a character?
-void LoRaWanClass::loraDebugPrint(unsigned char timeout)
+void LoRaWanClass::loraDebugPrint(unsigned int timeout)
 {
     unsigned long timerStart, timerEnd;
     char c;
@@ -944,7 +944,7 @@ void LoRaWanClass::loraDebugPrint(unsigned char timeout)
 }
 #endif
 
-void LoRaWanClass::debugPrint(char *str) {
+void LoRaWanClass::debugPrint(const char *str) {
   SerialUSB.print(str);
 }
 

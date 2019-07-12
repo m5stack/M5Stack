@@ -469,9 +469,9 @@ class LoRaWanClass
          */
         void loraDebug(void);
 #if _DEBUG_SERIAL_
-        void loraDebugPrint(unsigned char timeout);
+        void loraDebugPrint(unsigned int timeout);
 #endif
-        void debugPrint(char *str);
+        void debugPrint(const char *str);
         /**
          *  \brief Read battery voltage
          *
