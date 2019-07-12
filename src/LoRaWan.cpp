@@ -167,6 +167,7 @@ bool LoRaWanClass::setDataRate(_data_rate_t dataRate, _physical_type_t physicalT
     loraDebugPrint(DEFAULT_DEBUGTIME);
 #endif
     delay(DEFAULT_TIMEWAIT);
+    return true;
 }
 
 void LoRaWanClass::setPower(short power)
@@ -430,8 +431,8 @@ short LoRaWanClass::receivePacket(char *buffer, short length, short *rssi)
         ptr += 5;
         for(short i = 0; ; i ++)
         {
-            char temp[2] = {0};
-            unsigned char tmp, result = 0;
+            char temp[2] = {0, 0};
+            unsigned char tmp = '?', result = 0;
 
             temp[0] = *(ptr + i * 3);
             temp[1] = *(ptr + i * 3 + 1);
@@ -473,7 +474,7 @@ short LoRaWanClass::receivePacket(char *buffer, short length, short *rssi)
         for(short i = 0; ; i ++)
         {
             char temp[2] = {0};
-            unsigned char tmp, result = 0;
+            unsigned char tmp = '?', result = 0;
 
             temp[0] = *(ptr + i * 3);
             temp[1] = *(ptr + i * 3 + 1);
@@ -858,7 +859,7 @@ short LoRaWanClass::receivePacketP2PMode(unsigned char *buffer, short length, sh
         for(short i = 0; i < number; i ++)
         {
             char temp[2] = {0};
-            unsigned char tmp, result = 0;
+            unsigned char tmp='?', result = 0;
 
             temp[0] = *(ptr + i * 2);
             temp[1] = *(ptr + i * 2 + 1);
@@ -985,7 +986,7 @@ short LoRaWanClass::readLine(char *buffer, short length, unsigned char timeout)
 {
     short i = 0;
     unsigned long timerStart, timerEnd;
-    char c;
+    char c='\n';
 
     timerStart = millis();
 
