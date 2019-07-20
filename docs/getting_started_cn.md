@@ -1,6 +1,6 @@
 ﻿# M5Stack 库
 
-English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_started_ja.md)
+[English](../README.md) | 中文 | [日本語](getting_started_ja.md)
 
 ## 1. 上手指南
 
