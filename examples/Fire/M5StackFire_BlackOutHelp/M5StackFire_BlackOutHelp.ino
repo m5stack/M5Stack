@@ -9,6 +9,9 @@
   
   4.October 2018, ChrisMicro, Swizerland, close to Zürich
 
+  note: need add library Adafruit_NeoPixel from library manage
+
+
 ************************************************************************/
 #include <M5Stack.h>
 
