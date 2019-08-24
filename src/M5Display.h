@@ -82,6 +82,16 @@
                     uint16_t offX = 0, uint16_t offY = 0,
                     jpeg_div_t scale = JPEG_DIV_NONE);
 
+      void drawPngFile(fs::FS &fs, const char *path, uint16_t x = 0, uint16_t y = 0,
+                    uint16_t maxWidth = 0, uint16_t maxHeight = 0,
+                    uint16_t offX = 0, uint16_t offY = 0,
+                    double scale = 1.0, uint8_t alphaThreshold = 127);
+
+      void drawPngUrl(const char *url, uint16_t x = 0, uint16_t y = 0,
+                    uint16_t maxWidth = 0, uint16_t maxHeight = 0,
+                    uint16_t offX = 0, uint16_t offY = 0,
+                    double scale = 1.0, uint8_t alphaThreshold = 127);
+
     private:
   };
 #endif
