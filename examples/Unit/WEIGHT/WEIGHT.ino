@@ -27,6 +27,8 @@ void header(const char *string, uint16_t color){
 
 void setup() {
   M5.begin();
+  M5.Power.begin();
+
   header("WEIGHT EXAMPLE", TFT_BLACK);
   M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
   M5.Lcd.setCursor(X_LOCAL-10, Y_LOCAL,FRONT);

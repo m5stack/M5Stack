@@ -22,6 +22,8 @@ int delayval = 150; // delay for half a second
 
 void setup() {
   M5.begin();
+  M5.Power.begin();
+
   pixels.begin(); // This initializes the NeoPixel library.
   M5.Lcd.setTextFont(4);
   M5.Lcd.setCursor(70, 100, 4);

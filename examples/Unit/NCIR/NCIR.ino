@@ -2,9 +2,8 @@
 #include <Wire.h>
 
 void setup() {
-  Wire.begin();
-  Serial.begin(115200);
   M5.begin();
+  M5.Power.begin();
   M5.Lcd.setTextColor(WHITE);
   M5.Lcd.setTextSize(3);
   M5.Lcd.clear(BLACK);

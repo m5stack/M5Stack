@@ -21,6 +21,7 @@ void header(const char *string, uint16_t color){
 
 void setup() {
   M5.begin();
+  M5.Power.begin();
 
   header("RS485 B", TFT_BLACK);
   M5.Lcd.setTextFont(2);

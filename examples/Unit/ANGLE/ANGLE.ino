@@ -8,6 +8,7 @@ int cur_sensorValue = 0;
 
 void setup() {
   M5.begin();
+  M5.Power.begin();
   pinMode(sensorPin, INPUT);
   dacWrite(25, 0);
   M5.Lcd.setTextSize(2);

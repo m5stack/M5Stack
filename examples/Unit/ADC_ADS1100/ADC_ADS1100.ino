@@ -11,8 +11,8 @@ ADS1100 ads;
 void setup(void)
 {
     M5.begin(true, false, false);
+    M5.Power.begin();
     Serial.begin(115200);
-
     M5.Lcd.fillScreen(BLACK);
     M5.Lcd.setTextColor(ORANGE);
 

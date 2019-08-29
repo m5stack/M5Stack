@@ -7,6 +7,8 @@ int SensorArray[4] = {0};
 
 void setup() {
     m5.begin();
+    M5.Power.begin();
+
     Serial.begin(115200);
     Wire.begin();
     M5.Lcd.clear(BLACK);

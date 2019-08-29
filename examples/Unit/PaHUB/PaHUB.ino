@@ -16,6 +16,8 @@ ClosedCube::Wired::TCA9548A tca9548a;
 void setup()
 {
 	M5.begin();
+	M5.Power.begin();
+
     Wire.begin();
 	M5.Lcd.fillScreen(TFT_BLACK); 
     tca9548a.address(PaHub_I2C_ADDRESS);

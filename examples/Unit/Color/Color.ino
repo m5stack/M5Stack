@@ -31,6 +31,7 @@ void setup() {
   delay(100);
 
   M5.begin(true, false, false);
+  M5.Power.begin();
   Serial.begin(115200);
   Serial.println("Color View Test!");
   while(!tcs.begin()){

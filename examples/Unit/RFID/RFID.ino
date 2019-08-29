@@ -7,6 +7,7 @@ MFRC522 mfrc522(0x28);   // Create MFRC522 instance.
 
 void setup() {
   M5.begin();
+  M5.Power.begin();
   M5.Lcd.fillScreen( BLACK );
   M5.Lcd.setCursor(0, 0);
   M5.Lcd.setTextColor(YELLOW);  

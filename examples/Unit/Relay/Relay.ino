@@ -2,6 +2,7 @@
 
 void setup() {
   M5.begin();
+  M5.Power.begin();
   M5.Lcd.clear(BLACK);
   M5.Lcd.setTextFont(4);
   M5.Lcd.setTextColor(YELLOW, BLACK);

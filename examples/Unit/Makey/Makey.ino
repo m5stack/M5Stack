@@ -15,6 +15,7 @@ void setup() {
   // Power ON Stabilizing...
   delay(500);
   M5.begin();
+  M5.Power.begin();
   pinMode(39, INPUT);
   pinMode(38, INPUT);
   // Init I2C

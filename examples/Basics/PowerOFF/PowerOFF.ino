@@ -5,6 +5,13 @@ void setup(){
 
   // initialize the M5Stack object
   M5.begin();
+  
+  /*
+    Power chip connected to gpio21, gpio22, I2C device
+    Set battery charging voltage and current
+    If used battery, please call this function in your project
+  */
+  M5.Power.begin();
 
   // Lcd display
   M5.Lcd.println("This is software power off demo");

@@ -44,6 +44,9 @@
       bool setPowerBtnEn(bool en);
 
       // -- control for battery
+      bool setVinMaxCurrent(uint8_t cur);
+      bool setChargeVolt(uint8_t volt);
+
       bool setCharge(bool en);
       bool isChargeFull();
       bool isCharging();

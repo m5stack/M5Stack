@@ -7,6 +7,7 @@ uint8_t res;
 void setup()
 {
   M5.begin();
+  M5.Power.begin();
   Wire.begin();
   M5.Lcd.clear(BLACK);
   M5.Lcd.setTextSize(2);

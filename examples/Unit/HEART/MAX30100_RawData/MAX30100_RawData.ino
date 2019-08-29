@@ -45,6 +45,7 @@ MAX30100 sensor;
 void setup()
 {
     Serial.begin(115200);
+    M5.Power.begin();
     M5.begin();
     Serial.print("Initializing MAX30100..");
 

@@ -11,6 +11,7 @@ int cur_value_blue = 0;
 void setup() {
   // init lcd
   M5.begin();
+  M5.Power.begin();
   pinMode(26, INPUT);
   pinMode(36, INPUT);
   M5.Lcd.clear(BLACK);

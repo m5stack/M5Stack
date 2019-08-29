@@ -10,6 +10,7 @@ uint8_t HUB_ADDR[6]={HUB1_ADDR,HUB2_ADDR,HUB3_ADDR,HUB4_ADDR,HUB5_ADDR,HUB6_ADDR
 
 void setup() {
     M5.begin(true, false, true);
+  	M5.Power.begin();
     porthub.begin();
     M5.Lcd.clear(BLACK);
     M5.Lcd.setTextColor(WHITE);

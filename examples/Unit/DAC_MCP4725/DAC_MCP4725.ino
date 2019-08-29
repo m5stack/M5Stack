@@ -11,6 +11,7 @@ Adafruit_MCP4725 dac;
 
 void setup(void) {
     M5.begin(true, false, false);
+    M5.Power.begin();
     Serial.begin(115200);
     Serial.println("Hello!");
     M5.Lcd.setTextFont(4);

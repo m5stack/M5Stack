@@ -9,6 +9,14 @@
 void setup() {
   // init lcd, serial, but don't init sd card
   M5.begin(true, false, true);
+  
+  /*
+    Power chip connected to gpio21, gpio22, I2C device
+    Set battery charging voltage and current
+    If used battery, please call this function in your project
+  */
+  M5.Power.begin();
+
   M5.Lcd.clear(BLACK);
   M5.Lcd.setTextColor(YELLOW);
   M5.Lcd.setTextSize(2);
@@ -22,6 +30,7 @@ void setup() {
 
 // Add the main program code into the continuous loop() function
 void loop() {
+  // update button state
   M5.update();
  
   // if you want to use Releasefor("was released for"), use .wasReleasefor(int time) below

@@ -18,7 +18,7 @@ char ch;
 void setup() {
 
   M5.begin();
-
+  M5.Power.begin();
   Serial.begin(115200);
 
   // Serial2.begin(unsigned long baud, uint32_t config, int8_t rxPin, int8_t txPin, bool invert)

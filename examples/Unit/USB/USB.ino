@@ -63,6 +63,8 @@ void Mouse_Pointer(int PotDataX,int PotDataY)
 void setup()
 {
   M5.begin();
+  M5.Power.begin();
+
   Serial.println("M5USB_Demo Start...");
 
   if (Usb.Init() == -1)

@@ -6,6 +6,7 @@ int cur_value = 0;
 void setup() {
   // init lcd
   M5.begin();
+  M5.Power.begin();
   Serial.begin(115200);
   pinMode(36, INPUT);
   M5.Lcd.clear(BLACK);

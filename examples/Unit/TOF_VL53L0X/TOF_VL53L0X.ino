@@ -25,6 +25,7 @@ void setup() {
 
   //---osmar
   M5.begin();
+  M5.Power.begin();
   M5.Lcd.fillScreen(BLACK);
   M5.Lcd.setTextColor(YELLOW);
   M5.Lcd.setCursor(50, 0, 4);

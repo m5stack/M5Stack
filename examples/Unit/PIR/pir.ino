@@ -2,6 +2,8 @@
 
 void setup() {
   M5.begin();
+  M5.Power.begin();
+
   Serial.begin(115200);
   M5.Lcd.clear(BLACK);
   M5.Lcd.setTextColor(YELLOW);

@@ -4,6 +4,7 @@
 #define JOY_ADDR 0x52
 void setup() {
   M5.begin();
+  M5.Power.begin();
   M5.Lcd.clear();
 
   M5.Lcd.setTextFont(4);

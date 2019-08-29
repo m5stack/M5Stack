@@ -7,6 +7,7 @@ int cur_recv_value = 0;
 
 void setup() {
   M5.begin();
+  M5.Power.begin();
   Serial.begin(115200);
   pinMode(ir_recv_pin, INPUT);
   pinMode(ir_send_pin, OUTPUT);

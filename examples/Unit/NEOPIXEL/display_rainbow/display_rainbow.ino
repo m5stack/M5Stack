@@ -14,8 +14,9 @@ static TaskHandle_t FastLEDshowTaskHandle = 0;
 static TaskHandle_t userTaskHandle = 0;
 
 void setup() {
-  Serial.begin(115200);
   M5.begin();
+  M5.Power.begin();
+
   M5.Lcd.clear(BLACK);
   M5.Lcd.setTextColor(YELLOW); M5.Lcd.setTextSize(2); M5.Lcd.setCursor(40, 0);
   M5.Lcd.println("Neopixel Example");

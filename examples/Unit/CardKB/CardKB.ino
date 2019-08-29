@@ -6,6 +6,7 @@
 void setup()
 {
   M5.begin();
+  M5.Power.begin();
   Serial.begin(115200);
   Wire.begin();
   pinMode(5, INPUT);

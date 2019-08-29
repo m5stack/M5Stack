@@ -164,8 +164,9 @@ void InitWifi()
 }
 void setup() {
   delay(3000); // 3 second delay for recovery
-  Serial.begin(115200);
   M5.begin();
+  M5.Power.begin();
+
   M5.Lcd.clear(BLACK);
   M5.Lcd.setTextColor(YELLOW); M5.Lcd.setTextSize(2); M5.Lcd.setCursor(40, 0);
   M5.Lcd.println("Neoflash example");

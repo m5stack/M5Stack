@@ -13,6 +13,7 @@ Adafruit_BMP280 bme;
 
 void setup() {
     M5.begin();
+    M5.Power.begin();
     Wire.begin();
 
     M5.Lcd.setBrightness(10);

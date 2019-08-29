@@ -115,6 +115,7 @@ long loopTime, startTime, endTime, fps;
 void setup()
 {
   M5.begin();
+  M5.Power.begin();
   Wire.begin();
   Wire.setClock(450000); //Increase I2C clock speed to 400kHz
   Serial.begin(115200);

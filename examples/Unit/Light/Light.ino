@@ -2,6 +2,7 @@
 
 void setup() {
   M5.begin();
+  M5.Power.begin();
   //disable the speak noise
   dacWrite(25, 0);
 
