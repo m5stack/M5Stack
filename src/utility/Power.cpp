@@ -99,15 +99,6 @@ void POWER::begin() {
   }
 }
 
-
-static bool getI2CReg(uint8_t *result, uint8_t address, uint8_t *reg) {
-  return (M5.I2C.readByte(address, *reg, result));
-}
-
-static bool setI2CReg(uint8_t address, uint8_t reg, uint8_t value) {
-  return (M5.I2C.writeByte(address, reg, value));
-}
-
 bool POWER::setPowerBoostOnOff(bool en) {
   uint8_t data;
   if (M5.I2C.readByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, &data) == true) {
@@ -229,6 +220,7 @@ bool POWER::setVinMaxCurrent(uint8_t cur) {
   if(M5.I2C.readByte(IP5306_ADDR, IP5306_REG_CHG_DIG, &data) == true) {
     return M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_CHG_DIG, (data & 0xe0) | cur);
   }
+  return false;
 }
 
 bool POWER::setChargeVolt(uint8_t volt) {
@@ -331,7 +323,6 @@ bool POWER::isResetbyPowerSW() {
 void POWER::deepSleep(uint64_t time_in_us){
 
   // Keep power keep boost on
-  setLowPowerShutdown(false);
   setPowerBoostKeepOn(true);
 
   // power off the Lcd

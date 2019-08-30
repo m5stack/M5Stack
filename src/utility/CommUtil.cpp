@@ -67,12 +67,10 @@ bool CommUtil::writeBytes(uint8_t address, uint8_t subAddress, uint8_t *data, ui
     Serial.printf("result:%s\n", function_result ? "OK" : "NG");
   #endif
 
-  return (Wire.endTransmission() == 0);             // Send the Tx buffer
+  return function_result;             // Send the Tx buffer
 }
 
 bool CommUtil::readByte(uint8_t address, uint8_t *result) {
-  uint8_t data; // `data` will store the register data
-
   #ifdef I2C_DEBUG_TO_SERIAL
     Serial.printf("readByte :read from 0x%02x requestByte=1 receive=", address);
   #endif
@@ -91,8 +89,6 @@ bool CommUtil::readByte(uint8_t address, uint8_t *result) {
 }
 
 bool CommUtil::readByte(uint8_t address, uint8_t subAddress,uint8_t *result) {
-  uint8_t data; // `data` will store the register data
-
   #ifdef I2C_DEBUG_TO_SERIAL
     Serial.printf("readByte :read from 0x%02x [0x%02x] requestByte=1 receive=", address, subAddress);
   #endif

@@ -161,7 +161,7 @@ void M5Display::drawBmpFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y
         uint8_t*  bptr = lineBuffer;
         uint16_t* tptr = (uint16_t*)lineBuffer;
         // Convert 24 to 16 bit colours
-        for (uint16_t col = 0; col < w; col++) {
+        for (col = 0; col < w; col++) {
           b = *bptr++;
           g = *bptr++;
           r = *bptr++;

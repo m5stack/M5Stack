@@ -18,7 +18,7 @@
 
 static float GyroMeasError = PI * (40.0f / 180.0f);
 // gyroscope measurement drift in rad/s/s (start at 0.0 deg/s/s)
-static float GyroMeasDrift = PI * (0.0f  / 180.0f);
+// static float GyroMeasDrift = PI * (0.0f  / 180.0f);
 // There is a tradeoff in the beta parameter between accuracy and response
 // speed. In the original Madgwick study, beta of 0.041 (corresponding to
 // GyroMeasError of 2.7 degrees/s) was found to give optimal accuracy.
@@ -35,7 +35,7 @@ static float GyroMeasDrift = PI * (0.0f  / 180.0f);
 static float beta = sqrt(3.0f / 4.0f) * GyroMeasError;   // Compute beta
 // Compute zeta, the other free parameter in the Madgwick scheme usually
 // set to a small or zero value
-static float zeta = sqrt(3.0f / 4.0f) * GyroMeasDrift;
+// static float zeta = sqrt(3.0f / 4.0f) * GyroMeasDrift;
 
 // Vector to hold integral error for Mahony method
 static float eInt[3] = { 0.0f, 0.0f, 0.0f };
