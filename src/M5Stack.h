@@ -91,13 +91,13 @@
  * </pre>
  *
  */
+// #define ESP32
 
 #ifndef _M5STACK_H_
   #define _M5STACK_H_
   
   #if defined(ESP32)
 
-    // #define MPU9250_INSDE
     #include "gitTagVersion.h"
     #include <Arduino.h>
     #include <Wire.h>
@@ -111,6 +111,12 @@
     #include "utility/Speaker.h"
     #include "utility/Power.h"
     #include "utility/CommUtil.h"
+
+    #if defined(M5STACK_MPU6886) || defined(M5STACK_MPU9250) || defined(M5STACK_MPU6050)
+    #include "utility/MPU6886.h"
+    #elif defined M5STACK_200Q
+    #include "utility/SH200Q.h"
+    #endif
 
     class M5Stack
     {
@@ -138,11 +144,12 @@
         // HardwareSerial Serial0 = HardwareSerial(0);
         // HardwareSerial Serial2 = HardwareSerial(2);
 
-        // MPU9250
-        #ifdef MPU9250_INSDE
-          MPU9250 IMU = MPU9250();
+        #if defined(M5STACK_MPU6886) || defined(M5STACK_MPU9250) || defined(M5STACK_MPU6050)
+        MPU6886 IMU = MPU6886();
+        #elif defined M5STACK_200Q
+        SH200Q IMU = SH200Q();
         #endif
-          
+
         // I2C
         CommUtil I2C = CommUtil();
           
