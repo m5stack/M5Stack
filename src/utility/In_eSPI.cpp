@@ -438,7 +438,9 @@ void TFT_eSPI::init(uint8_t tc)
 
   spi_end();
   if(lcd_version) {
-    writecommand(0x21);
+    writecommand(0x21);   // Inversion ON (for IPS)
+    writecommand(ILI9341_GAMMASET);
+    writedata(0x02);
   }
   setRotation(rotation);
 
