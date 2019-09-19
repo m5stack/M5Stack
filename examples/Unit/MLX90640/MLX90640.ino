@@ -267,6 +267,10 @@ void loop()
     float tr = Ta - TA_SHIFT; //Reflected temperature based on the sensor ambient temperature
     float emissivity = 0.95;
     MLX90640_CalculateTo(mlx90640Frame, &mlx90640, emissivity, tr, pixels); //save pixels temp to array (pixels)
+	int mode_ = MLX90640_GetCurMode(MLX90640_address);
+    //amendment
+    MLX90640_BadPixelsCorrection((&mlx90640)->brokenPixels, pixels, mode_, &mlx90640);
+    //MLX90640_BadPixelsCorrection((&mlx90640)->outlierPixels, pixels, mode_, &mlx90640);
   }
 
   //Reverse image (order of Integer array)
@@ -405,15 +409,15 @@ void loop()
   }
   else
   {
-    M5.Lcd.printf("Min:", 1);
+    M5.Lcd.print("Min:");
     M5.Lcd.print(min_v, 1);
-    M5.Lcd.printf("C  " , 1);
-    M5.Lcd.printf("Max:", 1);
+    M5.Lcd.print("C  ");
+    M5.Lcd.print("Max:");
     M5.Lcd.print(max_v, 1);
-    M5.Lcd.printf("C" , 1);
+    M5.Lcd.print("C");
     M5.Lcd.setCursor(180, 94); // update spot temp text
     M5.Lcd.print(spot_v, 1);
-    M5.Lcd.printf("C" , 1);
+    M5.Lcd.printf("C");
     //M5.Lcd.drawCircle(160, 100, 6, TFT_WHITE);     // update center spot icon
     //M5.Lcd.drawLine(160, 90, 160, 110, TFT_WHITE); // vertical line
     //M5.Lcd.drawLine(150, 100, 170, 100, TFT_WHITE); // horizontal line
@@ -442,11 +446,11 @@ void infodisplay(void) {
   M5.Lcd.setTextSize(2);
   M5.Lcd.setCursor(284, 222); //move to bottom right
   M5.Lcd.print(MAXTEMP , 1);  // update MAXTEMP
-  M5.Lcd.printf("C" , 1);
+  M5.Lcd.print("C");
   M5.Lcd.setCursor(0, 222);  // update MINTEMP text
   M5.Lcd.fillRect(0, 222, 36, 16, TFT_BLACK);
   M5.Lcd.print(MINTEMP , 1);
-  M5.Lcd.printf("C" , 1);
+  M5.Lcd.print("C");
   M5.Lcd.setCursor(106, 224);
 }
 
