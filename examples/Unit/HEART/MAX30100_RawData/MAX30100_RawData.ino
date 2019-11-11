@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // The LEDs currents must be set to a level that avoids clipping and maximises the
 // dynamic range
-#define IR_LED_CURRENT                      MAX30100_LED_CURR_50MA
+#define IR_LED_CURRENT                      MAX30100_LED_CURR_24MA
 #define RED_LED_CURRENT                     MAX30100_LED_CURR_27_1MA
 
 // The pulse width of the LEDs driving determines the resolution of
