@@ -15,7 +15,7 @@
 #ifndef _In_eSPIH_
 #define _In_eSPIH_
 
-#define TFT_ESPI_VERSION "1.4.5"
+#define TFT_ESPI_VERSION "1.4.21"
 
 //#define ESP32 //Just used to test ESP32 options
 
@@ -334,7 +334,7 @@
 
   // Convert swapped byte 16 bit colour to 18 bit and write in 3 bytes
   #define tft_Write_16S(C) spi.transfer(C & 0xF8); \
-                           spi.transfer((C & 0xE0)>>11 | (C & 0x07)<<5); \
+                           spi.transfer((C & 0xE000)>>11 | (C & 0x07)<<5); \
                            spi.transfer((C & 0x1F00)>>5)
   // Write 32 bits to TFT
   #define tft_Write_32(C)  spi.write32(C)
@@ -662,6 +662,7 @@ const PROGMEM fontinfo fontdata [] = {
   #endif
 };
 
+typedef uint16_t (*getColorCallback)(uint16_t x, uint16_t y);
 
 // Class functions and variables
 class TFT_eSPI : public Print {
@@ -746,6 +747,7 @@ class TFT_eSPI : public Print {
 
            // Read the colour of a pixel at x,y and return value in 565 format 
   uint16_t readPixel(int32_t x0, int32_t y0);
+  void     setCallback(getColorCallback getCol);
 
            // The next functions can be used as a pair to copy screen blocks (or horizontal/vertical lines) to another location
            // Read a block of pixels to a data buffer, buffer is 16 bit and the array size must be at least w * h
@@ -878,6 +880,7 @@ class TFT_eSPI : public Print {
 
   uint32_t lastColor = 0xFFFF;
 
+  getColorCallback getColor = nullptr;
 
  protected:
 
