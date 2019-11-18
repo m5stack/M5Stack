@@ -464,7 +464,13 @@ void TFT_eSprite::pushSprite(int32_t x, int32_t y)
 {
   if (!_created) return;
 
-  if (_bpp == 16) _tft->pushImage(x, y, _iwidth, _iheight, _img );
+  if (_bpp == 16)
+  {
+    bool oldSwapBytes = _tft->getSwapBytes();
+    _tft->setSwapBytes(false);
+    _tft->pushImage(x, y, _iwidth, _iheight, _img );
+    _tft->setSwapBytes(oldSwapBytes);
+  }
 
   else _tft->pushImage(x, y, _dwidth, _dheight, _img8, (bool)(_bpp == 8));
 }
@@ -478,7 +484,13 @@ void TFT_eSprite::pushSprite(int32_t x, int32_t y, uint16_t transp)
 {
   if (!_created) return;
 
-  if (_bpp == 16) _tft->pushImage(x, y, _iwidth, _iheight, _img, transp );
+  if (_bpp == 16)
+  {
+    bool oldSwapBytes = _tft->getSwapBytes();
+    _tft->setSwapBytes(false);
+    _tft->pushImage(x, y, _iwidth, _iheight, _img, transp );
+    _tft->setSwapBytes(oldSwapBytes);
+  }
   else if (_bpp == 8)
   {
     transp = (uint8_t)((transp & 0xE000)>>8 | (transp & 0x0700)>>6 | (transp & 0x0018)>>3);
@@ -554,21 +566,21 @@ void  TFT_eSprite::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint16_
   int32_t  xs = x;
   int32_t  ys = y;
 
-  uint32_t ws = w;
-  uint32_t hs = h;
+  int32_t ws = w;
+  int32_t hs = h;
 
-  if (x < 0) { xo = -x; xs = 0; }
-  if (y < 0) { yo = -y; ys = 0; }
+  if (x < 0) { xo = -x; ws += x; xs = 0; }
+  if (y < 0) { yo = -y; hs += y; ys = 0; }
 
-  if (xs + w >= _iwidth)  ws = _iwidth  - xs;
-  if (ys + h >= _iheight) hs = _iheight - ys;
+  if (xs + ws >= (int32_t)_iwidth)  ws = _iwidth  - xs;
+  if (ys + hs >= (int32_t)_iheight) hs = _iheight - ys;
 
   if (_bpp == 16) // Plot a 16 bpp image into a 16 bpp Sprite
   {
-    for (uint32_t yp = yo; yp < yo + hs; yp++)
+    for (int32_t yp = yo; yp < yo + hs; yp++)
     {
       x = xs;
-      for (uint32_t xp = xo; xp < xo + ws; xp++)
+      for (int32_t xp = xo; xp < xo + ws; xp++)
       {
         uint16_t color =  data[xp + yp * w];
         if(!_iswapBytes) color = color<<8 | color>>8;
@@ -580,10 +592,10 @@ void  TFT_eSprite::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, uint16_
   }
   else if (_bpp == 8) // Plot a 16 bpp image into a 8 bpp Sprite
   {
-    for (uint32_t yp = yo; yp < yo + hs; yp++)
+    for (int32_t yp = yo; yp < yo + hs; yp++)
     {
       x = xs;
-      for (uint32_t xp = xo; xp < xo + ws; xp++)
+      for (int32_t xp = xo; xp < xo + ws; xp++)
       {
         uint16_t color = data[xp + yp * w];
         if(_iswapBytes) color = color<<8 | color>>8;
@@ -650,21 +662,21 @@ void  TFT_eSprite::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, const u
   int32_t  xs = x;
   int32_t  ys = y;
 
-  uint32_t ws = w;
-  uint32_t hs = h;
+  int32_t ws = w;
+  int32_t hs = h;
 
-  if (x < 0) { xo = -x; xs = 0; }
-  if (y < 0) { yo = -y; ys = 0; }
+  if (x < 0) { xo = -x; ws += x; xs = 0; }
+  if (y < 0) { yo = -y; hs += y; ys = 0; }
 
-  if (xs + w >= _iwidth)  ws = _iwidth  - xs;
-  if (ys + h >= _iheight) hs = _iheight - ys;
+  if (xs + ws >= (int32_t)_iwidth)  ws = _iwidth  - xs;
+  if (ys + hs >= (int32_t)_iheight) hs = _iheight - ys;
 
   if (_bpp == 16) // Plot a 16 bpp image into a 16 bpp Sprite
   {
-    for (uint32_t yp = yo; yp < yo + hs; yp++)
+    for (int32_t yp = yo; yp < yo + hs; yp++)
     {
       x = xs;
-      for (uint32_t xp = xo; xp < xo + ws; xp++)
+      for (int32_t xp = xo; xp < xo + ws; xp++)
       {
         uint16_t color = pgm_read_word(data + xp + yp * w);
         if(!_iswapBytes) color = color<<8 | color>>8;
@@ -677,10 +689,10 @@ void  TFT_eSprite::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, const u
 
   else if (_bpp == 8) // Plot a 16 bpp image into a 8 bpp Sprite
   {
-    for (uint32_t yp = yo; yp < yo + hs; yp++)
+    for (int32_t yp = yo; yp < yo + hs; yp++)
     {
       x = xs;
-      for (uint32_t xp = xo; xp < xo + ws; xp++)
+      for (int32_t xp = xo; xp < xo + ws; xp++)
       {
         uint16_t color = pgm_read_word(data + xp + yp * w);
         if(_iswapBytes) color = color<<8 | color>>8;
@@ -716,12 +728,12 @@ void  TFT_eSprite::pushImage(int32_t x, int32_t y, int32_t w, int32_t h, const u
     uint32_t ww =  (w+7) & 0xFFF8;
     for (int32_t yp = 0; yp<h; yp++)
     {
-      for (int32_t xp = 0; xp<ww; xp+=8)
+      for (uint32_t xp = 0; xp<ww; xp+=8)
       {
         uint8_t pbyte = pgm_read_byte(pdata++);
         for (uint8_t xc = 0; xc < 8; xc++)
         {
-          if (xp+xc<w) drawPixel(x+xp+xc, y+yp, (pbyte<<xc) & 0x80);
+          if (xp+xc<(uint32_t)w) drawPixel(x+xp+xc, y+yp, (pbyte<<xc) & 0x80);
         }
       }
     }
@@ -756,22 +768,10 @@ bool TFT_eSprite::getSwapBytes(void)
 *************************************************************************************x*/
 void TFT_eSprite::setWindow(int32_t x0, int32_t y0, int32_t x1, int32_t y1)
 {
-  bool duff_coord = false;
-
   if (x0 > x1) swap_coord(x0, x1);
   if (y0 > y1) swap_coord(y0, y1);
 
-  if (x0 < 0) x0 = 0;
-  if (x0 >= _iwidth) duff_coord = true;
-  if (x1 < 0) x1 = 0;
-  if (x1 >= _iwidth) x1 = _iwidth - 1;
-
-  if (y0 < 0) y0 = 0;
-  if (y0 >= _iheight) duff_coord = true;
-  if (y1 < 0) y1 = 0;
-  if (y1 >= _iheight) y1 = _iheight - 1;
-
-  if (duff_coord)
+  if ((x0 >= _iwidth) || (x1 < 0) || (y0 >= _iheight) || (y1 < 0))
   { // Point to that extra "off screen" pixel
     _xs = 0;
     _ys = _iheight;
@@ -780,6 +780,11 @@ void TFT_eSprite::setWindow(int32_t x0, int32_t y0, int32_t x1, int32_t y1)
   }
   else
   {
+    if (x0 < 0) x0 = 0;
+    if (x1 >= _iwidth) x1 = _iwidth - 1;
+    if (y0 < 0) y0 = 0;
+    if (y1 >= _iheight) y1 = _iheight - 1;
+
     _xs = x0;
     _ys = y0;
     _xe = x1;
@@ -881,8 +886,8 @@ void TFT_eSprite::setScrollRect(int32_t x, int32_t y, int32_t w, int32_t h, uint
 {
   if ((x >= _iwidth) || (y >= _iheight) || !_created ) return;
 
-  if (x < 0) x = 0;
-  if (y < 0) y = 0;
+  if (x < 0) { w += x; x = 0; }
+  if (y < 0) { h += y; y = 0; }
 
   if ((x + w) > _iwidth ) w = _iwidth  - x;
   if ((y + h) > _iheight) h = _iheight - y;
@@ -1088,21 +1093,19 @@ void TFT_eSprite::drawPixel(int32_t x, int32_t y, uint32_t color)
 {
   // Range checking
   if ((x < 0) || (y < 0) || !_created) return;
+  if ((x >= _iwidth) || (y >= _iheight)) return;
 
   if (_bpp == 16)
   {
-    if ((x >= _iwidth) || (y >= _iheight)) return;
     color = (color >> 8) | (color << 8);
     _img[x+y*_iwidth] = (uint16_t) color;
   }
   else if (_bpp == 8)
   {
-    if ((x >= _iwidth) || (y >= _iheight)) return;
     _img8[x+y*_iwidth] = (uint8_t)((color & 0xE000)>>8 | (color & 0x0700)>>6 | (color & 0x0018)>>3);
   }
   else // 1 bpp
   {
-    if ((x >= _dwidth) || (y >= _dheight)) return;
     if (_rotation == 1)
     {
       uint16_t tx = x;
@@ -1679,7 +1682,7 @@ int16_t TFT_eSprite::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t fo
     if ((font>2) && (font<9))
     {
       // This is slower than above but is more convenient for the RLE fonts
-      flash_address = pgm_read_dword( pgm_read_dword( &(fontdata[font].chartbl ) ) + uniCode*sizeof(void *) );
+      flash_address = pgm_read_dword( (const void*) (pgm_read_dword( &(fontdata[font].chartbl ) ) + uniCode*sizeof(void *)) );
       width = pgm_read_byte( (uint8_t *)pgm_read_dword( &(fontdata[font].widthtbl ) ) + uniCode );
       height= pgm_read_byte( &fontdata[font].height );
     }

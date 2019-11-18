@@ -25,8 +25,11 @@
 //#define ILI9481_DRIVER
 //#define ILI9486_DRIVER
 //#define ILI9488_DRIVER     // WARNING: Do not connect ILI9488 display SDO to MISO if other devices share the SPI bus (TFT SDO does NOT tristate when CS is high)
-//#define ST7789_DRIVER      // Define additional parameters below for this display
+//#define ST7789_DRIVER      // Full configuration option, define additional parameters below for this display
+//#define ST7789_2_DRIVER    // Minimal configuration option, define additional parameters below for this display
 //#define R61581_DRIVER
+//#define RM68140_DRIVER
+
 #include "ILI9341_Defines.h"
 #define  TFT_DRIVER 0x9341
 
@@ -34,9 +37,9 @@
 // bi-directional SDA pin and the library will try to read this via the MOSI line.
 // To use the SDA line for reading data from the TFT uncomment the following line:
 
-// #define TFT_SDA_READ      // This option if for ESP32 ONLY, tested with ST7789 display only
+// #define TFT_SDA_READ      // This option is for ESP32 ONLY, tested with ST7789 display only
 
-// For ST7789 ONLY, define the colour order IF the blue and red are swapped on your display
+// For ST7789 and ILI9341 ONLY, define the colour order IF the blue and red are swapped on your display
 // Try ONE option at a time to find the correct colour order for your display
 
 //  #define TFT_RGB_ORDER TFT_RGB  // Colour order Red-Green-Blue
@@ -116,7 +119,6 @@
 //
 // The NodeMCU D0 pin can be used for RST
 //
-// See Section 2. below if DC or CS is connected to D0
 //
 // Note: only some versions of the NodeMCU provide the USB 5V on the VIN pin
 // If 5V is not available at a pin you can use 3.3V but backlight brightness
@@ -141,10 +143,12 @@
 // ######  FOR ESP8266 OVERLAP MODE EDIT THE PIN NUMBERS IN THE FOLLOWING LINES  ######
 
 // Overlap mode shares the ESP8266 FLASH SPI bus with the TFT so has a performance impact
-// but saves pins for other functions.
-// Use NodeMCU SD0=MISO, SD1=MOSI, CLK=SCLK to connect to TFT in overlap mode
-
+// but saves pins for other functions. It is best not to connect MISO as some displays
+// do not tristate that line wjen chip select is high!
+// On NodeMCU 1.0 SD0=MISO, SD1=MOSI, CLK=SCLK to connect to TFT in overlap mode
+// On NodeMCU V3  S0 =MISO, S1 =MOSI, S2 =SCLK
 // In ESP8266 overlap mode the following must be defined
+
 //#define TFT_SPI_OVERLAP
 
 // In ESP8266 overlap mode the TFT chip select MUST connect to pin D3
