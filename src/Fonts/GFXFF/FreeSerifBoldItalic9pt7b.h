@@ -210,6 +210,10 @@ const GFXglyph FreeSerifBoldItalic9pt7bGlyphs[] PROGMEM = {
 const GFXfont FreeSerifBoldItalic9pt7b PROGMEM = {
   (uint8_t  *)FreeSerifBoldItalic9pt7bBitmaps,
   (GFXglyph *)FreeSerifBoldItalic9pt7bGlyphs,
-  0x20, 0x7E, 22 };
+  0x20, 0x7E, 22,
+  #ifdef USE_M5_FONT_CREATOR
+  0, 0
+  #endif
+  };
 
 // Approx. 1982 bytes

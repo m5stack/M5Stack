@@ -196,4 +196,8 @@ const GFXglyph Roboto_Thin_24Glyphs[] PROGMEM = {
 	  {  1858,   8,  25,   9,   -1,  -19 } // '}'
 };
 const GFXfont Roboto_Thin_24 PROGMEM = {
-(uint8_t  *)Roboto_Thin_24Bitmaps,(GFXglyph *)Roboto_Thin_24Glyphs,0x20, 0x7D, 29};
+(uint8_t  *)Roboto_Thin_24Bitmaps,(GFXglyph *)Roboto_Thin_24Glyphs,0x20, 0x7D, 29,
+#ifdef USE_M5_FONT_CREATOR
+0, 0, 
+#endif
+};

@@ -667,6 +667,10 @@ const GFXglyph FreeMonoBold24pt7bGlyphs[] PROGMEM = {
 const GFXfont FreeMonoBold24pt7b PROGMEM = {
   (uint8_t  *)FreeMonoBold24pt7bBitmaps,
   (GFXglyph *)FreeMonoBold24pt7bGlyphs,
-  0x20, 0x7E, 47 };
+  0x20, 0x7E, 47,
+  #ifdef USE_M5_FONT_CREATOR
+  0, 0
+  #endif
+  };
 
 // Approx. 7469 bytes

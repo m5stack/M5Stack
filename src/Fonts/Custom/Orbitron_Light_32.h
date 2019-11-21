@@ -196,4 +196,8 @@ const GFXglyph Orbitron_Light_32Glyphs[] PROGMEM = {
 	  {  4596,   6,  24,  10,    2,  -24 } // '}'
 };
 const GFXfont Orbitron_Light_32 PROGMEM = {
-(uint8_t  *)Orbitron_Light_32Bitmaps,(GFXglyph *)Orbitron_Light_32Glyphs,0x20, 0x7D, 32};
+(uint8_t  *)Orbitron_Light_32Bitmaps,(GFXglyph *)Orbitron_Light_32Glyphs,0x20, 0x7D, 32,
+#ifdef USE_M5_FONT_CREATOR
+0, 0, 
+#endif
+};

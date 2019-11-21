@@ -2406,9 +2406,41 @@ int16_t TFT_eSPI::textWidth(const char *string, uint8_t font)
       while (*string)
       {
         uniCode = decodeUTF8(*string++);
+
+        bool is_in_block_flag = false;
+        #ifdef USE_M5_FONT_CREATOR
+        EncodeRange *range_pst;
+        uint16_t custom_range_num = pgm_read_word(&gfxFont->range_num);
+        if(custom_range_num != 0)
+        {
+          range_pst = (EncodeRange *)pgm_read_dword(&gfxFont->range);
+          for(uint16_t i = 0; i < pgm_read_word(&gfxFont->range_num); i++)
+          {
+            if((uniCode >= pgm_read_word(&range_pst[i].start)) && (uniCode <= pgm_read_word(&range_pst[i].end)))
+            {
+              is_in_block_flag = true;
+              uniCode = uniCode - pgm_read_word(&range_pst[i].start) + pgm_read_word(&range_pst[i].base);
+              break;
+            }
+          }
+        }
+        else if ((uniCode >= pgm_read_word(&gfxFont->first)) && (uniCode <= pgm_read_word(&gfxFont->last)))
+        {
+          is_in_block_flag = true;
+          uniCode -= pgm_read_word(&gfxFont->first);
+        }
+        #else
         if ((uniCode >= pgm_read_word(&gfxFont->first)) && (uniCode <= pgm_read_word(&gfxFont->last )))
         {
+          is_in_block_flag = true;
           uniCode -= pgm_read_word(&gfxFont->first);
+        }
+        #endif
+
+        if (is_in_block_flag == true)
+        //if ((uniCode >= pgm_read_word(&gfxFont->first)) && (uniCode <= pgm_read_word(&gfxFont->last )))
+        {
+          //uniCode -= pgm_read_word(&gfxFont->first);
           GFXglyph *glyph  = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[uniCode]);
           // If this is not the  last character or is a digit then use xAdvance
           if (*string  || isDigits) str_width += pgm_read_byte(&glyph->xAdvance);
@@ -2475,7 +2507,8 @@ int16_t TFT_eSPI::fontHeight(void)
 ***************************************************************************************/
 void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32_t bg, uint8_t size)
 {
-  if ((x >= _width)            || // Clip right
+  
+    if ((x >= _width)            || // Clip right
       (y >= _height)           || // Clip bottom
       ((x + 6 * size - 1) < 0) || // Clip left
       ((y + 8 * size - 1) < 0))   // Clip top
@@ -2490,7 +2523,7 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32
 //>>>>>>>>>>>>>>>>>>
 
   boolean fillbg = (bg != color);
-
+  
   if ((size==1) && fillbg)
   {
     uint8_t column[6];
@@ -2578,17 +2611,48 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32
 
 #ifdef LOAD_GFXFF
     // Filter out bad characters not present in font
+    bool is_in_block_flag = false;
+    #ifdef USE_M5_FONT_CREATOR
+    EncodeRange *range_pst;
+    uint16_t custom_range_num = pgm_read_word(&gfxFont->range_num);
+    if(custom_range_num != 0)
+    {
+      range_pst = (EncodeRange *)pgm_read_dword(&gfxFont->range);
+      for(uint16_t i = 0; i < pgm_read_word(&gfxFont->range_num); i++)
+      {
+        
+        if((c >= pgm_read_word(&range_pst[i].start)) && (c <= pgm_read_word(&range_pst[i].end)))
+        {
+          is_in_block_flag = true;
+          c = c - pgm_read_word(&range_pst[i].start) + pgm_read_word(&range_pst[i].base);
+          break;
+        }
+      }
+    }
+    else if ((c >= pgm_read_word(&gfxFont->first)) && (c <= pgm_read_word(&gfxFont->last )))
+    {
+      is_in_block_flag = true;
+      c -= pgm_read_word(&gfxFont->first);
+    }
+    #else
     if ((c >= pgm_read_word(&gfxFont->first)) && (c <= pgm_read_word(&gfxFont->last )))
+    {
+      is_in_block_flag = true;
+      c -= pgm_read_word(&gfxFont->first);
+    }
+    #endif
+    
+
+    if (is_in_block_flag == true)
     {
       //spi_begin();          // Sprite class can use this function, avoiding spi_begin()
       inTransaction = true;
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-      c -= pgm_read_word(&gfxFont->first);
       GFXglyph *glyph  = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[c]);
       uint8_t  *bitmap = (uint8_t *)pgm_read_dword(&gfxFont->bitmap);
-
-      uint32_t bo = pgm_read_word(&glyph->bitmapOffset);
+      
+      uint32_t bo = pgm_read_dword(&glyph->bitmapOffset);
       uint8_t  w  = pgm_read_byte(&glyph->width),
                h  = pgm_read_byte(&glyph->height);
                //xa = pgm_read_byte(&glyph->xAdvance);
@@ -2596,7 +2660,8 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32
                yo = pgm_read_byte(&glyph->yOffset);
       uint8_t  xx, yy, bits=0, bit=0;
       int16_t  xo16 = 0, yo16 = 0;
-  
+
+        
       if(size > 1) {
         xo16 = xo;
         yo16 = yo;
@@ -2626,14 +2691,13 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32
 #endif
 
 #ifdef FAST_HLINE
-
-  #ifdef FAST_SHIFT
+    #ifdef FAST_SHIFT
       uint16_t hpc = 0; // Horizontal foreground pixel count
       for(yy=0; yy<h; yy++) {
         for(xx=0; xx<w; xx++) {
           if(bit == 0) {
             bits = pgm_read_byte(&bitmap[bo++]);
-            bit  = 0x80;
+                        bit  = 0x80;
           }
           if(bits & bit) hpc++;
           else {
@@ -2707,7 +2771,6 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32
       spi_end();              // Does nothing if Sprite class uses this function
     }
 #endif
-
 
 #ifdef LOAD_GLCD
   #ifdef LOAD_GFXFF
@@ -4012,8 +4075,7 @@ uint8_t TFT_eSPI::getAttribute(uint8_t attr_id) {
 
 /***************************************************************************************
 ** Function name:           decodeUTF8
-** Description:             Serial UTF-8 decoder with fall-back to extended ASCII
-*************************************************************************************x*/
+** Description:             *************************************************************************************x*/
 #define DECODE_UTF8 // Test only, comment out to stop decoding
 uint16_t TFT_eSPI::decodeUTF8(uint8_t c)
 {
@@ -4074,8 +4136,7 @@ uint16_t TFT_eSPI::decodeUTF8(uint8_t c)
 uint16_t TFT_eSPI::decodeUTF8(uint8_t *buf, uint16_t *index, uint16_t remaining)
 {
   uint16_t c = buf[(*index)++];
-  //Serial.print("Byte from string = 0x"); Serial.println(c, HEX);
-
+  //
 #ifdef DECODE_UTF8
   // 7 bit Unicode
   if ((c & 0x80) == 0x00) return c;
@@ -4116,9 +4177,7 @@ size_t TFT_eSPI::write(uint8_t utf8)
 #ifdef SMOOTH_FONT
   if(fontLoaded)
   {
-    //Serial.print("UniCode="); Serial.println(uniCode);
-    //Serial.print("UTF8   ="); Serial.println(utf8);
-
+    //    //
     //fontFile = SPIFFS.open( _gFontFilename, "r" );
 
     //if(!fontFile)
@@ -4141,9 +4200,7 @@ size_t TFT_eSPI::write(uint8_t utf8)
   uint16_t height = 0;
 
 //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv DEBUG vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-  //Serial.print((uint8_t) uniCode); // Debug line sends all printed TFT text to serial port
-  //Serial.println(uniCode, HEX); // Debug line sends all printed TFT text to serial port
-  //delay(5);                     // Debug optional wait for serial port to flush through
+  //  //  //delay(5);                     // Debug optional wait for serial port to flush through
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ DEBUG ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -4217,10 +4274,39 @@ size_t TFT_eSPI::write(uint8_t utf8)
       cursor_y += (int16_t)textsize *
                   (uint8_t)pgm_read_byte(&gfxFont->yAdvance);
     } else {
-      if (uniCode > pgm_read_word(&gfxFont->last )) return 1;
-      if (uniCode < pgm_read_word(&gfxFont->first)) return 1;
 
-      uint16_t   c2    = uniCode - pgm_read_word(&gfxFont->first);
+      bool is_in_block_flag = false;
+      uint16_t c2 = uniCode;
+      #ifdef USE_M5_FONT_CREATOR
+      EncodeRange *range_pst;
+      uint16_t custom_range_num = pgm_read_word(&gfxFont->range_num);
+      if(custom_range_num != 0)
+      {
+        range_pst = (EncodeRange *)pgm_read_dword(&gfxFont->range);
+        for(uint16_t i = 0; i < pgm_read_word(&gfxFont->range_num); i++)
+        {
+          if((c2 >= pgm_read_word(&range_pst[i].start)) && (c2 <= pgm_read_word(&range_pst[i].end)))
+          {
+            is_in_block_flag = true;
+            c2 = c2 - pgm_read_word(&range_pst[i].start) + pgm_read_word(&range_pst[i].base);
+            break;
+          }
+        }
+      }
+      else if ((c2 >= pgm_read_word(&gfxFont->first)) && (c2 <= pgm_read_word(&gfxFont->last )))
+      {
+        is_in_block_flag = true;
+        c2 -= pgm_read_word(&gfxFont->first);
+      }
+      #else
+      if ((c2 >= pgm_read_word(&gfxFont->first)) && (c2 <= pgm_read_word(&gfxFont->last )))
+      {
+        is_in_block_flag = true;
+        c2 -= pgm_read_word(&gfxFont->first);
+      }
+      #endif
+
+      if (is_in_block_flag == false) return 1;
       GFXglyph *glyph = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[c2]);
       uint8_t   w     = pgm_read_byte(&glyph->width),
                 h     = pgm_read_byte(&glyph->height);
@@ -4256,6 +4342,7 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y)
 }
 
   // Any UTF-8 decoding must be done before calling drawChar()
+static uint32_t char_count = 0;
 int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
 {
   if (!uniCode) return 0;
@@ -4284,9 +4371,41 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
     }
     else
     {
-      if((uniCode >= pgm_read_word(&gfxFont->first)) && (uniCode <= pgm_read_word(&gfxFont->last) ))
+      
+      bool is_in_block_flag = false;
+      uint16_t c2 = uniCode;
+      #ifdef USE_M5_FONT_CREATOR
+      EncodeRange *range_pst;
+      uint16_t custom_range_num = pgm_read_word(&gfxFont->range_num);
+      if(custom_range_num != 0)
       {
-        uint16_t   c2    = uniCode - pgm_read_word(&gfxFont->first);
+        range_pst = (EncodeRange *)pgm_read_dword(&gfxFont->range);
+        for(uint16_t i = 0; i < pgm_read_word(&gfxFont->range_num); i++)
+        {
+          if((c2 >= pgm_read_word(&range_pst[i].start)) && (c2 <= pgm_read_word(&range_pst[i].end)))
+          {
+            is_in_block_flag = true;
+            c2 = c2 - pgm_read_word(&range_pst[i].start) + pgm_read_word(&range_pst[i].base);
+            break;
+          }
+        }
+      }
+      else if ((c2 >= pgm_read_word(&gfxFont->first)) && (c2 <= pgm_read_word(&gfxFont->last )))
+      {
+        is_in_block_flag = true;
+        c2 -= pgm_read_word(&gfxFont->first);
+      }
+      #else
+      if ((c2 >= pgm_read_word(&gfxFont->first)) && (c2 <= pgm_read_word(&gfxFont->last )))
+      {
+        is_in_block_flag = true;
+        c2 -= pgm_read_word(&gfxFont->first);
+      }
+      #endif
+      if (is_in_block_flag == true)
+      //if((uniCode >= pgm_read_word(&gfxFont->first)) && (uniCode <= pgm_read_word(&gfxFont->last) ))
+      {
+        //uint16_t   c2    = uniCode - pgm_read_word(&gfxFont->first);
         GFXglyph *glyph = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[c2]);
         return pgm_read_byte(&glyph->xAdvance) * textsize;
       }
@@ -4667,9 +4786,40 @@ int16_t TFT_eSPI::drawString(const char *string, int32_t poX, int32_t poY, uint8
 
       while (n < len && c2 == 0) c2 = decodeUTF8((uint8_t*)string, &n, len - n);
 
-      if((c2 >= pgm_read_word(&gfxFont->first)) && (c2 <= pgm_read_word(&gfxFont->last) ))
+      bool is_in_block_flag = false;
+      #ifdef USE_M5_FONT_CREATOR
+      EncodeRange *range_pst;
+      uint16_t custom_range_num = pgm_read_word(&gfxFont->range_num);
+      if(custom_range_num != 0)
       {
+        range_pst = (EncodeRange *)pgm_read_dword(&gfxFont->range);
+        for(uint16_t i = 0; i < pgm_read_word(&gfxFont->range_num); i++)
+        {
+          if((c2 >= pgm_read_word(&range_pst[i].start)) && (c2 <= pgm_read_word(&range_pst[i].end)))
+          {
+            is_in_block_flag = true;
+            c2 = c2 - pgm_read_word(&range_pst[i].start) + pgm_read_word(&range_pst[i].base);
+            break;
+          }
+        }
+      }
+      else if ((c2 >= pgm_read_word(&gfxFont->first)) && (c2 <= pgm_read_word(&gfxFont->last )))
+      {
+        is_in_block_flag = true;
         c2 -= pgm_read_word(&gfxFont->first);
+      }
+      #else
+      if ((c2 >= pgm_read_word(&gfxFont->first)) && (c2 <= pgm_read_word(&gfxFont->last )))
+      {
+        is_in_block_flag = true;
+        c2 -= pgm_read_word(&gfxFont->first);
+      }
+      #endif
+
+      if (is_in_block_flag == true)
+      //if((c2 >= pgm_read_word(&gfxFont->first)) && (c2 <= pgm_read_word(&gfxFont->last) ))
+      {
+        //c2 -= pgm_read_word(&gfxFont->first);
         GFXglyph *glyph = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[c2]);
         xo = pgm_read_byte(&glyph->xOffset) * textsize;
         // Adjust for negative xOffset
@@ -4683,7 +4833,6 @@ int16_t TFT_eSPI::drawString(const char *string, int32_t poX, int32_t poY, uint8
       padding -=100;
     }
 #endif
-
   uint16_t len = strlen(string);
   uint16_t n = 0;
 
@@ -4951,10 +5100,28 @@ void TFT_eSPI::setFreeFont(const GFXfont *f)
 
   glyph_ab = 0;
   glyph_bb = 0;
-  uint16_t numChars = pgm_read_word(&gfxFont->last) - pgm_read_word(&gfxFont->first);
+
+  uint16_t numChars = 0;
+  #ifdef USE_M5_FONT_CREATOR
+  if(pgm_read_word(&gfxFont->range_num) != 0)
+  {
+    EncodeRange *range_pst = (EncodeRange *)pgm_read_dword(&gfxFont->range);
+    for(uint16_t i = 0; i < pgm_read_word(&gfxFont->range_num); i++)
+    {
+      numChars += pgm_read_word(&range_pst[i].end) - pgm_read_word(&range_pst[i].start);
+    }
+  }
+  else
+  {
+    numChars = pgm_read_word(&gfxFont->last) - pgm_read_word(&gfxFont->first);
+  }
+  #else
+  numChars = pgm_read_word(&gfxFont->last) - pgm_read_word(&gfxFont->first);
+  #endif
+  
   
   // Find the biggest above and below baseline offsets
-  for (uint8_t c = 0; c < numChars; c++)
+  for (uint16_t c = 0; c < numChars; c++)
   {
     GFXglyph *glyph1  = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[c]);
     int8_t ab = -pgm_read_byte(&glyph1->yOffset);
@@ -5725,8 +5892,7 @@ uint16_t TFT_eSPI::decodeUTF8(uint8_t *buf, uint16_t *index, uint16_t remaining)
 
 /***************************************************************************************
 ** Function name:           decodeUTF8
-** Description:             Serial UTF-8 decoder with fall-back to extended ASCII
-*************************************************************************************x*/
+** Description:             *************************************************************************************x*/
 /* Function moved to TFT_eSPI.cpp
 uint16_t TFT_eSPI::decodeUTF8(uint8_t c)
 {
@@ -5846,7 +6012,7 @@ bool TFT_eSPI::getUnicodeIndex(uint16_t unicode, uint16_t *index)
 ** Function name:           drawGlyph
 ** Description:             Write a character to the TFT cursor position
 *************************************************************************************x*/
-// Expects file to be open
+// Expects file to be openrange_pst
 void TFT_eSPI::drawGlyph(uint16_t code)
 {
   if (code < 0x21)

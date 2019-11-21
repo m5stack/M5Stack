@@ -196,4 +196,8 @@ const GFXglyph Yellowtail_32Glyphs[] PROGMEM = {
 	  {  4618,  21,  32,  16,   -3,  -27 } // '}'
 };
 const GFXfont Yellowtail_32 PROGMEM = {
-(uint8_t  *)Yellowtail_32Bitmaps,(GFXglyph *)Yellowtail_32Glyphs,0x20, 0x7D, 45};
+(uint8_t  *)Yellowtail_32Bitmaps,(GFXglyph *)Yellowtail_32Glyphs,0x20, 0x7D, 45,
+#ifdef USE_M5_FONT_CREATOR
+0, 0, 
+#endif
+};

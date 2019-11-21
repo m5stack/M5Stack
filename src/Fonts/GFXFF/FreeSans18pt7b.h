@@ -447,6 +447,10 @@ const GFXglyph FreeSans18pt7bGlyphs[] PROGMEM = {
 const GFXfont FreeSans18pt7b PROGMEM = {
   (uint8_t  *)FreeSans18pt7bBitmaps,
   (GFXglyph *)FreeSans18pt7bGlyphs,
-  0x20, 0x7E, 42 };
+  0x20, 0x7E, 42,
+  #ifdef USE_M5_FONT_CREATOR
+  0, 0
+  #endif
+  };
 
 // Approx. 4831 bytes

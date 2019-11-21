@@ -18,11 +18,23 @@ typedef struct { // Data stored PER GLYPH
 	int8_t   xOffset, yOffset; // Dist from cursor pos to UL corner
 } GFXglyph;
 
+#ifdef USE_M5_FONT_CREATOR
+typedef struct {
+	uint16_t start;
+	uint16_t end;
+	uint16_t base;
+} EncodeRange;
+#endif
+
 typedef struct { // Data stored for FONT AS A WHOLE:
 	uint8_t  *bitmap;      // Glyph bitmaps, concatenated
 	GFXglyph *glyph;       // Glyph array
 	uint16_t  first, last; // ASCII extents
 	uint8_t   yAdvance;    // Newline distance (y axis)
+#ifdef USE_M5_FONT_CREATOR
+	uint16_t range_num;
+	EncodeRange *range;
+#endif
 } GFXfont;
 
 #endif // LOAD_GFXFF

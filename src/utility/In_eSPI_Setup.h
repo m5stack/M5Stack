@@ -284,3 +284,4 @@
 // so changing it here has no effect
 
 // #define SUPPORT_TRANSACTIONS
+// #define USE_M5_FONT_CREATOR
