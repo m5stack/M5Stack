@@ -4,7 +4,7 @@
   Pls modify <m5stack path>/src/utility/In_eSPI_Setup.h, At the end of the file add "#define USE_M5_FONT_CREATOR"
   if want get customize unicode, try use https://github.com/m5stack/FontCreator, create font file
   
-  if add "#define USE_M5_FONT_CREATOR" and want to use gfx font, need modify font file
+  if add "#define USE_M5_FONT_CREATOR" and want to use standard gfx font, need modify font file
     #ifdef USE_M5_FONT_CREATOR
     0, 0, 
     #endif
