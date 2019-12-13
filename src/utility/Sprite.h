@@ -109,6 +109,7 @@ class TFT_eSprite : public TFT_eSPI {
   void     printToSprite(String string);
   void     printToSprite(char *cbuffer, uint16_t len);
   int16_t  printToSprite(int16_t x, int16_t y, uint16_t index);
+  void     setPsram( bool enabled );
 
  private:
 
@@ -130,6 +131,7 @@ class TFT_eSprite : public TFT_eSPI {
 
   bool     _created;    // A Sprite has been created and memory reserved
   bool     _gFont = false; 
+  bool     _usePsram = true; // use Psram if available
 
 //  int32_t  _icursor_x, _icursor_y;
   uint8_t  _rotation = 0;
