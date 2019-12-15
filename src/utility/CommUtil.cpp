@@ -151,3 +151,37 @@ void CommUtil::scanID(bool *result) {
     *(result+i)=writeCommand(i,0x00);
   }
 }
+
+// I2C Scanner, scavengered from https://github.com/MartyMacGyver/Arduino_I2C_Scanner
+void CommUtil::scan() {
+  Serial.println();
+  Serial.println("Scanning I2C Bus: ");
+  Serial.println();
+  Serial.print("   ");
+  for (int i = 0; i < 0x10; i++) {
+    Serial.printf(" %2x", i);
+  }
+  Serial.println();
+  Serial.print("            ");
+  for(uint8_t addr = 0x03; addr <= 0x77; addr++ ) {
+    // Address the device
+    Wire.beginTransmission(addr);
+    // Check for ACK (detection of device), NACK or error
+    uint8_t deviceStatus = Wire.endTransmission();
+
+    if (!(addr % 0x10)) { // Start of a line
+      Serial.printf("%02x:", addr / 0x10);
+    }
+    if (deviceStatus == 0) {
+      Serial.printf(" %02x", addr);
+    } else if (deviceStatus == 4) {
+      Serial.printf(" %02s", "??");
+    } else {
+      Serial.printf(" %02s", "--");
+    }
+    if (!((addr+1) % 0x10) ) {
+      Serial.println();
+    }
+  }
+  Serial.println();
+}
