@@ -22,7 +22,6 @@ class CommUtil {
     bool readBytes(uint8_t address, uint8_t count,uint8_t * dest);
     bool readBytes(uint8_t address, uint8_t subAddress, uint8_t count, uint8_t * dest);
     void scanID(bool *result);
-    void scan();
   private:
 };
 #endif
