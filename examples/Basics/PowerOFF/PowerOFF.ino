@@ -22,7 +22,7 @@ void setup(){
 void loop() {
 
   if(M5.BtnA.wasPressed()) {
-    M5.Power.powerOFF();
+    M5.powerOFF();
   }
 
   M5.update();
