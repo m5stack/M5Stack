@@ -63,3 +63,4 @@ float DHT12::readHumidity()
 	resultado=(datos[0]+(float)datos[1]/10);
 	return resultado;
 }
+
