@@ -34,16 +34,22 @@ float DHT12::readTemperature(uint8_t scale)
 	float resultado=0;
 	uint8_t error=read();
 	if (error!=0) return (float)error/100;
+	
+	resultado=datos[2]+(float)(datos[3]&0x7f)/10;
+	if(datos[3]&0x80)
+	{
+		resultado = -resultado;
+	}
+	
 	if (scale==0) scale=_scale;
 	switch(scale) {
 		case CELSIUS:
-			resultado=(datos[2]+(float)datos[3]/10);
 			break;
 		case FAHRENHEIT:
-			resultado=((datos[2]+(float)datos[3]/10)*1.8+32);
+			resultado=resultado*1.8+32;
 			break;
 		case KELVIN:
-			resultado=(datos[2]+(float)datos[3]/10)+273.15;
+			resultado=resultado+273.15;
 			break;
 	};
 	return resultado;
@@ -57,4 +63,3 @@ float DHT12::readHumidity()
 	resultado=(datos[0]+(float)datos[1]/10);
 	return resultado;
 }
-
