@@ -43,6 +43,10 @@
 #define MPU6886_ACCEL_CONFIG2     0x1D
 #define MPU6886_FIFO_EN           0x23
 
+#define MPU6886_FIFO_ENABLE       0x23
+#define MPU6886_FIFO_COUNT        0x72
+#define MPU6886_FIFO_R_W          0x74
+#define MPU6886_GYRO_OFFSET       0x13
 //#define G (9.8)
 #define RtA     57.324841
 #define AtR    	0.0174533	
@@ -81,6 +85,12 @@ class MPU6886 {
       void setAccelFsr(Ascale scale);
 
       void getAhrsData(float *pitch,float *roll,float *yaw);
+      void setFIFOEnable( bool enableflag );
+      uint8_t ReadFIFO();
+      void ReadFIFOBuff( uint8_t *DataBuff ,uint16_t Length );
+      uint16_t ReadFIFOCount();
+      void RestFIFO();
+      void setGyroOffset(uint16_t x, uint16_t y, uint16_t z);
 
     public:
       float aRes, gRes, imuId;

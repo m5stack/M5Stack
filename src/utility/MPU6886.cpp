@@ -41,20 +41,24 @@ int MPU6886::Init(void) {
   I2C_Write_NBytes(MPU6886_ADDRESS, MPU6886_PWR_MGMT_1, 1, &regdata);
   delay(10);
 
+// +- 8g
   regdata = 0x10;
   I2C_Write_NBytes(MPU6886_ADDRESS, MPU6886_ACCEL_CONFIG, 1, &regdata);
   delay(1);
 
+// +- 2000 dps
   regdata = 0x18;
   I2C_Write_NBytes(MPU6886_ADDRESS, MPU6886_GYRO_CONFIG, 1, &regdata);
   delay(1);
 
+// 1khz output
   regdata = 0x01;
   I2C_Write_NBytes(MPU6886_ADDRESS, MPU6886_CONFIG, 1, &regdata);
   delay(1);
 
-  regdata = 0x05;
-  I2C_Write_NBytes(MPU6886_ADDRESS, MPU6886_SMPLRT_DIV, 1,&regdata);
+// 2 div, FIFO 500hz out
+  regdata = 0x01;
+  I2C_Write_NBytes(MPU6886_ADDRESS, MPU6886_SMPLRT_DIV, 1, &regdata);
   delay(1);
 
   regdata = 0x00;
@@ -126,7 +130,6 @@ void MPU6886::getAhrsData(float *pitch, float *roll, float *yaw) {
 
   getGyroData(&gyroX, &gyroY, &gyroZ);
   getAccelData(&accX, &accY, &accZ);
-  
   MahonyAHRSupdateIMU(gyroX * DEG_TO_RAD, gyroY * DEG_TO_RAD, gyroZ * DEG_TO_RAD, accX, accY, accZ, pitch, roll, yaw);
 }
 
@@ -214,4 +217,53 @@ void MPU6886::getTempData(float *t) {
   getTempAdc(&temp);
   
   *t = (float)temp / 326.8 + 25.0;
+}
+
+void MPU6886::setGyroOffset(uint16_t x, uint16_t y, uint16_t z) {
+  uint8_t buf_out[6];
+  buf_out[0] = x >> 8;
+  buf_out[1] = x & 0xff;
+  buf_out[2] = y >> 8;
+  buf_out[3] = y & 0xff;
+  buf_out[4] = z >> 8;
+  buf_out[5] = z & 0xff;
+  I2C_Write_NBytes(MPU6886_ADDRESS, MPU6886_GYRO_OFFSET, 6, buf_out);
+}
+
+void MPU6886::setFIFOEnable( bool enableflag ) {
+	uint8_t regdata = 0;
+  regdata = enableflag ? 0x18 : 0x00;
+  I2C_Write_NBytes(MPU6886_ADDRESS, MPU6886_FIFO_ENABLE, 1, &regdata);
+  regdata = enableflag ? 0x40 : 0x00;
+  I2C_Write_NBytes(MPU6886_ADDRESS, MPU6886_USER_CTRL, 1, &regdata);
+}
+
+uint8_t MPU6886::ReadFIFO() {
+  uint8_t ReData = 0;
+  I2C_Read_NBytes(MPU6886_ADDRESS, MPU6886_FIFO_R_W , 1 , &ReData);
+  return ReData;    
+}
+
+void MPU6886::ReadFIFOBuff(uint8_t *DataBuff ,uint16_t Length) {
+  uint8_t number = Length / 210;
+  for(uint8_t i = 0; i < number; i++) {
+  	I2C_Read_NBytes(MPU6886_ADDRESS, MPU6886_FIFO_R_W, 210, &DataBuff[i*210]);
+  }
+    
+	I2C_Read_NBytes(MPU6886_ADDRESS, MPU6886_FIFO_R_W, Length % 210, &DataBuff[number*210]);
+}
+
+void MPU6886::RestFIFO() {
+  uint8_t buf_out;
+  I2C_Read_NBytes(MPU6886_ADDRESS, MPU6886_USER_CTRL, 1, &buf_out);
+  buf_out |= 0x04;
+  I2C_Write_NBytes(MPU6886_ADDRESS, MPU6886_USER_CTRL, 1, &buf_out);
+}
+
+uint16_t MPU6886::ReadFIFOCount() {
+  uint8_t Buff[2];
+  uint16_t ReData = 0;
+  I2C_Read_NBytes( MPU6886_ADDRESS, MPU6886_FIFO_COUNT, 2, Buff);
+  ReData = (Buff[0] << 8) | Buff[1];
+  return ReData;
 }
