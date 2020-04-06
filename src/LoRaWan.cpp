@@ -416,6 +416,25 @@ bool LoRaWanClass::transferPacketWithConfirmed(unsigned char *buffer, unsigned c
       return false;
 }
 
+bool LoRaWanClass::transferPacketLinkCheckReq(unsigned char timeout)
+{
+    while(SerialLoRa.available())SerialLoRa.read();
+    
+    sendCommand("AT+MSG\r\n");
+    
+    memset(_buffer, 0, BEFFER_LENGTH_MAX);
+    readBuffer(_buffer, BEFFER_LENGTH_MAX, timeout);
+#if _DEBUG_SERIAL_    
+    SerialUSB.print(_buffer);
+#endif
+    dutycycle = false;
+    if(strstr(_buffer, "+MSG: No band")){
+    dutycycle = true;
+    } 
+    if(strstr(_buffer, "+MSG: Done"))return true;
+    return false;
+}
+
 short LoRaWanClass::receivePacket(char *buffer, short length, short *rssi)
 {
     char *ptr;
