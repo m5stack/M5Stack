@@ -331,7 +331,7 @@ bool LoRaWanClass::transferPacketWithConfirmed(char *buffer, unsigned char timeo
       SerialLoRa.read();
 
     sendCommand("AT+CMSG=\"");
-    for(unsigned char i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
+    for(int i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
     sendCommand("\"\r\n");
 
 #ifdef deadcode
