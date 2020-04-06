@@ -298,7 +298,7 @@ bool LoRaWanClass::transferPacket(char *buffer, unsigned char timeout)
 
 bool LoRaWanClass::transferPacket(unsigned char *buffer, unsigned char length, unsigned char timeout)
 {
-    char temp[2] = {0};
+    char temp[3] = {0};
 
     while(SerialLoRa.available())SerialLoRa.read();
 
@@ -383,7 +383,7 @@ bool LoRaWanClass::transferPacketWithConfirmed(char *buffer, unsigned char timeo
 
 bool LoRaWanClass::transferPacketWithConfirmed(unsigned char *buffer, unsigned char length, unsigned char timeout)
 {
-    char temp[2] = {0};
+    char temp[3] = {0};
     int i;
     unsigned char *ptr;
 
@@ -431,7 +431,7 @@ short LoRaWanClass::receivePacket(char *buffer, short length, short *rssi)
         ptr += 5;
         for(short i = 0; ; i ++)
         {
-            char temp[2] = {0, 0};
+            char temp[3] = {0, 0};
             unsigned char tmp = '?', result = 0;
 
             temp[0] = *(ptr + i * 3);
@@ -473,7 +473,7 @@ short LoRaWanClass::receivePacket(char *buffer, short length, short *rssi)
         ptr += 9;
         for(short i = 0; ; i ++)
         {
-            char temp[2] = {0};
+            char temp[3] = {0};
             unsigned char tmp = '?', result = 0;
 
             temp[0] = *(ptr + i * 3);
@@ -527,7 +527,7 @@ bool LoRaWanClass::transferProprietaryPacket(char *buffer, unsigned char timeout
 
 bool LoRaWanClass::transferProprietaryPacket(unsigned char *buffer, unsigned char length, unsigned char timeout)
 {
-    char temp[2] = {0};
+    char temp[3] = {0};
 
     while(SerialLoRa.available())SerialLoRa.read();
 
@@ -822,7 +822,7 @@ void LoRaWanClass::transferPacketP2PMode(char *buffer)
 
 void LoRaWanClass::transferPacketP2PMode(unsigned char *buffer, unsigned char length)
 {
-    char temp[2] = {0};
+    char temp[3] = {0};
 
     sendCommand("AT+TEST=TXLRPKT,\"");
     for(unsigned char i = 0; i < length; i ++)
@@ -858,7 +858,7 @@ short LoRaWanClass::receivePacketP2PMode(unsigned char *buffer, short length, sh
         ptr += 4;
         for(short i = 0; i < number; i ++)
         {
-            char temp[2] = {0};
+            char temp[3] = {0};
             unsigned char tmp='?', result = 0;
 
             temp[0] = *(ptr + i * 2);
