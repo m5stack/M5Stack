@@ -271,7 +271,7 @@ bool LoRaWanClass::transferPacket(char *buffer, unsigned char timeout)
     while(SerialLoRa.available())SerialLoRa.read();
 
     sendCommand("AT+MSG=\"");
-    for(unsigned char i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
+    for(int i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
     sendCommand("\"\r\n");
 
     while (true) {
@@ -303,7 +303,7 @@ bool LoRaWanClass::transferPacket(unsigned char *buffer, unsigned char length, u
     while(SerialLoRa.available())SerialLoRa.read();
 
     sendCommand("AT+MSGHEX=\"");
-    for(unsigned char i = 0; i < length; i ++)
+    for(int i = 0; i < length; i ++)
     {
         sprintf(temp,"%02x", buffer[i]);
         SerialLoRa.write(temp);
@@ -331,7 +331,7 @@ bool LoRaWanClass::transferPacketWithConfirmed(char *buffer, unsigned char timeo
       SerialLoRa.read();
 
     sendCommand("AT+CMSG=\"");
-    for(unsigned char i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
+    for(int i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
     sendCommand("\"\r\n");
 
 #ifdef deadcode
@@ -390,7 +390,7 @@ bool LoRaWanClass::transferPacketWithConfirmed(unsigned char *buffer, unsigned c
     while(SerialLoRa.available())SerialLoRa.read();
 
     sendCommand("AT+CMSGHEX=\"");
-    for(unsigned char i = 0; i < length; i ++)
+    for(int i = 0; i < length; i ++)
     {
         sprintf(temp,"%02x", buffer[i]);
         SerialLoRa.write(temp);
@@ -513,7 +513,7 @@ bool LoRaWanClass::transferProprietaryPacket(char *buffer, unsigned char timeout
     while(SerialLoRa.available())SerialLoRa.read();
 
     sendCommand("AT+PMSG=\"");
-    for(unsigned char i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
+    for(int i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
     sendCommand("\"\r\n");
 
     memset(_buffer, 0, BEFFER_LENGTH_MAX);
@@ -532,7 +532,7 @@ bool LoRaWanClass::transferProprietaryPacket(unsigned char *buffer, unsigned cha
     while(SerialLoRa.available())SerialLoRa.read();
 
     sendCommand("AT+PMSGHEX=\"");
-    for(unsigned char i = 0; i < length; i ++)
+    for(int i = 0; i < length; i ++)
     {
         sprintf(temp,"%02x", buffer[i]);
         SerialLoRa.write(temp);
@@ -816,7 +816,7 @@ void LoRaWanClass::transferPacketP2PMode(char *buffer)
     unsigned char length = strlen(buffer);
 
     sendCommand("AT+TEST=TXLRSTR,\"");
-    for(unsigned char i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
+    for(int i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
     sendCommand("\"\r\n");
 }
 
@@ -825,7 +825,7 @@ void LoRaWanClass::transferPacketP2PMode(unsigned char *buffer, unsigned char le
     char temp[2] = {0};
 
     sendCommand("AT+TEST=TXLRPKT,\"");
-    for(unsigned char i = 0; i < length; i ++)
+    for(int i = 0; i < length; i ++)
     {
         sprintf(temp,"%02x", buffer[i]);
         SerialLoRa.write(temp);
