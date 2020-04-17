@@ -1,10 +1,8 @@
 /*
-  Color test
-    hardware: M5Stack
-  
-  please install the Adfruit TCS34725 library first ...
+    Description: Use COLOR Unit to read C, R, G, B values and serial print output.
+    Please install library before compiling:  
+    Adafruit TCS34725: https://github.com/adafruit/Adafruit_TCS34725
 */
-
 #include <Wire.h>
 #include <M5Stack.h>
 #include "Adafruit_TCS34725.h"

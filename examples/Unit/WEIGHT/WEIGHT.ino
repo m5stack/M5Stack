@@ -1,7 +1,9 @@
 /*
-  This Unit connects to GRVOE B on M5Core.
-  hx711 library fork from https://github.com/aguegu/ardulibs/tree/master/hx711
+    Description: Use WEIGHT Unit to read the analog value returned by the pressure sensor, convert it into intuitive weight data and send it to M5Core
+    Please install library before compiling:  
+    hx711: https://github.com/aguegu/ardulibs/tree/master/hx711
 */
+
 
 #include <M5Stack.h>
 #include "hx711.h"

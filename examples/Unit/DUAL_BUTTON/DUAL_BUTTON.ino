@@ -1,5 +1,5 @@
 /*
-  This Unit connects to GRVOE B on M5Core.
+    Description: Read the button status of DUAL BUTTON Unit and display it on the screen.
 */
 #include <M5Stack.h>
 

@@ -1,3 +1,6 @@
+/*
+    Description: Use MAKEY Unit to control M5Core to emit tones.
+*/
 #include <M5Stack.h>
 #include <Wire.h>
 

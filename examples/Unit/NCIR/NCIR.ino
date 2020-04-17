@@ -1,3 +1,6 @@
+/*
+    Description: Use NCIR Unit to measure the temperature without contact and display the value on the screen.
+*/
 #include <M5Stack.h>
 #include <Wire.h>
 

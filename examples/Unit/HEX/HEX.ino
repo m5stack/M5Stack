@@ -1,6 +1,8 @@
 /*
-    Install FastLED library first.(HEX is connected to GROVE A)
- */
+    Description: Control HEX Unit to run rainbow light show
+    Please install library before compiling:  
+    FastLED: https://github.com/FastLED/FastLED
+*/
 #include <M5Stack.h>
 #include "FastLED.h"
 

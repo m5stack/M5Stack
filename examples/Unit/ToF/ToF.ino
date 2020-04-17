@@ -1,7 +1,7 @@
-//  the original code by Ted Meyers
-//  posted here: https://groups.google.com/d/msg/diyrovers/lc7NUZYuJOg/ICPrYNJGBgAJ
+/*
+    Description: Use ToF Unit to detect distance and display distance data on the screen in real time.
+*/
 
-//  if your tof have some problem, please see https://docs.m5stack.com/#/en/unit/tof 
 #include <M5Stack.h>
 #include <Wire.h>
 

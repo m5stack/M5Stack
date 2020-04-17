@@ -1,8 +1,9 @@
 /*
-    hardware : m5stack uint dac
-
-    please install adafruit MCP4725 lib
+    Description: Use DAC Unit DAC to output 0 ~ 3.3V voltage with an accuracy of 12 bits.
+    Please install library before compiling:  
+    Adafruit MCP4725: https://github.com/adafruit/Adafruit_MCP4725
 */
+
 #include <Wire.h>
 #include <Adafruit_MCP4725.h>
 #include <M5Stack.h>

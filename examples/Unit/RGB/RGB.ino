@@ -1,9 +1,8 @@
-// NeoPixel Ring simple sketch (c) 2013 Shae Erisson
-// released under the GPLv3 license to match the rest of the AdaFruit NeoPixel library
-
 /*
-    Install the AdaFruit NeoPixel library first
- */
+    Description: Control RGB Unit to scroll through three colors of red, green and blue
+    Please install library before compiling:  
+    AdaFruit NeoPixel: https://github.com/adafruit/Adafruit_NeoPixel
+*/
 #include <Adafruit_NeoPixel.h>
 #include <M5Stack.h>
 

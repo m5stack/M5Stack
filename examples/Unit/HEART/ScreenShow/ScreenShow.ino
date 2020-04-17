@@ -1,6 +1,7 @@
 /*
-    pls install MAX30100lib by library manager first
-    addr: https://github.com/oxullo/Arduino-MAX30100
+    Description: This example shows how the HEART Unit obtains the original value of the heart rate detection and displays the line graph on the screen. Before the program runs, put the finger to the sensor detection position.
+    Please install library before compiling:  
+    Arduino-MAX30100: https://github.com/oxullo/Arduino-MAX30100
 */
 
 #include <M5Stack.h>

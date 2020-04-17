@@ -1,5 +1,7 @@
 /*
-    note: need add library Adafruit_BMP280 from library manage
+    Description: Use ENV Unit to read temperature, humidity, atmospheric pressure, and display the data on the screen.
+    Please install library before compiling:  
+    Adafruit BMP280: https://github.com/adafruit/Adafruit_BMP280_Library
 */
 
 #include <M5Stack.h>

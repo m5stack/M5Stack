@@ -1,5 +1,8 @@
 /*
-    Install FastLED library first. (please change wifi ssid and password to yours)
+    Description: NEOFLASH real-time clock case: fill in your personal WiFi information in the code below.
+    After the program runs, it will automatically send an HTTP request to obtain the current time data, combined with PIR induction to control the RGB LED on and off.
+    Please install library before compiling:  
+    FastLED: https://github.com/FastLED/FastLED
 */
 #include "FastLED.h"
 #include <M5Stack.h>

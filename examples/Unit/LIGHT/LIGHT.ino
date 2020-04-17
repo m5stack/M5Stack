@@ -1,3 +1,6 @@
+/*
+    Description: Read the analog quantity and digital quantity input by LIGHT Unit, and convert the analog quantity into 12-bit data for display
+*/
 #include <M5Stack.h>
 
 void setup() {

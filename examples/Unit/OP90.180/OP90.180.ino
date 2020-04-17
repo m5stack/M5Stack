@@ -1,3 +1,7 @@
+/*
+    Description: Detect the current OP 90/180 Unit Photoelectric switch status.
+*/
+
 #include <M5Stack.h>
 
 

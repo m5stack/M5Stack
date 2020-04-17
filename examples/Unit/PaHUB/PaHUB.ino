@@ -1,3 +1,7 @@
+/*
+    Description: Use PaHUB Unit to expand multiple I2C devices and scan the I2C addresses of the slave devices in order.
+*/
+
 #include <Wire.h>
 #include <M5Stack.h>
 #include "ClosedCube_TCA9548A.h"

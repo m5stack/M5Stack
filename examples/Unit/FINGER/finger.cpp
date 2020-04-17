@@ -1,3 +1,7 @@
+/*
+    Description: FINGER UNIT use case: Press the left button to enter the fingerprint entry mode. Press the middle button to enter the fingerprint identification mode.
+*/
+
 #include <M5Stack.h>
 #include "finger.h"
 

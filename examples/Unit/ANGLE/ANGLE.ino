@@ -1,5 +1,5 @@
 /*
-    Description: Read ANGLE Unit input analog quantity, and convert to 12-bit digital quantity for display
+    Description: Read ANGLE Unit input analog quantity, and convert to 12-bit digital quantity for display 
 */
 
 #include <M5Stack.h>

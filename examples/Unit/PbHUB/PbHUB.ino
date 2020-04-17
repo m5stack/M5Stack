@@ -1,3 +1,7 @@
+/*
+    Description: Use Pbhub to read the analog input value of the slave device, or drive multiple sets of RGB LEDs.
+*/
+
 #include <M5Stack.h>
 #include <Wire.h>
 #include "porthub.h"

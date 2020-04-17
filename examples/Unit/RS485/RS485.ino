@@ -1,10 +1,9 @@
+/*
+    Description: Use RS485 Unit for serial communication, continuously send "Hello", and display the received content on the screen.
+*/
 #include <M5Stack.h>
 #define RX_PIN      16
 #define TX_PIN      17  
-
-
-#define X_LOCAL 40
-#define Y_LOCAL 40
 
 #define X_OFF 160
 #define Y_OFF 30
@@ -24,7 +23,7 @@ void setup() {
   M5.begin();
   M5.Power.begin();
 
-  header("RS485 A", TFT_BLACK);
+  header("RS485 Unit test", TFT_BLACK);
   M5.Lcd.setTextFont(2);
   M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
   Serial.begin(115200);   
@@ -34,20 +33,10 @@ void setup() {
 
 void loop() {
   
-  Serial2.write('a');
-  s++;
+  Serial2.write("Hello\n");
 
-//  if(Serial2.available()){
-//    char c = Serial2.read();
-//    if(c=='b'){
-//      c = 0;
-//      i++;
-//    }
-//  }
-  
-  M5.Lcd.setCursor(X_LOCAL, Y_LOCAL,2);
-  M5.Lcd.printf("S :%d\n",s);
-//  M5.Lcd.setCursor(X_LOCAL+X_OFF, Y_LOCAL,2);
-//  M5.Lcd.printf("R :%d\n",i);
-//  delay(10);
+  if(Serial2.available()){
+   M5.Lcd.print(char(Serial2.read()));
+ }
+  delay(100);
 }

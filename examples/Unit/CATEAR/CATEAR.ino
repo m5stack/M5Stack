@@ -1,7 +1,8 @@
 /*
-    Please install FastLED library first.
-    In arduino library manage search FastLED
- */
+    Description: Control CAT EAR to run rainbow light show
+    Please install library before compiling:  
+    FastLED: https://github.com/FastLED/FastLED
+*/
 #include <M5Stack.h>
 #include "FastLED.h"
 

@@ -1,3 +1,6 @@
+/*
+    Description: Human body detection using PIR Unit.
+*/
 #include <M5Stack.h>
 
 void setup() {

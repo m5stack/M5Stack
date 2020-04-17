@@ -1,3 +1,6 @@
+/*
+    Description: Use RELAY to switch on and off the circuit.
+*/
 #include <M5Stack.h>
 
 void setup() {

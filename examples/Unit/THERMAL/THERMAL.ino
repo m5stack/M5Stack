@@ -1,31 +1,5 @@
-// update 3 :mirror image
-// reverseScreen=true/false, turn=front camera, false=Selfie
 /*
-  Read the temperature pixels from the MLX90640 IR array
-  By: Nathan Seidle
-  SparkFun Electronics
-  Date: May 22nd, 2018
-  License: MIT. See license file for more information but you can
-  basically do whatever you want with this code.
-
-  Feel like supporting open source hardware?
-  Buy a board from SparkFun! https://www.sparkfun.com/products/14769
-
-  This example initializes the MLX90640 and outputs the 768 temperature values
-  from the 768 pixels.
-
-  This example will work with a Teensy 3.1 and above. The MLX90640 requires some
-  hefty calculations and larger arrays. You will need a microcontroller with 20,000
-  bytes or more of RAM.
-
-  This relies on the driver written by Melexis and can be found at:
-  https://github.com/melexis/mlx90640-library
-
-  Hardware Connections:
-  Connect the SparkFun Qwiic Breadboard Jumper (https://www.sparkfun.com/products/14425)
-  to the Qwiic board
-  Connect the male pins to the Teensy. The pinouts can be found here: https://www.pjrc.com/teensy/pinout.html
-  Open the serial monitor at 9600 baud to see the output
+    Description: Read the THERMAL Unit (MLX90640 IR array) temperature pixels and display it on the screen.
 */
 #include <M5Stack.h>
 #include <Wire.h>

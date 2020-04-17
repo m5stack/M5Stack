@@ -1,3 +1,6 @@
+/*
+    Description: Control the 8 extended IOs on the EXT.IO Unit to cycle high and low level changes.
+*/
 #include <M5Stack.h>
 #include "PCA9554.h"  // Load the PCA9554 Library
 
