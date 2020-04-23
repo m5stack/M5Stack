@@ -1,6 +1,7 @@
 /*
-  please add MCP_CAN_LIB to your library first........
-  MCP_CAN_LIB file in M5stack lib examples -> modules -> COMMU -> MCP_CAN_lib.rar
+    Description: Press button A for CAN communication test, press button B for RS485 communication test.
+    Please install library before compiling:  
+    MCP_CAN_LIB: file in M5stack lib examples -> modules -> COMMU -> MCP_CAN_lib.rar（unzip the lib zip file to the Arduino Lib path）
 */
 
 #include <M5Stack.h>

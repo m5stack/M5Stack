@@ -1,5 +1,6 @@
-// only for mpu6886 !!!!!
-// first init need press BtnC and reboot to calibrate
+/*
+    Description: This code only for mpu6886! first init need press BtnC and reboot to calibrate !
+*/
 
 #include <M5Stack.h>
 

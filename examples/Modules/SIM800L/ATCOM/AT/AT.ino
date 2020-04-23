@@ -1,5 +1,6 @@
-//Reset resistance is not soldered. If necessary, weld it yourself.
-
+/*
+    Description: SIM800L serial transparent transmission debugging program
+*/
 #include <M5Stack.h>
 #define RX_PIN      16
 #define TX_PIN      17

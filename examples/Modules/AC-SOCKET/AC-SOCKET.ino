@@ -1,3 +1,6 @@
+/*
+    Description:Click button B to turn on the power. Click button A to turn off the power.
+*/
 #include <Arduino.h>
 #include <M5Stack.h>
 #include "protocol.h"
