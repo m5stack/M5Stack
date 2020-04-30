@@ -1,5 +1,5 @@
 /*
-    Description: Use SIM800L module to send SMS
+    Description: Use SIM800L module to send SMS . before compile pls change the SMS center number and the Send number. ps: Module reset resistance is not soldered. if necessary, weld it yourself.
 */
 #include <M5Stack.h>
 #define RX_PIN      16

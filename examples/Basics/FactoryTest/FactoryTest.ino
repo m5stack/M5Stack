@@ -36,10 +36,6 @@ void startupLogo() {
 
     M5.Lcd.fillScreen(BLACK);
     delay(800);
-    for(int i=0; i>=100; i++) {
-        M5.Lcd.setBrightness(i);
-        delay(2);
-    }
 }
 
 //TF card test
