@@ -1,6 +1,5 @@
 /*
-    hardware: M5Stack unit ADC
-    connect: PORTA(21, 22) or PORTC(17, 16)
+    Description: Use ADC Unit to convert 0 ~ 12V analog voltage into 16-bit data and display it on the screen.
 */
 #include <M5Stack.h>
 #include <Wire.h>

@@ -1,10 +1,6 @@
 /*
- * @Author: Sorzn
- * @Date: 2019-12-12 14:33:57
- * @LastEditTime: 2019-12-13 16:18:07
- * @Description: M5Stack project
- * @FilePath: /M5Stack/examples/Modules/BaseX/BaseX.ino
- */
+    Description: Provide three LEGO motor drive modes。Press button B to switch the mode, button A and C control parameter value increase and decrease
+*/
 
 #include <M5Stack.h>
 #include "BaseX.h"

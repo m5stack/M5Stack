@@ -1,3 +1,7 @@
+/*
+    Description: Read ANGLE Unit input analog quantity, and convert to 12-bit digital quantity for display 
+*/
+
 #include <M5Stack.h>
 // select the input pin for the potentiometer
 int sensorPin = 36;

@@ -1,3 +1,6 @@
+/*
+    Description: Adjust the speed of VIBRATOR Unit through PWM.
+*/
 #include <M5Stack.h>
 
 const int motor_pin = 21;
@@ -13,14 +16,11 @@ void setup() {
   ledcAttachPin(motor_pin, ledChannel);
 
 }
-// 0 - 1024 
+
 void loop() {
   // put your main code here, to run repeatedly:
-    ledcWrite(ledChannel, 512);//0°
+    ledcWrite(ledChannel, 512);
     delay(1000);
-    ledcWrite(ledChannel, 0);//90°
+    ledcWrite(ledChannel, 0);
     delay(1000);
-    //ledcWrite(ledChannel, 30);//180°
-    //delay(1000);
-
 }

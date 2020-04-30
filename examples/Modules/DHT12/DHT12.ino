@@ -1,3 +1,6 @@
+/*
+    Description: Use DHT12 Sensor to read temperature, humidity and display the data on the screen.
+*/
 #include <M5Stack.h>
 #include "DHT12.h"
 #include <Wire.h>     //The DHT12 uses I2C comunication.

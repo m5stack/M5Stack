@@ -1,3 +1,6 @@
+/*
+    Description: Read the characters entered by CardKB Unit and display them on the screen.
+*/
 #include <Wire.h>
 #include <M5Stack.h>
 

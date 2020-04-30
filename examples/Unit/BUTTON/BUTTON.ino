@@ -1,3 +1,6 @@
+/*
+    Description: Read the button status of BUTTON Unit and display it on the screen
+*/
 #include <M5Stack.h>
 
 int last_value = 0;
