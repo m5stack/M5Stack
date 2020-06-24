@@ -1,3 +1,7 @@
+/*
+    Description: Read the status of the four line-tracking sensors of TRACE Unit and output them through UART.
+*/
+
 #include <M5Stack.h>
 
 // #define VALUE_SPLIT

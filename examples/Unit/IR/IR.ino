@@ -1,3 +1,6 @@
+/*
+    Description: Use IR Unit to receive and test infrared receiving and transmitting
+*/
 #include <M5Stack.h>
 // select the input pin for the potentiometer
 int ir_recv_pin = 36;

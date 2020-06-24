@@ -271,7 +271,7 @@ bool LoRaWanClass::transferPacket(char *buffer, unsigned char timeout)
     while(SerialLoRa.available())SerialLoRa.read();
 
     sendCommand("AT+MSG=\"");
-    for(unsigned char i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
+    for(int i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
     sendCommand("\"\r\n");
 
     while (true) {
@@ -298,12 +298,12 @@ bool LoRaWanClass::transferPacket(char *buffer, unsigned char timeout)
 
 bool LoRaWanClass::transferPacket(unsigned char *buffer, unsigned char length, unsigned char timeout)
 {
-    char temp[2] = {0};
+    char temp[3] = {0};
 
     while(SerialLoRa.available())SerialLoRa.read();
 
     sendCommand("AT+MSGHEX=\"");
-    for(unsigned char i = 0; i < length; i ++)
+    for(int i = 0; i < length; i ++)
     {
         sprintf(temp,"%02x", buffer[i]);
         SerialLoRa.write(temp);
@@ -331,7 +331,7 @@ bool LoRaWanClass::transferPacketWithConfirmed(char *buffer, unsigned char timeo
       SerialLoRa.read();
 
     sendCommand("AT+CMSG=\"");
-    for(unsigned char i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
+    for(int i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
     sendCommand("\"\r\n");
 
 #ifdef deadcode
@@ -383,14 +383,14 @@ bool LoRaWanClass::transferPacketWithConfirmed(char *buffer, unsigned char timeo
 
 bool LoRaWanClass::transferPacketWithConfirmed(unsigned char *buffer, unsigned char length, unsigned char timeout)
 {
-    char temp[2] = {0};
+    char temp[3] = {0};
     int i;
     unsigned char *ptr;
 
     while(SerialLoRa.available())SerialLoRa.read();
 
     sendCommand("AT+CMSGHEX=\"");
-    for(unsigned char i = 0; i < length; i ++)
+    for(int i = 0; i < length; i ++)
     {
         sprintf(temp,"%02x", buffer[i]);
         SerialLoRa.write(temp);
@@ -431,7 +431,7 @@ short LoRaWanClass::receivePacket(char *buffer, short length, short *rssi)
         ptr += 5;
         for(short i = 0; ; i ++)
         {
-            char temp[2] = {0, 0};
+            char temp[3] = {0, 0};
             unsigned char tmp = '?', result = 0;
 
             temp[0] = *(ptr + i * 3);
@@ -473,7 +473,7 @@ short LoRaWanClass::receivePacket(char *buffer, short length, short *rssi)
         ptr += 9;
         for(short i = 0; ; i ++)
         {
-            char temp[2] = {0};
+            char temp[3] = {0};
             unsigned char tmp = '?', result = 0;
 
             temp[0] = *(ptr + i * 3);
@@ -513,7 +513,7 @@ bool LoRaWanClass::transferProprietaryPacket(char *buffer, unsigned char timeout
     while(SerialLoRa.available())SerialLoRa.read();
 
     sendCommand("AT+PMSG=\"");
-    for(unsigned char i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
+    for(int i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
     sendCommand("\"\r\n");
 
     memset(_buffer, 0, BEFFER_LENGTH_MAX);
@@ -527,12 +527,12 @@ bool LoRaWanClass::transferProprietaryPacket(char *buffer, unsigned char timeout
 
 bool LoRaWanClass::transferProprietaryPacket(unsigned char *buffer, unsigned char length, unsigned char timeout)
 {
-    char temp[2] = {0};
+    char temp[3] = {0};
 
     while(SerialLoRa.available())SerialLoRa.read();
 
     sendCommand("AT+PMSGHEX=\"");
-    for(unsigned char i = 0; i < length; i ++)
+    for(int i = 0; i < length; i ++)
     {
         sprintf(temp,"%02x", buffer[i]);
         SerialLoRa.write(temp);
@@ -816,16 +816,16 @@ void LoRaWanClass::transferPacketP2PMode(char *buffer)
     unsigned char length = strlen(buffer);
 
     sendCommand("AT+TEST=TXLRSTR,\"");
-    for(unsigned char i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
+    for(int i = 0; i < length; i ++)SerialLoRa.write(buffer[i]);
     sendCommand("\"\r\n");
 }
 
 void LoRaWanClass::transferPacketP2PMode(unsigned char *buffer, unsigned char length)
 {
-    char temp[2] = {0};
+    char temp[3] = {0};
 
     sendCommand("AT+TEST=TXLRPKT,\"");
-    for(unsigned char i = 0; i < length; i ++)
+    for(int i = 0; i < length; i ++)
     {
         sprintf(temp,"%02x", buffer[i]);
         SerialLoRa.write(temp);
@@ -858,7 +858,7 @@ short LoRaWanClass::receivePacketP2PMode(unsigned char *buffer, short length, sh
         ptr += 4;
         for(short i = 0; i < number; i ++)
         {
-            char temp[2] = {0};
+            char temp[3] = {0};
             unsigned char tmp='?', result = 0;
 
             temp[0] = *(ptr + i * 2);

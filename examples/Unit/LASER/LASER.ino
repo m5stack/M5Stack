@@ -1,14 +1,8 @@
-
-/* This demo is for LASER.TX and LASER.RX, utilized UART for transmittion and reception of
- laser signals. In order to get the result of this demo, you will need to connect LASER.TX 
- and LASER.RX with PORTC(blue) respectively onto two different M5Cores with M5GO bases on
-  bottom. Then flash the demo into both M5Core device. 
-
-  When testing the demo, you need to point the TX unit to RX, and press the button TX connected 
-  device. RX connected device will reponse with a display,and will show what is received . 
-
-  See this link for more detals: https://m5stack.oss-cn-shenzhen.aliyuncs.com/EasyLoader/Unit/LASER/EasyLoader_LASER_RX.exe
- */
+/*
+    Description: LASER Unit wireless UART application: burn the program to two M5Cores
+    And connect LASER.TX and LASER.RX to PORTC port respectively. 
+    Point LASER.TX to LASER.RX and press the button on the panel to send characters to the receiver of LASER.RX.
+*/
 
 #include <M5Stack.h>
 
