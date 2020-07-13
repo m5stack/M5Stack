@@ -389,7 +389,12 @@ void TFT_eSPI::init(uint8_t tc)
 
   // This loads the driver specific initialisation code  <<<<<<<<<<<<<<<<<<<<< ADD NEW DRIVERS TO THE LIST HERE <<<<<<<<<<<<<<<<<<<<<<<
 #if   defined (ILI9341_DRIVER)
+  if (lcd_version) {
+    #include "ILI9342C_Init.h"
+
+  } else {
     #include "ILI9341_Init.h"
+  }
 
 #elif defined (ST7735_DRIVER)
     tabcolor = tc;
