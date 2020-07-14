@@ -26,7 +26,7 @@ void setup()
     M5.begin();
 
     M5.Lcd.setTextColor(TFT_WHITE);
-    M5.Lcd.setFreeFont(&CUF_24px);
+    M5.Lcd.setFreeFont(&unicode_24px);
 
 
     M5.Lcd.setTextDatum(TC_DATUM);
