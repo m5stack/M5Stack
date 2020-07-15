@@ -34,6 +34,7 @@ class TFT_eSprite : public TFT_eSPI {
 
   void     drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32_t bg, uint8_t size),
 
+           fillScreen(uint32_t color),
            fillSprite(uint32_t color),
 
            // Define a window to push 16 bit colour pixels into in a raster order
