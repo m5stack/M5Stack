@@ -393,8 +393,11 @@ void POWER::powerOFF(){
   }
   
   //stop wifi
-  esp_wifi_disconnect();
-  esp_wifi_stop();
+  uint16_t ap_num;
+  if (esp_wifi_scan_get_ap_num(&ap_num)==ESP_OK) {
+    esp_wifi_disconnect();
+    esp_wifi_stop();
+  }
   
   //stop bt
   esp_bluedroid_disable();
