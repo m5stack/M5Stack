@@ -392,9 +392,9 @@ void POWER::powerOFF(){
     M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, (data & (~BOOST_ENABLE_BIT)));
   }
   
-  //stop wifi
-  uint16_t ap_num;
-  if (esp_wifi_scan_get_ap_num(&ap_num)==ESP_OK) {
+  // if wifi was initialized, stop it
+  wifi_mode_t mode;
+  if (esp_wifi_get_mode(&mode) == ESP_OK) {
     esp_wifi_disconnect();
     esp_wifi_stop();
   }
