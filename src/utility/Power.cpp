@@ -392,9 +392,12 @@ void POWER::powerOFF(){
     M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, (data & (~BOOST_ENABLE_BIT)));
   }
   
-  //stop wifi
-  esp_wifi_disconnect();
-  esp_wifi_stop();
+  // if wifi was initialized, stop it
+  wifi_mode_t mode;
+  if (esp_wifi_get_mode(&mode) == ESP_OK) {
+    esp_wifi_disconnect();
+    esp_wifi_stop();
+  }
   
   //stop bt
   esp_bluedroid_disable();
