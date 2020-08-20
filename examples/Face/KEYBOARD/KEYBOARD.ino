@@ -6,6 +6,7 @@
 void setup()
 {
   M5.begin();
+  M5.Power.begin();
   Wire.begin();
   M5.Lcd.setTextFont(2);
   M5.Lcd.println("FACES Keyboard I2C Read Example");

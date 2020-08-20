@@ -44,6 +44,7 @@ unsigned int colour = red << 11; // Colour order is RGB 5+6+5 bits each
 void setup(void) {
 
   M5.begin();
+  M5.Power.begin();
   Serial.begin(921600);
 
   M5.Lcd.fillScreen(TFT_BLACK);

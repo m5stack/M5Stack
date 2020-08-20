@@ -40,6 +40,7 @@ extern uint8_t tetris_img[];
 //========================================================================
 void setup(void) {
   M5.begin();                   // M5STACK INITIALIZE
+  M5.Power.begin();
   M5.Lcd.setBrightness(200);    // BRIGHTNESS = MAX 255
   M5.Lcd.fillScreen(BLACK);     // CLEAR SCREEN
   //----------------------------// Make Block ----------------------------

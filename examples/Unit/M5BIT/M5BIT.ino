@@ -17,6 +17,7 @@ int i;
   
 void setup() {
   M5.begin();
+  M5.Power.begin();
   Wire.begin();
   if(digitalRead(BUTTON_A_PIN) == 0){
     Serial.println("Will load menu binary");

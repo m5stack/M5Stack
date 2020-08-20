@@ -14,6 +14,7 @@ uint16_t x0 = 0, x1 = 0, yy0 = 0, yy1 = 0;
 void setup()
 {
   M5.begin();
+  M5.Power.begin();
   // M5.Lcd.setRotation(3);
 }
 

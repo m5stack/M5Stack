@@ -13,6 +13,7 @@ bool ubCoilState = false;
 
 void setup() {
   M5.begin(true, false, true, false);
+  M5.Power.begin();
   mb_init(0xac, 9600, &tim);
   Serial1.begin(9600, SERIAL_8N1, 16, 17);
   time_now = millis();

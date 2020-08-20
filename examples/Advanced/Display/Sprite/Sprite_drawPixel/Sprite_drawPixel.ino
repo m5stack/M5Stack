@@ -43,7 +43,7 @@ void setup()
 
   // Initialise the TFT registers
   M5.begin();
-
+  M5.Power.begin();
   // Optionally set colour depth to 8 or 16 bits, default is 16 if not spedified
   // spr.setColorDepth(8);
 

@@ -60,6 +60,7 @@ void myTimerEvent() {
 void setup() {
     // Debug console
     M5.begin();
+    M5.Power.begin();
     Wire.begin();
 
     //Blynk start

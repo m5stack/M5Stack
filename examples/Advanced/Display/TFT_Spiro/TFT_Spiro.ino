@@ -15,6 +15,7 @@ void setup()
 
   // Setup the LCD
   M5.begin();
+  M5.Power.begin();
   // M5.Lcd.setRotation(3);
 }
 

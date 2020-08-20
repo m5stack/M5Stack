@@ -44,6 +44,7 @@ void Motor(void){
 void setup() {
   // put your setup code here, to run once:
    M5.begin();
+   M5.Power.begin();
    goPlus.begin();
    header("G O P L U S",TFT_BLACK);
    M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLACK);

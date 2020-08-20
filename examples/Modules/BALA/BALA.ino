@@ -65,7 +65,7 @@ void auto_tune_gyro_offset() {
 void setup() {
 	// Power ON Stabilizing...
 	M5.begin();
-	
+	M5.Power.begin();
 	Wire.begin();
 	Wire.setClock(400000UL);  // Set I2C frequency to 400kHz
 

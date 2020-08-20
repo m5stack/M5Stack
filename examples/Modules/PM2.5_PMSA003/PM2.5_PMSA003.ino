@@ -35,6 +35,7 @@ void header(const char *string, uint16_t color)
 void setup() {
   
   M5.begin();
+  M5.Power.begin();
   Serial.begin(9600);
   Serial2.begin(9600, SERIAL_8N1, 16, 17);
   pinMode(10, OUTPUT);

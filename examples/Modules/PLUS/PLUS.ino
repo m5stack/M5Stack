@@ -13,6 +13,7 @@ uint8_t press = 0;
 
 void setup() {
     M5.begin(true, false, false);
+    M5.Power.begin();
     M5.Lcd.setTextFont(6);
     M5.Lcd.clear(BLACK);
     M5.Lcd.setTextColor(ORANGE, BLACK);

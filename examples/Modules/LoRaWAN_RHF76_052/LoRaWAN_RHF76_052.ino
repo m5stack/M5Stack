@@ -26,6 +26,7 @@ void key_scan(void *arg)
 void setup(void)
 {
   M5.begin();
+  M5.Power.begin();
   SerialUSB.begin(9600);
   lora.init();
   delay(2000); // must delay for lorawan power on

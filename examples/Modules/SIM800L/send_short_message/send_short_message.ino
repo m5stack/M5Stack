@@ -80,7 +80,7 @@ bool _sendSms()
 
 void setup() {
   M5.begin();
-
+  M5.Power.begin();
   header("SIM800L Send message", TFT_BLACK);
   M5.Lcd.setTextFont(2);
   M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);

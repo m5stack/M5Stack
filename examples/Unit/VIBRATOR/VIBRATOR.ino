@@ -10,6 +10,7 @@ int resolution = 10;
 void setup() {
   // put your setup code here, to run once:
   M5.begin();
+  M5.Power.begin();
   M5.Lcd.setCursor(120, 110, 4);
   M5.Lcd.println("MOTOR");
   ledcSetup(ledChannel, freq, resolution);

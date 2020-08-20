@@ -37,6 +37,7 @@ void Led(int i, int r, int g, int b){
 void setup()
 {
     M5.begin();
+    M5.Power.begin();
     Wire.begin();
     Serial.begin(115200);
     dacWrite(25, 0);
