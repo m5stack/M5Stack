@@ -78,8 +78,9 @@ void POWER::begin() {
   
   //Initial I2C 
   Wire.begin(21, 22);
-  // 650ma 
-  setVinMaxCurrent(CURRENT_400MA | CURRENT_200MA);
+
+  // 450ma 
+  setVinMaxCurrent(CURRENT_400MA);
 
   setChargeVolt(BAT_4_2V);
   
