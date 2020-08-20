@@ -46,7 +46,7 @@ TFT_eSprite img = TFT_eSprite(&M5.Lcd);  // Create Sprite object "img" with poin
 // -------------------------------------------------------------------------
 void setup(void) {
   M5.begin();
-
+  M5.Power.begin();
   M5.Lcd.fillScreen(TFT_BLUE);
 }
 

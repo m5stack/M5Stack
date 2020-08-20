@@ -17,6 +17,7 @@
 void setup() {
   // put your setup code here, to run once:
   M5.begin();
+  M5.Power.begin();
   Wire.begin();
   Serial.begin(115200);
   m5.Lcd.setTextColor(WHITE, BLACK);

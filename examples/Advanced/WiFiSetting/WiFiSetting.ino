@@ -20,6 +20,7 @@ Preferences preferences;
 
 void setup() {
   m5.begin();
+  M5.Power.begin();
   preferences.begin("wifi-config");
 
   delay(10);

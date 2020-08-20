@@ -31,6 +31,7 @@ unsigned long drawTime = 0;
 
 void setup(void) {
   M5.begin();
+  M5.Power.begin();
 }
 
 void loop() {

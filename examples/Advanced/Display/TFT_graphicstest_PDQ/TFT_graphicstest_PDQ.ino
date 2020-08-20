@@ -20,6 +20,7 @@ unsigned long tn = 0;
 
 void setup() {
 	M5.begin();
+	M5.Power.begin();
 	M5.Lcd.setRotation(0);
 	Serial.println(""); Serial.println("");
 	Serial.println("Bodmer's M5Stack library Test!"); 

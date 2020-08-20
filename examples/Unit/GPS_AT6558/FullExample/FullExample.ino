@@ -23,6 +23,7 @@ HardwareSerial ss(2);
 void setup()
 {
   M5.begin();
+  M5.Power.begin();
   ss.begin(GPSBaud);
 
   // M5.Lcd.println(F("FullExample.ino"));

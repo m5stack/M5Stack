@@ -31,7 +31,7 @@ void task3(void * pvParameters) {
 void setup() {
 
     M5.begin();
-
+    M5.Power.begin();
     // Task 1
     xTaskCreatePinnedToCore(
                     task1,     /* Function to implement the task */

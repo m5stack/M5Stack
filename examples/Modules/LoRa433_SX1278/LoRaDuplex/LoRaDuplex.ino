@@ -37,6 +37,7 @@ void header(const char *string, uint16_t color){
 
 void setup() {
   M5.begin();
+  M5.Power.begin();
   while (!Serial);
   header("LoRa Duplex", TFT_BLACK);
   M5.Lcd.setTextFont(2);

@@ -38,6 +38,7 @@ void setup()
 {
   dacWrite(M5STACKFIRE_SPEAKER_PIN, 0); // make sure that the speaker is quite
   M5.Lcd.begin();
+  M5.Power.begin();
   M5.Lcd.fillScreen( BLACK );
   M5.Lcd.fillRect(10, 1, 150, 160, BLACK);
   M5.Lcd.setCursor(0, 0);

@@ -40,6 +40,7 @@
 void setup(void) {
   
   M5.begin();
+  M5.Power.begin();
 }
 
 void loop() {

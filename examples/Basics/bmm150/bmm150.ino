@@ -99,6 +99,7 @@ void bmm150_offset_load()
 void setup() 
 {
     M5.begin(true, false, true, false);
+    M5.Power.begin();
     Wire.begin(21, 22, 400000);
 
     img.setColorDepth(1);

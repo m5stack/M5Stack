@@ -12,7 +12,7 @@ DisplayCh displaych;
 void setup() {
   
   M5.begin();
-  
+  M5.Power.begin();
   displaych.loadHzk16();
 
   displaych.setTextColor(WHITE, BLACK);

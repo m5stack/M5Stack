@@ -38,6 +38,7 @@ EthernetServer server(80);
 void setup() {
   // Open serial communications and wait for port to open:
   M5.begin(true, false, true);
+  M5.Power.begin();
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
   }

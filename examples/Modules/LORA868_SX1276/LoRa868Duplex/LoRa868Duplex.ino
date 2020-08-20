@@ -15,6 +15,7 @@ int interval = 1000;          // interval between sends
 
 void setup() {
   M5.begin();
+  M5.Power.begin();
   while (!Serial);
 
   Serial.println("LoRa Duplex B");

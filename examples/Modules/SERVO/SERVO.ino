@@ -8,6 +8,7 @@
 #define SERVO_ADDR 0x53
 void setup() {
     M5.begin(true, false, true);
+    M5.Power.begin();
     M5.Lcd.setTextFont(4);
     M5.Lcd.setCursor(70, 100);
     M5.Lcd.print("Servo Example");

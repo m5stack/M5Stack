@@ -19,7 +19,7 @@ unsigned long tn = 0;
 void setup() {
 
   M5.begin();
-
+  M5.Power.begin();
   Serial.println(""); Serial.println("");
   Serial.println("TFT_eSPI library test!");
 

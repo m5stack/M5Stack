@@ -57,6 +57,7 @@ int blank[19]; // We keep all the strings pixel lengths to optimise the speed of
 void setup() {
   // Setup the TFT display
   M5.begin();
+  M5.Power.begin();
   // M5.Lcd.setRotation(5); // Must be setRotation(0) for this sketch to work correctly
   M5.Lcd.fillScreen(TFT_BLACK);
   

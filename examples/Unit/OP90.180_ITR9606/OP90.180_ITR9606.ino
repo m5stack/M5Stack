@@ -8,6 +8,7 @@
 void setup() {
   // put your setup code here, to run once:
   M5.begin();
+  M5.Power.begin();
   //Wire.begin();
   M5.Lcd.setCursor(120, 10, 4);
   M5.Lcd.println("90/180 OPTICAL");

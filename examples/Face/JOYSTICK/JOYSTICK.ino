@@ -33,7 +33,7 @@ void Led(int indexOfLED, int r, int g, int b){
 
 void setup() {
   M5.begin();
-  
+  M5.Power.begin();
   M5.Lcd.clear();
   M5.Lcd.setCursor(60, 0, 4);    
   M5.Lcd.printf("FACE JOYSTICK");

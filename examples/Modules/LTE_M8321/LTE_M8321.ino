@@ -303,6 +303,7 @@ void setup()
 {
     // put your setup code here, to run once:
     M5.begin();
+    M5.Power.begin();
     Serial.begin(115200);
     Serial2.begin(115200, SERIAL_8N1, 16, 17);
     Serial.printf("FUCK STC\n");
