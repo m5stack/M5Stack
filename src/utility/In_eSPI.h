@@ -833,6 +833,9 @@ class TFT_eSPI : public Print {
   void     end_SDA_Read(void);
 #endif
 
+#ifdef USE_M5_FONT_CREATOR
+  int32_t getUnicodeFontIndex(uint32_t unicode);
+#endif
   // Set or get an arbitrary library attribute or configuration option
   void     setAttribute(uint8_t id = 0, uint8_t a = 0);
   uint8_t  getAttribute(uint8_t id = 0);

@@ -990,6 +990,11 @@ void TFT_eSprite::scroll(int16_t dx, int16_t dy)
 ** Function name:           fillSprite
 ** Description:             Fill the whole sprite with defined colour
 *************************************************************************************x*/
+void TFT_eSprite::fillScreen(uint32_t color)
+{
+  fillSprite(color);
+}
+
 void TFT_eSprite::fillSprite(uint32_t color)
 {
   if (!_created ) return;
@@ -1433,10 +1438,19 @@ size_t TFT_eSprite::write(uint8_t utf8)
       this->cursor_x  = 0;
       this->cursor_y += (int16_t)textsize * (uint8_t)pgm_read_byte(&gfxFont->yAdvance);
     } else {
+#ifdef USE_M5_FONT_CREATOR
+      int32_t index = -1;
+      index = getUnicodeFontIndex(uniCode);
+      if (index == -1) {
+        return 1;
+      }
+      uint16_t c2 = index;
+#else
       if (uniCode > pgm_read_word(&gfxFont->last )) return 1;
       if (uniCode < pgm_read_word(&gfxFont->first)) return 1;
 
       uint8_t   c2    = uniCode - pgm_read_word(&gfxFont->first);
+#endif
       GFXglyph *glyph = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[c2]);
       uint8_t   w     = pgm_read_byte(&glyph->width),
                 h     = pgm_read_byte(&glyph->height);
@@ -1542,16 +1556,24 @@ void TFT_eSprite::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uin
 #endif // LOAD_GLCD
 
 #ifdef LOAD_GFXFF
+    #ifdef USE_M5_FONT_CREATOR
+    int32_t index = -1;
+    index = getUnicodeFontIndex(c);
+    if (index != -1) 
+    {
+      c = index;
+    #else
     // Filter out bad characters not present in font
     if ((c >= pgm_read_word(&gfxFont->first)) && (c <= pgm_read_word(&gfxFont->last )))
     {
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
       c -= pgm_read_word(&gfxFont->first);
+    #endif
       GFXglyph *glyph  = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[c]);
       uint8_t  *bitmap = (uint8_t *)pgm_read_dword(&gfxFont->bitmap);
 
-      uint32_t bo = pgm_read_word(&glyph->bitmapOffset);
+      uint32_t bo = pgm_read_dword(&glyph->bitmapOffset);
       uint8_t  w  = pgm_read_byte(&glyph->width),
                h  = pgm_read_byte(&glyph->height);
                //xa = pgm_read_byte(&glyph->xAdvance);
@@ -1643,9 +1665,17 @@ int16_t TFT_eSprite::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t fo
     }
     else
     {
+      #ifdef USE_M5_FONT_CREATOR
+      int32_t index = -1;
+      index = getUnicodeFontIndex(uniCode);
+      if (index != -1) 
+      {
+        uint16_t c2 = index;
+      #else
       if((uniCode >= pgm_read_word(&gfxFont->first)) && (uniCode <= pgm_read_word(&gfxFont->last) ))
       {
         uint16_t   c2    = uniCode - pgm_read_word(&gfxFont->first);
+      #endif
         GFXglyph *glyph = &(((GFXglyph *)pgm_read_dword(&gfxFont->glyph))[c2]);
         return pgm_read_byte(&glyph->xAdvance) * textsize;
       }

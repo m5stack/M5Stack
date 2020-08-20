@@ -78,8 +78,9 @@ void POWER::begin() {
   
   //Initial I2C 
   Wire.begin(21, 22);
-  // 650ma 
-  setVinMaxCurrent(CURRENT_400MA | CURRENT_200MA);
+
+  // 450ma 
+  setVinMaxCurrent(CURRENT_400MA);
 
   setChargeVolt(BAT_4_2V);
   
@@ -392,9 +393,12 @@ void POWER::powerOFF(){
     M5.I2C.writeByte(IP5306_ADDR, IP5306_REG_SYS_CTL1, (data & (~BOOST_ENABLE_BIT)));
   }
   
-  //stop wifi
-  esp_wifi_disconnect();
-  esp_wifi_stop();
+  // if wifi was initialized, stop it
+  wifi_mode_t mode;
+  if (esp_wifi_get_mode(&mode) == ESP_OK) {
+    esp_wifi_disconnect();
+    esp_wifi_stop();
+  }
   
   //stop bt
   esp_bluedroid_disable();

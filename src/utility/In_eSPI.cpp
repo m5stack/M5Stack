@@ -389,7 +389,12 @@ void TFT_eSPI::init(uint8_t tc)
 
   // This loads the driver specific initialisation code  <<<<<<<<<<<<<<<<<<<<< ADD NEW DRIVERS TO THE LIST HERE <<<<<<<<<<<<<<<<<<<<<<<
 #if   defined (ILI9341_DRIVER)
+  if (lcd_version) {
+    #include "ILI9342C_Init.h"
+
+  } else {
     #include "ILI9341_Init.h"
+  }
 
 #elif defined (ST7735_DRIVER)
     tabcolor = tc;
@@ -2409,25 +2414,11 @@ int16_t TFT_eSPI::textWidth(const char *string, uint8_t font)
 
         bool is_in_block_flag = false;
         #ifdef USE_M5_FONT_CREATOR
-        EncodeRange *range_pst;
-        uint16_t custom_range_num = pgm_read_word(&gfxFont->range_num);
-        if(custom_range_num != 0)
-        {
-          range_pst = (EncodeRange *)pgm_read_dword(&gfxFont->range);
-          for(uint16_t i = 0; i < pgm_read_word(&gfxFont->range_num); i++)
-          {
-            if((uniCode >= pgm_read_word(&range_pst[i].start)) && (uniCode <= pgm_read_word(&range_pst[i].end)))
-            {
-              is_in_block_flag = true;
-              uniCode = uniCode - pgm_read_word(&range_pst[i].start) + pgm_read_word(&range_pst[i].base);
-              break;
-            }
-          }
-        }
-        else if ((uniCode >= pgm_read_word(&gfxFont->first)) && (uniCode <= pgm_read_word(&gfxFont->last)))
-        {
+        int32_t index = -1;
+        index = getUnicodeFontIndex(uniCode);
+        if (index != -1) {
           is_in_block_flag = true;
-          uniCode -= pgm_read_word(&gfxFont->first);
+          uniCode = index;
         }
         #else
         if ((uniCode >= pgm_read_word(&gfxFont->first)) && (uniCode <= pgm_read_word(&gfxFont->last )))
@@ -2613,26 +2604,11 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32
     // Filter out bad characters not present in font
     bool is_in_block_flag = false;
     #ifdef USE_M5_FONT_CREATOR
-    EncodeRange *range_pst;
-    uint16_t custom_range_num = pgm_read_word(&gfxFont->range_num);
-    if(custom_range_num != 0)
-    {
-      range_pst = (EncodeRange *)pgm_read_dword(&gfxFont->range);
-      for(uint16_t i = 0; i < pgm_read_word(&gfxFont->range_num); i++)
-      {
-        
-        if((c >= pgm_read_word(&range_pst[i].start)) && (c <= pgm_read_word(&range_pst[i].end)))
-        {
-          is_in_block_flag = true;
-          c = c - pgm_read_word(&range_pst[i].start) + pgm_read_word(&range_pst[i].base);
-          break;
-        }
-      }
-    }
-    else if ((c >= pgm_read_word(&gfxFont->first)) && (c <= pgm_read_word(&gfxFont->last )))
-    {
+    int32_t index = -1;
+    index = getUnicodeFontIndex(c);
+    if (index != -1) {
+      c = index;
       is_in_block_flag = true;
-      c -= pgm_read_word(&gfxFont->first);
     }
     #else
     if ((c >= pgm_read_word(&gfxFont->first)) && (c <= pgm_read_word(&gfxFont->last )))
@@ -4278,25 +4254,11 @@ size_t TFT_eSPI::write(uint8_t utf8)
       bool is_in_block_flag = false;
       uint16_t c2 = uniCode;
       #ifdef USE_M5_FONT_CREATOR
-      EncodeRange *range_pst;
-      uint16_t custom_range_num = pgm_read_word(&gfxFont->range_num);
-      if(custom_range_num != 0)
-      {
-        range_pst = (EncodeRange *)pgm_read_dword(&gfxFont->range);
-        for(uint16_t i = 0; i < pgm_read_word(&gfxFont->range_num); i++)
-        {
-          if((c2 >= pgm_read_word(&range_pst[i].start)) && (c2 <= pgm_read_word(&range_pst[i].end)))
-          {
-            is_in_block_flag = true;
-            c2 = c2 - pgm_read_word(&range_pst[i].start) + pgm_read_word(&range_pst[i].base);
-            break;
-          }
-        }
-      }
-      else if ((c2 >= pgm_read_word(&gfxFont->first)) && (c2 <= pgm_read_word(&gfxFont->last )))
-      {
+      int32_t index = -1;
+      index = getUnicodeFontIndex(c2);
+      if (index != -1) {
+        c2 = index;
         is_in_block_flag = true;
-        c2 -= pgm_read_word(&gfxFont->first);
       }
       #else
       if ((c2 >= pgm_read_word(&gfxFont->first)) && (c2 <= pgm_read_word(&gfxFont->last )))
@@ -4375,25 +4337,11 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
       bool is_in_block_flag = false;
       uint16_t c2 = uniCode;
       #ifdef USE_M5_FONT_CREATOR
-      EncodeRange *range_pst;
-      uint16_t custom_range_num = pgm_read_word(&gfxFont->range_num);
-      if(custom_range_num != 0)
-      {
-        range_pst = (EncodeRange *)pgm_read_dword(&gfxFont->range);
-        for(uint16_t i = 0; i < pgm_read_word(&gfxFont->range_num); i++)
-        {
-          if((c2 >= pgm_read_word(&range_pst[i].start)) && (c2 <= pgm_read_word(&range_pst[i].end)))
-          {
-            is_in_block_flag = true;
-            c2 = c2 - pgm_read_word(&range_pst[i].start) + pgm_read_word(&range_pst[i].base);
-            break;
-          }
-        }
-      }
-      else if ((c2 >= pgm_read_word(&gfxFont->first)) && (c2 <= pgm_read_word(&gfxFont->last )))
-      {
+      int32_t index = -1;
+      index = getUnicodeFontIndex(c2);
+      if (index != -1) {
+        c2 = index;
         is_in_block_flag = true;
-        c2 -= pgm_read_word(&gfxFont->first);
       }
       #else
       if ((c2 >= pgm_read_word(&gfxFont->first)) && (c2 <= pgm_read_word(&gfxFont->last )))
@@ -4788,25 +4736,11 @@ int16_t TFT_eSPI::drawString(const char *string, int32_t poX, int32_t poY, uint8
 
       bool is_in_block_flag = false;
       #ifdef USE_M5_FONT_CREATOR
-      EncodeRange *range_pst;
-      uint16_t custom_range_num = pgm_read_word(&gfxFont->range_num);
-      if(custom_range_num != 0)
-      {
-        range_pst = (EncodeRange *)pgm_read_dword(&gfxFont->range);
-        for(uint16_t i = 0; i < pgm_read_word(&gfxFont->range_num); i++)
-        {
-          if((c2 >= pgm_read_word(&range_pst[i].start)) && (c2 <= pgm_read_word(&range_pst[i].end)))
-          {
-            is_in_block_flag = true;
-            c2 = c2 - pgm_read_word(&range_pst[i].start) + pgm_read_word(&range_pst[i].base);
-            break;
-          }
-        }
-      }
-      else if ((c2 >= pgm_read_word(&gfxFont->first)) && (c2 <= pgm_read_word(&gfxFont->last )))
-      {
+      int32_t index = -1;
+      index = getUnicodeFontIndex(c2);
+      if (index != -1) {
+        c2 = index;
         is_in_block_flag = true;
-        c2 -= pgm_read_word(&gfxFont->first);
       }
       #else
       if ((c2 >= pgm_read_word(&gfxFont->first)) && (c2 <= pgm_read_word(&gfxFont->last )))
@@ -6164,5 +6098,43 @@ void TFT_eSPI::showFont(uint32_t td)
 }
 #endif
 
-////////////////////////////////////////////////////////////////////////////////////////
+#ifdef USE_M5_FONT_CREATOR
+/***************************************************************************************
+** Function name:           showFont
+** Description:             Page through all characters in font, td ms between screens
+*************************************************************************************x*/
+int32_t TFT_eSPI::getUnicodeFontIndex(uint32_t unicode) {
+  int32_t index = -1;
+  EncodeRange *range_pst = (EncodeRange *)pgm_read_dword(&gfxFont->range);
+  uint16_t custom_range_num = pgm_read_word(&gfxFont->range_num);
 
+  if(custom_range_num != 0) {
+    if ((unicode >= pgm_read_word(&range_pst[0].start)) && (unicode <= pgm_read_word(&range_pst[0].end))) {
+      index = unicode - pgm_read_word(&range_pst[0].start) + pgm_read_word(&range_pst[0].base);
+    } else {
+      int32_t right = pgm_read_word(&gfxFont->range_num);
+      int32_t left = 0;
+      int32_t middle = 0;
+      while (left <= right) {
+        middle = (right + left) >> 1;
+        if (unicode > pgm_read_word(&range_pst[middle].end)) {
+          left = middle + 1;
+        } else if (unicode < pgm_read_word(&range_pst[middle].start)) {
+          right = middle - 1;
+        } else if ((unicode >= pgm_read_word(&range_pst[middle].start)) && (unicode <= pgm_read_word(&range_pst[middle].end))) {
+          index = unicode - pgm_read_word(&range_pst[middle].start) + pgm_read_word(&range_pst[middle].base);
+          break;
+        }
+      }
+    }
+  } else {
+    if ((unicode >= pgm_read_word(&gfxFont->first)) && (unicode <= pgm_read_word(&gfxFont->last))) {
+      index = unicode - pgm_read_word(&gfxFont->first);
+    }
+  }
+
+  return index;
+}
+
+#endif
+////////////////////////////////////////////////////////////////////////////////////////
