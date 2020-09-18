@@ -120,6 +120,14 @@ uint8_t Button::pressedFor(uint32_t ms) {
   return (_state == 1 && _time - _lastChange >= ms) ? 1 : 0;
 }
 
+uint8_t Button::pressedFor(uint32_t ms, uint32_t continuous_time) {
+  if (_state == 1 && _time - _lastChange >= ms && _time - _lastLongPress >= continuous_time) {
+    _lastLongPress = _time;
+    return 1;
+  } 
+  return 0;
+}
+
 uint8_t Button::releasedFor(uint32_t ms) {
   return (_state == 0 && _time - _lastChange >= ms) ? 1 : 0;
 }

@@ -29,6 +29,7 @@ void setup()   {
 
   //Set up the display
   M5.begin();
+  M5.Power.begin();
   // M5.Lcd.setRotation(3);
   M5.Lcd.fillScreen(TFT_BLACK);
   M5.Lcd.setTextSize(1);

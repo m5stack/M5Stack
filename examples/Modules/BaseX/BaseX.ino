@@ -14,6 +14,7 @@ int8_t speed_point = 0;
 void setup()
 {
     M5.begin(true, false, true, true);
+    M5.Power.begin();
     for(uint8_t i = 1; i < 5; i++)
     {
         base_x.SetMode(i, NORMAL_MODE);

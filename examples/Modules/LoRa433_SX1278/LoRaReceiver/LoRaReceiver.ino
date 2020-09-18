@@ -5,7 +5,7 @@
 void setup() {
   
   M5.begin();
-
+  M5.Power.begin();
   // override the default CS, reset, and IRQ pins (optional)
   LoRa.setPins(); // default set CS, reset, IRQ pin
   Serial.println("LoRa Receiver");

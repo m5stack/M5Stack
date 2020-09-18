@@ -36,6 +36,7 @@ void header(const char *string, uint16_t color){
 
 void setup() {
   M5.begin();                   // initialize serial
+  M5.Power.begin();
   while (!Serial);
   
   header("LoRa Set spreading factor", TFT_BLACK);

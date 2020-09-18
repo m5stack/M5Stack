@@ -132,6 +132,7 @@ void motor_demo(void){
 
 void setup() {
     M5.begin();
+    M5.Power.begin();
     Wire.begin();
     Serial.begin(115200);
     M5.Lcd.fillScreen(TFT_BLACK);               

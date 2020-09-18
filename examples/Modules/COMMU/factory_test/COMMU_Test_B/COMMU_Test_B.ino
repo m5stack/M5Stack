@@ -103,6 +103,7 @@ void updatedata()
 
 void setup() {
   M5.begin();
+  M5.Power.begin();
   Serial.begin(9600);
   Serial2.begin(9600, SERIAL_8N1, 16, 17);
 

@@ -8,7 +8,7 @@
 
 void setup(void) {
   M5.begin();
-
+  M5.Power.begin();
   // M5.Lcd.setRotation(1);
 }
 

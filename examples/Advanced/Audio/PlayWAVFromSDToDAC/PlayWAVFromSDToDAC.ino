@@ -23,6 +23,7 @@ AudioOutputI2S *out;
 void setup()
 {
   M5.begin();
+  M5.Power.begin();
   WiFi.mode(WIFI_OFF); 
   delay(500);
   

@@ -17,7 +17,7 @@
 void setup() {
 
   M5.begin();               // Initialise the display
-
+  M5.Power.begin();
   M5.Lcd.fillScreen(TFT_BLACK); // Black screen fill
 }
 

@@ -38,6 +38,7 @@ double vImag[SIGNAL_LENGTH];
 void setup()
 {
   M5.begin();
+  M5.Power.begin();
   //WiFi.mode(WIFI_OFF);
   //btStop();
   dacWrite(M5STACKFIRE_SPEAKER_PIN, 0); // make sure that the speaker is quite

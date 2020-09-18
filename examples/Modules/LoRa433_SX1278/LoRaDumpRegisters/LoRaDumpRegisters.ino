@@ -18,6 +18,7 @@ void header(const char *string, uint16_t color){
 
 void setup() {
   M5.begin();
+  M5.Power.begin();
   while (!Serial);
   
   header("LoRa Dump Registers", TFT_BLACK);

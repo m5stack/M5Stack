@@ -22,6 +22,7 @@ unsigned long targetTime = 0; // Used for testing draw times
 
 void setup(void) {
   M5.begin();
+  M5.Power.begin();
 }
 
 void loop() {

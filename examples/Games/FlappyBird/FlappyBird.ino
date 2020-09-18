@@ -93,6 +93,7 @@ static short tmpx, tmpy;
 void setup() {
   // put your setup code here, to run once:
 M5.begin();
+M5.Power.begin();
 resetMaxScore();
 
 }

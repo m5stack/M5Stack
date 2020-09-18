@@ -34,11 +34,11 @@ void loop() {
   M5.update();
  
   // if you want to use Releasefor("was released for"), use .wasReleasefor(int time) below
-  if (M5.BtnA.wasReleased()) {
+  if (M5.BtnA.wasReleased() || M5.BtnA.pressedFor(1000, 200)) {
     M5.Lcd.print('A');
-  } else if (M5.BtnB.wasReleased()) {
+  } else if (M5.BtnB.wasReleased() || M5.BtnB.pressedFor(1000, 200)) {
     M5.Lcd.print('B');
-  } else if (M5.BtnC.wasReleased()) {
+  } else if (M5.BtnC.wasReleased() || M5.BtnC.pressedFor(1000, 200)) {
     M5.Lcd.print('C');
   } else if (M5.BtnB.wasReleasefor(700)) {
     M5.Lcd.clear(BLACK);

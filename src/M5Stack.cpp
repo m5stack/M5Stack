@@ -22,14 +22,14 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable, bool I2CEn
     Serial.print("M5Stack initializing...");
   }
 
-  // LCD INIT
-  if (LCDEnable == true) {
-    Lcd.begin();
-  }
-
   // TF Card
   if (SDEnable == true) {
     SD.begin(TFCARD_CS_PIN, SPI, 40000000);
+  }
+
+  // LCD INIT
+  if (LCDEnable == true) {
+    Lcd.begin();
   }
 
   // TONE

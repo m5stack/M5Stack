@@ -17,7 +17,7 @@ void header(const char *string, uint16_t color){
 
 void setup() {
   M5.begin();
-
+  M5.Power.begin();
   header("SIM800L AT command", TFT_BLACK);
   M5.Lcd.setTextFont(2);
   M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);

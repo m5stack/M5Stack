@@ -28,6 +28,7 @@ AudioFileSourceID3 *id3;
 void setup()
 {
   M5.begin();
+  M5.Power.begin();
   WiFi.mode(WIFI_OFF); 
   SPIFFS.begin();
   delay(500);

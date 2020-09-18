@@ -79,7 +79,7 @@ https://docs.m5stack.com/#/en/api
 
 * [GUIslice](https://github.com/ImpulseAdventure/GUIslice) - A lightweight GUI framework suitable for embedded displays
 
-* [M5ez](https://github.com/ropg/M5ez) - The easy way to program on the M5Stack
+* [M5ez](https://github.com/M5ez/M5ez) - The easy way to program on the M5Stack
 
 
 * [M5Stack MultiApp Advanced](https://github.com/botofancalin/M5Stack-MultiApp-Advanced) - A M5Stack firmware made on PlatformIO

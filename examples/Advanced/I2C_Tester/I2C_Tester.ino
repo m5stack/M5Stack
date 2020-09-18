@@ -19,6 +19,7 @@
 void setup() 
 {
   M5.Lcd.begin();
+  M5.Power.begin();
   M5.Lcd.fillScreen( BLACK );
   M5.Lcd.setCursor(0, 0);
   M5.Lcd.setTextColor(YELLOW);  

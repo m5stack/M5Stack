@@ -27,6 +27,7 @@ void get_time(void){
 
 void setup() {
   M5.begin();
+  M5.Power.begin();
   
   Serial.begin(115200);
   Serial2.begin(115200, SERIAL_8N1, 16, 17);

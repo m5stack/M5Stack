@@ -24,6 +24,7 @@ unsigned long targetTime = 0; // Used for testing draw times
 
 void setup(void) {
   M5.begin();
+  M5.Power.begin();
   M5.Lcd.fillScreen(TFT_BLUE);
 
   //img.setColorDepth(8); // Optionally set depth to 8 to halve RAM use

@@ -30,7 +30,7 @@ bool k_ready = false;
 void setup() {
   // put your setup code here, to run once:
     M5.begin();
-
+    M5.Power.begin();
     M5.Lcd.setSwapBytes(false);
     Disbuff.createSprite(160, 160);
     Disbuff.setSwapBytes(true);

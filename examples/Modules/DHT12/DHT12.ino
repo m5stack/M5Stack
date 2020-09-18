@@ -24,6 +24,7 @@ The preset scale is FAHRENHEIT and ID is 0x53.
 
 void setup() {
   M5.begin();
+  M5.Power.begin();
   Wire.begin();
   Serial.println("Prueba de libreria DHT12:");
   M5.Lcd.println("Prueba de libreria DHT12:");

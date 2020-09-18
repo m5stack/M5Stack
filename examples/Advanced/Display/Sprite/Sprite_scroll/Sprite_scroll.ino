@@ -36,6 +36,7 @@ int tcount = 0;
 //==========================================================================================
 void setup() {
   M5.begin();
+  M5.Power.begin();
   M5.Lcd.fillScreen(TFT_BLACK);
 
   // Create a sprite for the graph

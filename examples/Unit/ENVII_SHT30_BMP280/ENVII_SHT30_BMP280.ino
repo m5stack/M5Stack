@@ -17,6 +17,7 @@ float pressure = 0.0;
 
 void setup() {
   M5.begin();
+  M5.Power.begin();
   Wire.begin();
   M5.Lcd.setBrightness(10);
   M5.Lcd.setTextSize(3);

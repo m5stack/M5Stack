@@ -32,6 +32,7 @@ int d = 0;
 
 void setup(void) {
   M5.begin();
+  M5.Power.begin();
   // M5.Lcd.setRotation(1);
   // Serial.begin(57600); // For debug
   M5.Lcd.fillScreen(TFT_BLACK);

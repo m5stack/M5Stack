@@ -3,7 +3,7 @@
 void setup(void) {
 
   M5.begin();
-
+  M5.Power.begin();
   //Draw the jpeg file "p2.jpg" from TF(SD) card
   M5.Lcd.setBrightness(200);
   M5.Lcd.drawJpgFile(SD, "/p2.jpg");

@@ -10,6 +10,7 @@ HardwareSerial GPSRaw(2);
 void setup() {
   
   M5.begin();
+  M5.Power.begin();
   GPSRaw.begin(9600);
   Serial.println("hello");
   termInit();

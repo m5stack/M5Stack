@@ -10,6 +10,7 @@ ADXL345 accel(ADXL345_ALT);
 void setup() {
   // put your setup code here, to run once:
   M5.begin();
+  M5.Power.begin();
   Wire.begin();
   M5.Lcd.setCursor(140, 10, 4);
   M5.Lcd.println("ACC");
