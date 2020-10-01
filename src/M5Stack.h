@@ -107,7 +107,7 @@
 
     #include "M5Display.h"
     #include "utility/Config.h"
-    #include "utility/Button.h"
+    #include "utility/M5Button.h"
     #include "utility/Speaker.h"
     #include "utility/Power.h"
     #include "utility/CommUtil.h"
@@ -125,17 +125,23 @@
         void begin(bool LCDEnable = true, bool SDEnable = true, bool SerialEnable = true, bool I2CEnable = false);
         void update();
 
+        // Buttons (for things that involve all buttons)
+        M5Buttons Buttons;
+
         // Button API
         #define DEBOUNCE_MS 10
-        Button BtnA = Button(BUTTON_A_PIN, true, DEBOUNCE_MS);
-        Button BtnB = Button(BUTTON_B_PIN, true, DEBOUNCE_MS);
-        Button BtnC = Button(BUTTON_C_PIN, true, DEBOUNCE_MS);
+        Button BtnA = Button(BUTTON_A_PIN, true, DEBOUNCE_MS, "hw", 3, 218, 102, 21, true, "BtnA");
+        Button BtnB = Button(BUTTON_B_PIN, true, DEBOUNCE_MS, "hw", 109, 218, 102, 21, true, "BtnB");
+        Button BtnC = Button(BUTTON_C_PIN, true, DEBOUNCE_MS, "hw", 215, 218, 102, 21, true, "BtnC");
+        
+        // Events
+        M5Events Events;
 
         // SPEAKER
         SPEAKER Speaker;
 
         // LCD
-        M5Display Lcd = M5Display();
+        M5Display Lcd;
 
         //Power
         POWER Power;
@@ -151,7 +157,7 @@
         #endif
 
         // I2C
-        CommUtil I2C = CommUtil();
+        CommUtil I2C;
           
         /**
         * Function has been move to Power class.(for compatibility)

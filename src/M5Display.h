@@ -1,6 +1,7 @@
 #ifndef _M5DISPLAY_H_
   #define _M5DISPLAY_H_
 
+  #include "utility/Config.h" // This is where Core2 defines would be
   #include <Arduino.h>
   #include <FS.h>
   #include <SPI.h>
@@ -14,9 +15,17 @@
     JPEG_DIV_8,
     JPEG_DIV_MAX
   } jpeg_div_t;
+  
+  struct DisplayState {
+    uint8_t textfont, textsize, datum;
+    const GFXfont* gfxFont;
+    uint32_t textcolor, textbgcolor;
+    int32_t  cursor_x, cursor_y, padX;
+  };
 
   class M5Display : public TFT_eSPI {
     public:
+      static M5Display* instance;
       M5Display();
       void begin();
       void sleep();
@@ -91,7 +100,40 @@
                     uint16_t maxWidth = 0, uint16_t maxHeight = 0,
                     uint16_t offX = 0, uint16_t offY = 0,
                     double scale = 1.0, uint8_t alphaThreshold = 127);
+                    
 
-    private:
+      // Saves and restores font properties, datum, cursor, colors so code
+      // can be non-invasive. Just make sure that every push is also popped
+      // when you're done to prevent stack from growing out of control.
+      //
+      // (User code can never do this completely because the gfxFont
+      // class variable of TFT_eSPI is protected.)
+      #define M5DISPLAY_HAS_PUSH_POP
+      public:
+        void pushState();
+        void popState();
+      private:
+        std::vector<DisplayState> _displayStateStack;
+    
+
+    #ifdef M5Stack_M5Core2
+    
+      public:
+        // Make sure the touch also rotates if it's not there already
+        void setRotation(uint8_t r);
+            
+      #ifdef TFT_eSPI_TOUCH_EMULATION   
+        // Emulates the TFT_eSPI touch interface using M5.Touch
+        public:
+          uint8_t  getTouchRaw(uint16_t *x, uint16_t *y);
+          uint16_t getTouchRawZ(void);
+          void     convertRawXY(uint16_t *x, uint16_t *y);
+          uint8_t  getTouch(uint16_t *x, uint16_t *y, uint16_t threshold = 600);
+          void     calibrateTouch(uint16_t *data, uint32_t color_fg, uint32_t color_bg, uint8_t size);
+          void     setTouch(uint16_t *data);
+      #endif /* TFT_eSPI_TOUCH_EMULATION */
+    
+    #endif /* M5Stack_M5Core2 */
+  
   };
-#endif
+#endif /* _M5DISPLAY_H_ */
