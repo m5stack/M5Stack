@@ -53,9 +53,7 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable, bool I2CEn
 
 void M5Stack::update() {
   //Button update
-  BtnA.read();
-  BtnB.read();
-  BtnC.read();
+  Buttons.update();
 
   //Speaker update
   Speaker.update();

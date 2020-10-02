@@ -69,7 +69,8 @@ Button::operator bool() {
 }
 
 void Button::init() {
-	_state = _tapWait = _pressing = false;
+	_state = _tapWait = _pressing = _manuallyRead = false;
+	_setState = 0xFF;
 	_time = _lastChange = _pressTime = millis();
 	_hold_time = -1;
 	_textFont = _textSize = 0;
@@ -77,6 +78,9 @@ void Button::init() {
 	drawFn = nullptr;
 	compat = 0;
 	drawZone = this;
+	tapTime = TAP_TIME;
+	dbltapTime = DBLTAP_TIME;
+	longPressTime = LONGPRESS_TIME;
 	strncpy(label, name, 16);
 	instances.push_back(this);
 	draw();
@@ -89,8 +93,9 @@ int16_t Button::instanceIndex() {
 	return -1;
 }	
 
-bool Button::read() {
-	if (pin == 0xFF) return false;
+bool Button::read(bool manualRead /* = true */) {
+	// if (pin == 0xFF) return false;
+	if (manualRead) _manuallyRead = true;
 	event = Event();
 	uint16_t duration = _time - _lastChange;
 	Point invalid;
@@ -99,42 +104,62 @@ bool Button::read() {
 		changed = false;
 		_lastChange = _time;
 		if (!_state) {
-			if (duration <= MAX_TAP) {
-				if (_tapWait) {
-					EVENTS->fireEvent(0, E_DBLTAP, invalid, invalid, 0, this, nullptr);
-					_tapWait = false;
+			if (!_cancelled) {
+				if (duration <= tapTime) {
+					if (_tapWait) {
+						EVENTS->fireEvent(0, E_DBLTAP, invalid, invalid, 0, this, nullptr);
+						_tapWait = false;
+						_pressing = false;
+						_longPressing = false;
+						return _state;
+					} else {
+						_tapWait = true;
+					}
+				} else if (_pressing) {
+					EVENTS->fireEvent(0, _longPressing ? E_LONGPRESSED : E_PRESSED, invalid, invalid, duration, this, nullptr);
 					_pressing = false;
+					_longPressing = false;
 					return _state;
-				} else {
-					_tapWait = true;
 				}
-			} else if (_pressing) {
-				EVENTS->fireEvent(0, E_PRESSED, invalid, invalid, duration, this, nullptr);
-				_pressing = false;
-				return _state;
 			}
 		}
 	} else {
-		// Timeouts
-		if (_tapWait && duration >= MAX_BETWEEN_TAP) {
-			EVENTS->fireEvent(0, E_TAP, invalid, invalid, 0, this, nullptr);
-			_tapWait = false;
-			_pressing = false;
-			return _state;
-		}
-		if (_state && !_pressing && duration > MAX_TAP) {
-			EVENTS->fireEvent(0, E_PRESSING, invalid, invalid, 0, this, nullptr);
-			_pressing = true;
-			return _state;
+		if (_cancelled) {
+			if (!_state) _cancelled = false;
+		} else {
+			// Timeouts
+			if (_tapWait && duration >= dbltapTime) {
+				EVENTS->fireEvent(0, E_TAP, invalid, invalid, 0, this, nullptr);
+				_tapWait = false;
+				_pressing = false;
+				return _state;
+			}
+			if (_state && !_pressing && duration > tapTime) {
+				if (tapTime) EVENTS->fireEvent(0, E_PRESSING, invalid, invalid, 0, this, nullptr);
+				_pressing = true;
+				return _state;
+			}
+			if (longPressTime && _state && !_longPressing && duration > longPressTime) {
+				EVENTS->fireEvent(0, E_LONGPRESSING, invalid, invalid, 0, this, nullptr);
+				_longPressing = true;
+				return _state;
+			}
 		}
 	}
-	// Do an actual read from the pin
+	// Do an actual read from the pin (or _setState)
 	_time = millis();
-	pinMode(pin, INPUT_PULLUP);
-	uint8_t pinVal = digitalRead(pin);
-	pinVal = invert ? !pinVal : pinVal;
-	if (_time - _lastChange >= dbTime && pinVal != _state){
-		_state = pinVal;
+	uint8_t newState = false;
+	if (_setState == 0xFF) {
+		if (pin != 0xFF) {
+			pinMode(pin, INPUT_PULLUP);
+			newState = (digitalRead(pin));
+			newState = invert ? !newState : newState;
+		}
+	} else {
+		newState = _setState;	
+	}
+	if (_time - _lastChange >= dbTime && newState != _state){
+		_state = newState;
 		if (_state) {
 			EVENTS->fireEvent(0, E_TOUCH, invalid, invalid, 0, this, nullptr);
 			_pressTime = _time;		
@@ -146,16 +171,27 @@ bool Button::read() {
 	return _state;
 }
 
-bool Button::setState(bool newState) {
-	if (newState != _state) {
-		_state = newState;
-		_lastChange = _time;
-		changed = true;
-		if (_state) _pressTime = _time;
-		draw();
-	}
-	return _state;
+void Button::setState(bool newState) { _setState = newState; }
+
+void Button::freeState() {_setState = 0xFF; }
+
+void Button::cancel() {
+	_cancelled = true;
+	_tapWait = false;
+	draw(off);
 }
+
+
+// bool Button::setState(bool newState) {
+// 	if (newState != _state) {
+// 		_state = newState;
+// 		_lastChange = _time;
+// 		changed = true;
+// 		if (_state) _pressTime = _time;
+// 		draw();
+// 	}
+// 	return _state;
+// }
 
 bool Button::isPressed() { return _state; }
 
@@ -346,7 +382,9 @@ void M5Buttons::setUnchanged() {
 }
 
 Button* M5Buttons::which(Point& p) {
-	for ( auto b : Button::instances ) {
+	if (!Button::instances.size()) return nullptr;
+	for(int i = Button::instances.size() - 1; i >= 0 ; --i) {
+		Button* b = Button::instances[i];
 		if (b->pin == 0xFF && b->contains(p)) return b;
 	}
 	return nullptr;
@@ -354,6 +392,12 @@ Button* M5Buttons::which(Point& p) {
 
 void M5Buttons::draw() {
 	for ( auto button : Button::instances ) button->draw();
+}
+
+void M5Buttons::update() {
+	for ( auto button : Button::instances ) {
+		if (!button->_manuallyRead) button->read(false);
+	}
 }
 
 void M5Buttons::setFont(const GFXfont* freeFont_) {
@@ -441,6 +485,7 @@ Event::operator bool() { return (type); }
 
 const char* Event::typeName() {
 	const char *unknown = "E_UNKNOWN";
+	const char *none = "E_NONE";
 	const char *eventNames[NUM_EVENTS] = {
 		"E_TOUCH", 
 		"E_RELEASE",
@@ -450,8 +495,11 @@ const char* Event::typeName() {
 		"E_DBLTAP",
 		"E_DRAGGED",
 		"E_PRESSED",
-		"E_PRESSING"
+		"E_PRESSING",
+		"E_LONGPRESSED",
+		"E_LONGPRESSING"
 	};
+	if (!type) return none;
 	for (uint8_t i = 0; i < NUM_EVENTS; i++) {
 		if ((type >> i) & 1) return eventNames[i];
 	}

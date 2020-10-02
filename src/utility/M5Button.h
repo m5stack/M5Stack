@@ -12,12 +12,13 @@ class Gesture;
 #define EVENTS	M5Events::instance
 #define BUTTONS	M5Buttons::instance
 
-#define MAX_TAP				150
-#define MAX_BETWEEN_TAP		200
+#define TAP_TIME			150
+#define DBLTAP_TIME			200
+#define LONGPRESS_TIME		0
 #define GESTURE_MAXTIME		500
 #define GESTURE_MINDIST		75
 
-#define NUM_EVENTS			9
+#define NUM_EVENTS			11
 #define E_TOUCH				0x0001
 #define E_RELEASE			0x0002
 #define E_MOVE  			0x0004
@@ -27,6 +28,8 @@ class Gesture;
 #define E_DRAGGED			0x0040
 #define E_PRESSED			0x0080
 #define E_PRESSING			0x0100
+#define E_LONGPRESSED		0x0200
+#define E_LONGPRESSING		0x0400
 
 #define E_ALL				0x0FFF
 #define E_BTNONLY			0x1000
@@ -89,8 +92,10 @@ class Button : public Zone {
 	~Button();
 	operator bool();
 	int16_t instanceIndex();
-	bool read();
-	bool setState(bool);
+	bool read(bool manualRead = true);
+	void setState(bool);
+	void freeState();
+	void cancel();
 	bool isPressed();
 	bool isReleased();
 	bool wasPressed();
@@ -107,12 +112,14 @@ class Button : public Zone {
 	char name[16];
 	Event event;
 	uint8_t pin;
-	uint32_t dbTime;
+	uint16_t dbTime;
 	bool invert;
+	uint16_t tapTime, dbltapTime, longPressTime;
   private:
   	friend class M5Buttons;
   	void init();
-	bool _state, _tapWait, _pressing;
+	bool _state, _tapWait, _pressing, _longPressing, _cancelled, _manuallyRead;
+	uint8_t _setState;
 	uint32_t _time;
 	uint32_t _lastChange, _lastLongPress, _pressTime, _hold_time;
 	
@@ -145,6 +152,7 @@ class M5Buttons {
     void setUnchanged();
 	Button* which(Point& p);
 	void draw();
+	void update();
 	void setFont(const GFXfont* freeFont_);
 	void setFont(uint8_t textFont_);
 	void setTextSize(uint8_t textSize_);
