@@ -209,7 +209,6 @@ bool Button::wasReleasefor(uint32_t ms) {
 }
 
 bool Button::pressedFor(uint32_t ms) {
-	Serial.println(_time);
 	return (_state && _time - _lastChange >= ms);
 }
 
