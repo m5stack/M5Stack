@@ -30,6 +30,9 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable, bool I2CEn
   // LCD INIT
   if (LCDEnable == true) {
     Lcd.begin();
+
+    // draw global buttons, set up before the display was ready
+    Buttons.draw();
   }
 
   // TONE
@@ -47,7 +50,7 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable, bool I2CEn
     Serial.println("OK");
   }
 
-  // if use M5GO button, need set gpio15 OD or PP mode to avoid affecting the wifi signal  
+  // if use M5GO button, need set gpio15 OD or PP mode to avoid affecting the wifi signal
   pinMode(15, OUTPUT_OPEN_DRAIN);
 }
 

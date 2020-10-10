@@ -95,7 +95,7 @@
 
 #ifndef _M5STACK_H_
   #define _M5STACK_H_
-  
+
   #if defined(ESP32)
 
     #include "gitTagVersion.h"
@@ -130,12 +130,12 @@
 
         // Button API
         #define DEBOUNCE_MS 10
-        Button BtnA = Button(BUTTON_A_PIN, true, DEBOUNCE_MS, "hw", 3, 218, 102, 21, true, "BtnA");
-        Button BtnB = Button(BUTTON_B_PIN, true, DEBOUNCE_MS, "hw", 109, 218, 102, 21, true, "BtnB");
-        Button BtnC = Button(BUTTON_C_PIN, true, DEBOUNCE_MS, "hw", 215, 218, 102, 21, true, "BtnC");
-        
-        // Events
-        M5Events Events;
+        Button BtnA = Button(BUTTON_A_PIN, true, DEBOUNCE_MS, "hw",
+                             3, 218, 102, 21, true, "BtnA");
+        Button BtnB = Button(BUTTON_B_PIN, true, DEBOUNCE_MS, "hw",
+                             109, 218, 102, 21, true, "BtnB");
+        Button BtnC = Button(BUTTON_C_PIN, true, DEBOUNCE_MS, "hw",
+                             215, 218, 102, 21, true, "BtnC");
 
         // SPEAKER
         SPEAKER Speaker;
@@ -158,7 +158,7 @@
 
         // I2C
         CommUtil I2C;
-          
+
         /**
         * Function has been move to Power class.(for compatibility)
         * This name will be removed in a future release.
@@ -166,11 +166,11 @@
         void setPowerBoostKeepOn(bool en) __attribute__((deprecated));
         void setWakeupButton(uint8_t button) __attribute__((deprecated));
         void powerOFF() __attribute__((deprecated));
-        
+
       private:
           bool isInited;
     };
-    
+
     extern M5Stack M5;
     #define m5 M5
     #define lcd Lcd
