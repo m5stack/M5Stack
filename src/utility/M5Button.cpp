@@ -94,7 +94,6 @@ int16_t Button::instanceIndex() {
 
 bool Button::read(bool manualRead /* = true */) {
   if (manualRead) _manuallyRead = true;
-  uint32_t duration = _time - _pressTime;
   if (_changed) {
     _changed = false;
     _lastChange = _time;
@@ -326,7 +325,7 @@ void Button::setTextSize(uint8_t textSize_ /* = 0 */) { _textSize = textSize_; }
     }
   }
 
-  if (bc.text != NODRAW && bc.text != bc.bg && b._label != "") {
+  if (bc.text != NODRAW && bc.text != bc.bg && strlen(b._label)) {
     // figure out where to put the text
     uint16_t tx, ty;
     tx = z.x + (z.w / 2);
@@ -483,7 +482,7 @@ void M5Buttons::setFont(uint8_t textFont_) {
 
 void M5Buttons::setTextSize(uint8_t textSize_) { _textSize = textSize_; }
 
-Event M5Buttons::fireEvent(uint8_t finger, uint16_t type, Point& from,
+void M5Buttons::fireEvent(uint8_t finger, uint16_t type, Point& from,
                            Point& to, uint16_t duration, Button* button,
                            Gesture* gesture) {
   Event e;
@@ -502,7 +501,6 @@ Event M5Buttons::fireEvent(uint8_t finger, uint16_t type, Point& from,
     if (h.gesture && h.gesture != e.gesture) continue;
     h.fn(e);
   }
-  return e;
 }
 
 void M5Buttons::addHandler(void (*fn)(Event&), uint16_t eventMask /* = E_ALL */,

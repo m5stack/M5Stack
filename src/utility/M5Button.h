@@ -254,7 +254,7 @@
   touch button below.
 
   The hardware buttons in the older M5Stack devices are already set up to
-  display labels: all you need is supply colors. Their initialisation (in
+  display labels: all you need is supply colors. Their initialization (in
   M5Stack.h in this library) looks like this:
 
 
@@ -489,7 +489,7 @@
   them.
 
 
-  If your event reads date or calls functions in e.button or e.gesture,
+  If your event reads data or calls functions in e.button or e.gesture,
   remember that these are pointers. Without going into too much detail, it
   means it must do so with the -> notation, so to read the button x position,
   you would say "e.button->x".
@@ -863,15 +863,15 @@ class M5Buttons {
   void setFont(uint8_t textFont_);
   void setTextSize(uint8_t textSize_);
   void (*drawFn)(Button& b, ButtonColors bc);
-  Event fireEvent(uint8_t finger, uint16_t type, Point& from, Point& to,
-                  uint16_t duration, Button* button, Gesture* gesture);
+  void fireEvent(uint8_t finger, uint16_t type, Point& from, Point& to,
+                 uint16_t duration, Button* button, Gesture* gesture);
   void addHandler(void (*fn)(Event&), uint16_t eventMask = E_ALL,
                   Button* button = nullptr, Gesture* gesture = nullptr);
   void delHandlers(void (*fn)(Event&), Button* button, Gesture* gesture);
   Event event;
-  std::vector<EventHandler> _eventHandlers;
 
  protected:
+  std::vector<EventHandler> _eventHandlers;
   uint8_t _textFont;
   const GFXfont* _freeFont;
   uint8_t _textSize;
