@@ -274,12 +274,18 @@ void Button::erase(uint16_t color /* = BLACK */) {
 }
 
 void Button::draw(ButtonColors bc) {
+  _hidden = false;
   // use locally set draw function if aplicable, global one otherwise
   if (drawFn) {
     drawFn(*this, bc);
   } else if (BUTTONS->drawFn) {
     BUTTONS->drawFn(*this, bc);
   }
+}
+
+void Button::hide(uint16_t color /* = NODRAW */) {
+  _hidden = true;
+  if (color != NODRAW) erase(color);
 }
 
 char* Button::label() { return _label; }
@@ -297,6 +303,7 @@ void Button::setFont(uint8_t textFont_ /* = 0 */) {
 }
 
 void Button::setTextSize(uint8_t textSize_ /* = 0 */) { _textSize = textSize_; }
+
 
 // M5Buttons class
 
@@ -406,7 +413,8 @@ Button* M5Buttons::which(Point& p) {
   if (!Button::instances.size()) return nullptr;
   for (int i = Button::instances.size() - 1; i >= 0; --i) {
     Button* b = Button::instances[i];
-    if (b->_pin == 0xFF && b->contains(p)) return b;
+    // Always return button when i == 0 --> background
+    if (!i || (b->_pin == 0xFF && !b->_hidden && b->contains(p))) return b;
   }
   return nullptr;
 }

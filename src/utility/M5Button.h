@@ -241,6 +241,13 @@
   but initialises to the name. Use 'myButton.setLabel("New text!")' to change
   it.
 
+  With "myButton.hide()" you can make a button temporarily invisible to the
+  touch sensor. You can specify an optional clor value to draw over the button
+  if you want to make it visually disappear also. myButton.draw() makes it
+  visible to the touch sensor again, even if you have no colors defined, so
+  nothing shows on the screen. "MyButton.erase()" only paints over the button,
+  in a color you can specify (default black).
+
 
 == Visual Buttons (Labels) with Hardware Buttons ==
 
@@ -792,6 +799,7 @@ class Button : public Zone {
  public:
   void draw(ButtonColors bc);
   void draw();
+  void hide(uint16_t color = NODRAW);
   void erase(uint16_t color = BLACK);
   void setLabel(const char* label_);
   void setFont(const GFXfont* freeFont_);
@@ -805,6 +813,7 @@ class Button : public Zone {
   void (*drawFn)(Button& b, ButtonColors bc);
 
  protected:
+  bool _hidden;
   bool _compat;  // For TFT_eSPI_Button emulation
   char _label[51];
   uint8_t _textFont;
