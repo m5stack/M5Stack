@@ -30,9 +30,6 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable, bool I2CEn
   // LCD INIT
   if (LCDEnable == true) {
     Lcd.begin();
-
-    // draw global buttons, set up before the display was ready
-    Buttons.draw();
   }
 
   // TONE

@@ -7,7 +7,7 @@ void setup() {
   M5.BtnC.setLabel("Amazing !");
   M5.BtnA.off = M5.BtnB.off = M5.BtnC.off = {BLUE, WHITE, NODRAW};
   M5.BtnA.on = M5.BtnB.on = M5.BtnC.on = {RED, WHITE, NODRAW};
-  M5.Events.addHandler(eventDisplay);
+  M5.Buttons.addHandler(eventDisplay);
   M5.Buttons.draw();
 }
 

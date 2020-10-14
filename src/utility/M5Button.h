@@ -7,7 +7,7 @@
   * Buttons on the screen, either as labels above the original M5Stack's
     hardware buttons or anywhere on the touch screen of the Core2.
 
-  * Zone and Point objects to work with screen locations are areas. Functions
+  * Zone and Point objects to work with screen locations and areas. Functions
     for distance, direction and more.
 
   * Touch gestures that are processed before the buttons, so you can still
@@ -17,8 +17,8 @@
     or poll in a loop. Events include tap, doubletap, pressed, dragged and
     more. Support for key repeat.
 
-  * Extensive rotation support, including support for buttons and gestures
-    that stay referenced to the physical screen regardless of rotation.
+  * Extensive screen rotation support, including support for buttons and
+    gestures that stay referenced to the physical screen regardless of rotation.
 
   * Intuitive, consistent and well-documented API.
 
@@ -36,7 +36,7 @@
 == Point and Zone: Describing Points and Areas on the Screen ==
 
   The Point and Zone classes allow you to create variables that hold a point
-  or an area on the screen. You can
+  or an area on the screen.
 
   Point(x, y)
 
@@ -127,8 +127,8 @@
     file, as tells you about the touch sensor and the lower-level touch
     interface that is underneath the M5Button library.
 
-  To have button that reacts to the touch sensor, all you need to do is
-  create a variable for the Button and providing the coordinates (x, y, width
+  To have a button that reacts to the touch sensor, all you need to do is
+  create a variable for the Button and provide the coordinates (x, y, width
   and height). These buttons can be used in two ways. You can either use them
   the way you would a normal Arduino button, or you can provide handler
   functions to process various events for the button. We'll talk about the
@@ -242,17 +242,17 @@
   it.
 
   With "myButton.hide()" you can make a button temporarily invisible to the
-  touch sensor. You can specify an optional clor value to draw over the button
-  if you want to make it visually disappear also. myButton.draw() makes it
-  visible to the touch sensor again, even if you have no colors defined, so
+  touch sensor. You can specify an optional color value to draw over the
+  button if you want to make it visually disappear also. myButton.draw() makes
+  it visible to the touch sensor again, even if you have no colors defined, so
   nothing shows on the screen. "MyButton.erase()" only paints over the button,
   in a color you can specify (default black).
 
 
 == Visual Buttons (Labels) with Hardware Buttons ==
 
-  You can have a visual representation of teh state of a hardware button on
-  the screen, for example right above the hardware butttons of the original
+  You can have a visual representation of the state of a hardware button on
+  the screen, for example right above the hardware buttons of the original
   M5Stack. We'll call these buttons "labels", but they're regular buttons
   that just respond to a physical button insetad of the touch sensor. If you
   want to display a label on the screen that responds to the state of a
@@ -296,11 +296,21 @@
   argument has changed from 'false' to 'true'. This argument is called
   'rot1', and it determines that the location of this Zone or Button is
   specified in rotation one, i.e. the normal default screen rotation. What
-  that means is that no matter what rotation you set the dsplay to, these
+  that means is that no matter what rotation you set the display to, these
   button will always stay in the same place. The documentation in
   src/utility/PointAndZone.h has more details if you want to know more about
   this. You will only ever need rot1 if you need multiple screen rotations
   AND you want objects to stay in the same physical place regardless.
+
+
+== M5.Buttons ==
+
+  Apart from the class "Button" that you use to create buttons of your own,
+  there is an instance called "M5.Buttons" (plural), that is used to talk to
+  the M5Button library for things that involve all buttons. For instance:
+  "M5.Buttons.setFont" sets a font for all buttons, and you can use
+  "M5.Buttons.addHandler" to add a handler that gets events for all buttons
+  (and gestures).
 
 
 == Events ==
@@ -349,8 +359,9 @@
     }
 
 
-  Note that the function name is provided without the brackets. Here's two
-  ways you can set up a handler function to receive events:
+  Note that the function names "touched" and "released" are provided to
+  addHandler without the parenthesis. Here's two ways you can set up a handler
+  function to receive events:
 
     M5.Buttons.addHandler(myHandler);
 
@@ -358,19 +369,18 @@
 
     myButton.addHandler(myHandler);
 
-  The first form receives all the events relating to all buttons and
-  gestures, the second form only receives the events for that specific
-  button. After the name of the function, without the brackets, you can
-  pecify which events the function needs to receive. You can add together (or
-  "bitwise or") the names of the events if you want a handler function to
-  reive multiple events.
+  The first form receives all the events relating to all buttons and gestures,
+  the second form only receives the events for that specific button. After the
+  name of the function, without the brackets, you can specify which events the
+  function needs to receive. You can add together (or "bitwise or") the names
+  of the events if you want a handler function to reive multiple events.
 
   The Event object that is passed to the handler function contains all sorts
   of information about the event: where on the screen it started, where it
   ended, the duration, etc. etc.
 
-  Let's first look at all the possible events and when are fired. The first
-  three events always happen when a finger touches the display.
+  Let's first look at all the possible events and when they are fired. The
+  first three events always happen when a finger touches the display.
 
   E_TOUCH, E_MOVE and E_RELEASE
 
@@ -386,7 +396,7 @@
     There are also events that happen while the button is still pressed.
     These are E_PRESSING and E_LONGPRESSING. E_PRESSING happens as soon as
     M5Button is sure that's not just a short tap (more later). The maximum
-    time for a tap is settable, but defaults to 150 ms. So if teh button is
+    time for a tap is settable, but defaults to 150 ms. So if the button is
     still held 150 ms after E_TOUCH, E_PRESSING fires. Just once, unless you
     have set up a key repeat, more about that later too. Then at some point
     you might get a E_LONGPRESSING, if you have set up a duration for that to
@@ -394,12 +404,11 @@
 
   E_TAP, E_DBLTAP, E_PRESSED, E_LONGPRESSED and E_DRAGGED
 
-    Unless the keypress is cancelled (more later), exactly one of these
-    events will fire after the button has been released, after E_RELEASE has
-    fired. Think of these as final decisions on what kind of keypress this
-    was. (E_TAP takes a tiny bit longer before it fires because M5Button
-    needs to make it wasn't a doubletap, in that case E-DBLTAP wil fire
-    instead.)
+    Unless the keypress is cancelled (more later), exactly one of these events
+    will fire after the button has been released, after E_RELEASE has fired.
+    Think of these as final decisions on what kind of keypress this was.
+    (E_TAP takes a tiny bit longer before it fires because M5Button needs to
+    make sure it wasn't a doubletap, in that case E_DBLTAP wil fire instead.)
 
     So tap and doubletap are sort of obvious, E_LONGPRESSED fires if the key
     was pressed more that the set time in ms. E_DRAGGED fires if the finger
@@ -448,12 +457,21 @@
 
       Duration of the event in milliseconds.
 
-    e.button and e.gesture
+    e.button
 
-      Pointers to the button and possibly gesture attached to the event. What
-      that means is that you can use all the methods for button as long as
-      you precede them with "e.button->". Note the '->' there because this is
-      a pointer to an object.
+      Pointer to the button attached to the event. What that means is that you
+      can use all the methods for button as long as you precede them with
+      "e.button->". Note the '->' there because this is a pointer to an
+      object.
+
+    e.gesture
+
+      e.gesture is a pointer to the gesture attached to the event, and may be
+      null if the event is not a gesture. So unless you know for sure this
+      event is a gesture (because handler attached to that gesture or because
+      you asked for E_GESTURE events only), this pointer needs to be tested
+      using "if (e.gesture)" before using -> methods on it, oterwise your
+      program will crash.
 
     other methods
 
@@ -506,6 +524,36 @@
   port.
 
 
+== Taps, Doubletaps, Longpresses and Key Repeat ==
+
+  Some features are best explained with some examples:
+
+    myButton.tapTime = 0;
+
+      Turns off detection of taps and doubletaps, the button will fire
+      E_PRESSING immediately when pressed. Any other value makes that the
+      maximum time a tap can take in milliseconds, and thus the wait tme
+      before "E_PRESSING" fires.
+
+    mybutton.tapWait = 0;
+
+      Turns off detection of doubletaps only. Any other value makes that the
+      wait before an E_TAP fires, because M5Button is still waiting to see if
+      it's maybe a doubletap.
+
+    mybutton.longPressTime = 700;
+
+      Sets up the button to fire an E_LONGPRESSING after 700 ms, and then fire
+      E_LONGPRESSED instead of E_PRESSED when the button is released. By
+      default this is set to zero, meaning longpress detection is off.
+
+    myButton.repeatDelay = 500;
+    myButton.repeatInterval = 250;
+
+      Makes the button repeat the sending of its E_PRESSING event every 250
+      milliseconds if key is held for 500 ms.
+
+
 == In Loop vs. Event Handlers ==
 
   Button and Gesture objects have an 'event' method that returns the event
@@ -515,14 +563,31 @@
 
   If nothing was detected, the event type will be set to E_NONE with a value
   of 0, so you can do "if (myButton.event) ...". 'M5.Buttons.event' has the
-  event detected this time around, regardless of what button or gesture it
-  was attached to.
+  event detected this time around, regardless of what button or gesture it was
+  attached to. This example prints a star to serial if it is doubletapped.
+
+    #include <M5Core2.h>
+
+    Button myButton(50,70,220, 100, false, "Button",
+                    {YELLOW, BLACK, NODRAW},
+                    {RED, BLACK, NODRAW} );
+
+    void setup() {
+      M5.begin();
+      M5.Buttons.setFont(FSS18);
+      M5.Buttons.draw();
+    }
+
+    void loop() {
+      M5.update();
+      if (myButton.event == E_DBLTAP) Serial.print("* ");
+    }
 
 
 == M5.background ==
 
-  Only one button can become pressed for any spot om the touch screen. If you
-  define overlapping buttons, the first defined button forthe overlap become
+  Only one button can become pressed for any spot on the touch screen. If you
+  define overlapping buttons, the first defined button for the overlap become
   pressed and gets all subsequent events.
 
   One special button, "M5.background", was defined before any others, and it
@@ -533,11 +598,11 @@
 == Gestures on the Touch Screen ==
 
   Whenever a finger is released from the touch screen and before any
-  higher-level button events are fired, the library first checs whether this
-  was aybe a gesture. When you can degine gestures, you can optionally
-  specify the zone in which the gesture must start, the zone in which it must
-  end, the minimum distance the finger must have travelled, the direction it
-  has travelled in and the maximum time the gesture may take.
+  higher-level button events are fired, the library first checks whether this
+  was perhaps a gesture. When you define gestures, you can optionally specify
+  the zone in which the gesture must start, the zone in which it must end, the
+  minimum distance the finger must have travelled, the direction it has
+  travelled in and the maximum time the gesture may take.
 
     Gesture exampleGesture(fromZone, toZone, "exampleName", minimumDistance,
     direction, plusminus, ro1, maxTime)
@@ -546,39 +611,40 @@
   want to specify neither fromZone nor toZone, you can also leave them off
   completely. The minimum distance defaults to 75 pixels. The direction
   (default: don't care) is in compass degrees (so 180 is down), but the
-  compiler defines UP, DOWN, LEFT and right are provided for convenience. The
-  plusminus deines how many degress off-course the gesture may be, and the
-  rot1 flag defines whether this direction is relative to the current
-  rotation, or as seen in rotation 1. maxTime is in milliseconds as usual and
-  defaults to 500 ms.
+  compiler defines DIR_UP, DIR_DOWN, DIR_LEFT and DIR_RIGHT are provided for
+  convenience. The plusminus deines how many degress off-course the gesture
+  may be, and the rot1 flag defines whether this direction is relative to the
+  current rotation, or as seen in rotation 1. maxTime is in milliseconds as
+  usual and defaults to 500 ms. DIR_ANY can be used for direction if you need
+  to specify it in order provide a rot1 or maximum time value.
 
   here are a few examples of valid gesture definitions:
 
 
-    Gesture swipeDown("swipe down", 100, DOWN, 30);
+    Gesture swipeDown("swipe down", 100, DIR_DOWN, 30);
 
       Down (plus or minus 30 degrees) for at least 100 pixels within 500 ms
 
 
-    Gesture fromTop(Zone(0, 0, 360, 30), ANYWHERE, "from top", 100, DOWN, 30);
+    Gesture fromTop(Zone(0, 0, 360, 30), ANYWHERE, "from top", 100, DIR_DOWN, 30);
 
       The same but starting from within the top 30 pixels. (If you make that
       too narrow you may miss the swipe because the sensor 'sees' only once
       every 13 ms or so.
 
 
-  (Note that if you defines both these gestures in this orderm the second one
-  would never fire because any swipe that matched number two woul first match
+  (Note that if you defined both these gestures in this order the second one
+  would never fire because any swipe that matched number two would first match
   number one and fire that one instead.)
 
   Gestures have a 'wasDetected()' method if you want to detect them in the
-  main loop, or you attach a handler usin the same way you use for buttons,
-  with "myEvent.addhandler(myHandler)"
+  main loop, or you attach a handler the same way you would for a button,
+  with "myGesture.addhandler(myHandler)"
 
 
     #include <M5Core2.h>
 
-    Gesture swipeDown("swipe down", DOWN, 30);
+    Gesture swipeDown("swipe down", DIR_DOWN, 30);
 
     void setup() {
       M5.begin();
@@ -601,7 +667,7 @@
       void M5Buttons::drawFunction(Button& b, ButtonColors bc)
 
     If you make your own function that takes the same arguments but that does
-    something different, you can make the library us it by saying
+    something different, you can make the library use it by saying
     "M5.Buttons.drawFn = myFunction". You can even do that on a per-button
     basis with "myButton.drawFn = myFunction".
 
@@ -634,7 +700,7 @@
     old way of doing buttons that comes as an optional extra with the display
     library. Together with M5Touch's emulation of the TFT_eSPI touch
     interface (written for the older resistive touch-screens), you can use it
-    to run software made for those APIs. Do not use either fornew code: the
+    to run software made for those APIs. Do not use either for new code: the
     native interfaces are much more powerful.
 
 
@@ -772,9 +838,10 @@ class Button : public Zone {
   bool wasReleasefor(uint32_t ms);
   void addHandler(void (*fn)(Event&), uint16_t eventMask = E_ALL);
   void delHandlers(void (*fn)(Event&) = nullptr);
-  char* name();
+  char* getName();
   uint32_t lastChange();
   Event event;
+  uint16_t userData;
   uint16_t tapTime, dbltapTime, longPressTime;
   uint16_t repeatDelay, repeatInterval;
 
@@ -838,7 +905,7 @@ class Gesture {
   bool wasDetected();
   void addHandler(void (*fn)(Event&), uint16_t eventMask = E_ALL);
   void delHandlers(void (*fn)(Event&) = nullptr);
-  char* name();
+  char* getName();
   Zone fromZone;
   Zone toZone;
   Event event;

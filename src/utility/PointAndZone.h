@@ -11,11 +11,12 @@
 == Point and Zone: Describing Points and Areas on the Screen ==
 
   The Point and Zone classes allow you to create variables that hold a point
-  or an area on the screen. You can
+  or an area on the screen.
 
   Point(x, y)
-    Holds a point on the screen. Has members x and y that hold the
-    coordinates of a touch. Values -1 for x and y indicate an invalid value,
+
+    Holds a point on the screen. Has members x and y that hold the coordinates
+    of a touch. Values INVALID_VALUE for x and y indicate an invalid value,
     and that's what a point starts out with if you declare it without
     parameters. The 'valid()' method tests if a point is valid. If you
     explicitly evaluate a Point as a boolean ("if (p) ..."), you also get
@@ -23,6 +24,7 @@
     (p.valid()) ...".
 
   Zone(x, y, w, h)
+
     Holds a rectangular area on the screen. Members x, y, w and h are for the
     x and y coordinate of the top-left corner and the width and height of the
     rectangle.
@@ -54,7 +56,7 @@
   that the direction is output as if the rotation 1 coordinate system was
   used.
 
-  Distance and drection functionality is used in Gesture recognition in the
+  Distance and direction functionality is used in Gesture recognition in the
   M5Button highler level library. Its 'Event' objects have methods that look
   very much like these, except the 'To' in the name is missing because Events
   have a starting and ending point so you can just print
@@ -68,7 +70,7 @@
   Serial.println(a.valid());                    // 0
   Serial.println(a);                            // (invalid)
   a.set(10, 30);
-  Serial.println(a);					                  // (10,30)
+  Serial.println(a);                            // (10,30)
   Serial.println(a.valid());                    // 1
   Serial.println(b.y);                          // 120
   Serial.println(a.distanceTo(b));              // 98
@@ -106,9 +108,9 @@
   in a Zone. The Button object also rotates the coordinates before drawing
   the button.
 
-  So by setting 'rot1' to true, you can creates zones and buttons that stay
-  in the same place even is the screen is rotated. On the Core2, this is used
-  to define the BtnA through BtnC virtual below-screen buttons, which should
+  So by setting 'rot1' to true, you can create zones and buttons that stay in
+  the same place even if the screen is rotated. On the Core2, this is used to
+  define the BtnA through BtnC virtual below-screen buttons, which should
   always be in the area below the screen where the circles are printed,
   regardless of rotation.
 
@@ -137,10 +139,14 @@
 #define INVALID_VALUE -32768
 #define PLUSMINUS 45  // default value for isDirectionTo
 
-#define UP        0
-#define RIGHT    90
-#define DOWN    180
-#define LEFT    270
+#define DIR_UP                 0
+#define DIR_RIGHT             90
+#define DIR_DOWN             180
+#define DIR_LEFT             270
+#define DIR_ANY    INVALID_VALUE
+
+#define HIGHEST_X 319         // Can't trust TFT_WIDTH, driver is portrait
+#define HIGHEST_Y 239
 
 
 class Zone;
@@ -152,7 +158,7 @@ class Point {
   bool operator!=(const Point& p);
   explicit operator bool();
   operator char*();
-  void set(int16_t x_ = -1, int16_t y_ = -1);
+  void set(int16_t x_ = INVALID_VALUE, int16_t y_ = INVALID_VALUE);
   bool valid();
   bool in(Zone& z);
   bool Equals(const Point& p);
@@ -173,7 +179,8 @@ class Zone {
        int16_t h_ = 0, bool rot1_ = false);
   explicit operator bool();
   bool valid();
-  void set(int16_t x_, int16_t y_, int16_t w_, int16_t h_, bool rot1_ = false);
+  void set(int16_t x_ = INVALID_VALUE, int16_t y_ = INVALID_VALUE,
+           int16_t w_ = 0 , int16_t h_ = 0, bool rot1_ = false);
   bool contains(const Point& p);
   bool contains(int16_t x, int16_t y);
   void rotate(uint8_t m);

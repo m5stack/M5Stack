@@ -94,6 +94,7 @@ int16_t Button::instanceIndex() {
 
 bool Button::read(bool manualRead /* = true */) {
   if (manualRead) _manuallyRead = true;
+  event = Event();
   if (_changed) {
     _changed = false;
     _lastChange = _time;
@@ -216,7 +217,7 @@ void Button::cancel() {
   draw(off);
 }
 
-char* Button::name() { return _name; }
+char* Button::getName() { return _name; }
 
 bool Button::isPressed() { return _state; }
 
@@ -594,7 +595,7 @@ int16_t Gesture::instanceIndex() {
   return -1;
 }
 
-char* Gesture::name() { return _name; }
+char* Gesture::getName() { return _name; }
 
 bool Gesture::test(Point& from, Point& to, uint16_t duration) {
   if (from.distanceTo(to) < minDistance) return false;
@@ -645,8 +646,8 @@ const char* Event::typeName() {
 
 const char* Event::objName() {
   const char* empty = "";
-  if (gesture) return gesture->name();
-  if (button) return button->name();
+  if (gesture) return gesture->getName();
+  if (button) return button->getName();
   return empty;
 };
 
