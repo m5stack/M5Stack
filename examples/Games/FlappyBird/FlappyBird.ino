@@ -1,4 +1,5 @@
 // By Ponticelli Domenico.
+// 12NOV2020 EEPROM Fix added, modified by Zontex
 // https://github.com/pcelli85/M5Stack_FlappyBird_game
 
 #include <M5Stack.h>
@@ -27,7 +28,8 @@
 // grass size
 #define GRASSH            4     // grass height (inside floor, starts at floor y)
 
-int maxScore = 0;
+int address = 0;
+int maxScore = EEPROM.readInt(address);
 const int buttonPin = 2;     
 // background
 const unsigned int BCKGRDCOL = M5.Lcd.color565(138,235,244);
@@ -92,10 +94,12 @@ static short tmpx, tmpy;
 
 void setup() {
   // put your setup code here, to run once:
-M5.begin();
-M5.Power.begin();
-resetMaxScore();
-
+  M5.begin();
+  M5.Power.begin();
+  EEPROM.begin(1000);
+  //resetMaxScore();
+  Serial.println("last score:");
+  Serial.println(EEPROM.readInt(address));
 }
 
 void loop() {
@@ -323,11 +327,12 @@ void game_init() {
 // ---------------
 void game_over() {
   M5.Lcd.fillScreen(TFT_BLACK);
-  EEPROM_Read(&maxScore,0);
+  maxScore = EEPROM.readInt(address);
   
   if(score>maxScore)
   {
-    EEPROM_Write(&score,0);
+    EEPROM.writeInt(address, score);
+    EEPROM.commit();
     maxScore = score;
     M5.Lcd.setTextColor(TFT_RED);
     M5.Lcd.setTextSize(2); 
@@ -360,31 +365,7 @@ void game_over() {
 
 void resetMaxScore()
 {
-  EEPROM_Write(&maxScore,0);
+  EEPROM.writeInt(address, 0);
+  EEPROM.commit();
 }
-
-
-
-void EEPROM_Write(int *num, int MemPos)
-{
- byte ByteArray[2];
- memcpy(ByteArray, num, 2);
- for(int x = 0; x < 2; x++)
- {
-   EEPROM.write((MemPos * 2) + x, ByteArray[x]);
- }  
-}
-
-
-
-void EEPROM_Read(int *num, int MemPos)
-{
- byte ByteArray[2];
- for(int x = 0; x < 2; x++)
- {
-   ByteArray[x] = EEPROM.read((MemPos * 2) + x);    
- }
- memcpy(num, ByteArray, 2);
-}
-
 
