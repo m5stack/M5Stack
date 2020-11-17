@@ -19,7 +19,7 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable, bool I2CEn
     Serial.begin(115200);
     Serial.flush();
     delay(50);
-    Serial.print("M5Stack initializing...");
+    Serial.println("M5Stack initializing...");
   }
 
   // TF Card
