@@ -38,8 +38,8 @@ void setup() {
   M5.Power.begin();
   Serial.begin(9600);
   Serial2.begin(9600, SERIAL_8N1, 16, 17);
-  pinMode(10, OUTPUT);
-  digitalWrite(10, 1);
+  pinMode(13, OUTPUT);
+  digitalWrite(13, 1);
 
   M5.Lcd.fillScreen(TFT_BLACK);               
   header("P M 2.5", TFT_BLACK);

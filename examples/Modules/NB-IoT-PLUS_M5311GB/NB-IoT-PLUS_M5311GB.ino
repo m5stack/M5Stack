@@ -7,7 +7,9 @@
 
 TFT_eSprite Disbuff = TFT_eSprite(&M5.Lcd);
 TaskHandle_t xhandle_lte_event = NULL;
-SemaphoreHandle_t command_list_samap;
+SemaphoreHandle_t command_list_samap, pingflag_samap;
+
+bool pingfinish = false;
 
 typedef enum
 {
@@ -62,18 +64,68 @@ void LTEModuleTask(void *arg)
         {
             String str = Serial2.readString();
             restr += str;
+			Serial.print(restr);
 
             if (restr.indexOf("\r\n") != -1)
             {
+				if( restr.indexOf("+IP:") != -1 )
+				{
+					String ipstr =  restr.substring(restr.indexOf("+IP:") + String("+IP:").length(), restr.indexOf("\r\n",restr.indexOf("+IP:")));
+					Serial.print("[P]"+ipstr+"\r\n");
+					//(restr.indexOf("+IP:") + String("+IP:").length())
+
+					Disbuff.setCursor(7, 90);
+					Disbuff.setTextSize(2);
+					Disbuff.setTextColor(GREEN);
+					Disbuff.printf(ipstr.c_str());
+					Disbuff.pushSprite(0, 0);
+					restr.clear();
+				}
+
+				if( restr.indexOf("transmitted") != -1)
+				{
+					String substr = restr.substring(restr.indexOf("transmitted") +  String("transmitted,").length(),restr.indexOf("\r\n",restr.indexOf("transmitted")));
+					String number = substr.substring(substr.indexOf(',') + 1, substr.indexOf('%'));
+					Serial.print("[T]"+substr+"\r\n");
+					Serial.print("[N]"+number+"\r\n");
+					substr.replace(',','\n');
+					
+					Disbuff.fillRect(0,60,320,30,BLACK);
+					Disbuff.setCursor(7, 60);
+					Disbuff.setTextSize(2);
+
+					if( number.toInt() < 100 )
+					{
+						Disbuff.setTextColor(GREEN);
+					}
+					else
+					{
+						Disbuff.setTextColor(RED);
+					}
+					
+					Disbuff.printf("Lose %d%%",	number.toInt());
+					
+					Disbuff.pushSprite(0, 0);
+
+					xSemaphoreTake(pingflag_samap, portMAX_DELAY);
+					pingfinish = true;
+					xSemaphoreGive(pingflag_samap);
+					
+				}
+				if (serial_at.empty() == true)
+				{
+					restr.clear();
+				}
             }
 
             if (restr.indexOf("+ZMMI:") != -1)
             {
                 zmmi_str = restr;
             }
+
             else if ((restr.indexOf("OK") != -1) || (restr.indexOf("ERROR") != -1))
             {
-                Serial.print(restr);
+                //Serial.print(restr);
                 if (restr.indexOf("OK") != -1)
                 {
                     if ((serial_at[0].command_type == kACTION_MO) || (serial_at[0].command_type == kASSIGN_MO))
@@ -303,13 +355,10 @@ void setup()
 {
     // put your setup code here, to run once:
     M5.begin();
-    M5.Power.begin();
-    Serial.begin(115200);
     Serial2.begin(115200, SERIAL_8N1, 16, 17);
-    Serial.printf("FUCK STC\n");
 
-    Disbuff.createSprite(320, 100);
-    Disbuff.fillRect(0, 0, 320, 100, BLACK);
+    Disbuff.createSprite(320, 120);
+    Disbuff.fillRect(0, 0, 320, 120, BLACK);
     Disbuff.drawRect(0, 0, 320, 20, Disbuff.color565(36, 36, 36));
     Disbuff.pushSprite(0, 0);
 
@@ -333,6 +382,9 @@ void setup()
     command_list_samap = xSemaphoreCreateMutex();
     xSemaphoreGive(command_list_samap);
 
+	pingflag_samap = xSemaphoreCreateMutex();
+	xSemaphoreGive(pingflag_samap);
+
     int count_t = 0;
     AddMsg("AT\r\n", kASSIGN_MO, 1000, 1000);
     while (getATMsgSize() > 0)
@@ -340,6 +392,8 @@ void setup()
         Disbuff.fillRect(0, 0, 320, 20, Disbuff.color565(36, 36, 36));
         Disbuff.pushSprite(0, 0);
         Disbuff.setCursor(7, 7);
+		Disbuff.setTextColor(WHITE);
+		Disbuff.setTextSize(1);
         Disbuff.printf("Wait Modlue Srart %02d", count_t);
         Disbuff.pushSprite(0, 0);
         count_t++;
@@ -349,27 +403,43 @@ void setup()
     AddMsg("AT^CARDMODE\r\n", kQUERY_MT, 1000, 1000);
     while ((readSendState(0) == kSendReady) || (readSendState(0) == kSending) || (readSendState(0) == kWaitforMsg))
         delay(50);
-    Serial.printf("Read state = %d \n", readSendState(0));
+	int restate =  readSendState(0);
+    Serial.printf("Read state = %d \n", restate);
+	if( restate == kErrorReError )
+	{
+		Disbuff.fillRect(0, 0, 320, 20, Disbuff.color565(36, 36, 36));
+        Disbuff.pushSprite(0, 0);
+        Disbuff.setCursor(7, 30);
+		Disbuff.setTextColor(RED);
+        Disbuff.printf("Unknown Card");
+		Disbuff.pushSprite(0, 0);
+		while(1);
+	}
     readstr = ReadMsgstr(0).c_str();
     int count = GetstrNumber("CARDMODE:", "OK", readstr, numberbuff);
     if (count != 0)
     {
         Serial.printf("CardMode = %d", numberbuff[0]);
-        Disbuff.fillRect(0, 0, 320, 20, Disbuff.color565(36, 36, 36));
+       // Disbuff.fillRect(0, 0, 320, 20, Disbuff.color565(36, 36, 36));
         Disbuff.pushSprite(0, 0);
-        Disbuff.setCursor(7, 7);
+		Disbuff.setTextSize(2);
+        Disbuff.setCursor(7, 30);
         switch (numberbuff[0])
         {
         case 0:
+			Disbuff.setTextColor(RED);
             Disbuff.printf("Unknown Card");
             break;
         case 1:
+			Disbuff.setTextColor(GREEN);
             Disbuff.printf("SIM Card");
             break;
         case 2:
+			Disbuff.setTextColor(GREEN);
             Disbuff.printf("USIM Card");
             break;
         default:
+			Disbuff.setTextColor(RED);
             Disbuff.printf("Unknown Card:E");
             break;
         }
@@ -377,13 +447,18 @@ void setup()
     }
     EraseFirstMsg();
 
-    AddMsg("AT+CFUN=1\r\n", kASSIGN_MO, 1000, 1000);
+    //AddMsg("AT+CFUN=1\r\n", kASSIGN_MO, 1000, 1000);
+	AddMsg("AT+SM=LOCK\r\n", kASSIGN_MO, 1000, 1000);
+	
 
     AddMsg("AT^SYSCONFIG?\r\n", kQUERY_MT, 1000, 1000);
     while ((readSendState(0) == kSendReady) || (readSendState(0) == kSending) || (readSendState(0) == kWaitforMsg))
-        delay(50);
+    	delay(50);
     Serial.printf("Read state = %d ", readSendState(0));
     Serial.print(ReadMsgstr(0).c_str());
+	EraseFirstMsg();
+	delay(3000);
+	disableCore0WDT();
 
     AddMsg("AT+MQTTSTAT?\r\n", kQUERY_MT, 1000, 1000);
     while ((readSendState(0) == kSendReady) || (readSendState(0) == kSending) || (readSendState(0) == kWaitforMsg))
@@ -404,7 +479,7 @@ void setup()
 
     delay(3000);
 
-    AddMsg("AT+MQTTCFG=127.0.0.1,1883,110,60,M5Hard,hades,1,0\r\n", kQUERY_MT, 1000, 1000);
+    AddMsg("AT+MQTTCFG=broker.emqx.io,1883,110,60,M5Hard,hades,1,0\r\n", kQUERY_MT, 1000, 1000);
     while ((readSendState(0) == kSendReady) || (readSendState(0) == kSending) || (readSendState(0) == kWaitforMsg))
         delay(50);
     Serial.printf("Read state = %d ", readSendState(0));
@@ -426,18 +501,21 @@ void setup()
     Serial.printf("Read state = %d ", readSendState(0));
     Serial.print(ReadMsgstr(0).c_str());
     EraseFirstMsg();
+
 }
 
 uint8_t restate;
 void loop()
 {
 
-    AddMsg("AT+MQTTPUB=pyr,1,0,0,0,Fuck STC from NB-Iot \r\n", kQUERY_MT, 1000, 1000);
+    AddMsg("AT+MQTTPUB=pyr,1,0,0,0,NB-Iot Test \r\n", kQUERY_MT, 1000, 1000);
     while ((readSendState(0) == kSendReady) || (readSendState(0) == kSending) || (readSendState(0) == kWaitforMsg))
         delay(50);
     Serial.printf("Read state = %d \n", readSendState(0));
     Serial.print(ReadMsgstr(0).c_str());
     EraseFirstMsg();
-
+    //xSemaphoreGive(pingflag_samap);
+	
+	delay(100);
     M5.update();
 }
