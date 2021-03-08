@@ -18,12 +18,12 @@ void GRBL::Init(uint32_t x_step,uint32_t y_step,uint32_t z_step,uint32_t acc)
         sprintf(code,"$0=%d",x_step);
         Gcode(code);
     }
-    if(x_step){
+    if(y_step){
         char code[256];
         sprintf(code,"$1=%d",y_step);
         Gcode(code);
     }
-    if(x_step){
+    if(z_step){
         char code[256];
         sprintf(code,"$2=%d",z_step);
         Gcode(code);
