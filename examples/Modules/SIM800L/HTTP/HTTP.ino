@@ -55,42 +55,44 @@ void GET() {
     // while(!Serial2.available());
     delay(5000);
     sendATCMDAndRevice("AT+HTTPREAD\r\n");
+    delay(1000);
+    String recvStr;
     while(Serial2.available()){
-      String recvStr;
-      recvStr = Serial2.readStringUntil('\n');
-      Serial.println(recvStr);
-      terminal.println(recvStr);
+      recvStr+= Serial2.readString();
     }
+    Serial.println(recvStr);
+    terminal.println(recvStr);
     sendATCMDAndRevice("AT+HTTPTERM\r\n");
 }
 
-// void POST() {
-//     terminal.println("POST Request");
-//     sendATCMD("AT?\r\n");
-//     delay(100);
-//     Serial2.flush();
-//     sendATCMDAndRevice("AT+CGATT?\r\n");
-//     sendATCMDAndRevice("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"\r\n");
-//     sendATCMDAndRevice("AT+SAPBR=3,1,\"APN\",\"CMNET\"\r\n");
-//     sendATCMDAndRevice("AT+SAPBR=0,1\r\n");
-//     sendATCMDAndRevice("AT+SAPBR=1,1\r\n");
-//     sendATCMDAndRevice("AT+HTTPINIT\r\n");
-//     sendATCMDAndRevice("AT+HTTPPARA=\"CID\",1\r\n");
-//     sendATCMDAndRevice("AT+HTTPPARA=\"CONTENT\",\"application/x-www-form-urlencoded\"\r\n");
-//     sendATCMDAndRevice("AT+HTTPPARA=\"URL\",\"https://getman.cn/api/request\"\r\n");
-//     sendATCMD("AT+HTTPDATA=10,10000\r\n");
-//     sendATCMD("M5STACK,GO\r\n");
-//     sendATCMDAndRevice("AT+HTTPACTION=1\r\n");
-//     delay(5000);
-//     sendATCMDAndRevice("AT+HTTPREAD\r\n");
-//     while(Serial2.available()){
-//       String recvStr;
-//       recvStr = Serial2.readStringUntil('\n');
-//       Serial.println(recvStr);
-//       terminal.println(recvStr);
-//     }
-//     sendATCMDAndRevice("AT+HTTPTERM\r\n");
-// }
+void POST() {
+    terminal.println("POST Request");
+    sendATCMD("AT?\r\n");
+    delay(100);
+    Serial2.flush();
+    sendATCMDAndRevice("AT+CGATT?\r\n");
+    sendATCMDAndRevice("AT+SAPBR=3,1,\"CONTYPE\",\"GPRS\"\r\n");
+    sendATCMDAndRevice("AT+SAPBR=3,1,\"APN\",\"CMNET\"\r\n");
+    sendATCMDAndRevice("AT+SAPBR=0,1\r\n");
+    sendATCMDAndRevice("AT+SAPBR=1,1\r\n");
+    sendATCMDAndRevice("AT+HTTPINIT\r\n");
+    sendATCMDAndRevice("AT+HTTPPARA=\"CID\",1\r\n");
+    sendATCMDAndRevice("AT+HTTPPARA=\"CONTENT\",\"application/x-www-form-urlencoded\"\r\n");
+    sendATCMDAndRevice("AT+HTTPPARA=\"URL\",\"http://header.json-json.com/\"\r\n");
+    sendATCMD("AT+HTTPDATA=10,3000\r\n");
+    sendATCMD("M5STACK,GO\r\n");
+    sendATCMDAndRevice("AT+HTTPACTION=1\r\n");
+    delay(5000);
+    sendATCMDAndRevice("AT+HTTPREAD\r\n");
+    delay(1000);
+    String recvStr;
+    while(Serial2.available()){
+      recvStr+= Serial2.readString();
+    }
+    Serial.println(recvStr);
+    terminal.println(recvStr);
+    sendATCMDAndRevice("AT+HTTPTERM\r\n");
+}
 
 void setup()
 {
@@ -117,6 +119,7 @@ void loop()
 {
   M5.update();
   if(M5.BtnA.wasPressed()) GET();
+  if(M5.BtnB.wasPressed()) POST();
   if(M5.BtnC.wasPressed()) {
     String recvStr;
     recvStr = Serial2.readStringUntil('\n');
