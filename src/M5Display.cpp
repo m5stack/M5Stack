@@ -556,6 +556,9 @@ void M5Display::drawPngUrl(const char *url, uint16_t x, uint16_t y,
     return ;
   }
 
+  // get lenght of document (is -1 when Server sends no Content-Length header)
+  int len = http.getSize();
+
   WiFiClient *stream = http.getStreamPtr();
 
   pngle_t *pngle = pngle_new();
@@ -586,21 +589,25 @@ void M5Display::drawPngUrl(const char *url, uint16_t x, uint16_t y,
   // Feed data to pngle
   uint8_t buf[1024];
   int remain = 0;
-  int len;
-  while (http.connected()) {
+  int c;
+  while (http.connected() && (len > 0 || len == -1)) {
     size_t size = stream->available();
     if (!size) { delay(1); continue; }
 
     if (size > sizeof(buf) - remain) size = sizeof(buf) - remain;
-    if ((len = stream->readBytes(buf + remain, size)) > 0) {
-      int fed = pngle_feed(pngle, buf, remain + len);
+    if ((c = stream->readBytes(buf + remain, size)) > 0) {
+      int fed = pngle_feed(pngle, buf, remain + c);
       if (fed < 0) {
         log_e("[pngle error] %s", pngle_error(pngle));
         break;
       }
 
-      remain = remain + len - fed;
+      remain = remain + c - fed;
       if (remain > 0) memmove(buf, buf + fed, remain);
+
+      if(len > 0) {
+        len -= c;
+      }
     }
   }
 
