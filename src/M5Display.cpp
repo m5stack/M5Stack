@@ -556,7 +556,7 @@ void M5Display::drawPngUrl(const char *url, uint16_t x, uint16_t y,
     return ;
   }
 
-  // get lenght of document (is -1 when Server sends no Content-Length header)
+  // get length of document (is -1 when Server sends no Content-Length header)
   int len = http.getSize();
 
   WiFiClient *stream = http.getStreamPtr();
