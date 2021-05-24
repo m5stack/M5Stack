@@ -1,8 +1,17 @@
 #include "M5Display.h"
 
+#ifdef M5Stack_M5Core2
+#include <M5Touch.h>
+#endif /* M5Stack_M5Core2 */
+
 #define BLK_PWM_CHANNEL 7 // LEDC_CHANNEL_7
 
-M5Display::M5Display() : TFT_eSPI() {}
+// So we can use this instance without including all of M5Core2 / M5Stack
+M5Display* M5Display::instance;
+
+M5Display::M5Display() : TFT_eSPI() {
+  if (!instance) instance = this;
+}
 
 void M5Display::begin() {
   TFT_eSPI::begin();
@@ -39,7 +48,7 @@ void M5Display::drawBitmap(int16_t x0, int16_t y0, int16_t w, int16_t h, const u
 }
 
 void M5Display::drawBitmap(int16_t x0, int16_t y0, int16_t w, int16_t h, uint16_t *data) {
-  bool swap = getSwapBytes();  
+  bool swap = getSwapBytes();
   setSwapBytes(true);
   pushImage((int32_t)x0, (int32_t)y0, (uint32_t)w, (uint32_t)h, data);
   setSwapBytes(swap);
@@ -607,3 +616,71 @@ void M5Display::drawPngUrl(const char *url, uint16_t x, uint16_t y,
   pngle_destroy(pngle);
   http.end();
 }
+
+
+// Saves and restores font properties, datum, cursor, colors
+
+void M5Display::pushState() {
+  DisplayState s;
+  s.textfont = textfont;
+  s.textsize = textsize;
+  s.textcolor = textcolor;
+  s.textbgcolor = textbgcolor;
+  s.cursor_x = cursor_x;
+  s.cursor_y = cursor_y;
+  s.padX = padX;
+  s.gfxFont = gfxFont;
+  _displayStateStack.push_back(s);
+}
+
+void M5Display::popState() {
+  if (_displayStateStack.empty()) return;
+  DisplayState s = _displayStateStack.back();
+  _displayStateStack.pop_back();
+  textfont = s.textfont;
+  textsize = s.textsize;
+  textcolor = s.textcolor;
+  textbgcolor = s.textbgcolor;
+  cursor_x = s.cursor_x;
+  cursor_y = s.cursor_y;
+  padX = s.padX;
+  if (s.gfxFont && s.gfxFont != gfxFont) setFreeFont(s.gfxFont);
+}
+
+#ifdef M5Stack_M5Core2
+
+#ifdef TFT_eSPI_TOUCH_EMULATION
+
+// Emulates the native (resistive) TFT_eSPI touch interface using M5.Touch
+
+uint8_t M5Display::getTouchRaw(uint16_t *x, uint16_t *y) {
+  return getTouch(x, y);
+}
+
+uint16_t M5Display::getTouchRawZ(void) {
+  return (TOUCH->ispressed()) ? 1000 : 0;
+}
+
+void M5Display::convertRawXY(uint16_t *x, uint16_t *y) { return; }
+
+uint8_t M5Display::getTouch(uint16_t *x, uint16_t *y,
+                            uint16_t threshold /* = 600 */) {
+  TOUCH->read();
+  if (TOUCH->points) {
+    *x = TOUCH->point[0].x;
+    *y = TOUCH->point[0].y;
+    return true;
+  }
+  return false;
+}
+
+void M5Display::calibrateTouch(uint16_t *data, uint32_t color_fg,
+                               uint32_t color_bg, uint8_t size) {
+  return;
+}
+
+void M5Display::setTouch(uint16_t *data) { return; }
+
+#endif /* TFT_eSPI_TOUCH_EMULATION */
+
+#endif /* M5Stack_M5Core2 */
