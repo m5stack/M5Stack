@@ -271,7 +271,12 @@ class LoRaWanClass
          *  \return Return bool. Ture : Confirmed ACK, false : Confirmed NOT ACK
          */
         bool transferPacketWithConfirmed(unsigned char *buffer, unsigned char length, unsigned char timeout = DEFAULT_TIMEOUT);
-
+        /**
+         *  \brief Perform a LinkCheck request
+         *
+         *  \return Return bool. True : Confirmed ACK, false : Confirmed NOT ACK
+         */
+        bool transferPacketLinkCheckReq(unsigned char timeout = DEFAULT_TIMEOUT);
         /**
          *  \brief Receive the data
          *
