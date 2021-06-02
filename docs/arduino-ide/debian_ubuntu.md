@@ -18,6 +18,7 @@ Installation instructions for Debian / Ubuntu OS
   cd tools && \
   python2 get.py
   ```
+  Or for Ubuntu 18.04 just ```sudo apt install python-serial```
 - Restart Arduino IDE
 
 
