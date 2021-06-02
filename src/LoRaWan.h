@@ -404,6 +404,13 @@ class LoRaWanClass
          *  \return Return null
          */
         void setDeviceLowPower(void);
+  
+        /**
+         *  \brief Send ping
+         *  
+         *  \return Return null
+         */
+        void sendDevicePing(void);
 
         /**
          *  \brief Reset device
