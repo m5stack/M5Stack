@@ -416,7 +416,7 @@ bool LoRaWanClass::transferPacketWithConfirmed(unsigned char *buffer, unsigned c
       return false;
 }
 
-short LoRaWanClass::receivePacket(char *buffer, short length, short *rssi)
+short LoRaWanClass::receivePacket(char *buffer, int length, short *rssi, float *snr, short *gwcnt)
 {
     char *ptr;
     short number = 0;
@@ -424,6 +424,14 @@ short LoRaWanClass::receivePacket(char *buffer, short length, short *rssi)
     ptr = strstr(_buffer, "RSSI ");
     if(ptr)*rssi = atoi(ptr + 5);
     else *rssi = -255;
+  
+    ptr = strstr(_buffer, "SNR ");
+    if(ptr)*snr = atof(ptr + 4);
+    else *snr = -20.00;
+  
+    ptr = strstr(_buffer, "Link");
+    if(ptr)*gwcnt = atoi(ptr + 9);
+    else *gwcnt = 0;
 
     ptr = strstr(_buffer, "RX: \"");
     if(ptr)
