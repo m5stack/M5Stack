@@ -1,5 +1,16 @@
+/*
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+* Visit the website for more information：https://docs.m5stack.com/en/products
+*
+* describe：Speaker example
+* date：2021/7/15
+*******************************************************************************
+*/
 #include <M5Stack.h>
 
+// Set the frequency of the speaker
 #define NOTE_D0 -1
 #define NOTE_D1 294
 #define NOTE_D2 330
@@ -25,32 +36,27 @@
 #define NOTE_DH6 990
 #define NOTE_DH7 112
 
-
+// After M5Core is started or reset
+// the program in the setUp () function will be run, and this part will only be run once.
 void setup() {
-  // Initialize the M5Stack object
-  M5.begin();
-  
-  /*
-    Power chip connected to gpio21, gpio22, I2C device
-    Set battery charging voltage and current
-    If used battery, please call this function in your project
-  */
-  M5.Power.begin();
-
-  M5.Lcd.printf("M5Stack Speaker test:\r\n");
+  M5.begin(); //Init M5Core
+  M5.Power.begin(); //Init Power module
+  M5.Lcd.println("M5Stack Speaker test"); // Print the formatted string and wrap it
 }
 
+//After the program in setup() runs, it runs the program in loop()
+//The loop() function is an infinite loop in which the program runs repeatedly
 void loop() {
-  if(M5.BtnA.wasPressed()) {
-    M5.Lcd.printf("A wasPressed \r\n");
-    M5.Speaker.beep(); //beep
-  }
+  M5.update();   //Read the press state of the key
 
-  if(M5.BtnB.wasPressed())
-  {
-    M5.Lcd.printf("B wasPressed \r\n");
-    M5.Speaker.tone(NOTE_DH2, 200); //frequency 3000, with a duration of 200ms
+  if(M5.BtnA.wasPressed()) {  //Check if the key is pressed
+    M5.Lcd.println("A wasPressed");
+    M5.Speaker.tone(NOTE_DH2, 200); // Set the speaker to ring at 661Hz for 200ms
+  }else if(M5.BtnB.wasPressed()){
+    M5.Lcd.println("B wasPressed");
+    M5.Speaker.tone(NOTE_DH7); // Set the horn to continuously sound at 112Hz
+  }else if(M5.BtnC.wasPressed()){
+    M5.Lcd.println("C wasPressed");
+    M5.Speaker.end(); // Turn off the speaker
   }
-
-  M5.update();
 }

@@ -1,12 +1,17 @@
-// define must ahead #include <M5Stack.h>
-#define M5STACK_MPU6886 
-// #define M5STACK_MPU9250 
-// #define M5STACK_MPU6050
-// #define M5STACK_200Q
-
+/*
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+* Visit the website for more information：https://docs.m5stack.com/en/products
+*
+* describe：MPU6886 example
+* date：2021/7/15
+*******************************************************************************
+*/
+#define M5STACK_MPU6886
 #include <M5Stack.h>
 
-float accX = 0.0F;
+float accX = 0.0F;  // Define variables for storing inertial sensor data
 float accY = 0.0F;
 float accZ = 0.0F;
 
@@ -20,47 +25,49 @@ float yaw   = 0.0F;
 
 float temp = 0.0F;
 
-// the setup routine runs once when M5Stack starts up
+// After M5Core is started or reset
+// the program in the setUp () function will be run, and this part will only be run once.
 void setup(){
-
-  // Initialize the M5Stack object
-  M5.begin();
-  /*
-    Power chip connected to gpio21, gpio22, I2C device
-    Set battery charging voltage and current
-    If used battery, please call this function in your project
-  */
-  M5.Power.begin();
+  M5.begin(); //Init M5Core
+  M5.Power.begin(); //Init Power module
     
-  M5.IMU.Init();
+  M5.IMU.Init();  //Init IMU sensor
 
-  M5.Lcd.fillScreen(BLACK);
-  M5.Lcd.setTextColor(GREEN , BLACK);
-  M5.Lcd.setTextSize(2);
+  M5.Lcd.fillScreen(BLACK); // Set the screen background color to black
+  M5.Lcd.setTextColor(GREEN , BLACK); // Sets the foreground color and background color of the displayed text
+  M5.Lcd.setTextSize(2);  // Set the font size
 }
 
-// the loop routine runs over and over again forever
+//After the program in setup() runs, it runs the program in loop()
+//The loop() function is an infinite loop in which the program runs repeatedly
 void loop() {
-    // put your main code here, to run repeatedly:
-  M5.IMU.getGyroData(&gyroX,&gyroY,&gyroZ);
-  M5.IMU.getAccelData(&accX,&accY,&accZ);
-  M5.IMU.getAhrsData(&pitch,&roll,&yaw);
-  M5.IMU.getTempData(&temp);
-  
-  M5.Lcd.setCursor(0, 20);
-  M5.Lcd.printf("%6.2f  %6.2f  %6.2f      ", gyroX, gyroY, gyroZ);
-  M5.Lcd.setCursor(220, 42);
-  M5.Lcd.print(" o/s");
-  M5.Lcd.setCursor(0, 65);
-  M5.Lcd.printf(" %5.2f   %5.2f   %5.2f   ", accX, accY, accZ);
-  M5.Lcd.setCursor(220, 87);
-  M5.Lcd.print(" G");
-  M5.Lcd.setCursor(0, 110);
-  M5.Lcd.printf(" %5.2f   %5.2f   %5.2f   ", pitch, roll, yaw);
-  M5.Lcd.setCursor(220, 132);
-  M5.Lcd.print(" degree");
-  M5.Lcd.setCursor(0, 155);
+  M5.IMU.getGyroData(&gyroX,&gyroY,&gyroZ); // Stores the triaxial gyroscope data of the inertial sensor to the relevant variable
+  M5.IMU.getAccelData(&accX,&accY,&accZ); // Stores the triaxial accelerometer data of the inertial sensor to the relevant variable
+  M5.IMU.getAhrsData(&pitch,&roll,&yaw);  // Stores the inertial sensor attitude to the relevant variable
+  M5.IMU.getTempData(&temp);  // Stores the inertial sensor temperature to temp
+
+// The M5Core screen is 320x240 pixels, starting at the top left corner of the screen (0,0).
+// gyroscope output related
+  M5.Lcd.setCursor(0, 20);  // Move the cursor position to (x,y)
+  M5.Lcd.printf("gyroX,  gyroY, gyroZ"); // Screen printingformatted string
+  M5.Lcd.setCursor(0, 42);
+  M5.Lcd.printf("%6.2f %6.2f%6.2f o/s", gyroX, gyroY, gyroZ);
+
+// Accelerometer output is related
+  M5.Lcd.setCursor(0, 70);
+  M5.Lcd.printf("accX,   accY,  accZ");
+  M5.Lcd.setCursor(0, 92);
+  M5.Lcd.printf("%5.2f  %5.2f  %5.2f G", accX, accY, accZ);
+
+// Pose output is related
+  M5.Lcd.setCursor(0, 120);
+  M5.Lcd.printf("pitch,  roll,  yaw");
+  M5.Lcd.setCursor(0, 142);
+  M5.Lcd.printf("%5.2f  %5.2f  %5.2f deg", pitch, roll, yaw);
+
+// Inertial sensor temperature output related
+  M5.Lcd.setCursor(0, 175);
   M5.Lcd.printf("Temperature : %.2f C", temp);
 
-  delay(1);
+  delay(1000);  // Delay 1000ms (1 sec)
 }
