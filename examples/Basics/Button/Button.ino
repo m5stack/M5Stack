@@ -1,39 +1,35 @@
 /*
-    Name:       button.ino
-    Created:    2018/9/21 14:06:15
-    Author:     sakabin
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+* Visit the website for more information：https://docs.m5stack.com/en/products
+*
+* describe：Button example
+* date：2021/7/15
+*******************************************************************************
 */
-
 #include <M5Stack.h>
-// The setup() function runs once each time the micro-controller starts
+// After M5Core is started or reset
+// the program in the setUp () function will be run, and this part will only be run once.  
 void setup() {
-  // init lcd, serial, but don't init sd card
-  M5.begin(true, false, true);
-  
-  /*
-    Power chip connected to gpio21, gpio22, I2C device
-    Set battery charging voltage and current
-    If used battery, please call this function in your project
-  */
-  M5.Power.begin();
+  M5.begin();  //Init M5Core
+  M5.Power.begin();//Init Power module
 
-  M5.Lcd.clear(BLACK);
-  M5.Lcd.setTextColor(YELLOW);
-  M5.Lcd.setTextSize(2);
-  M5.Lcd.setCursor(65, 10);
-  M5.Lcd.println("Button example");
+  M5.Lcd.setTextColor(YELLOW);  // Set the font color to yellow
+  M5.Lcd.setTextSize(2);  // Set the font size
+  M5.Lcd.setCursor(65, 10); //Move the cursor position to (x, y)
+  M5.Lcd.println("Button example"); //The screen prints the formatted string and wraps the line
   M5.Lcd.setCursor(3, 35);
   M5.Lcd.println("Press button B for 700ms");
   M5.Lcd.println("to clear screen.");
   M5.Lcd.setTextColor(RED);
 }
 
-// Add the main program code into the continuous loop() function
+//After the program in setup() runs, it runs the program in loop()
+//The loop() function is an infinite loop in which the program runs repeatedly
 void loop() {
-  // update button state
-  M5.update();
- 
-  // if you want to use Releasefor("was released for"), use .wasReleasefor(int time) below
+  M5.update();  //Read the press state of the key
+ //Returns 1 if key A is released or pressed longer than the specified time
   if (M5.BtnA.wasReleased() || M5.BtnA.pressedFor(1000, 200)) {
     M5.Lcd.print('A');
   } else if (M5.BtnB.wasReleased() || M5.BtnB.pressedFor(1000, 200)) {
@@ -41,7 +37,7 @@ void loop() {
   } else if (M5.BtnC.wasReleased() || M5.BtnC.pressedFor(1000, 200)) {
     M5.Lcd.print('C');
   } else if (M5.BtnB.wasReleasefor(700)) {
-    M5.Lcd.clear(BLACK);
+    M5.Lcd.clear(WHITE);  // Clear the screen and set white to the background color
     M5.Lcd.setCursor(0, 0);
   }
 }

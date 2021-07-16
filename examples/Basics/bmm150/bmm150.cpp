@@ -622,7 +622,7 @@ int8_t bmm150_soft_reset(const struct bmm150_dev *dev)
 }
 
 /*!
- * @brief This API is used to set the power mode of the sensor.
+ * @brief
  */
 int8_t bmm150_set_op_mode(struct bmm150_dev *dev)
 {
