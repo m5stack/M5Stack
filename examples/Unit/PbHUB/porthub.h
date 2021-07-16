@@ -4,7 +4,14 @@
 #include <Wire.h>
 
 
-#define IIC_ADDR  0x61
+#define IIC_ADDR1 0x61
+#define IIC_ADDR2 0x62
+#define IIC_ADDR3 0x63
+#define IIC_ADDR4 0x64
+#define IIC_ADDR5 0x65
+#define IIC_ADDR6 0x66
+#define IIC_ADDR7 0x67
+#define IIC_ADDR8 0x68
 #define HUB1_ADDR 0x40
 #define HUB2_ADDR 0x50
 #define HUB3_ADDR 0x60
@@ -18,6 +25,7 @@ class PortHub {
 
   public:
     PortHub();
+    PortHub(uint8_t iic_addr);
     void begin();
 
     uint16_t hub_a_read_value(uint8_t reg);
@@ -41,6 +49,7 @@ class PortHub {
   public:
 
   private:
+    uint8_t _iic_addr = IIC_ADDR1;
     
   private:
 
