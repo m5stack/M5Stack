@@ -1,30 +1,30 @@
+/*
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+* Visit the website for more information：https://docs.m5stack.com/en/products
+*
+* describe：Power Management Example
+* date：2021/7/15
+*******************************************************************************
+*/
 #include <M5Stack.h>
 
-// the setup routine runs once when M5Stack starts up
+// After M5Core is started or reset
+// the program in the setUp () function will be run, and this part will only be run once.
 void setup(){
+  M5.begin(); //Init M5Core
+  M5.Power.begin(); //Init Power module
+  M5.Power.lightSleep(SLEEP_SEC(5)); 
+  M5.Lcd.setTextSize(2);  // Set the font size
+  M5.Lcd.print("press ButtonA: shutdown,  use power button to turn  back on");// Screen printing the formatted string
+}  
 
-  // initialize the M5Stack object
-  M5.begin();
-  
-  /*
-    Power chip connected to gpio21, gpio22, I2C device
-    Set battery charging voltage and current
-    If used battery, please call this function in your project
-  */
-  M5.Power.begin();
-
-  // Lcd display
-  M5.Lcd.setTextSize(2);
-  M5.Lcd.println("Software Power-OFF Demo");
-  M5.Lcd.println("Press Button A ...");
-}
-
-// the loop routine runs over and over again forever
+//After the program in setup() runs, it runs the program in loop()
+//The loop() function is an infinite loop in which the program runs repeatedly
 void loop() {
-
-  if(M5.BtnA.wasPressed()) {
-    M5.Power.powerOFF();
+  M5.update();  //Read the press state of the key
+  if(M5.BtnA.wasPressed()) {  // Check if the key is pressed
+    M5.Power.powerOFF();  //Turn off power
   }
-
-  M5.update();
 }

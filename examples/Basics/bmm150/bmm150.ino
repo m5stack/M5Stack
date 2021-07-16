@@ -1,10 +1,13 @@
 /*
- * @Author: Sorzn
- * @Date: 2019-11-21 19:58:40
- * @LastEditTime: 2019-11-22 20:36:35
- * @Description: M5Stack project
- * @FilePath: /bmm150/bmm150.ino
- */
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+* Visit the website for more information：https://docs.m5stack.com/en/products
+*
+* describe：bmm150--Magnetometer example
+* date：2021/7/15
+*******************************************************************************
+*/
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -17,135 +20,110 @@
 Preferences prefs;
 
 struct bmm150_dev dev;
-bmm150_mag_data mag_offset;
+bmm150_mag_data mag_offset; // Compensation magnetometer float data storage
 bmm150_mag_data mag_max;
 bmm150_mag_data mag_min;
 TFT_eSprite img = TFT_eSprite(&M5.Lcd);
 
-int8_t i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *read_data, uint16_t len)
-{
-    if(M5.I2C.readBytes(dev_id, reg_addr, len, read_data))
-    {
+int8_t i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *read_data, uint16_t len){
+    if(M5.I2C.readBytes(dev_id, reg_addr, len, read_data)){ // Check whether the device ID, address, data exist
         return BMM150_OK;
-    }
-    else
-    {
+    }else{
         return BMM150_E_DEV_NOT_FOUND;
     }
 }
 
-int8_t i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *read_data, uint16_t len)
-{
-    if(M5.I2C.writeBytes(dev_id, reg_addr, read_data, len))
-    {
+int8_t i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *read_data, uint16_t len){
+    if(M5.I2C.writeBytes(dev_id, reg_addr, read_data, len)){    //Writes data of length len to the specified device address
         return BMM150_OK;
-    }
-    else
-    {
+    }else{
         return BMM150_E_DEV_NOT_FOUND;
     }
 }
 
-int8_t bmm150_initialization()
-{
+int8_t bmm150_initialization(){
     int8_t rslt = BMM150_OK;
 
-    /* Sensor interface over SPI with native chip select line */
-    dev.dev_id = 0x10;
-    dev.intf = BMM150_I2C_INTF;
-    dev.read = i2c_read;
-    dev.write = i2c_write;
-    dev.delay_ms = delay;
+    dev.dev_id = 0x10;  // Device address setting
+    dev.intf = BMM150_I2C_INTF; //SPI or I2C interface setup
+    dev.read = i2c_read;    // Read the bus pointer
+    dev.write = i2c_write;  // Write the bus pointer
+    dev.delay_ms = delay;   
 
-    /* make sure max < mag data first  */
+    // Set the maximum range range
     mag_max.x = -2000;
     mag_max.y = -2000;
     mag_max.z = -2000;
 
-    /* make sure min > mag data first  */
+    // Set the minimum range
     mag_min.x = 2000;
     mag_min.y = 2000;
     mag_min.z = 2000;
 
-    rslt = bmm150_init(&dev);
-    dev.settings.pwr_mode = BMM150_NORMAL_MODE;
-    rslt |= bmm150_set_op_mode(&dev);
+    rslt = bmm150_init(&dev);   // Memory chip ID
+    dev.settings.pwr_mode = BMM150_NORMAL_MODE; 
+    rslt |= bmm150_set_op_mode(&dev);   // Set the sensor power mode
     dev.settings.preset_mode = BMM150_PRESETMODE_ENHANCED;
-    rslt |= bmm150_set_presetmode(&dev);
+    rslt |= bmm150_set_presetmode(&dev);    // Set the preset mode of the sensor
     return rslt;
 }
 
-void bmm150_offset_save()
-{
+void bmm150_offset_save(){  //Store the data
     prefs.begin("bmm150", false);
     prefs.putBytes("offset", (uint8_t *)&mag_offset, sizeof(bmm150_mag_data));
     prefs.end();
 }
 
-void bmm150_offset_load()
-{
-    if(prefs.begin("bmm150", true))
-    {
+void bmm150_offset_load(){  //load the data
+    if(prefs.begin("bmm150", true)){
         prefs.getBytes("offset", (uint8_t *)&mag_offset, sizeof(bmm150_mag_data));
         prefs.end();
-        Serial.printf("bmm150 load offset finish.... \r\n");
-    }
-    else
-    {
-        Serial.printf("bmm150 load offset failed.... \r\n");
+        Serial.println("bmm150 load offset finish....");
+    }else{
+        Serial.println("bmm150 load offset failed....");
     }
 }
 
-void setup() 
-{
-    M5.begin(true, false, true, false);
-    M5.Power.begin();
-    Wire.begin(21, 22, 400000);
+void setup() {
+    M5.begin(true, false, true, false); //Init M5Core(Initialize LCD, serial port)
+    M5.Power.begin();   //Init Power module
+    Wire.begin(21, 22, 400000); //Set the frequency of the SDA SCL
 
-    img.setColorDepth(1);
-    img.setTextColor(TFT_WHITE);
-    img.createSprite(320, 240);
-    img.setBitmapColor(TFT_WHITE, 0);
+    img.setColorDepth(1);   // Set bits per pixel for colour
+    img.setTextColor(TFT_WHITE);    //Set the font foreground colour (background is
+    img.createSprite(320, 240); // Create a sprite (bitmap) of defined width and height
+    img.setBitmapColor(TFT_WHITE, 0);   //Set the foreground and background colour
 
-    if(bmm150_initialization() != BMM150_OK)
-    {
-        img.fillSprite(0);
-        img.drawCentreString("BMM150 init failed", 160, 110, 4);
-        img.pushSprite(0, 0);
-        for(;;)
-        {
-            delay(100);
+    if(bmm150_initialization() != BMM150_OK){
+        img.fillSprite(0);  //Fill the whole sprite with defined colour
+        img.drawCentreString("BMM150 init failed", 160, 110, 4);    //draw string centred on 160
+        img.pushSprite(0, 0);   //Push the sprite to the TFT at 0, 0
+        for(;;){
+            delay(100); //delay 100ms
         }
     }
 
     bmm150_offset_load();
 }
 
-void bmm150_calibrate(uint32_t calibrate_time)
-{
+void bmm150_calibrate(uint32_t calibrate_time){ //bbm150 data calibrate
     uint32_t calibrate_timeout = 0;
 
     calibrate_timeout = millis() + calibrate_time;
-    Serial.printf("Go calibrate, use %d ms \r\n", calibrate_time);
+    Serial.printf("Go calibrate, use %d ms \r\n", calibrate_time);  //The serial port outputs formatting characters
     Serial.printf("running ...");
 
-    while (calibrate_timeout > millis())
-    {
-        bmm150_read_mag_data(&dev);
-        if(dev.data.x)
-        {
+    while (calibrate_timeout > millis()){
+        bmm150_read_mag_data(&dev); //read the magnetometer data from registers
+        if(dev.data.x){
             mag_min.x = (dev.data.x < mag_min.x) ? dev.data.x : mag_min.x;
             mag_max.x = (dev.data.x > mag_max.x) ? dev.data.x : mag_max.x;
         }
-
-        if(dev.data.y)
-        {
+        if(dev.data.y){
             mag_max.y = (dev.data.y > mag_max.y) ? dev.data.y : mag_max.y;
             mag_min.y = (dev.data.y < mag_min.y) ? dev.data.y : mag_min.y;
         }
-
-        if(dev.data.z)
-        {
+        if(dev.data.z){
             mag_min.z = (dev.data.z < mag_min.z) ? dev.data.z : mag_min.z;
             mag_max.z = (dev.data.z > mag_max.z) ? dev.data.z : mag_max.z;
         }
@@ -163,10 +141,9 @@ void bmm150_calibrate(uint32_t calibrate_time)
     Serial.printf("z_max: %.2f z_min: %.2f \r\n", mag_max.z, mag_min.z);
 }
 
-void loop() 
-{
+void loop() {
     char text_string[100];
-    M5.update();
+    M5.update();    //Read the press state of the key
     bmm150_read_mag_data(&dev);
     float head_dir = atan2(dev.data.x -  mag_offset.x, dev.data.y - mag_offset.y) * 180.0 / M_PI;
     Serial.printf("Magnetometer data, heading %.2f\n", head_dir);
@@ -175,7 +152,7 @@ void loop()
     
     img.fillSprite(0);
     sprintf(text_string, "MAG X: %.2f", dev.data.x);
-    img.drawString(text_string, 10, 20, 4);
+    img.drawString(text_string, 10, 20, 4); //draw string with padding
     sprintf(text_string, "MAG Y: %.2f", dev.data.y);
     img.drawString(text_string, 10, 50, 4);
     sprintf(text_string, "MAG Z: %.2f", dev.data.z);
@@ -185,8 +162,7 @@ void loop()
     img.drawCentreString("Press BtnA enter calibrate", 160, 150, 4);
     img.pushSprite(0, 0);
     
-    if(M5.BtnA.wasPressed())
-    {
+    if(M5.BtnA.wasPressed()){
         img.fillSprite(0);
         img.drawCentreString("Flip + rotate core calibration", 160, 110, 4);
         img.pushSprite(0, 0);
