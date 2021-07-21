@@ -50,3 +50,9 @@ examples/Advanced/Proof
 docs/datesheet
 
 .vscode/*
+
+examples/.DS_Store
+.DS_Store
+examples/Basics/.DS_Store
+.development
+examples/Touch/.DS_Store
