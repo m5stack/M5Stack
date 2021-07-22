@@ -1,6 +1,6 @@
 {
   "name": "M5Stack",
-  "description": "An ESP32 Arduino board",
+  "description": "Library for M5Stack Core development kit",
   "keywords": "M5Stack",
   "authors": {
     "name": "Zibin, M5Stack",
