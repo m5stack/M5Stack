@@ -5,10 +5,10 @@
 */
 
 #include <M5Stack.h>
-#include "DHT12.h"
 #include <Wire.h> //The DHT12 uses I2C comunication.
 #include "Adafruit_Sensor.h"
 #include <Adafruit_BMP280.h>
+#include "UNIT_ENV.h"
 
 DHT12 dht12; //Preset scale CELSIUS and ID 0x5c.
 Adafruit_BMP280 bme;
