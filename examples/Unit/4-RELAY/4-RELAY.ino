@@ -1,8 +1,10 @@
 /*
     Description: Control 4 relays and demonstrate the asynchronous control relay LED
+    lib: https://github.com/m5stack/UNIT_4RELAY
 */
 
 #include <M5Stack.h>
+#include "UNIT_4RELAY.h"
 
 /*-----------------------------------------------------------------------------*/
 // |RELAY control reg          | 0x10
@@ -19,39 +21,7 @@
 //
 /*-------------------------------------------------------------------------------*/
 
-void WriteRelayReg( int regAddr, int data )
-{
-    Wire.beginTransmission(0x26);
-    Wire.write(regAddr);
-    Wire.write(data);
-    Wire.endTransmission();
-    Serial.printf("[ W ] %02X : %02X. \r\n", regAddr, data);
-}
-
-int readRelayReg(int regAddr)
-{
-    Wire.beginTransmission(0x26);
-    Wire.write(regAddr);
-    Wire.endTransmission();
-    Wire.requestFrom(0x26, 1);
-    int data = Wire.read() & 0x00ff;
-    Serial.printf("[ R ] %02X : %02X. \r\n", regAddr, data);
-    return data;
-}
-
-void WriteRelayNumber( int number, int state )
-{
-    int StateFromDevice = readRelayReg(0x11);
-    if( state == 0 )
-    {
-        StateFromDevice &= ~( 0x01 << number );
-    }
-    else
-    {
-        StateFromDevice |= ( 0x01 << number );
-    }
-    WriteRelayReg(0x11,StateFromDevice);
-}
+UNIT_4RELAY unit_4relay;
 
 void setup() {
   // put your setup code here, to run once:
@@ -69,53 +39,84 @@ void setup() {
   M5.Lcd.print("Relay State: ");
   M5.Lcd.setCursor(20, 80, 4);
   M5.Lcd.print("Sync Mode: ");
-  readRelayReg(0x10);
-  readRelayReg(0x11);
-  WriteRelayReg(0x10,1);
-  WriteRelayReg(0x11,0);
-  //WriteRelayNumber(0,0);
+
+  /*
+   * MODE:
+   * Async == 0;
+   * Sync  == 1;
+  */
+  unit_4relay.Init(0);
+  
 }
 
-int count_i = 0;
-bool flag_led, flag_relay = false;
-
+uint8_t count_i = 0;
+bool state = 0;
+bool flag_mode = 0, flag_all= false;
 
 void loop() {
+    
     if(M5.BtnA.wasPressed()){
       M5.Lcd.fillRect(160, 50, 100, 20, TFT_BLACK);
       M5.Lcd.setCursor(160, 50, 4);
-      M5.Lcd.printf("%d ON", count_i);
-      WriteRelayReg(0x11,(0x01 << count_i));
+      if((count_i<4)&&(flag_mode == 1))
+      {
+        M5.Lcd.printf("%d ON", count_i);
+        unit_4relay.relayWrite(count_i,1);
+      }
+      else if((count_i>=4)&&(flag_mode == 1))
+      {
+        M5.Lcd.printf("%d OFF", (count_i-4));
+        unit_4relay.relayWrite((count_i-4),0);
+      }
+      else if((count_i<4)&&(flag_mode == 0))
+      {
+        M5.Lcd.printf("%d ON", count_i);
+        unit_4relay.LEDWrite(count_i,1);
+      }
+      else if((count_i>=4)&&(flag_mode == 0))
+      {
+        M5.Lcd.printf("%d OFF", (count_i-4));
+        unit_4relay.LEDWrite((count_i-4),0);
+      }
       count_i++;    
-      if( count_i >= 4 ) count_i = 0; 
+      if( count_i >= 8 ) count_i = 0; 
     }
     if(M5.BtnB.wasPressed()){
+      flag_mode = !flag_mode;
       M5.Lcd.fillRect(160, 80, 100, 20, TFT_BLACK);
-      if(!flag_led){
+      if(!flag_mode){
         M5.Lcd.setCursor(160, 80, 4);
         M5.Lcd.print("Async");
-        WriteRelayReg(0x10, 0);
       }else {
         M5.Lcd.setCursor(160, 80, 4);
         M5.Lcd.print("Sync");
-        WriteRelayReg(0x10, 1);
       }
-      flag_led = !flag_led;     
+      unit_4relay.switchMode(flag_mode);     
     }
     if(M5.BtnC.wasPressed()){
-        M5.Lcd.fillRect(160, 50, 100, 20, TFT_BLACK);
-        for(int i=0; i<4; i++){
-          if(!flag_relay) {
-            M5.Lcd.setCursor(160, 50, 4);
-            M5.Lcd.print("ON");
-            WriteRelayNumber(i, 1);    
-          }else {
-            M5.Lcd.setCursor(160, 50, 4);
-            M5.Lcd.print("OFF");
-            WriteRelayNumber(i, 0); 
+      M5.Lcd.fillRect(160, 50, 100, 20, TFT_BLACK);
+      M5.Lcd.setCursor(160, 50, 4);
+      if(flag_mode == 1){
+        if(flag_all){
+          M5.Lcd.printf("ALL.ON ");
+          unit_4relay.relayALL(1);
           }
-        }
-        flag_relay = !flag_relay;
+        else{
+          M5.Lcd.printf("ALL.OFF");
+          unit_4relay.relayALL(0);
+          }
+      }
+      else{
+        if(flag_all){
+          M5.Lcd.printf("ALL.ON ");
+          unit_4relay.LED_ALL(1);
+          }
+        else{
+          M5.Lcd.printf("ALL.OFF");
+          unit_4relay.LED_ALL(0);
+          }
+      }
+        flag_all = !flag_all;
     }
     M5.update();
 }

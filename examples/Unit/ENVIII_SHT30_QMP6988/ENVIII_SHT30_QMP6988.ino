@@ -1,15 +1,16 @@
 /*
-    Description: Use ENV II Unit to read temperature, humidity, atmospheric pressure, and display the data on the screen.
+    Description: Use ENV III Unit to read temperature, humidity, atmospheric pressure, and display the data on the screen.
     Please install library before compiling:  
-    Adafruit BMP280: https://github.com/adafruit/Adafruit_BMP280_Library
+    UNIT_ENV: https://github.com/m5stack/UNIT_ENV
 */
 #include <M5Stack.h>
 #include <Wire.h>
 #include "Adafruit_Sensor.h"
 #include <Adafruit_BMP280.h>
 #include "UNIT_ENV.h"
+
 SHT3X sht30;
-Adafruit_BMP280 bme;
+QMP6988 qmp6988;
 
 float tmp = 0.0;
 float hum = 0.0;
@@ -21,17 +22,12 @@ void setup() {
   Wire.begin();
   M5.Lcd.setBrightness(10);
   M5.Lcd.setTextSize(3);
-  Serial.println(F("ENV Unit(SHT30 and BMP280) test..."));
-
-  while (!bme.begin(0x76)){  
-    Serial.println("Could not find a valid BMP280 sensor, check wiring!");
-    M5.Lcd.println("Could not find a valid BMP280 sensor, check wiring!");
-  }
+  qmp6988.init();
   M5.Lcd.clear(BLACK);
 }
 
 void loop() {
-  pressure = bme.readPressure();
+  pressure = qmp6988.calcPressure();
   if(sht30.get()==0){
     tmp = sht30.cTemp;
     hum = sht30.humidity;
