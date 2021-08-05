@@ -1,16 +1,16 @@
 {
   "name": "M5Stack",
-  "description": "An ESP32 Arduino board",
+  "description": "Library for M5Stack Core development kit",
   "keywords": "M5Stack",
   "authors": {
-    "name": "Zibin, M5Stack",
+    "name": "M5Stack",
     "url": "http://www.m5stack.com"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/m5stack/m5stack.git"
   },
-  "version": "0.3.3",
+  "version": "0.3.4",
   "framework": "arduino",
   "platforms": "espressif32"
 }

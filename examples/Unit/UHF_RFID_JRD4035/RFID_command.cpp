@@ -33,7 +33,7 @@ String UHF_RFID::Query_hardware_version()
 String UHF_RFID::Query_software_version()
 {
   Sendcommand(1);
-  Delay(20);
+  Delay(50);
   Readcallback();
 
   if (DelayScanwarning())
@@ -43,7 +43,7 @@ String UHF_RFID::Query_software_version()
   else
   {
     Return_to_convert(0);
-
+    Serial.print(DATA_Str_M5led);
     return DATA_Str_M5led.substring(6, 12);
   }
 }
@@ -1308,7 +1308,7 @@ String UHF_RFID::Sets_to_transmit_a_continuous_carrier(UWORD Parameter)
     混频器增益 Mixer_G:           0x03(混频器 Mixer 增益为 9dB)
   中频放大器增益 IF_G:          0x06(中频放大器 IF AMP 增益为 36dB)
   信号解调阈值 Thrd:              0x01B0(信号解调阈值越小能解调的标签返回 RSSI 越低，但越不稳定，
-  低于一 定值完全不能解调；相反阈值越大能解调的标签返回信号 RSSI 越大，距离越近，越稳定。
+  低于一定值完全不能解调；相反阈值越大能解调的标签返回信号 RSSI 越大，距离越近，越稳定。
   0x01B0 是推荐的 最小值)
 
   混频器 Mixer 增益表       中频放大器 IF AMP 增益表

@@ -2,7 +2,7 @@
     Description: GRBL 13.2 Module TEST Example.
 */
 #include <M5Stack.h>
-#include "GrblControl.h"
+#include "MODULE_GRBL13.2.h"
 
 /*
  * The I2C address of GRBL 13.2  Module is 0x70 by default.
@@ -29,7 +29,7 @@ void setup() {
   M5.Lcd.println("Press Btn A/B");
   M5.Lcd.setCursor(50, 120);
   M5.Lcd.println("Control Motor");
-  _GRBL.SetMode("absolute");
+  _GRBL.setMode("absolute");
 }
 
 void loop() {
@@ -39,20 +39,20 @@ void loop() {
    */
   if (M5.BtnA.wasPressed())  // A button
   {
-    Serial.print(_GRBL.ReadStatus());
-    _GRBL.SetMotor(5,5,5,200);
-    _GRBL.SetMotor(0,0,0,200);
+    Serial.print(_GRBL.readStatus());
+    _GRBL.setMotor(5,5,5,200);
+    _GRBL.setMotor(0,0,0,200);
   }
 
   if (M5.BtnB.wasPressed())
   {
        //USE Gcode
-      _GRBL.Gcode("G1 X5Y5Z5 F200");
-      _GRBL.Gcode("G1 X0Y0Z0 F200");
+      _GRBL.sendGcode("G1 X5Y5Z5 F200");
+      _GRBL.sendGcode("G1 X0Y0Z0 F200");
   }
 
   if (M5.BtnC.wasReleased()) {
-      _GRBL.UnLock();   
+      _GRBL.unLock();   
   }
   M5.update();
 }
