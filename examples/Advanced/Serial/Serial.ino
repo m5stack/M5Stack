@@ -11,7 +11,7 @@
 *******************************************************************************
 */
 
-#include <M5Core2.h>
+#include <M5Stack.h>
 
 void setup() {
   M5.begin(); //Init M5Stack(Serial initialization is also included, the baud rate is 115200).  初始化M5Stack(串口初始化也包含在内,波特率为115200)
