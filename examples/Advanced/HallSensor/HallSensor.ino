@@ -14,7 +14,7 @@
   upper screen you will see the influence on the measurement.
   In this example we use some low pass filters to get rid of the noise.
 */
-#include <M5Core2.h>
+#include <M5Stack.h>
 
 #define M5STACKFIRE_SPEAKER_PIN 34 // speaker DAC, only 8 Bit.  扬声器的管脚
 #define HORIZONTAL_RESOLUTION 320

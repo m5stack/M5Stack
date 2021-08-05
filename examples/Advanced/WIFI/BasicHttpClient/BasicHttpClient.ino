@@ -1,16 +1,16 @@
 /*
 *******************************************************************************
 * Copyright (c) 2021 by M5Stack
-*                  Equipped with M5Core2 sample source code
-*                          配套  M5Core2 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/core2
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/core2
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core 示例源代码
+* Visit the website for more information：https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
 *
 * describe：BasicHTTPClient.
 * date：2021/8/4
 ******************************************************************************
 */
-#include <M5Core2.h>
+#include <M5Stack.h>
 #include <Arduino.h>
 #include <WiFi.h>
 #include <WiFiMulti.h>
@@ -20,8 +20,9 @@ WiFiMulti wifiMulti;
 HTTPClient http;
 
 void setup() {
-  M5.begin(); //Init M5Core2.  初始化 M5Core2
-  wifiMulti.addAP("M5-2.4G", "Office@888888");  //Storage wifi configuration information.  存储wifi配置信息
+  M5.begin(); //Init M5Core.  初始化 M5Core
+  M5.Power.begin(); //Init power  初始化电源模块
+  wifiMulti.addAP("M5-", "Of");  //Storage wifi configuration information.  存储wifi配置信息
   M5.Lcd.print("\nConnecting Wifi...\n"); //print format output string on lcd.  串口格式化输出字符串
 }
 

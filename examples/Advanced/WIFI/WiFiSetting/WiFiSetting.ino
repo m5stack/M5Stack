@@ -1,10 +1,10 @@
 /*
 *******************************************************************************
 * Copyright (c) 2021 by M5Stack
-*                  Equipped with M5Core2 sample source code
-*                          配套  M5Core2 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/core2
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/core2
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core 示例源代码
+* Visit the website for more information：https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
 *
 * describe：WiFi connect.  wifi连接
 * date：2021/7/27
@@ -39,7 +39,7 @@ Preferences preferences;
 
 void setup() {
   M5.begin(); //Init M5Stack.  初始化M5Stack
-  M5.Power.begin();
+  M5.Power.begin(); //Init power  初始化电源模块
   M5.Lcd.setTextColor(YELLOW);  //Set the font color to yellow.  设置字体颜色为黄色
   preferences.begin("wifi-config");
   delay(10);
