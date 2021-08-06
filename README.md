@@ -29,10 +29,6 @@ https://docs.m5stack.com/#/en/api
 
 ## 4. H/W Reference
 
-#### Pinout
-
-*We have several kinds of M5Cores, There is [their difference in schematic](https://github.com/m5stack/M5-Schematic/blob/master/Core/hardware_difference_between_cores.md).*
-
 **LCD & TF Card**
 
 *LCD Resolution: 320x240*
@@ -41,7 +37,6 @@ https://docs.m5stack.com/#/en/api
  <tr><td>ESP32 Chip</td><td>GPIO23</td><td>GPIO19</td><td>GPIO18</td><td>GPIO14</td><td>GPIO27</td><td>GPIO33</td><td>GPIO32</td><td>GPIO4</td></tr>
  <tr><td>ILI9341</td><td>MOSI/MISO</td><td>/</td><td>CLK</td><td>CS</td><td>DC</td><td>RST</td><td>BL</td><td> </td></tr>
  <tr><td>TF Card</td><td>MOSI</td><td>MISO</td><td>CLK</td><td> </td><td> </td><td> </td><td> </td><td>CS</td></tr>
-
 </table>
 
 **Button & Speaker**
@@ -70,8 +65,6 @@ https://docs.m5stack.com/#/en/api
 
 * [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI)  - TFT library for the ESP8266 and ESP32 that supports different driver chips
 
-
-* [M5Widgets](https://github.com/Kongduino/M5Widgets) - Widgets for the M5Stack
 
 * [M5StackSAM](https://github.com/tomsuch/M5StackSAM) - Simple Applications Menu Arduino Library for M5Stack
 
@@ -123,18 +116,6 @@ https://docs.m5stack.com/#/en/api
 
 * [M5Stack-Thermal-Camera](https://github.com/hkoffer/M5Stack-Thermal-Camera-) - M5Stack Thermal Camera with AMG8833 thermal sensor
 
-* [M5Stack-3DPrintFiles](https://github.com/PartsandCircuits/M5Stack-3DPrintFiles) - Links to files for 3D printing custom case parts for the M5Stack
-
 * [truetype2gfx](https://github.com/ropg/truetype2gfx) - Converting fonts from TrueType to Adafruit GFX
 
 * [m5stack-onscreen-keyboard](https://github.com/yellowelise/m5stack-onscreen-keyboard) - Full size qwerty keyboard for M5Stack
-
-#### Note:
-
-* How to install USB driver for establishing serial port
-
-  https://docs.m5stack.com/#/en/related_documents/establish_serial_connection
-
-* How to upgrade M5Stack Libary
-
-  https://docs.m5stack.com/#/en/related_documents/upgrade_m5stack_lib
