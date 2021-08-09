@@ -1,5 +1,5 @@
 #pragma mark - Depend ESP8266Audio and ESP8266_Spiram libraries
-/* 
+/*
 cd ~/Arduino/libraries
 git clone https://github.com/earlephilhower/ESP8266Audio
 git clone https://github.com/Gianbacchio/ESP8266_Spiram
@@ -23,9 +23,9 @@ void setup()
 {
   M5.begin();
   M5.Power.begin();
-  WiFi.mode(WIFI_OFF); 
+  WiFi.mode(WIFI_OFF);
   delay(500);
-  
+
   M5.Lcd.setTextFont(2);
   M5.Lcd.printf("Sample MP3 playback begins...\n");
   Serial.printf("Sample MP3 playback begins...\n");

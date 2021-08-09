@@ -33,7 +33,7 @@ void printLocalTime(){  //Output current time.  输出当前时间
 
 void setup(){
   M5.begin(); //Init M5Core.  初始化 M5Core
-  M5.Power.begin();
+  M5.Power.begin(); //Init power  初始化电源模块
   M5.Lcd.setTextSize(2);  //Set the font size to 2.  设置字号大小为2
   M5.Lcd.printf("\nConnecting to %s", ssid);
   WiFi.begin(ssid, password); //Connect wifi and return connection status.  连接wifi并返回连接状态
