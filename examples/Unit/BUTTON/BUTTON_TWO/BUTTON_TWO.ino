@@ -7,7 +7,7 @@
 * 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
 *
 * describe：Button_Two.  双按键
-* date：2021/7/26
+* date：2021/8/9
 *******************************************************************************
   Please connect to Port A,Read the button status of BUTTON Unit and display it on the screen
 
@@ -23,9 +23,9 @@ void setup() {
   M5.Power.begin(); //Init power  初始化电源模块
   pinMode(21, INPUT); //set pin mode to input.设置引脚模式为输入模式
   pinMode(22, INPUT);
-  M5.Lcd.setTextColor(YELLOW);  //设置字体颜色为黄色
-  M5.Lcd.setTextSize(2);  //设置字号大小
-  M5.Lcd.setCursor(80, 0);  //将光标位置设置为(80,0)
+  M5.Lcd.setTextColor(YELLOW);  //Set the font color to yellow.  设置字体颜色为黄色
+  M5.Lcd.setTextSize(2);  //Setting the Font size.  设置字号大小
+  M5.Lcd.setCursor(80, 0);  //Set the cursor position to (80,0).  将光标位置设置为(80,0)
   M5.Lcd.println("Button example");
   M5.Lcd.setTextColor(WHITE);
 }
@@ -37,7 +37,7 @@ void loop() {
   M5.Lcd.setCursor(0,45); M5.Lcd.print("Value: ");
   M5.Lcd.setCursor(0,85); M5.Lcd.print("State: ");
   if(cur_value1 != last_value1){
-    M5.Lcd.fillRect(85,45,75,85,BLACK); //在(85,45)处绘制长75,宽85的黑色矩形
+    M5.Lcd.fillRect(85,45,75,85,BLACK); //Draw a black rectangle 75 by 85 at (85,45).  在(85,45)处绘制宽75,高85的黑色矩形
     if(cur_value1==0){
       M5.Lcd.setCursor(95,45); M5.Lcd.print("0"); // display the status
       M5.Lcd.setCursor(95,85); M5.Lcd.print("pre");
