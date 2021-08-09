@@ -14,7 +14,7 @@
  *  APP Download Address: https://www.espressif.com/en/products/software/esp-touch/resources
  *  APP下载地址: https://www.espressif.com/zh-hans/products/software/esp-touch/resources
  */
-#include <M5Core.h>
+#include <M5Stack.h>
 #include "WiFi.h"
 
 void setup() {
