@@ -21,8 +21,7 @@ int cur_value = 0;
 void setup() {
   M5.begin(); //Init M5Stack.  初始化M5Stack
   M5.Power.begin(); //Init power  初始化电源模块
-  pinMode(21, INPUT); //set pin mode to input.设置引脚模式为输入模式
-  pinMode(22, INPUT);
+  pinMode(22, INPUT); //set pin mode to input.设置引脚模式为输入模式
   M5.Lcd.setTextColor(YELLOW);  //设置字体颜色为黄色
   M5.Lcd.setTextSize(2);  //设置字号大小
   M5.Lcd.setCursor(80, 0);  //将光标位置设置为(80,0)
