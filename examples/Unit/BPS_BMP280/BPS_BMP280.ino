@@ -29,7 +29,7 @@ void setup() {
   M5.Lcd.clear(); //Clear the screen.  清屏
 }
 
-float pressure,Temp;  //Store the vuale of pressure and Temperature.  存储压力和温度()
+float pressure,Temp;  //Store the vuale of pressure and Temperature.  存储压力和温度
 
 void loop() {
   pressure = bme.readPressure();
