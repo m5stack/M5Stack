@@ -7,7 +7,7 @@
 * 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
 *
 * describe：4-Relay.  4个继电器
-* date：2021/8/9
+* date：2021/8/10
 *******************************************************************************
   Please connect to port A,Control 4 relays and demonstrate the asynchronous control relay LED
   请连接A端口，控制4继电器，并演示异步控制继电器LED
