@@ -1,68 +1,41 @@
 /*
-    Description: Use BPS Unit to read atmospheric pressure, and display the data on the screen.
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core 示例源代码
+* Visit the website for more information：https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+*
+* describe：BPS_BMP280.  压力传感器
+* date：2021/8/10
+******************************************** ***********************************
+  Please connect to Port A(22、21),Read atmospheric pressure and temperature and display them on the display screen
+  请连接端口A(22、21),读取大气压强和温度并在显示屏上显示
 */
-
-#include "bmp280.h"
 #include <M5Stack.h>
+#include <Wire.h> //The BPS uses I2C comunication.
+#include "Adafruit_Sensor.h"
+#include <Adafruit_BMP280.h>
 
-#define P0 1013.25
+Adafruit_BMP280 bme;
 
-BMP280 bmp;
-
-void display_result(double t, double p, double a) {
-//  M5.Lcd.
-  M5.Lcd.drawString("Temperature: ", 20, 40, 4 );
-  M5.Lcd.drawFloat(t, 2, 180, 40, 4);
-  M5.Lcd.drawString("C", 280, 40, 4);
-
-  M5.Lcd.drawString("Pressure: ", 20, 80, 4);
-  M5.Lcd.drawFloat(p, 2, 180, 80, 4);
-  M5.Lcd.drawString("Pa", 280, 80, 4);
-
-  M5.Lcd.drawString("Altitude: ", 20, 120, 4);
-  M5.Lcd.drawFloat(a, 2, 180, 120, 4);
-  M5.Lcd.drawString("M", 280, 120, 4);
+void setup() {
+  M5.begin(); //Init M5Stack.  初始化M5Stack
+  M5.Power.begin(); //Init power  初始化电源模块
+  Wire.begin(); //Wire init, adding the I2C bus.  Wire初始化, 加入i2c总线
+  while (!bme.begin(0x76)){ //Init this sensor,True if the init was successful, otherwise false.   初始化传感器,如果初始化成功返回1
+    M5.Lcd.println("Could not find a valid BMP280 sensor, check wiring!");
+  }
+  M5.Lcd.clear(); //Clear the screen.  清屏
 }
 
-void setup()
-{
-  M5.begin();
-  if(!bmp.begin()){
-    Serial.println("BMP init failed!");
-    while(1);
-  }
-  else Serial.println("BMP init success!");
-  
-  bmp.setOversampling(4);
-  M5.Lcd.drawString("BPS Example", 90, 0, 4);
-  
-}
-void loop()
-{
-  double T,P;
-  char result = bmp.startMeasurment();
- 
-  if(result!=0){
-    delay(result);
-    result = bmp.getTemperatureAndPressure(T,P);
-    
-      if(result!=0)
-      {
-        double A = bmp.altitude(P,P0);
-        
-        Serial.print("T = \t");Serial.print(T,2); Serial.print(" degC\t");
-        Serial.print("P = \t");Serial.print(P,2); Serial.print(" mBar\t");
-        Serial.print("A = \t");Serial.print(A,2); Serial.println(" m");
-        display_result(T, P, A);
-      }
-      else {
-        Serial.println("Error.");
-      }
-  }
-  else {
-    Serial.println("Error.");
-  }
-  
-  delay(2000);
-  M5.Lcd.fillRect(160, 40, 100, 80, BLACK);
+float pressure,Temp;  //Store the vuale of pressure and Temperature.  存储压力和温度()
+
+void loop() {
+  pressure = bme.readPressure();
+  Temp = bme.readTemperature();
+  M5.Lcd.setCursor(0, 0); //将光标设置在(0 ,0).  Set the cursor to (0,0)
+  M5.Lcd.setTextSize(3);  //设置字体大小为3.  Set the font size to 3
+  M5.Lcd.printf("Pressure:%2.0fPa\nTemperature:%2.0f^C", pressure,Temp);
+  delay(100);
 }

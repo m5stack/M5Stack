@@ -8,9 +8,9 @@
 *
 * describe：Button_Two.  双按键
 * date：2021/8/9
-*******************************************************************************
-  Please connect to Port A(36、26),Read the button status of BUTTON Unit and display it on the screen
-  请连接端口A(36、26),读取按键的状态并在显示屏上显示
+******************************************** ***********************************
+  Please connect to Port B(36、26),Read the button status of BUTTON Unit and display it on the screen
+  请连接端口B(36、26),读取按键的状态并在显示屏上显示
   if you don't have M5GO BOTTOM, you need change the pinMode and the digitalRead to 22、21, But you will not be able to use any I2C operations.
   如果你没有M5GO BOTTOM，你需要改变pinMode和digitalRead到22,21,但是你将不能使用任何I2C操作.
 */
