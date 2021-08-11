@@ -41,7 +41,7 @@ void loop() {
   sht30.get();  //Obtain the data of shT30.  获取sht30的数据
   tmp = sht30.cTemp;  //Store the temperature obtained from shT30.  将sht30获取到的温度存储
   hum = sht30.humidity; //Store the humidity obtained from the SHT30.  将sht30获取到的湿度存储
-  M5.lcd.fillRect(0,20,100,60,BLACK); //Fill the screen with black (to clear the screen).  将屏幕填充满黑色(用来清屏)
+  M5.lcd.fillRect(0,20,100,60,BLACK); //Fill the screen with black (to clear the screen).  将屏幕填充黑色(用来清屏)
   M5.Lcd.printf("Temp: %2.1f  \r\nHumi: %2.0f%%  \r\nPressure:%2.0fPa\r\n", tmp, hum, pressure);
   delay(2000);
 }
