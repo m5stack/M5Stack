@@ -7,7 +7,7 @@
 * 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
 *
 * describe：Fan.  风扇
-* date：2021/8/11
+* date：2021/8/16
 *******************************************************************************
   Please connect to Port B(26), Adjust the speed of FAN Unit through PWM.
   请连接端口B(26),通过PWM调节风扇单元的转速。
