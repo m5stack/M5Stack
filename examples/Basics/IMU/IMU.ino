@@ -81,5 +81,5 @@ M5Stack屏幕像素为 320x240,以屏幕左上角为原点 (0,0)*/
   M5.Lcd.setCursor(0, 175);
   M5.Lcd.printf("Temperature : %.2f C", temp);
 
-  delay(1000);  // Delay 1000ms (1 sec)  //延迟1000ms（1秒）
+  delay(10);  // Delay 1000ms (1 sec)  //延迟1000ms（1秒）
 }
