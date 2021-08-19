@@ -12,12 +12,11 @@
 */
 
 #include <Arduino.h>
-#include <Wire.h>
 #include "Preferences.h"
 #include "M5Stack.h"
 #include "math.h"
-#include "bmm150.h"
-#include "bmm150_defs.h"
+#include "M5_BMM150.h"
+#include "M5_BMM150_DEFS.h"
 
 Preferences prefs;
 
