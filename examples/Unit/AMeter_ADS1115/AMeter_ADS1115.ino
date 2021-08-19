@@ -35,6 +35,8 @@ void setup(void) {
   M5.begin(); //Init M5Stack.  初始化M5Stack
   M5.Power.begin(); //Init power  初始化电源模块
 
+  Wire.begin();
+
   ammeter.setMode(SINGLESHOT);                /* | PAG      | Max Input Voltage(V) | */
   ammeter.setRate(RATE_8);                    /* | PAG_6144 |        128           | */
   ammeter.setGain(PAG_512);                   /* | PAG_4096 |        64            | */
@@ -43,7 +45,7 @@ void setup(void) {
                                               /* | PAG_256  |        8             | */
   M5.Lcd.setTextFont(4);  //Set font to 4 point font.  设置字体为4号字体
   M5.Lcd.setCursor(52, 210);  //Set the cursor at (52,210).  将光标设置在(52, 210)
-  M5.Lcd.printf("2A                         SAVE");
+  M5.Lcd.printf("2A                            SAVE");
 }
 
 void loop(void) {
@@ -62,7 +64,7 @@ void loop(void) {
 
   if (M5.BtnC.wasPressed()) {
     bool success = ammeter.saveCalibration2EEPROM(now_gain, hope, adc_raw);
-    M5.Lcd.setCursor(230, 210);
+    M5.Lcd.setCursor(224, 210);
     if (success) {
       M5.Lcd.setTextColor(GREEN, BLACK);
     } else {
