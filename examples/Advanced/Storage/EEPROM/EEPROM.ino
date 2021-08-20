@@ -29,7 +29,7 @@ void setup() {
      M5.Lcd.println("\nFailed to initialise EEPROM!"); //串口输出格式化字符串.  Serial output format string
     delay(1000000);
   }
-  M5.Lcd.println("\nRead data from Flash. Values are:");
+  M5.Lcd.println("\nRead data from EEPROM. Values are:");
   for (int i = 0; i < SIZE; i++){
      M5.Lcd.printf("%d ",EEPROM.read(i)); //Reads data from 0 to SIZE in EEPROM.  读取EEPROM中从0到SIZE中的数据
   }
