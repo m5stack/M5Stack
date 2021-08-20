@@ -19,7 +19,7 @@ void setup() {
   M5.Power.begin(); //Init Power module.  初始化电源模块
   M5.Lcd.setTextColor(YELLOW);  //Set the font color to yellow.  设置字体颜色为黄色
   M5.Lcd.setTextSize(2);  //Set the font size.  设置字体大小为2
-  M5.Lcd.setCursor(65, 10); //Move the cursor position to (x, y).  移动光标位置到 (x, y)处
+  M5.Lcd.setCursor(65, 10); //Move the cursor position to (65, 10).  移动光标位置到 (65, 10) 处
   M5.Lcd.println("Button example"); //The screen prints the formatted string and wraps the line.  输出格式化字符串并换行
   M5.Lcd.setCursor(3, 35);
   M5.Lcd.println("Press button B for 700ms");

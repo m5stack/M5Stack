@@ -36,7 +36,7 @@ void loop() {
     return;
   }
   M5.Lcd.fillRect(42,47,320,20,BLACK);
-  for (byte i = 0; i < mfrc522.uid.size; i++) {
+  for (byte i = 0; i < mfrc522.uid.size; i++) { //Output the stored UID data.  将存储的UID数据输出
     M5.Lcd.print(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " ");
     M5.Lcd.print(mfrc522.uid.uidByte[i], HEX);
   }

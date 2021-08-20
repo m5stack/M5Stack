@@ -22,6 +22,7 @@ Adafruit_BMP280 bme;
 void setup() {
   M5.begin(); //Init M5Stack.  初始化M5Stack
   M5.Power.begin(); //Init power  初始化电源模块
+  M5.Lcd.setTextSize(2);  //设置字体大小为3.  Set the font size to 3
   Wire.begin(); //Wire init, adding the I2C bus.  Wire初始化, 加入i2c总线
   while (!bme.begin(0x76)){ //Init this sensor,True if the init was successful, otherwise false.   初始化传感器,如果初始化成功返回1
     M5.Lcd.println("Could not find a valid BMP280 sensor, check wiring!");
@@ -35,7 +36,6 @@ void loop() {
   pressure = bme.readPressure();
   Temp = bme.readTemperature();
   M5.Lcd.setCursor(0, 0); //将光标设置在(0 ,0).  Set the cursor to (0,0)
-  M5.Lcd.setTextSize(3);  //设置字体大小为3.  Set the font size to 3
   M5.Lcd.printf("Pressure:%2.0fPa\nTemperature:%2.0f^C", pressure,Temp);
   delay(100);
 }

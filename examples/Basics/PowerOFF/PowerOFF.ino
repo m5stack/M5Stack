@@ -18,8 +18,10 @@ the program in the setUp () function will be run, and this part will only be run
 void setup(){
   M5.begin(); //Init M5Core.  初始化 M5Core
   M5.Power.begin(); //Init Power module.  初始化电源
-  M5.Power.lightSleep(SLEEP_SEC(5));
   M5.Lcd.setTextSize(2);  //Set the font size.  设置字体大小
+  M5.Lcd.print("After 5 seconds, the program entered light sleep\n\n");  //Screen printingformatted string.  输出格式化字符串
+  delay(5000);
+  M5.Power.lightSleep(SLEEP_SEC(5));  //Sleep for 5 seconds, then continue the program.  睡眠5秒,结束后程序继续往下进行
   M5.Lcd.print("press ButtonA: shutdown,  use power button to turn  back on");  //Screen printingformatted string.  输出格式化字符串
 }
 
