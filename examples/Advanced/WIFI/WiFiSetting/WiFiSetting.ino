@@ -57,7 +57,7 @@ void setup() {
 void loop() {
   if (settingMode) {
   }
-  webServer.handleClient(); //检查有没有设备通过网络向M5Stack网络服务器发送请求
+  webServer.handleClient(); //Check that there is no facility to send requests to the M5StickC Web server over the network.  检查有没有设备通过网络向M5Stack网络服务器发送请求
 }
 
 boolean restoreConfig() { /* Check whether there is wifi configuration information storage, if there is 1 return, if no return 0.

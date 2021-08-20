@@ -24,7 +24,7 @@ void setup() {
 
 void loop() {
   while (!qmp6988.init()){ //Init qmp6988.True if the init was successful, otherwise false.   初始化qmp6988,如果初始化成功返回1
-    M5.lcd.setTextSize(1);  //Set the text size to 2.  设置文字大小为2
+    M5.lcd.setTextSize(1);  //Set the text size to 1.  设置文字大小为1
     M5.Lcd.println("\nCould not find a valid qmp6988 sensor, check wiring!");
   }
   M5.lcd.setTextSize(2);  //Set the text size to 2.  设置文字大小为2
