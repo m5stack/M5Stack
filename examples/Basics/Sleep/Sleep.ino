@@ -36,7 +36,7 @@ void loop() {
   M5.Lcd.printf("power-on triggered at:%s%s\n\n",(c) ? ("POWER-SW") : (""),(d) ? ("DeepSleep-end") : (""));
 
   M5.Lcd.printf("Go lightSleep (5s or press buttonA wake up)\n");
-  delay(5000);  //delay 2500ms.  延迟2500ms
+  delay(5000);  //delay 5000ms.  延迟5000ms
   /*Restart after 10 seconds of light sleep and continue from the next line
   Calling this function power button will disable the power button to restore
   Please call M5.Power.setPowerBoostKeepOn(false)*/
