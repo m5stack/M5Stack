@@ -12,16 +12,16 @@ bool flag = true;
 int rawADC;
 
 void setup() { 
-    M5.begin();
-    M5.Lcd.setTextColor(GREEN);
-    M5.Lcd.setTextSize(3);
-    M5.Lcd.setTextDatum(TC_DATUM);
-    M5.Lcd.drawString("Watering TEST", 160, 20, 1);
-    M5.Lcd.drawString("ON/OFF PUMP", 160, 200, 1);
-    pinMode(INPUT_PIN,INPUT);
-    pinMode(PUMP_PIN,OUTPUT);
-    pinMode(25,OUTPUT);
-    digitalWrite(25,0);
+  M5.begin();
+  M5.Lcd.setTextColor(GREEN);
+  M5.Lcd.setTextSize(3);
+  M5.Lcd.setTextDatum(TC_DATUM);
+  M5.Lcd.drawString("Watering TEST", 160, 20, 1);
+  M5.Lcd.drawString("ON/OFF PUMP", 160, 200, 1);
+  pinMode(INPUT_PIN,INPUT);
+  pinMode(PUMP_PIN,OUTPUT);
+  pinMode(25,OUTPUT);
+  digitalWrite(25,0);
 }
 
 char info[30];

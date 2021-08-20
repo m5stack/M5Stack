@@ -45,6 +45,7 @@ the program in the setUp () function will be run, and this part will only be run
 void setup() {
   M5.begin(); //Init M5Core.  初始化 M5Core
   M5.Power.begin(); //Init Power module.  初始化电源
+  M5.lcd.setTextSize(2);  //Set the text size to 2.  设置文字大小为2
   M5.Lcd.println("M5Stack Speaker test"); //Screen printingformatted string.  输出格式化字符串
 }
 

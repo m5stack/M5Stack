@@ -29,14 +29,15 @@ void setup() {
   }
   if(SPIFFS.begin()){ // Start SPIFFS, return 1 on success.  启动闪存文件系统,若成功返回1
     M5.Lcd.println("SPIFFS Begin.");
+    //Write operation
+    File dataFile = SPIFFS.open(file_name, "w");  // Create a File object dafa File to write information to file_name in the SPIFFS.  建立File对象dafaFile用于向SPIFFS中的file_name写入信息
+    dataFile.println("Hello IOT World."); // Writes string information and newlines to the dataFile.  向dataFile写入字符串信息并换行
+    dataFile.close(); // Close the file when writing is complete.  完成写入后关闭文件
+    M5.Lcd.println("Finished Writing data to SPIFFS");
+    M5.Lcd.println("Press BtnA to read form SPIFFS");
   } else {
-    M5.Lcd.println("SPIFFS Failed to Begin.");
+    M5.Lcd.println("SPIFFS Failed to Begin.\nYou need to Run SPIFFS_Add.ino first");
   }
-  //Write operation
-  File dataFile = SPIFFS.open(file_name, "w");  // Create a File object dafa File to write information to file_name in the SPIFFS.  建立File对象dafaFile用于向SPIFFS中的file_name写入信息
-  dataFile.println("Hello IOT World."); // Writes string information and newlines to the dataFile.  向dataFile写入字符串信息并换行
-  dataFile.close(); // Close the file when writing is complete.  完成写入后关闭文件
-  M5.Lcd.println("Finished Writing data to SPIFFS");
 }
 
 void loop() {

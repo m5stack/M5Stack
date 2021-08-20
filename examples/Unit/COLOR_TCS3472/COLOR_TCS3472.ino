@@ -56,8 +56,8 @@ void loop() {
   b = blue; b /= sum;
   r *= 256; g *= 256; b *= 256;
   uint16_t _color = color16((int)r, (int)g, (int)b);
-  
-  M5.lcd.setCursor(0,20);  //Place the cursor at (0,0).  将光标固定在(0,0)
+
+  M5.lcd.setCursor(0,20);  //Place the cursor at (0,20).  将光标固定在(0,20)
   M5.lcd.fillRect(0,20,120,80,BLACK); //Fill the screen with a black rectangle.  将屏幕填充黑色矩形
 
   M5.Lcd.print("C:"); M5.Lcd.println(clear);

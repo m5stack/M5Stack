@@ -17,6 +17,7 @@
 #include "Adafruit_Sensor.h"
 #include <Adafruit_BMP280.h>
 #include "UNIT_ENV.h"
+
 SHT3X sht30;
 Adafruit_BMP280 bme;
 
@@ -36,12 +37,12 @@ void loop() {
   while (!bme.begin(0x76)){ //初始化bme传感器.  Init the sensor of bme
     M5.Lcd.println("Could not find a valid BMP280 sensor, check wiring!");
   }
-  M5.lcd.setCursor(5,5);
   pressure = bme.readPressure();  //Stores the pressure gained by BMP.  存储bmp获取到的压强
   sht30.get();  //Obtain the data of shT30.  获取sht30的数据
   tmp = sht30.cTemp;  //Store the temperature obtained from shT30.  将sht30获取到的温度存储
   hum = sht30.humidity; //Store the humidity obtained from the SHT30.  将sht30获取到的湿度存储
   M5.lcd.fillRect(0,20,100,60,BLACK); //Fill the screen with black (to clear the screen).  将屏幕填充黑色(用来清屏)
+  M5.lcd.setCursor(0,20);
   M5.Lcd.printf("Temp: %2.1f  \r\nHumi: %2.0f%%  \r\nPressure:%2.0fPa\r\n", tmp, hum, pressure);
   delay(2000);
 }

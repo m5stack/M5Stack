@@ -31,7 +31,7 @@ UNIT_4RELAY unit_4relay;
 void setup() {
   M5.begin(true,false,true,true); //Init M5Core And the I2C port(21,22).  初始化 M5Core 和I2C(21,22)端口
   M5.Power.begin(); //Init power  初始化电源模块
-  M5.Lcd.setCursor(80, 0, 4); //Set the cursor position to (80,0).  将光标位置设置为(80,0)
+  M5.Lcd.setCursor(80, 0, 4); //Set the cursor position to (80,0),and set it to a 4 point font.  将光标位置设置为(80,0),设置为4号字体
   M5.Lcd.print("4-RELAY UNIT\n\n");
   M5.Lcd.print("   Relay State: \n   Sync Mode: ");
   M5.Lcd.setCursor(0, 220, 2);

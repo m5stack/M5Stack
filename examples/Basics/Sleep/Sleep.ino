@@ -20,6 +20,7 @@ void setup() {
   M5.Power.begin(); //Init Power module.  初始化电源模块
   M5.Power.setWakeupButton(BUTTON_A_PIN); //Set the screen wake-up button to A.  将屏幕唤醒的按键设置为A
   M5.Lcd.setBrightness(200);  //Set the screen brightness to 200 nits.  设置屏幕亮度为200尼特
+  M5.lcd.setTextSize(2);  //Set the text size to 2.  设置文字大小为2
 }
 
 /* After the program in setup() runs, it runs the program in loop()
@@ -35,7 +36,7 @@ void loop() {
   M5.Lcd.printf("power-on triggered at:%s%s\n\n",(c) ? ("POWER-SW") : (""),(d) ? ("DeepSleep-end") : (""));
 
   M5.Lcd.printf("Go lightSleep (5s or press buttonA wake up)\n");
-  delay(2500);  //delay 2500ms.  延迟2500ms
+  delay(5000);  //delay 5000ms.  延迟5000ms
   /*Restart after 10 seconds of light sleep and continue from the next line
   Calling this function power button will disable the power button to restore
   Please call M5.Power.setPowerBoostKeepOn(false)*/
@@ -44,11 +45,11 @@ void loop() {
   请调用M5.Power.setPowerBoostKeepOn(false)*/
   M5.Power.lightSleep(SLEEP_SEC(10));
   M5.Lcd.printf("Go lightSleep (press buttonA wake up)\n");
-  delay(2500);
+  delay(5000);
   M5.Power.lightSleep(0);
 
   M5.Lcd.printf("resume.\n\nGo deepSleep (press buttonA wake up) ");
-  delay(2500);
+  delay(5000);
   /*After waking up from deep sleep for 0 seconds, the CPU will restart and
   the program will be executed from the beginning
   Calling this function will disable the power button to restore the power button

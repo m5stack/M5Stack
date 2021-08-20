@@ -1,8 +1,19 @@
 /*
-    Description: Use MAKEY Unit to control M5Core to emit tones.
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core 示例源代码
+* Visit the website for more information：https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+*
+* describe: MAKEY.
+* date：2021/8/19
+*******************************************************************************
+  Please connect to Port A(22、21),Connect port G on the MAKEY Unit to other ports (except 5V) to control the tone it emits
+  请连接端口A(22、21),将MAKEY Unit上的G口与其他口连接(除5V外)控制其发出音调
 */
+
 #include <M5Stack.h>
-#include <Wire.h>
 
 #define NOTE_D1 294
 
@@ -15,18 +26,13 @@
 #define NOTE_DL7 494
 
 void setup() {
-  // Power ON Stabilizing...
-  delay(500);
-  M5.begin();
-  M5.Power.begin();
-  pinMode(39, INPUT);
-  pinMode(38, INPUT);
-  // Init I2C
-  Wire.begin();
-  M5.Lcd.setTextSize(2);
-  M5.Lcd.setTextColor(WHITE, BLACK);
+  M5.begin(); //Init M5Stack.  初始化M5Stack
+  M5.Power.begin(); //Init power  初始化电源模块
+  M5.lcd.setTextSize(2);  //Set the text size to 2.  设置文字大小为2
   M5.Lcd.println("M5Stack Makey Piano.");
+  Wire.begin(); //Wire init, adding the I2C bus.  Wire初始化, 加入i2c总线
 }
+
 int Key1 = 0, Key2 = 0, Index = 0;
 void showKey() {
 
