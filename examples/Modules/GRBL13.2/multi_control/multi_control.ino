@@ -19,8 +19,9 @@ void setup() {
   // put your setup code here, to run once:
   M5.begin();
   M5.Power.begin();
-  _GRBL_A.Init();
-  _GRBL_B.Init();
+  Wire.begin(21, 22);
+  _GRBL_A.Init(&Wire);
+  _GRBL_B.Init(&Wire);
   Serial.begin(115200);
   m5.Lcd.setTextColor(WHITE, BLACK);
   m5.Lcd.setTextSize(3);
