@@ -1,3 +1,17 @@
+/*
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core 示例源代码
+* Visit the website for more information：https://docs.m5stack.com/en/unit/uhf_rfid
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/uhf_rfid
+*
+* describe: uhf_rfid.
+* date：2021/8/30
+*******************************************************************************
+  Please connect to PORT-B,Press buttonA or buttonB to Send message if received message, screen will display
+  请连接端口B,按钮A或按钮B发送消息，如果收到消息，屏幕将显示
+*/
 #include <M5Stack.h>
 #include "RFID_command.h"
 
