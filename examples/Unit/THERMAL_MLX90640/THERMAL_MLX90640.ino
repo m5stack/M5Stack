@@ -1,14 +1,24 @@
 /*
-    Description: Read the THERMAL Unit (MLX90640 IR array) temperature pixels and display it on the screen.
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core 示例源代码
+* Visit the website for more information：https://docs.m5stack.com/en/unit/thermal
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/thermal
+*
+* describe: thermal.
+* date：2021/8/31
+*******************************************************************************
+  Please connect to Port A, Read the THERMAL Unit (MLX90640 IR array) temperature pixels and display it on the screen.
+  请连接端口A, 读取热单元(MLX90640红外阵列)温度像素，并显示在屏幕上。
 */
 #include <M5Stack.h>
-#include <Wire.h>
 
 #include "MLX90640_API.h"
 #include "MLX90640_I2C_Driver.h"
 
-const byte MLX90640_address = 0x33; //Default 7-bit unshifted address of the MLX90640
-#define TA_SHIFT 8 //Default shift for MLX90640 in open air
+const byte MLX90640_address = 0x33; //Default 7-bit unshifted address of the MLX90640.  MLX90640的默认7位未移位地址
+#define TA_SHIFT 8 //Default shift for MLX90640 in open air.  MLX90640在户外的默认移位
 
 #define COLS 32
 #define ROWS 24
@@ -22,7 +32,6 @@ float reversePixels[COLS * ROWS];
 
 byte speed_setting = 2 ; // High is 1 , Low is 2
 bool reverseScreen = false;
-//bool reverseScreen = true;
 
 #define INTERPOLATED_COLS 32
 #define INTERPOLATED_ROWS 32
@@ -31,20 +40,19 @@ static float mlx90640To[COLS * ROWS];
 paramsMLX90640 mlx90640;
 float signedMag12ToFloat(uint16_t val);
 
-//low range of the sensor (this will be blue on the screen)
-int MINTEMP = 24; // For color mapping
-int min_v = 24; //Value of current min temp
-int min_cam_v = -40; // Spec in datasheet
+//low range of the sensor (this will be blue on the screen).  传感器的低量程(屏幕上显示为蓝色)
+int MINTEMP = 24; // For color mapping.  颜色映射
+int min_v = 24; //Value of current min temp.  当前最小温度的值
+int min_cam_v = -40; // Spec in datasheet.  规范的数据表
 
 
-//high range of the sensor (this will be red on the screen)
-int MAXTEMP = 35; // For color mapping
-int max_v = 35; //Value of current max temp
-int max_cam_v = 300; // Spec in datasheet
+//high range of the sensor (this will be red on the screen).  传感器的高量程(屏幕上显示为红色)
+int MAXTEMP = 35; // For color mapping.  颜色映射
+int max_v = 35; //Value of current max temp.  当前最大温度值
+int max_cam_v = 300; // Spec in datasheet.  规范的数据表
 int resetMaxTemp = 45;
 
-//the colors we will be using
-
+//the colors we will be using.  我们将要使用的颜色
 const uint16_t camColors[] = {0x480F,
                               0x400F, 0x400F, 0x400F, 0x4010, 0x3810, 0x3810, 0x3810, 0x3810, 0x3010, 0x3010,
                               0x3010, 0x2810, 0x2810, 0x2810, 0x2810, 0x2010, 0x2010, 0x2010, 0x1810, 0x1810,
@@ -75,7 +83,6 @@ const uint16_t camColors[] = {0x480F,
                              };
 
 
-
 float get_point(float *p, uint8_t rows, uint8_t cols, int8_t x, int8_t y);
 void set_point(float *p, uint8_t rows, uint8_t cols, int8_t x, int8_t y, float f);
 void get_adjacents_1d(float *src, float *dest, uint8_t rows, uint8_t cols, int8_t x, int8_t y);
@@ -91,19 +98,13 @@ void setup()
   M5.begin();
   M5.Power.begin();
   Wire.begin();
-  Wire.setClock(450000); //Increase I2C clock speed to 400kHz
-  Serial.begin(115200);
-  M5.Lcd.begin();
-  M5.Lcd.setRotation(1);
+  Wire.setClock(450000); //Increase I2C clock speed to 400kHz.  增加I2C时钟速度到400kHz
 
-  M5.Lcd.fillScreen(TFT_BLACK);
-  M5.Lcd.setTextColor(YELLOW, BLACK);
-
-  while (!Serial); //Wait for user to open terminal
+  while (!Serial); //Wait for user to open terminal.  等待用户打开终端
   Serial.println("M5Stack MLX90640 IR Camera");
   M5.Lcd.setTextSize(2);
 
-  //Get device parameters - We only have to do this once
+  //Get device parameters - We only have to do this once.  获取设备参数——我们只需要做一次
   int status;
   uint16_t eeMLX90640[832];//32 * 24 = 768
   status = MLX90640_DumpEE(MLX90640_address, eeMLX90640);
@@ -116,23 +117,24 @@ void setup()
 
   int SetRefreshRate;
   //Setting MLX90640 device at slave address 0x33 to work with 16Hz refresh rate:
+  //设置从地址0x33的MLX90640设备以16Hz刷新率工作:
   // 0x00 – 0.5Hz
   // 0x01 – 1Hz
   // 0x02 – 2Hz
   // 0x03 – 4Hz
-  // 0x04 – 8Hz // OK 
+  // 0x04 – 8Hz // OK
   // 0x05 – 16Hz // OK
   // 0x06 – 32Hz // Fail
   // 0x07 – 64Hz
   SetRefreshRate = MLX90640_SetRefreshRate (0x33, 0x05);
-  //Once params are extracted, we can release eeMLX90640 array
+  //Once params are extracted, we can release eeMLX90640 array.  一旦提取了参数，我们就可以释放eeMLX90640数组
 
-  //Display bottom side colorList and info
+  //Display bottom side colorList and info.  显示底部的颜色列表和信息
   M5.Lcd.fillScreen(TFT_BLACK);
   int icolor = 0;
   for (int icol = 0; icol <= 248;  icol++)
   {
-    //彩色条
+    //Color bar.  彩色条
     M5.Lcd.drawRect(36, 208, icol, 284 , camColors[icolor]);
     icolor++;
   }
@@ -140,52 +142,35 @@ void setup()
 }
 
 
-void loop()
-{
+void loop(){
+  M5.update();
   loopTime = millis();
   startTime = loopTime;
-  ///////////////////////////////
-  // Set Min Value - LongPress //
-  ///////////////////////////////
+  //Set Min Value - LongPress.  长按设置最小值
   if (M5.BtnA.pressedFor(1000)) {
-    if (MINTEMP <= 5 )
-    {
+    if (MINTEMP <= 5 ){
       MINTEMP = MAXTEMP - 5;
-    }
-    else
-    {
+    }else{
       MINTEMP = MINTEMP - 5;
     }
     infodisplay();
   }
-
-  ///////////////////////////////
-  // Set Min Value - SortPress //
-  ///////////////////////////////
+  //Set Min Value - SortPress.  短按设置最小值
   if (M5.BtnA.wasPressed()) {
-    if (MINTEMP <= 0)
-    {
+    if (MINTEMP <= 0){
       MINTEMP = MAXTEMP - 1;
-    }
-    else
-    {
+    }else{
       MINTEMP--;
     }
     infodisplay();
   }
-
-  /////////////////////
-  // Reset settings  //
-  /////////////////////
+// Reset settings.  重置设置
   if (M5.BtnB.wasPressed()) {
     MINTEMP = min_v - 1;
     MAXTEMP = max_v + 1;
     infodisplay();
   }
-
-  ////////////////
-  // Power Off  //
-  ////////////////
+// Power Off.  关闭电源
   if (M5.BtnB.pressedFor(1000)) {
     M5.Lcd.fillScreen(TFT_BLACK);
     M5.Lcd.setTextColor(YELLOW, BLACK);
@@ -193,66 +178,50 @@ void loop()
     delay(1000);
     M5.powerOFF();
   }
-
-  ///////////////////////////////
-  // Set Max Value - LongPress //
-  ///////////////////////////////
+//Set Max Value - LongPress 长按设置最大值
   if (M5.BtnC.pressedFor(1000)) {
-    if (MAXTEMP >= max_cam_v)
-    {
+    if (MAXTEMP >= max_cam_v){
       MAXTEMP = MINTEMP + 1;
-    }
-    else
-    {
+    }else{
       MAXTEMP = MAXTEMP + 5;
     }
     infodisplay();
   }
-
-  ///////////////////////////////
-  // Set Max Value - SortPress //
-  ///////////////////////////////
+// Set Max Value - SortPress 短按设置最大值
   if (M5.BtnC.wasPressed()) {
-    if (MAXTEMP >= max_cam_v )
-    {
+    if (MAXTEMP >= max_cam_v ){
       MAXTEMP = MINTEMP + 1;
-    }
-    else
-    {
+    }else{
       MAXTEMP++;
     }
     infodisplay();
   }
 
-  M5.update();
-
   for (byte x = 0 ; x < speed_setting ; x++) // x < 2 Read both subpages
   {
     uint16_t mlx90640Frame[834];
     int status = MLX90640_GetFrameData(MLX90640_address, mlx90640Frame);
-    if (status < 0)
-    {
+    if (status < 0){
       Serial.print("GetFrame Error: ");
       Serial.println(status);
     }
 
     float vdd = MLX90640_GetVdd(mlx90640Frame, &mlx90640);
     float Ta = MLX90640_GetTa(mlx90640Frame, &mlx90640);
-    float tr = Ta - TA_SHIFT; //Reflected temperature based on the sensor ambient temperature
+    float tr = Ta - TA_SHIFT; //Reflected temperature based on the sensor ambient temperature.  根据传感器环境温度反射温度
     float emissivity = 0.95;
-    MLX90640_CalculateTo(mlx90640Frame, &mlx90640, emissivity, tr, pixels); //save pixels temp to array (pixels)
+    MLX90640_CalculateTo(mlx90640Frame, &mlx90640, emissivity, tr, pixels); //save pixels temp to array (pixels).  保存像素temp到数组(像素)
 	int mode_ = MLX90640_GetCurMode(MLX90640_address);
-    //amendment
+    //amendment.  修正案
     MLX90640_BadPixelsCorrection((&mlx90640)->brokenPixels, pixels, mode_, &mlx90640);
-    //MLX90640_BadPixelsCorrection((&mlx90640)->outlierPixels, pixels, mode_, &mlx90640);
   }
 
-  //Reverse image (order of Integer array)
+  //Reverse image (order of Integer array).  反向图像(整数数组的顺序)
   if (reverseScreen == 1)
   {
     for (int x = 0 ; x < pixelsArraySize ; x++)
     {
-      if (x % COLS == 0) //32 values wide
+      if (x % COLS == 0) //32 values wide.  32宽值
       {
         for (int j = 0 + x, k = (COLS-1) + x; j < COLS + x ; j++, k--)
         {
@@ -268,7 +237,7 @@ void loop()
 
   if (reverseScreen == 1)
   {
-    // ** reversePixels
+    // ** reversePixels  反向像素
     interpolate_image(reversePixels, ROWS, COLS, dest_2d, INTERPOLATED_ROWS, INTERPOLATED_COLS);
   }
   else
@@ -284,12 +253,10 @@ void loop()
       {
         // 原始数据
         pixels_2[(((y * 2) * (COLS*2)) + (x * 2))] = pixels[y*COLS+x];
-        
         if(x != 31)
           pixels_2[(((y * 2) * (COLS*2)) + (x * 2)+1)] = ( pixels_2[(((y * 2) * (COLS*2)) + (x * 2))] + pixels_2[(((y * 2) * (COLS*2)) + (x * 2)+2)]) / 2;
         else
           pixels_2[(((y * 2) * (COLS*2)) + (x * 2)+1)] = ( pixels_2[(((y * 2) * (COLS*2)) + (x * 2))] );
-          
         //Serial.print(pixels_2[(((y * 2) * (COLS*2)) + (x * 2))]);
         //Serial.print(pixels[y*COLS+x]);
         //Serial.print(" ");
@@ -365,8 +332,8 @@ void loop()
 
 
   M5.Lcd.setTextSize(2);
-  M5.Lcd.fillRect(164, 220, 75, 18, TFT_BLACK);  // clear max temp text
-  M5.Lcd.fillRect(60, 220, 200, 18, TFT_BLACK); // clear spot temp text
+  M5.Lcd.fillRect(164, 220, 75, 18, TFT_BLACK);  // clear max temp text.  清除最大温度文本
+  M5.Lcd.fillRect(60, 220, 200, 18, TFT_BLACK); // clear spot temp text.  清除点临时文本
     int icolor = 0;
   //for (int icol = 0; icol <= 248;  icol++)
   //{
@@ -374,7 +341,7 @@ void loop()
    // icolor++;
   //}
 
-  M5.Lcd.setCursor(60, 222);      // update min & max temp
+  M5.Lcd.setCursor(60, 222);      // update min & max temp.  更新最小和最大温度
   M5.Lcd.setTextColor(TFT_WHITE);
 
   if (max_v > max_cam_v | max_v < min_cam_v ) {
@@ -389,26 +356,21 @@ void loop()
     M5.Lcd.print("Max:");
     M5.Lcd.print(max_v, 1);
     M5.Lcd.print("C");
-    M5.Lcd.setCursor(180, 94); // update spot temp text
+    M5.Lcd.setCursor(180, 94); // update spot temp text.  更新现场温度文本
     M5.Lcd.print(spot_v, 1);
     M5.Lcd.printf("C");
-    //M5.Lcd.drawCircle(160, 100, 6, TFT_WHITE);     // update center spot icon
-    //M5.Lcd.drawLine(160, 90, 160, 110, TFT_WHITE); // vertical line
-    //M5.Lcd.drawLine(150, 100, 170, 100, TFT_WHITE); // horizontal line
-    M5.Lcd.drawCircle(160, 120, 6, TFT_WHITE);     // update center spot icon
-    M5.Lcd.drawLine(160, 110, 160, 130, TFT_WHITE); // vertical line
-    M5.Lcd.drawLine(150, 120, 170, 120, TFT_WHITE); // horizontal line
+    M5.Lcd.drawCircle(160, 120, 6, TFT_WHITE);     // update center spot icon.  更新中心点图标
+    M5.Lcd.drawLine(160, 110, 160, 130, TFT_WHITE); // vertical line.  垂直的线
+    M5.Lcd.drawLine(150, 120, 170, 120, TFT_WHITE); // horizontal line.  水平线
   }
   loopTime = millis();
   endTime = loopTime;
   fps = 1000 / (endTime - startTime);
-  //M5.Lcd.fillRect(310, 209, 10, 12, TFT_BLACK); //Clear fps text area
-  M5.Lcd.fillRect(300, 209, 20, 12, TFT_BLACK); //Clear fps text area
+  M5.Lcd.fillRect(300, 209, 20, 12, TFT_BLACK); //Clear fps text area.  清除fps文本区域
   M5.Lcd.setTextSize(1);
   M5.Lcd.setCursor(284, 210);
   M5.Lcd.print("fps:" + String( fps ));
   M5.Lcd.setTextSize(1);
-
 }
 
 
@@ -416,12 +378,12 @@ void loop()
 void infodisplay(void) {
   M5.Lcd.fillRect(0, 198, 320, 4, TFT_WHITE);
   M5.Lcd.setTextColor(TFT_WHITE);
-  M5.Lcd.fillRect(284, 223, 320, 240, TFT_BLACK); //Clear MaxTemp area
+  M5.Lcd.fillRect(284, 223, 320, 240, TFT_BLACK); //Clear MaxTemp area.  清除MaxTemp区域
   M5.Lcd.setTextSize(2);
-  M5.Lcd.setCursor(284, 222); //move to bottom right
-  M5.Lcd.print(MAXTEMP , 1);  // update MAXTEMP
+  M5.Lcd.setCursor(284, 222); //move to bottom right.  移至右下
+  M5.Lcd.print(MAXTEMP , 1);  // update MAXTEMP.  更新MAXTEMP
   M5.Lcd.print("C");
-  M5.Lcd.setCursor(0, 222);  // update MINTEMP text
+  M5.Lcd.setCursor(0, 222);  // update MINTEMP text.  更新MINTEMP文本
   M5.Lcd.fillRect(0, 222, 36, 16, TFT_BLACK);
   M5.Lcd.print(MINTEMP , 1);
   M5.Lcd.print("C");
@@ -452,11 +414,11 @@ void drawpixels(float *p, uint8_t rows, uint8_t cols, uint8_t boxWidth, uint8_t 
   }
 }
 
-//Returns true if the MLX90640 is detected on the I2C bus
+//Returns true if the MLX90640 is detected on the I2C bus.  如果在I2C总线上检测到MLX90640，则返回true
 boolean isConnected()
 {
   Wire.beginTransmission((uint8_t)MLX90640_address);
   if (Wire.endTransmission() != 0)
-    return (false); //Sensor did not ACK
+    return (false); //Sensor did not ACK.
   return (true);
 }

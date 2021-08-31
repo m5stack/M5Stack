@@ -1,5 +1,22 @@
+/*
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core 示例源代码
+* Visit the website for more information：https://docs.m5stack.com/en/unit/lorawan868
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/lorawan868
+*
+* describe: LoRaWAN868.
+* date：2021/8/31
+*******************************************************************************
+  Please connect to Port C,请连接端口C
+*/
 #include "M5Stack.h"
 #include "freertos/queue.h"
+#include <M5GFX.h>
+
+M5GFX display;
+M5Canvas canvas(&display);
 
 String waitRevice()
 {
@@ -8,7 +25,7 @@ String waitRevice()
     {
         recvStr = Serial2.readStringUntil('\n');
     } while (recvStr.length() == 0);
-    Serial.println(recvStr);
+    canvas.println(recvStr);
     return recvStr;
 }
 
@@ -25,7 +42,7 @@ void drawLineStr(String str, uint16_t color)
 void sendATCMD(String cmdStr)
 {
     Serial2.print(cmdStr);
-    delay(10);
+    delay(100);
 }
 
 int sendATCMDAndRevice(String cmdStr)
@@ -36,11 +53,11 @@ int sendATCMDAndRevice(String cmdStr)
     String recvStr = waitRevice();
     if (recvStr.indexOf("OK") != -1)
     {
-        return 0;
+      return 0;
     }
     else
     {
-        return -1;
+      return -1;
     }
 }
 
@@ -50,15 +67,12 @@ void setup()
     Serial2.begin(115200, SERIAL_8N1, 16, 17);
     Serial2.flush();
     delay(100);
-    //xTaskCreate(serialTask, "serialTask", 1024 * 2, (void *)0, 4, nullptr);
-    
-    M5.Lcd.fillRect(0, 0, 320, 240, TFT_BLACK);
-    M5.Lcd.fillRect(0, 0, 320, 40, TFT_WHITE);
-    M5.Lcd.setTextColor(TFT_BLACK);
-    M5.Lcd.setTextDatum(TC_DATUM);
-    M5.Lcd.drawString("COMX-LoraWan(868) TEST", 160, 10, 4);
-    M5.Lcd.setTextDatum(TL_DATUM);
-    M5.Lcd.setTextColor(TFT_WHITE);
+    display.begin();
+    display.setTextSize(2);
+    canvas.setColorDepth(1); // mono color
+    canvas.createSprite(display.width(), display.height());
+    canvas.setTextSize((float)canvas.width() / 160);
+    canvas.setTextScroll(true);
 
     sendATCMD("AT?\r");
     delay(100);
@@ -66,9 +80,9 @@ void setup()
     sendATCMDAndRevice("AT+ILOGLVL=0\r");
     sendATCMDAndRevice("AT+CSAVE\r");
     sendATCMDAndRevice("AT+IREBOOT=0\r");
-    drawLineStr("LoraWan Rebooting", TFT_WHITE);
+    display.println("LoraWan Rebooting");
     delay(2000);
-    drawLineStr("LoraWan config", TFT_WHITE);
+    display.println("LoraWan config");
     sendATCMDAndRevice("AT+CJOINMODE=0\r");
     sendATCMDAndRevice("AT+CDEVEUI=00BB9DA5B97ADDF6\r");
     sendATCMDAndRevice("AT+CAPPEUI=70B3D57ED004247E\r");//70B3D57ED003B699
@@ -122,14 +136,12 @@ void loop()
     {
         if (recvStr.indexOf("OK") != -1)
         {
-            Serial.println("[ INFO ] JOIN IN SUCCESSFUL");
-            drawLineStr("LoraWan JOIN", TFT_GREEN);
+            canvas.println("[ INFO ] JOIN IN SUCCESSFUL");
             system_fsm = kJoined;
         }
         else
         {
-            Serial.println("[ INFO ] JOIN IN FAIL");
-            drawLineStr("LoraWan JOIN FAIL", TFT_RED);
+            canvas.println("[ INFO ] JOIN IN FAIL");
             system_fsm = kIdel;
         }
     }
@@ -141,7 +153,7 @@ void loop()
         }
         else if (system_fsm == kWaitSend)
         {
-            //system_fsm = kEnd;
+            system_fsm = kEnd;
             char strbuff[128];
             loraWanupLinkReviceCNT ++;
 
@@ -170,14 +182,13 @@ void loop()
     else if(recvStr.indexOf("OK+SEND") != -1)
     {
         String snednum = recvStr.substring(8);
-        
-        //Serial.printf(" [ INFO ] SEND NUM %s \r\n",snednum.c_str());
+        canvas.printf(" [ INFO ] SEND NUM %s \r\n",snednum.c_str());
         loraWanSendNUM = snednum.toInt();
     }
     else if(recvStr.indexOf("OK+SENT") != -1)
     {
         String snedcnt = recvStr.substring(8);
-        //Serial.printf(" [ INFO ] SEND CNT %s \r\n",snedcnt.c_str());
+        canvas.printf(" [ INFO ] SEND CNT %s \r\n",snedcnt.c_str());
         loraWanSendCNT = snedcnt.toInt();
     }
     else if(recvStr.indexOf("ERR+SENT") != -1)
@@ -185,10 +196,7 @@ void loop()
         char strbuff[128];
         String ErrorCodeStr = recvStr.substring(9);
         sprintf(strbuff,"ERROR Code:%d (%d/%d)",ErrorCodeStr.toInt(),loraWanupLinkReviceCNT,loraWanupLinkCNT);
-        M5.Lcd.fillRect(0,183,320,32,TFT_BLACK);
-        M5.Lcd.setTextColor(TFT_RED);
-        M5.Lcd.drawString(strbuff, 10, 183, 4);
-
+        canvas.println(strbuff);
         delay(500);
 
         system_fsm = kSending;
@@ -199,40 +207,17 @@ void loop()
 
         char strbuff[128];
         sprintf(strbuff,"%s (%d/%d)",checkStr.c_str(),loraWanupLinkReviceCNT,loraWanupLinkCNT);
-
-        M5.Lcd.fillRect(0,183,320,32,TFT_BLACK);
-        M5.Lcd.setTextColor(TFT_GREEN);
-        M5.Lcd.drawString(strbuff, 10, 183, 4);
+        canvas.println(strbuff);
 
     }
 
     if (system_fsm == kSending)
     {
-        //drawLineStr("LoraWan Sending", TFT_WHITE);
-        M5.Lcd.setTextColor(TFT_WHITE);
-        M5.Lcd.drawString("LoraWan Sending", 10, 151, 4);
-        //sendATCMD("AT+DTRX=1,2,8,4655434b20535443\r");
+        canvas.println("LoraWan Sending");
         sendATCMD("AT+CLINKCHECK=1\r");
         loraWanupLinkCNT ++;
         system_fsm = kWaitSend;
     }
-
-    //if (M5.BtnA.wasPressed())
-    //{
-    //    sendATCMDAndRevice("AT+CLINKCHECK=1\r");
-    //    delay(100);
-    //}
-    //if (M5.BtnB.wasPressed())
-    //{
-    //    sendATCMDAndRevice("AT+DTRX=1,2,8,4655434b20535443\r");
-    //    delay(100);
-    //}
-    //if (M5.BtnC.wasPressed())
-    //{
-    //    sendATCMDAndRevice("AT+DRX?\r");
-    //    delay(100);
-    //}
-    
+    canvas.pushSprite(0, 0);
     delay(10);
-    M5.update();
 }

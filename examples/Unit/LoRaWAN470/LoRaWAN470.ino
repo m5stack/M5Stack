@@ -3,10 +3,10 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/unit/lorawan470
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/lorawan470
+* Visit the website for more information：https://docs.m5stack.com/en/unit/lorawan868
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/lorawan868
 *
-* describe: LoRaWAN470.
+* describe: LoRaWAN868.
 * date：2021/8/31
 *******************************************************************************
   Please connect to Port C,请连接端口C
@@ -23,7 +23,6 @@ String waitRevice(){
   do{
     recvStr = Serial2.readStringUntil('\n');
   } while (recvStr.length() == 0);
-  Serial.println(recvStr);
   canvas.println(recvStr);
   return recvStr;
 }
@@ -124,13 +123,11 @@ void loop()
   {
       if (recvStr.indexOf("OK") != -1)
       {
-          Serial.println("[ INFO ] JOIN IN SUCCESSFUL");
           canvas.printf("LoraWan JOIN");
           system_fsm = kJoined;
       }
       else
       {
-          Serial.println("[ INFO ] JOIN IN FAIL");
           canvas.printf("LoraWan JOIN FAIL");
           system_fsm = kIdel;
       }
@@ -160,13 +157,13 @@ void loop()
   else if(recvStr.indexOf("OK+SEND") != -1)
   {
       String snednum = recvStr.substring(8);
-      Serial.printf(" [ INFO ] SEND NUM %s \r\n",snednum.c_str());
+      canvas.printf(" [ INFO ] SEND NUM %s \r\n",snednum.c_str());
       loraWanSendNUM = snednum.toInt();
   }
   else if(recvStr.indexOf("OK+SENT") != -1)
   {
       String snedcnt = recvStr.substring(8);
-      Serial.printf(" [ INFO ] SEND CNT %s \r\n",snedcnt.c_str());
+      canvas.printf(" [ INFO ] SEND CNT %s \r\n",snedcnt.c_str());
       loraWanSendCNT = snedcnt.toInt();
   }
 
