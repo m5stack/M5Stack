@@ -1,7 +1,16 @@
 /*
-    Description: this sample code demonstrates the normal use of a USB_Host_SHield_Library_2.0 object.
-    Please install library before compiling:  
-    USB_Host_SHield_Library_2.0: file in M5stack lib examples -> modules -> USB -> USB_Host_SHield_Library_2.0 （unzip the lib zip file to the Arduino Lib path）
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core 示例源代码
+* Visit the website for more information：https://docs.m5stack.com/en/module/usb
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/module/usb
+*
+* describe: USB.
+* date：2021/9/1
+*******************************************************************************
+  This sample code demonstrates the normal use of a USB_Host_SHield_Library_2.0 object.
+  此示例代码演示了 USB_Host_SHield_Library_2.0 对象的正常使用。
 */
 
 #include <M5Stack.h>
