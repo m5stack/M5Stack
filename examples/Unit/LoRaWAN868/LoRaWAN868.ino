@@ -69,6 +69,7 @@ void setup()
   delay(100);
   display.begin();
   display.setTextSize(2);
+  display.println("LoRaWAN868");
   canvas.setColorDepth(1); // mono color
   canvas.createSprite(display.width(), display.height());
   canvas.setTextSize((float)canvas.width() / 160);
@@ -84,9 +85,9 @@ void setup()
   delay(2000);
   display.println("LoraWan config");
   sendATCMDAndRevice("AT+CJOINMODE=0\r");
-  sendATCMDAndRevice("AT+CDEVEUI=00BB9DA5B97ADDF6\r");
+  sendATCMDAndRevice("AT+CDEVEUI=00bb9da5b97addf1\r");
   sendATCMDAndRevice("AT+CAPPEUI=70B3D57ED004247E\r");//70B3D57ED003B699
-  sendATCMDAndRevice("AT+CAPPKEY=27DFE264CA33AC1957C005EB48BA4723\r");
+  sendATCMDAndRevice("AT+CAPPKEY=27DFE264CA33AC1957C005EB48BA4721\r");
   sendATCMDAndRevice("AT+CULDLMODE=2\r");
   sendATCMDAndRevice("AT+CCLASS=2\r");
   sendATCMDAndRevice("AT+CWORKMODE=2\r");
