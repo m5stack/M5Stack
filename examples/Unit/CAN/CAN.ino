@@ -7,7 +7,7 @@
 * 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/can
 *
 * describe: can.
-* date：2021/8/30
+* date：2021/9/1
 *******************************************************************************
   Please connect to PORT-B,Press buttonA or buttonB to Send message if received message, screen will display
   请连接端口B,按钮A或按钮B发送消息，如果收到消息，屏幕将显示
@@ -27,11 +27,11 @@ int i = 0;
 void setup() {
   M5.begin(true, false, true);
   M5.Power.begin();
-  M5.Lcd.drawString("CAN Unit Send&Received", 40, 3, 4); 
+  M5.Lcd.drawString("CAN Unit Send&Received", 40, 3, 4);
   M5.Lcd.setCursor(0, 60, 4);
 
-  CAN_cfg.speed = CAN_SPEED_125KBPS;  //Set the Can speed
-  CAN_cfg.tx_pin_id = TX; //Set the Pin foot
+  CAN_cfg.speed = CAN_SPEED_125KBPS;  //Set the Can speed.  设置Can速度
+  CAN_cfg.tx_pin_id = TX; //Set the Pin foot.  设置引脚
   CAN_cfg.rx_pin_id = RX;
 
   CAN_cfg.rx_queue = xQueueCreate(10,sizeof(CAN_frame_t));
