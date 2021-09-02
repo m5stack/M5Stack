@@ -1,5 +1,16 @@
 /*
-    Description: Use SERVO2 Module to control the rotation of 16-channel servo.
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core 示例源代码
+* Visit the website for more information：https://docs.m5stack.com/en/module/servo2
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/module/servo2
+*
+* describe: servo2.
+* date：2021/9/2
+*******************************************************************************
+  Use SERVO2 Module to control the rotation of 16-channel servo.
+  使用 SERVO2 模块控制 16 通道舵机的旋转。
 */
 
 #include <M5Stack.h>
@@ -8,11 +19,11 @@
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40, Wire);
 
-#define SERVOMIN  102 // This is the 'minimum' pulse length count (out of 4096)
-#define SERVOMAX  512 // This is the 'maximum' pulse length count (out of 4096)
-#define USMIN  500 // This is the rounded 'minimum' microsecond length based on the minimum pulse of 102
-#define USMAX  2500 // This is the rounded 'maximum' microsecond length based on the maximum pulse of 512
-#define SERVO_FREQ 50 // Analog servos run at ~50 Hz updates
+#define SERVOMIN  102 // This is the 'minimum' pulse length count (out of 4096)  这是“最小”脉冲长度计数（共 4096 个）
+#define SERVOMAX  512 // This is the 'maximum' pulse length count (out of 4096)  这是“最大”脉冲长度计数（共 4096 个）
+#define USMIN  500 // This is the rounded 'minimum' microsecond length based on the minimum pulse of 102  这是基于 102 的最小脉冲的舍入“最小”微秒长度
+#define USMAX  2500 // This is the rounded 'maximum' microsecond length based on the maximum pulse of 512  这是基于 512 的最大脉冲的舍入“最大”微秒长度
+#define SERVO_FREQ 50 // Analog servos run at ~50 Hz updates  模拟伺服以 ~50 Hz 更新运行
 
 void setup() {
   M5.begin(true, true, true, true);

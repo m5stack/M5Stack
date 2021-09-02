@@ -1,7 +1,16 @@
 /*
-    Description: Use COM.GPS Module to get the coordinate data and time of the current location.
-    Please install library before compiling:  
-    TinyGPSPlus: file in M5stack lib examples -> modules -> GPS -> TinyGPSPlus-1.0.2.zip （unzip the lib zip file to the Arduino Lib path）
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core2示例源代码
+* Visit the website for more information：https://docs.m5stack.com/en/module/comx_gps
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/module/comx_gps
+*
+* describe: comx_gps.
+* date：2021/9/2
+*******************************************************************************
+  Use COM.GPS Module to get the coordinate data and time of the current location.
+  使用 COM.GPS 模块获取当前位置的坐标数据和时间。
 */
 
 #include <M5Stack.h>
