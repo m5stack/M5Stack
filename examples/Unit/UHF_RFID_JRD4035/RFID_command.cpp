@@ -1,4 +1,4 @@
-#include <M5Stack.h>
+#include <Arduino.h>
 #include "RFID_command.h"
 #include <string>
 

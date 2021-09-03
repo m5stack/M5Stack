@@ -1,10 +1,19 @@
 /*
-    Description: screen will display the signal strength and network access status
-	press buttonA to dial phonenumber.
-	ATD13800088888 is phone number, you can change 
-	Note: Set the DIP switch to 5 and 13.
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core 示例源代码
+* Visit the website for more information：https://docs.m5stack.com/en/module/comx_lte
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/module/comx_lte
+*
+* describe: comx_lte.
+* date：2021/9/2
+*******************************************************************************
+  Set the DIP switch to 5 and 13 and the screen will display the signal strength and network access status
+  press buttonA to dial phonenumber, ATD00000000000 is phone number, you can change
+  将 DIP 开关设置为 5 和 13 并且屏幕会显示信号强度和网络访问状态
+  按按钮A拨打电话号码,ATD00000000000 是电话号码，您可以更改
 */
-
 
 #include <M5Stack.h>
 #include <stdint.h>

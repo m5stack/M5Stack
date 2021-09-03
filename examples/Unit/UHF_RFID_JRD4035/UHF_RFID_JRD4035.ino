@@ -1,12 +1,23 @@
+/*
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core 示例源代码
+* Visit the website for more information：https://docs.m5stack.com/en/unit/uhf_rfid
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/uhf_rfid
+*
+* describe: uhf_rfid.
+* date：2021/9/1
+*******************************************************************************
+*/
 #include <M5Stack.h>
 #include "RFID_command.h"
+#include <M5GFX.h>
 
-#include "TFTTerminal.h"
-TFT_eSprite TerminalBuff = TFT_eSprite(&M5.Lcd);
-TFTTerminal terminal(&TerminalBuff);
+M5GFX display;
+M5Canvas canvas(&display);
 
 UHF_RFID RFID;
-
 
 String comd = " ";
 CardpropertiesInfo card;
@@ -21,15 +32,17 @@ TestInfo Test;
 void setup()
 {
   M5.begin();
+  display.begin();
+  display.setTextSize(2);
+  canvas.setColorDepth(1); // mono color
+  canvas.createSprite(display.width(), display.height());
+  canvas.setTextSize((float)canvas.width() / 160);
+  canvas.setTextScroll(true);
 
   RFID._debug = 0;
   Serial2.begin(115200, SERIAL_8N1, 16, 17);//16.17
   if (RFID._debug == 1)Serial.begin(115200, SERIAL_8N1, 21, 22);
   M5.Lcd.fillRect(0, 0, 340, 280, BLACK);
-
-  TerminalBuff.createSprite(280,200);
-  terminal.setGeometry(20,30,300,200);
-  terminal.setFontsize(1);
 
 // UHF_RFID set UHF_RFID设置
   RFID.Set_transmission_Power(2600);
@@ -39,7 +52,7 @@ void setup()
   RFID.clean_data();
   
 // Prompted to connect to UHF_RFID 提示连接UHF_RFID
-  terminal.println("Please connect UHF_RFID to Port C");
+  display.println("Please connect UHF_RFID to Port C");
   
 // Determined whether to connect to UHF_RFID 判断是否连接UHF_RFID
   String soft_version;
@@ -55,7 +68,7 @@ void setup()
   }
 
 // The prompt will be RFID card close 提示将RFID卡靠近
-  terminal.println("Please approach the RFID card you need to use");
+  display.println("Please approach the RFID card you need to use");
   
 }
 
@@ -69,62 +82,58 @@ void loop()
 
 //  A read/write operation specifies a particular card 读写操作需指定某一张卡
 //  comd = RFID.Set_the_select_parameter_directive("30751FEB705C5904E3D50D70");
-//  terminal.println(comd);
+//  canvas.println(comd);
 //  RFID.clean_data();
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  Query the card information once 查询一次卡的信息例子
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
  card = RFID.A_single_poll_of_instructions();
- if (card._ERROR.length() != 0)
- {
-   Serial.print(card._ERROR);
- }
- else
- {
-  if(card._EPC.length() == 24)
-  {
-     terminal.println("RSSI :" + card._RSSI);
-     terminal.println("PC :" + card._PC);
-     terminal.println("EPC :" + card._EPC);
-     terminal.println("CRC :" + card._CRC);
-     terminal.println(" ");
-   }
- }
-   RFID.clean_data(); //Empty the data after using it 使用完数据后要将数据清空
-  
+ if (card._ERROR.length() != 0){
+    Serial.println(card._ERROR);
+ }else{
+    if(card._EPC.length() == 24){
+      canvas.println("RSSI :" + card._RSSI);
+      canvas.println("PC :" + card._PC);
+      canvas.println("EPC :" + card._EPC);
+      canvas.println("CRC :" + card._CRC);
+      canvas.println(" ");
+    }
+  }
+  RFID.clean_data(); //Empty the data after using it 使用完数据后要将数据清空
+
 
 /*Other feature usage examples 其他功能使用例子*/
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   Read multiple RFID cards at once 一次读取多张RFID卡
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-//  cards = RFID.Multiple_polling_instructions(6);
-//  for (size_t i = 0; i < cards.len; i++)
-//  {
-//    if(cards.card[i]._EPC.length() == 24)
-//      {
-//         terminal.println("RSSI :" + cards.card[i]._RSSI);
-//         terminal.println("PC :" + cards.card[i]._PC);
-//         terminal.println("EPC :" + cards.card[i]._EPC);
-//         terminal.println("CRC :" + cards.card[i]._CRC);
-//       }
-//  }
-//  terminal.println(" ");  
-//  RFID.clean_data();
-
+/*  cards = RFID.Multiple_polling_instructions(6);
+ for (size_t i = 0; i < cards.len; i++)
+ {
+   if(cards.card[i]._EPC.length() == 24)
+     {
+        canvas.println("RSSI :" + cards.card[i]._RSSI);
+        canvas.println("PC :" + cards.card[i]._PC);
+        canvas.println("EPC :" + cards.card[i]._EPC);
+        canvas.println("CRC :" + cards.card[i]._CRC);
+      }
+ }
+ canvas.println(" ");  
+ RFID.clean_data();
+ */
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   Used to get the SELECT parameter 用于获取Select参数
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 //  Select = RFID.Get_the_select_parameter();
 //  if(Select.Mask.length() != 0)
 //  {
-//    terminal.println("Mask :" + Select.Mask);
-//    terminal.println("SelParam :" + Select.SelParam);
-//    terminal.println("Ptr :" + Select.Ptr);
-//    terminal.println("MaskLen :" + Select.MaskLen);
-//    terminal.println("Truncate :" + Select.Truncate);
-//    terminal.println(" ");
+//    canvas.println("Mask :" + Select.Mask);
+//    canvas.println("SelParam :" + Select.SelParam);
+//    canvas.println("Ptr :" + Select.Ptr);
+//    canvas.println("MaskLen :" + Select.MaskLen);
+//    canvas.println("Truncate :" + Select.Truncate);
+//    canvas.println(" ");
 //  }
 //    RFID.clean_data();
 
@@ -134,15 +143,15 @@ void loop()
 //  Cardinformation = RFID.NXP_Change_EAS(0x00000000);
 //  if(Cardinformation._UL.length() != 0)
 //  {
-//    terminal.println("UL :" + Cardinformation._UL);
-//    terminal.println("PC :" + Cardinformation._PC);
-//    terminal.println("EPC :" + Cardinformation._EPC);
-//    terminal.println("Parameter :" + Cardinformation._Parameter);
-//    terminal.println("ErrorCode :" + Cardinformation._ErrorCode);
-//    terminal.println("Error :" + Cardinformation._Error);
-//    terminal.println("Data :" + Cardinformation._Data);
-//    terminal.println("Successful :" + Cardinformation._Successful);
-//    terminal.println(" ");
+//    canvas.println("UL :" + Cardinformation._UL);
+//    canvas.println("PC :" + Cardinformation._PC);
+//    canvas.println("EPC :" + Cardinformation._EPC);
+//    canvas.println("Parameter :" + Cardinformation._Parameter);
+//    canvas.println("ErrorCode :" + Cardinformation._ErrorCode);
+//    canvas.println("Error :" + Cardinformation._Error);
+//    canvas.println("Data :" + Cardinformation._Data);
+//    canvas.println("Successful :" + Cardinformation._Successful);
+//    canvas.println(" ");
 //   }
 //    RFID.clean_data();
   
@@ -153,15 +162,15 @@ void loop()
 //  Query = RFID.Get_the_Query_parameter();
 //  if(Query.QueryParameter.length() != 0)
 //  {
-//    terminal.println("QueryParameter :" + Query.QueryParameter);
-//    terminal.println("DR :" + Query.DR);
-//    terminal.println("M :" + Query.M);
-//    terminal.println("TRext :" + Query.TRext);
-//    terminal.println("Sel :" + Query.Sel);
-//    terminal.println("Session :" + Query.Session);
-//    terminal.println("Targetta :" + Query.Target);
-//    terminal.println("Q :" + Query.Q);
-//    terminal.println(" ");
+//    canvas.println("QueryParameter :" + Query.QueryParameter);
+//    canvas.println("DR :" + Query.DR);
+//    canvas.println("M :" + Query.M);
+//    canvas.println("TRext :" + Query.TRext);
+//    canvas.println("Sel :" + Query.Sel);
+//    canvas.println("Session :" + Query.Session);
+//    canvas.println("Targetta :" + Query.Target);
+//    canvas.println("Q :" + Query.Q);
+//    canvas.println(" ");
 //  }
 //  RFID.clean_data();
 
@@ -172,10 +181,10 @@ void loop()
 //  Read = RFID.Read_receive_demodulator_parameters();
 //  if(Read.Mixer_G.length()!= 0)
 //  {
-//    terminal.println("Mixer_G :" + Read.Mixer_G);
-//    terminal.println("IF_G :" + Read.IF_G);
-//    terminal.println("Thrd :" + Read.Thrd);
-//    terminal.println(" ");
+//    canvas.println("Mixer_G :" + Read.Mixer_G);
+//    canvas.println("IF_G :" + Read.IF_G);
+//    canvas.println("Thrd :" + Read.Thrd);
+//    canvas.println(" ");
 //  }
 //  RFID.clean_data();
 }

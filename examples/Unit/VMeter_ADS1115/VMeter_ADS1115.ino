@@ -1,12 +1,23 @@
 /*
-    Description: Measure voltage and display
-    EEPROM (0x53) has built-in calibration parameters when leaving the factory. 
-    Please do not write to the EEPROM, otherwise the calibration data will be overwritten and the measurement results will be inaccurate
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core 示例源代码
+* Visit the website for more information：https://docs.m5stack.com/en/unit/ameter
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/ameter
+*
+* describe: Vmeter_ADS1115.  电流计
+* date：2021/8/27
+*******************************************************************************
+  Please connect to Port A,Measure voltage and display in the screen.
+  请连接端口A,测量电压并显示到屏幕上
+  Pay attention: EEPROM (0x53) has built-in calibration parameters when leaving the factory.
+  Please do not write to the EEPROM, otherwise the calibration data will be overwritten and the measurement results will be inaccurate.
+  注意: EEPROM (0x53)在出厂时具有内置的校准参数。请不要写入EEPROM，否则校准数据会被覆盖，测量结果会不准确。
 */
 
-#include <Wire.h>
-#include "voltmeter.h"
 #include "M5Stack.h"
+#include "voltmeter.h"
 
 Voltmeter voltmeter;
 
@@ -21,42 +32,27 @@ int16_t hope = 0.0;
 
 voltmeterGain_t now_gain = PAG_512;
 
-void setup(void) {
+void setup() {
   M5.begin();
   Wire.begin();
 
-  voltmeter.setMode(SINGLESHOT);
-  voltmeter.setRate(RATE_8);
-  voltmeter.setGain(PAG_512);
-  hope = page512_volt / voltmeter.resolution;
-  // | PAG      | Max Input Voltage(V) |
-  // | PAG_6144 |        128           |
-  // | PAG_4096 |        64            |
-  // | PAG_2048 |        32            |
-  // | PAG_512  |        16            |
-  // | PAG_256  |        8             |
+  voltmeter.setMode(SINGLESHOT);                // | PAG      | Max Input Voltage(V) |
+  voltmeter.setRate(RATE_8);                    // | PAG_6144 |        128           |
+  voltmeter.setGain(PAG_512);                   // | PAG_4096 |        64            |
+  hope = page512_volt / voltmeter.resolution;   // | PAG_2048 |        32            |
+                                                // | PAG_512  |        16            |
+                                                // | PAG_256  |        8             |
+  M5.Lcd.setTextFont(4);  //Set font to 4 point font.  设置字体为4号字体
 
-  M5.Lcd.fillScreen(BLACK);
-  M5.Lcd.setTextFont(4);
-
-  M5.Lcd.setCursor(52, 210);
-  M5.Lcd.printf("5V");
-
-  M5.Lcd.setCursor(138, 210);
-  M5.Lcd.printf("60V");
-
-  M5.Lcd.setCursor(230, 210);
-  M5.Lcd.printf("SAVE");
-
-  // bool result1 = voltmeter.saveCalibration2EEPROM(PAG_256, 1024, 1024);
-  // delay(10);
+  M5.Lcd.setCursor(52, 210);  //Set the cursor at (52,210).  将光标设置在(52, 210)
+  M5.Lcd.printf("5V            60V           SAVE");
 }
 
 void loop(void) {
-  M5.update();
+  M5.update();  //Check the status of the key.  检测按键的状态
   if (M5.BtnA.wasPressed()) {
-    voltmeter.setMode(SINGLESHOT);
-    voltmeter.setRate(RATE_8);
+    voltmeter.setMode(SINGLESHOT);  //Set the mode.  设置模式
+    voltmeter.setRate(RATE_8);  //Set the rate.  设置速率
     voltmeter.setGain(PAG_512);
     now_gain = PAG_512;
     hope = page512_volt / voltmeter.resolution;
@@ -78,28 +74,28 @@ void loop(void) {
     }
   }
 
-//  if (M5.BtnC.wasPressed()) {
-//    bool success = voltmeter.saveCalibration2EEPROM(now_gain, hope, adc_raw);
-//    M5.Lcd.setCursor(230, 210);
-//    
-//    if (success) {
-//      M5.Lcd.setTextColor(GREEN, BLACK);
-//    } else {
-//      M5.Lcd.setTextColor(RED, BLACK);
-//    }
-//
-//    M5.Lcd.printf("SAVE");
-//
-//    delay(300);
-//    M5.Lcd.setCursor(230, 210);
-//    M5.Lcd.setTextColor(WHITE, BLACK);
-//    M5.Lcd.printf("SAVE");
-//
-//    voltmeter.setGain(now_gain);
-//  }
+  if (M5.BtnC.wasPressed()) {
+    bool success = voltmeter.saveCalibration2EEPROM(now_gain, hope, adc_raw);
+    M5.Lcd.setCursor(230, 210);
+
+    if (success) {
+      M5.Lcd.setTextColor(GREEN, BLACK);
+    } else {
+      M5.Lcd.setTextColor(RED, BLACK);
+    }
+
+    M5.Lcd.printf("SAVE");
+
+    delay(300);
+    M5.Lcd.setCursor(230, 210);
+    M5.Lcd.setTextColor(WHITE, BLACK);
+    M5.Lcd.printf("SAVE");
+
+    voltmeter.setGain(now_gain);
+  }
 
   voltmeter.getVoltage();
-  
+
   volt_raw_list[raw_now_ptr] = voltmeter.adc_raw;
   raw_now_ptr = (raw_now_ptr == 9) ? 0 : (raw_now_ptr + 1);
 
@@ -149,10 +145,4 @@ void loop(void) {
   }
 
   M5.Lcd.printf("RAW ADC: %d        \r\n", adc_raw);
-
-  // M5.Lcd.setCursor(10, 110);
-  // M5.Lcd.printf("Actual RAW: %d     \r\n", adc_raw);
-  // // M5.Lcd.printf("Actual RAW: %d     \r\n", voltmeter.adc_raw);
-  // M5.Lcd.setCursor(10, 140);
-  // M5.Lcd.printf("Hope RAW: %d     \r\n", hope);
 }

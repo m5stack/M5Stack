@@ -1,39 +1,38 @@
 /*
-    Description: Use GPS Unit to get the coordinate data and time of the current location.
-    Please install library before compiling:  
-    TinyGPSPlus: file in M5stack lib examples -> modules -> GPS -> TinyGPSPlus-1.0.2.zip （unzip the lib zip file to the Arduino Lib path）
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core 示例源代码
+* Visit the website for more information：https://docs.m5stack.com/en/unit/gps
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/gps
+*
+* describe：GPS.
+* date：2021/8/26
+*******************************************************************************
+  Connect UNIT GPS to port C, Use GPS Unit to get the coordinate data and time of the current location.
+  将UNIT GPS 连接到C端口,使用GPS单元获取当前位置的坐标数据和时间。
 */
 
 #include <M5Stack.h>
-#include <TinyGPS++.h>
+#include <TinyGPSPlus.h>
 
-/*
-   This sample code demonstrates the normal use of a TinyGPS++ (TinyGPSPlus) object.
-   It requires the use of SoftwareSerial, and assumes that you have a
-   4800-baud serial GPS device hooked up on pins 4(rx) and 3(tx).
-*/
 static const uint32_t GPSBaud = 9600;
 
-// The TinyGPS++ object
+//Creat The TinyGPS++ object.  创建GPS实例
 TinyGPSPlus gps;
 
-// The serial connection to the GPS device
+// The serial connection to the GPS device.  与GPS设备的串行连接
 HardwareSerial ss(2);
 
 void setup()
 {
   M5.begin();
   M5.Power.begin();
-  ss.begin(GPSBaud);
+  ss.begin(GPSBaud);  //It requires the use of SoftwareSerial, and assumes that you have a 4800-baud serial GPS device hooked up on pins 4(rx) and 3(tx).  它需要使用SoftwareSerial，并假设您有一个4800波特的串行GPS设备连接在引脚4(rx)和3(tx)。
 
-  // M5.Lcd.println(F("FullExample.ino"));
-  // M5.Lcd.println(F("An extensive example of many interesting TinyGPS++ features"));
-  // M5.Lcd.print(F("Testing TinyGPS++ library v. ")); M5.Lcd.println(TinyGPSPlus::libraryVersion());
-  // M5.Lcd.println(F("by Mikal Hart"));
-  // M5.Lcd.println();
   M5.Lcd.println(F("Sats HDOP Latitude   Longitude   Fix  Date       Time     Date Alt    Course Speed Card  Distance Course Card  Chars Sentences Checksum"));
   M5.Lcd.println(F("          (deg)      (deg)       Age                      Age  (m)    --- from GPS ----  ---- to London  ----  RX    RX        Fail"));
-  M5.Lcd.println(F("---------------------------------------------------------------------------------------------------------------------------------------"));
+  M5.Lcd.println(F("---------------------------------------------------------------------------------------------------------"));
 }
 
 void loop()
@@ -78,19 +77,18 @@ void loop()
   printInt(gps.sentencesWithFix(), true, 10);
   printInt(gps.failedChecksum(), true, 9);
   M5.Lcd.println();
-  
+
   smartDelay(1000);
 
   if (millis() > 5000 && gps.charsProcessed() < 10)
     M5.Lcd.println(F("No GPS data received: check wiring"));
 }
 
-// This custom version of delay() ensures that the gps object
-// is being "fed".
+// This custom version of delay() ensures that GPS objects work properly.  这个自定义版本的delay()确保gps对象正常工作。
 static void smartDelay(unsigned long ms)
 {
   unsigned long start = millis();
-  do 
+  do
   {
     while (ss.available())
       gps.encode(ss.read());
@@ -143,7 +141,7 @@ static void printDateTime(TinyGPSDate &d, TinyGPSTime &t)
     sprintf(sz, "%02d/%02d/%02d ", d.month(), d.day(), d.year());
     M5.Lcd.print(sz);
   }
-  
+
   if (!t.isValid())
   {
     M5.Lcd.print(F("******** "));
