@@ -306,7 +306,6 @@ void setup()
     M5.Power.begin();
     Serial.begin(115200);
     Serial2.begin(115200, SERIAL_8N1, 16, 17);
-    Serial.printf(" STC\n");
 
     Disbuff.createSprite(320, 100);
     Disbuff.fillRect(0, 0, 320, 100, BLACK);
