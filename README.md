@@ -7,11 +7,10 @@ English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_starte
 <img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/basic/basic_01.webp" alt="basic" width="350" height="350">
 
 * **For the Detailed documentation of Gray, please [Click here](https://docs.m5stack.com/#/en/core/m5stickc)**
-* 
+
 * **For the Detailed documentation of Basic, please [Click here](https://docs.m5stack.com/#/en/core/m5stickc)**
 
 * **In order to buy Basic, please [Click here](https://www.aliexpress.com/item/32837164440.html?spm=a2g0o.store_pc_groupList.8148356.11.38a9361bR9o79U)**
-* 
 
 *We have several master M5Cores with different configurations, this is the difference between them [Compared](https://docs.m5stack.com/en/products_selector).*
 
