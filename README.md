@@ -2,63 +2,38 @@
 
 English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_started_ja.md)
 
-Welcome to program with M5Stack Core
+<img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/gray/gray_01.webp" alt="gray" width="350" height="350">
 
-## 1. Get Started
+<img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/basic/basic_01.webp" alt="basic" width="350" height="350">
 
-#### Here is the article to get started
+* **For the Detailed documentation of Gray, please [Click here](https://docs.m5stack.com/#/en/core/m5stickc)**
+* 
+* **For the Detailed documentation of Basic, please [Click here](https://docs.m5stack.com/#/en/core/m5stickc)**
 
-*1.For MacOS*
+* **In order to buy Basic, please [Click here](https://www.aliexpress.com/item/32837164440.html?spm=a2g0o.store_pc_groupList.8148356.11.38a9361bR9o79U)**
+* 
 
-https://docs.m5stack.com/#/en/quick_start/m5core/m5stack_core_get_started_Arduino_MacOS
-
-*2. For Windows*
-
-https://docs.m5stack.com/#/en/quick_start/m5core/m5stack_core_get_started_Arduino_Windows
-
-
-## 2. Example
-
-https://github.com/m5stack/M5Stack/tree/master/examples
-
-## 3. API Reference
-
-https://github.com/m5stack/M5Stack/blob/master/src/M5Stack.h#L19
-
-https://docs.m5stack.com/#/en/api
-
-## 4. H/W Reference
-
-**LCD & TF Card**
-
-*LCD Resolution: 320x240*
-
-<table>
- <tr><td>ESP32 Chip</td><td>GPIO23</td><td>GPIO19</td><td>GPIO18</td><td>GPIO14</td><td>GPIO27</td><td>GPIO33</td><td>GPIO32</td><td>GPIO4</td></tr>
- <tr><td>ILI9341</td><td>MOSI/MISO</td><td>/</td><td>CLK</td><td>CS</td><td>DC</td><td>RST</td><td>BL</td><td> </td></tr>
- <tr><td>TF Card</td><td>MOSI</td><td>MISO</td><td>CLK</td><td> </td><td> </td><td> </td><td> </td><td>CS</td></tr>
-</table>
-
-**Button & Speaker**
-
-<table>
- <tr><td>ESP32 Chip</td><td>GPIO39</td><td>GPIO38</td><td>GPIO37</td><td>GPIO25</td></tr>
- <tr><td>Button Pin</td><td>BUTTON A</td><td>BUTTON B</td><td>BUTTON C</td></tr>
- <tr><td>Speaker</td><td> </td><td> </td><td> </td><td>Speaker Pin</td></tr>
-</table>
-
-**GROVE A**
-
-<table>
- <tr><td>ESP32 Chip</td><td>GPIO22</td><td>GPIO21</td></tr>
- <tr><td>GROVE A</td><td>SCL</td><td>SDA</td></tr>
-</table>
-
+*We have several master M5Cores with different configurations, this is the difference between them [Compared](https://docs.m5stack.com/en/products_selector).*
 
 ### M-BUS
 ![image](docs/M-BUS.jpg)
 
-## 5. USER CASES
+## More Information
+
+**UIFlow Quick Start**: [PinMap](https://docs.m5stack.com/zh_CN/quick_start/m5core/uiflow)
+
+**MicroPyhton API**: [PinMap](https://docs.m5stack.com/zh_CN/mpy/display/m5stack_lvgl)
+
+**Arduino IDE Development**: [PinMap](https://docs.m5stack.com/zh_CN/quick_start/m5core/arduino)
+
+**M5StickC Arduino API**: [PinMap](https://docs.m5stack.com/zh_CN/api/system)
+
+**Gray PinMap**: [PinMap](https://docs.m5stack.com/zh_CN/core/gray)
+
+**Basic PinMap**: [PinMap](https://docs.m5stack.com/zh_CN/core/basic)
+
+
+## USER CASES
 
 * [M5Stack-SD-Updater](https://github.com/tobozo/M5Stack-SD-Updater) - Customizable menu system for M5Stack - loads apps from the Micro SD
   card
