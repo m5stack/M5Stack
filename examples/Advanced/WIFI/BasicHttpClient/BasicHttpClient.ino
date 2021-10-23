@@ -48,5 +48,5 @@ void loop() {
     M5.Lcd.print("connect failed");
   }
   delay(5000);
-  M5.Lcd.createSprite(); //clear the screen.  清除屏幕
+  M5.Lcd.clear(); //clear the screen.  清除屏幕
 }
