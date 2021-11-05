@@ -1,3 +1,4 @@
+
 /*
 *******************************************************************************
 * Copyright (c) 2021 by M5Stack
@@ -6,100 +7,106 @@
 * Visit the website for more information：https://docs.m5stack.com/en/unit/can
 * 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/can
 *
-* describe: can.
-* date：2021/9/1
-*******************************************************************************
-  Please connect to PORT-B,Press buttonA or buttonB to Send message if received message, screen will display
-  请连接端口B,按钮A或按钮B发送消息，如果收到消息，屏幕将显示
+* describe：CA-IS3050G.  CAN transceiver unit
+* date：2021/11/01
+******************************************** ***********************************
+  Please connect port B (26, 36), the device will automatically send and receive messages through the CAN bus
+  If there are phenomena such as failure of normal communication, please check the communication rate or add a terminal resistance between the H and L phases
+  Please install library before compiling:  
+  ESP32CAN: https://github.com/miwagner/ESP32-Arduino-CAN
 */
 
 #include <M5Stack.h>
-#include "ESP32CAN.h"
-#include "CAN_config.h"
+#include <M5GFX.h>
+#include <ESP32CAN.h>
+#include <CAN_config.h>
 
-#define TX GPIO_NUM_26
-#define RX GPIO_NUM_36
+M5GFX display;
+M5Canvas canvas(&display);
 
 CAN_device_t CAN_cfg;               // CAN Config
+unsigned long previousMillis = 0;   // will store last time a CAN Message was send
+const int interval = 1000;          // interval at which send CAN Messages (milliseconds)
+const int rx_queue_size = 10;       // Receive Queue size
 
-int i = 0;
+uint8_t count = 0;
 
 void setup() {
-  M5.begin(true, false, true);
-  M5.Power.begin();
-  M5.Lcd.drawString("CAN Unit Send&Received", 40, 3, 4);
-  M5.Lcd.setCursor(0, 60, 4);
+  M5.begin();
+  Serial.println("Basic Demo - ESP32-Arduino-CAN");
 
-  CAN_cfg.speed = CAN_SPEED_125KBPS;  //Set the Can speed.  设置Can速度
-  CAN_cfg.tx_pin_id = TX; //Set the Pin foot.  设置引脚
-  CAN_cfg.rx_pin_id = RX;
+  display.begin();
 
-  CAN_cfg.rx_queue = xQueueCreate(10,sizeof(CAN_frame_t));
+  canvas.setColorDepth(1); // mono color
+  canvas.createSprite(display.width(), display.height());
+  canvas.setTextSize(1);
+  canvas.setPaletteColor(1, GREEN);
+  canvas.setTextScroll(true);
 
-  ESP32Can.CANInit(); // Init CAN Module.  初始化Can
+  CAN_cfg.speed = CAN_SPEED_125KBPS;
+  CAN_cfg.tx_pin_id = GPIO_NUM_26;
+  CAN_cfg.rx_pin_id = GPIO_NUM_36;
+  CAN_cfg.rx_queue = xQueueCreate(rx_queue_size, sizeof(CAN_frame_t));
+  // Init CAN Module
+  ESP32Can.CANInit();
+
+  canvas.println("Init CAN Module.....");
+  canvas.println("Waiting Frame");
+  canvas.println("If there are phenomena such as failure of normal communication");
+  canvas.println("Please check the communication rate or add a terminal resistance between the H and L phases");
+  canvas.pushSprite(0, 0);
 }
 
 void loop() {
+
   CAN_frame_t rx_frame;
 
-  if(M5.BtnA.wasPressed()){
-    rx_frame.FIR.B.FF = CAN_frame_std;
-    rx_frame.MsgID = 1;
-    rx_frame.FIR.B.DLC = 8;
-    rx_frame.data.u8[0] = 'H';
-    rx_frame.data.u8[1] = 'e';
-    rx_frame.data.u8[2] = 'l';
-    rx_frame.data.u8[3] = 'l';
-    rx_frame.data.u8[4] = 'o';
-    rx_frame.data.u8[5] = 'C';
-    rx_frame.data.u8[6] = 'A';
-    rx_frame.data.u8[7] = 'N';
+  unsigned long currentMillis = millis();
 
-    ESP32Can.CANWriteFrame(&rx_frame);
-    M5.Lcd.println("Send Message1");
-  }
-  if(M5.BtnB.wasPressed()){
-    rx_frame.FIR.B.FF = CAN_frame_std;
-    rx_frame.MsgID = 1;
-    rx_frame.FIR.B.DLC = 8;
-    rx_frame.data.u8[0] = 'M';
-    rx_frame.data.u8[1] = '5';
-    rx_frame.data.u8[2] = 'S';
-    rx_frame.data.u8[3] = 'T';
-    rx_frame.data.u8[4] = 'A';
-    rx_frame.data.u8[5] = 'C';
-    rx_frame.data.u8[6] = 'K';
-    rx_frame.data.u8[7] = ' ';
-    ESP32Can.CANWriteFrame(&rx_frame);
-    M5.Lcd.println("Send Message2");
-    Serial.println("B");
-  }
+  // Receive next CAN frame from queue
+  if (xQueueReceive(CAN_cfg.rx_queue, &rx_frame, 3 * portTICK_PERIOD_MS) == pdTRUE) {
 
-  if(xQueueReceive(CAN_cfg.rx_queue,&rx_frame, 3*portTICK_PERIOD_MS)==pdTRUE){
-    M5.Lcd.fillRect(0, 60, 320, 180, BLACK);
-    M5.Lcd.setCursor(0, 60, 4);
-    //do stuff!
-    if(rx_frame.FIR.B.FF==CAN_frame_std){
-      printf("New standard frame");
-      M5.Lcd.printf("New standard frame");
-    } else{
-      printf("New extended frame");
-      M5.Lcd.printf("New extended frame");
+    if (rx_frame.FIR.B.FF == CAN_frame_std) {
+      Serial.println("New standard frame");
+      canvas.println("New standard frame");
     }
-    if(rx_frame.FIR.B.RTR==CAN_RTR){
-      printf(" RTR from 0x%08x, DLC %d\r\n",rx_frame.MsgID,  rx_frame.FIR.B.DLC);
-      M5.Lcd.printf(" RTR from 0x%08x, DLC %d\r\n",rx_frame.MsgID,  rx_frame.FIR.B.DLC);
-    } else{
-      printf(" from 0x%08x, DLC %d\n",rx_frame.MsgID,  rx_frame.FIR.B.DLC);
-      M5.Lcd.printf(" from 0x%08x, DLC %d\r\n",rx_frame.MsgID,  rx_frame.FIR.B.DLC);
-      for(int i = 0; i < 8; i++){
-        printf("%c\t", (char)rx_frame.data.u8[i]);
-        M5.Lcd.printf("%c\t", (char)rx_frame.data.u8[i]);
+    else {
+      Serial.println("New extended frame");
+      canvas.println("New extended frame");
+    }
+
+    if (rx_frame.FIR.B.RTR == CAN_RTR) {
+      Serial.printf("RTR from 0x%08X, DLC %d\r\n", rx_frame.MsgID,  rx_frame.FIR.B.DLC);
+      canvas.printf("RTR from 0x%08X, DLC %d\r\n", rx_frame.MsgID,  rx_frame.FIR.B.DLC);
+    }
+    else {
+      Serial.printf("from 0x%08X, DLC %d, Data \r\n", rx_frame.MsgID,  rx_frame.FIR.B.DLC);
+      canvas.printf("from 0x%08X, DLC %d, Data \r\n", rx_frame.MsgID,  rx_frame.FIR.B.DLC);
+      for (int i = 0; i < rx_frame.FIR.B.DLC; i++) {
+        Serial.printf("0x%02X ", rx_frame.data.u8[i]);
+        canvas.printf("0x%02X ", rx_frame.data.u8[i]);
       }
-      printf("\n");
+      Serial.println("\n");
+      canvas.println("\n");
     }
+    canvas.pushSprite(0, 0);
   }
-
-  M5.update();
-  delay(200);
+    //Send CAN Message
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
+    CAN_frame_t tx_frame;
+    tx_frame.FIR.B.FF = CAN_frame_std;
+    tx_frame.MsgID = 0x001;
+    tx_frame.FIR.B.DLC = 8;
+    tx_frame.data.u8[0] = 0x00;
+    tx_frame.data.u8[1] = 0x01;
+    tx_frame.data.u8[2] = 0x02;
+    tx_frame.data.u8[3] = 0x03;
+    tx_frame.data.u8[4] = 0x04;
+    tx_frame.data.u8[5] = 0x05;
+    tx_frame.data.u8[6] = 0x06;
+    tx_frame.data.u8[7] = 0x07;
+    ESP32Can.CANWriteFrame(&tx_frame);
+  }
+  delay(1);
 }
