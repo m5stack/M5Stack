@@ -1,12 +1,25 @@
 /*
-    Description: GRBL 13.2 Module TEST Example.
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core 示例源代码
+* Visit the website for more information：https://docs.m5stack.com/en/module/grbl13.2
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/module/grbl13.2
+*
+* describe: GRBL 13.2 Module.
+* date：2021/11/14
+*******************************************************************************
+  GRBL 13.2 Module TEST Example,use I2C to control stepper motors
+  步进电机模块测试示例,使用I2C控制步进电机
 */
 #include <M5Stack.h>
 #include "MODULE_GRBL13.2.h"
 
 /*
  * The I2C address of GRBL 13.2  Module is 0x70 by default.
+ * GRBL 13.2 模块的 I2C 地址默认为 0x70。
  * You could use the DIP Switch for modify I2C address to 0x71
+ * 您可以使用拨码开关将 I2C 地址修改为 0x71
  */
 
 #define STEPMOTOR_I2C_ADDR 0x70
@@ -34,10 +47,8 @@ void setup() {
 }
 
 void loop() {
-  /*
-      If Button A was pressed,
-      stepmotor will rotate back and forth at a time
-   */
+  // If Button A was pressed,stepmotor will rotate back and forth at a time
+  // 如果按下按钮 A，步进电机将一次来回旋转
   if (M5.BtnA.wasPressed())  // A button
   {
     Serial.print(_GRBL.readStatus());

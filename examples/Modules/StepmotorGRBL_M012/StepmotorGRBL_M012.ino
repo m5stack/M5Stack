@@ -6,7 +6,7 @@
 * Visit the website for more information：https://docs.m5stack.com/en/module/stepmotor
 * 获取更多资料请访问：https://docs.m5stack.com/zh_CN/module/stepmotor
 *
-* describe: STEPMOTOR.
+* describe: Stepmotor With GRBL.
 * date：2021/9/2
 *******************************************************************************
   STEP-MOTOR Module TEST Example,If Button A was pressed, stepmotor will rotate back and forth at a time.
