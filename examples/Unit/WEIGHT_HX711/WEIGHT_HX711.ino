@@ -15,40 +15,48 @@
 */
 
 #include<M5Stack.h>
+#include <M5GFX.h>
 #include "HX711.h"
+
+M5GFX display;
+M5Canvas canvas(&display);
 
 // HX711 related pin Settings.  HX711 相关引脚设置
 #define LOADCELL_DOUT_PIN 36
 #define LOADCELL_SCK_PIN 26
 
 HX711 scale;
-const long LOADCELL_OFFSET = 50682624;
-const long LOADCELL_DIVIDER = 5895655;
 
 void setup() {
   M5.begin(); //Init M5Stack.  初始化M5Stack
   M5.Power.begin(); //Init power  初始化电源模块
-  M5.lcd.setTextSize(2);  //Set the text size to 2.  设置文字大小为2
+  display.begin();
+  canvas.setColorDepth(1); // mono color
+  canvas.createSprite(display.width(), display.height());
+  canvas.setTextDatum(MC_DATUM);
+  canvas.setPaletteColor(1, GREEN);
 
-  scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN); // Initialize library with data output pin, clock input pin and gain factor.  初始化库的数据输出引脚，时钟输入引脚和增益因子。
-  scale.set_scale(LOADCELL_DIVIDER);  //set the SCALE value this value is used to convert the raw data to measure units.  设置SCALE值,该值用于将原始数据转换为度量单位
-  scale.set_offset(LOADCELL_OFFSET);  //Set the tare weight.  设置皮重
-  scale.set_scale(61.2f);  // this value is obtained by calibrating the scale with known weights; see the README for details.  这个值是通过校正已知权重的刻度而得到的
-  scale.tare(); // reset the scale to 0.  将比例重置为0
-  M5.Lcd.print("       Weight Unit\nConnect the Weight Unit to PortB");
-  M5.Lcd.setCursor(20,210,1);
-  M5.Lcd.print("Calibration");
+  canvas.drawString("Calibration sensor....", 160, 80);
+  canvas.pushSprite(0, 0);
+  scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
+  //The scale value is the adc value corresponding to 1g
+  scale.set_scale(61.2f);  //set scale
+  scale.tare(); // auto set offset
 }
 
 void loop() {
+  canvas.fillSprite(BLACK);
+  canvas.setTextSize(1);
+  canvas.drawString("Connect the Weight Unit to PortB(G26,G36)", 160, 40);
+  canvas.drawString("Click Btn A for Calibration", 160, 80);
+  int weight = scale.get_units(5);
+  canvas.setTextSize(3);
+  canvas.drawString("Weight:" + String(weight) + "g", 160, 150);
   M5.update();
-  if (M5.BtnA.wasPressed()) { //If button A is pressed.  如果按键A按下
-    scale.set_offset(LOADCELL_OFFSET + scale.read());
+  if (M5.BtnA.wasPressed()) {
     scale.set_scale(61.2f);
     scale.tare();
+    canvas.drawString("Calibration!", 160, 180);
   }
-  int weight = scale.get_units(5);
-  M5.Lcd.fillRect(75, 80, 320, 80, BLACK);
-  M5.Lcd.setCursor(75,80);
-  M5.Lcd.printf("Weight:%1d g", weight);
+  canvas.pushSprite(0, 0);
 }
