@@ -12,6 +12,7 @@
 
 -----PLEASE SEE THE README----
 ------请在使用前看README文件----*/
+#define USE_M5_FONT_CREATOR
 #include <M5Stack.h>
 #include "CUF_24px.h"
 
