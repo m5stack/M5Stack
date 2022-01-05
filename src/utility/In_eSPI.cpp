@@ -4304,7 +4304,6 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y)
 }
 
   // Any UTF-8 decoding must be done before calling drawChar()
-static uint32_t char_count = 0;
 int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y, uint8_t font)
 {
   if (!uniCode) return 0;
