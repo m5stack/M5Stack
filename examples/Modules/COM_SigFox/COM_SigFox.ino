@@ -20,9 +20,6 @@ void setup() {
   
   M5.begin();
   Serial2.begin(9600, SERIAL_8N1, rxPin, txPin);
-
-
-  Serial.begin(115200);
   
   delay(2000);
   getID();
