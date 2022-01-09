@@ -49,7 +49,6 @@ bool ReceiveAT(uint32_t timeout)
 void setup() 
 {
   M5.begin();
-  Serial.begin(115200);
   Serial2.begin(115200, SERIAL_8N1, 15, 13);
 
   TerminalBuff.createSprite(250,220);
