@@ -27,7 +27,6 @@ void setup() {
   M5.Power.begin();
   M5.Lcd.setTextSize(1);
   M5.Lcd.drawString("RS485 Unit test", 75, 3, 4);
-  Serial.begin(115200);
   Serial2.begin(115200, SERIAL_8N1, RX_PIN, TX_PIN);  //Set the baud rate of serial port 2 to 115200,8 data bits, no parity bits, and 1 stop bit, and set RX to 16 and TX to 17.  设置串口二的波特率为115200,8位数据位,没有校验位,1位停止位,并设置RX为16,TX为17
 }
 
