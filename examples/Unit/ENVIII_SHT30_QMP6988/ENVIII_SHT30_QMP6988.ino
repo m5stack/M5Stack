@@ -13,8 +13,6 @@
   请连接端口A(22、21),读取温度、湿度和大气压强并在显示屏上显示
 */
 #include <M5Stack.h>
-#include "Adafruit_Sensor.h"
-#include <Adafruit_BMP280.h>
 #include "UNIT_ENV.h"
 
 SHT3X sht30;
