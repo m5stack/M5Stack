@@ -19,17 +19,17 @@ English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_starte
 
 ## More Information
 
-**UIFlow Quick Start**: [PinMap](https://docs.m5stack.com/zh_CN/quick_start/m5core/uiflow)
+**UIFlow Quick Start**: [Click Here](https://docs.m5stack.com/zh_CN/quick_start/m5core/uiflow)
 
-**MicroPyhton API**: [PinMap](https://docs.m5stack.com/zh_CN/mpy/display/m5stack_lvgl)
+**MicroPyhton API**: [Click Here](https://docs.m5stack.com/zh_CN/mpy/display/m5stack_lvgl)
 
-**Arduino IDE Development**: [PinMap](https://docs.m5stack.com/zh_CN/quick_start/m5core/arduino)
+**Arduino IDE Development**: [Click Here](https://docs.m5stack.com/zh_CN/quick_start/m5core/arduino)
 
-**M5StickC Arduino API**: [PinMap](https://docs.m5stack.com/zh_CN/api/system)
+**M5StickC Arduino API**: [Click Here](https://docs.m5stack.com/zh_CN/api/system)
 
-**Gray PinMap**: [PinMap](https://docs.m5stack.com/zh_CN/core/gray)
+**Gray PinMap**: [Click Here](https://docs.m5stack.com/zh_CN/core/gray)
 
-**Basic PinMap**: [PinMap](https://docs.m5stack.com/zh_CN/core/basic)
+**Basic PinMap**: [Click Here](https://docs.m5stack.com/zh_CN/core/basic)
 
 
 ## USER CASES

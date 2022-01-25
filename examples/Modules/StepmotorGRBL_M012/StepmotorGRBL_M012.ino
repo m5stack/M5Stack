@@ -32,7 +32,6 @@ void setup() {
   M5.begin();
   M5.Power.begin();
   Wire.begin();
-  Serial.begin(115200);
   m5.Lcd.setTextColor(WHITE, BLACK);
   m5.Lcd.setTextSize(2);
   m5.lcd.setBrightness(100);

@@ -309,7 +309,6 @@ void setup()
 {
 	// put your setup code here, to run once:
 	M5.begin();
-	Serial.begin(115200);
 	Serial2.begin(115200, SERIAL_8N1, 5, 13);
 
 	Disbuff.createSprite(320,20);

@@ -23,7 +23,6 @@ void setup() {
   M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
   M5.Lcd.drawString("Please use serial port to Test AT command.",0, 35, 2);
   // Host serial communication
-  Serial.begin(115200);   
 
   // SIM800L serial communication
   Serial2.begin(115200, SERIAL_8N1, RX_PIN, TX_PIN);   
