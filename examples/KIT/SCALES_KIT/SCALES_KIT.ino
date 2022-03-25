@@ -3,15 +3,15 @@
 * Copyright (c) 2022 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/app/scales_kit
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/app/scales_kit
+* Visit the website for more information: https://docs.m5stack.com/en/app/scales_kit
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/app/scales_kit
 *
 * describe: SCALES KIT WEIGHT UNIT EXAMPLE.
-* date：2022/02/23
+* date: 2022/02/23
 *******************************************************************************
   Connect WEIGHT UNIT to port B (G26/36), calibration instructions: press button A to remove the tare weight when there is no load,
   press button B, switch the standard weight value left and right and put down the corresponding weight, confirm for calibration.
-  将WEIGHT UNIT连接至端口B（G26/36）， 校准说明：无负重情况下按下按键A去处皮重， 按下按键B，左右切换标准重量值并放下对应重量砝码，comfirm进行校准。
+  将WEIGHT UNIT连接至端口B（G26/36）， 校准说明: 无负重情况下按下按键A去处皮重， 按下按键B，左右切换标准重量值并放下对应重量砝码，comfirm进行校准。
   Libraries:
   - [HX711](https://github.com/bogde/HX711)
 

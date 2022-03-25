@@ -4,11 +4,11 @@
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
 * Visit the website for more
-information：https://docs.m5stack.com/en/unit/joystick
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/joystick
+information: https://docs.m5stack.com/en/unit/joystick
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/joystick
 *
 * describe: JOYSTICK.
-* date：2021/8/30
+* date: 2021/8/30
 *******************************************************************************
   Please connect to Port A,Read JOYSTICK Unit X, Y axis offset data and button
 status 请连接端口 A,读取操纵杆单位X, Y轴偏移数据和按钮状态

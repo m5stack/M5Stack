@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe：Button_Two.  双按键
-* date：2021/8/9
+* describe: Button_Two.  双按键
+* date: 2021/8/9
 ******************************************** ***********************************
   Please connect to Port B(36、26),Read the button status of BUTTON Unit and display it on the screen
   请连接端口B(36、26),读取按键的状态并在显示屏上显示

@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe：DAC_MCP4725.  数模转换
-* date：2021/8/16
+* describe: DAC_MCP4725.  数模转换
+* date: 2021/8/16
 *******************************************************************************
   Please connect to Port A(22、21),Use DAC Unit to output 0 ~ 3.3V voltage with an accuracy of 12 bits.
   请连接端口A(22、21),使用DAC Unit 输出12位精度的0 ~ 3.3V电压。

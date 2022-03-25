@@ -116,7 +116,7 @@ void MPU6886::getTempAdc(int16_t *t) {
   *t=((uint16_t)buf[0]<<8)|buf[1];  
 }
 
-//!俯仰，航向，横滚：pitch，yaw，roll，指三维空间中飞行器的旋转状态。
+//!俯仰，航向，横滚: pitch，yaw，roll，指三维空间中飞行器的旋转状态。
 void MPU6886::getAhrsData(float *pitch, float *roll, float *yaw) {
 
   float accX = 0; 

@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core2 sample source code
 *                          配套  M5Core2 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/module/comx_gsm
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/module/comx_gsm
+* Visit the website for more information: https://docs.m5stack.com/en/module/comx_gsm
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/comx_gsm
 *
 * describe: comx_gsm.
-* date：2021/9/2
+* date: 2021/9/2
 *******************************************************************************
   Set the DIP switch to 5 and 13
   and the screen will display the signal strength and network access status

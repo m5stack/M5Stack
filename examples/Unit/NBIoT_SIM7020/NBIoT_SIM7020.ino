@@ -4,11 +4,11 @@
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
 * Visit the website for more
-information：https://docs.m5stack.com/en/unit/nbiot_global
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/nbiot_global
+information: https://docs.m5stack.com/en/unit/nbiot_global
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/nbiot_global
 *
-* describe：NBIoT UNIT.
-* date：2022/01/04
+* describe: NBIoT UNIT.
+* date: 2022/01/04
 * Dependent library download:
 * TinyGSM:
 https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/arduino/lib/TinyGSM.zip

@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe：WIFI TCP.
-* date：2021/7/29
+* describe: WIFI TCP.
+* date: 2021/7/29
 *******************************************************************************
   M5Core will sends a message to a TCP server
   M5Core 将向TCP服务器发送一条数据

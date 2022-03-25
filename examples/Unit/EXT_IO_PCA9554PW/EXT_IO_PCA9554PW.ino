@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/unit/extio
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/extio
+* Visit the website for more information: https://docs.m5stack.com/en/unit/extio
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/extio
 *
 * describe: extio.
-* date：2021/8/30
+* date: 2021/8/30
 *******************************************************************************
   Please connect to Port A,Control the 8 extended IOs on the EXT.IO Unit to cycle high and low level changes.
   请连接端口 A,在EXT.IO Unit上控制8个扩展的IO来循环高电平和低电平的变化。

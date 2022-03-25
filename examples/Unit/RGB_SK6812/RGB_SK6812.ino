@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe：RGB.  多彩灯
-* date：2021/8/11
+* describe: RGB.  多彩灯
+* date: 2021/8/11
 *******************************************************************************
   Please connect to Port B(26、36),Control RGB Unit to scroll through three colors of red, green and blue
   请连接端口B(26、36),控制RGB单元滚动红、绿、蓝三种颜色.

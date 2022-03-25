@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe：Hall sensor.  霍尔传感器
-* date：2021/7/26
+* describe: Hall sensor.  霍尔传感器
+* date: 2021/7/26
 *******************************************************************************
   The ESP32 MCU has build in Hall sensor.  ESP32 MCU内置霍尔传感器
   It is not very suscescible but if you bring a magnet close to the

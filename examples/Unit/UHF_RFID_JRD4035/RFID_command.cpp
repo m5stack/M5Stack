@@ -233,17 +233,17 @@ String UHF_RFID::Stop_the_multiple_poll_directive()
 
   用于设置Select参数指令
 
-  str_epc：EPC的字符串例："30751FEB705C5904E3D50D70"
-  SelParam：SelParam 共 1 个 Byte，其中 Target 占最高 3 个 bits，Action 占中间 3 个 bits，
+  str_epc: EPC的字符串例: "30751FEB705C5904E3D50D70"
+  SelParam: SelParam 共 1 个 Byte，其中 Target 占最高 3 个 bits，Action 占中间 3 个 bits，
   MemBank 占最后 2 个 bits。
-            MemBank 含义如下：
+            MemBank 含义如下: 
               2’b00:	标签 RFU 数据存储区
               2’b01:	标签 EPC 数据存储区
               2’b10:	标签 TID 数据存储区
               2’b11:	标签 User 数据存储区
                 Target 和 Action 详细含义请参见 EPC Gen2 协议。
   Ptr:	0x00000020(以 bit 为单位，非 word) 从 EPC 存储位开始
-  Mask： 长度 MaskLen:	0x60(6 个 word，96bits)
+  Mask:  长度 MaskLen:	0x60(6 个 word，96bits)
   Truncate:	0x00(0x00 是 Disable truncation，0x80 是 Enable truncation)
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 String UHF_RFID::Set_the_select_parameter_directive(String str_epc, UBYTE SelParam, UDOUBLE Ptr, UBYTE MaskLen, UBYTE Truncate)
@@ -334,7 +334,7 @@ SelectInfo UHF_RFID::Get_the_select_parameter()
 
   用于设置Select模式
 
-  Select 模式 Mode 含义：
+  Select 模式 Mode 含义: 
     0x00:	在对标签的所有操作之前都预先发送 Select 指令选取特定的标签。
     0x01:	在对标签操作之前不发送 Select 指令。
     0x02:	仅对除轮询 Inventory 之外的标签操作之前发送 Select 指令，如在
@@ -521,7 +521,7 @@ CardInformationInfo UHF_RFID::The_label_store_writes_data(UDOUBLE Access_Passwor
   用于锁定Lock标签数据存储区
 
   对单个标签，锁定 Lock 或者解锁 Unlock 该标签的数据存储区。
-  Action_nub 有 0：kill  1：Access  2：EPC  3：TID  4：User
+  Action_nub 有 0: kill  1: Access  2: EPC  3: TID  4: User
   Action 有 2 bits，00~11，依次对应为 开放，永久开放，锁定，永久锁定
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 CardInformationInfo UHF_RFID::Lock_the_label_data_store(UDOUBLE Access_Password , UBYTE Action_nub, UBYTE Action )
@@ -931,19 +931,19 @@ ReadInfo UHF_RFID::Read_working_area()
   If it is a Chinese 900MHz frequency band, set the reader working channel 920.375MHz, CH Index = 0x01
 
   用于设置读写器工作信道
-  中国 900MHz 信道参数计算公式，Freq_CH 为信道频率：
+  中国 900MHz 信道参数计算公式，Freq_CH 为信道频率: 
   CH_Index = (Freq_CH-920.125M)/0.25M
 
-  中国 800MHz 信道参数计算公式，Freq_CH 为信道频率：
+  中国 800MHz 信道参数计算公式，Freq_CH 为信道频率: 
   CH_Index = (Freq_CH-840.125M)/0.25M
 
-  美国信道参数计算公式，Freq_CH 为信道频率：
+  美国信道参数计算公式，Freq_CH 为信道频率: 
   CH_Index = (Freq_CH-902.25M)/0.5M
 
-  欧洲信道参数计算公式，Freq_CH 为信道频率：
+  欧洲信道参数计算公式，Freq_CH 为信道频率: 
   CH_Index = (Freq_CH-865.1M)/0.2M
 
-  韩国信道参数计算公式，Freq_CH 为信道频率：
+  韩国信道参数计算公式，Freq_CH 为信道频率: 
   CH_Index = (Freq_CH-917.1M)/0.2M
   如果是中国 900MHz 频段，设置读写器工作信道 920.375MHz，CH Index = 0x01
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -991,19 +991,19 @@ String UHF_RFID::Set_up_working_channel(UBYTE CH_Index)
 
   用于读取读写器工作信道
 
-  中国 900MHz 信道参数计算公式，Freq_CH 为信道频率：
+  中国 900MHz 信道参数计算公式，Freq_CH 为信道频率: 
   Freq_CH = CH_Index * 0.25M + 920.125M
 
-  中国 800MHz 信道参数计算公式，Freq_CH 为信道频率：
+  中国 800MHz 信道参数计算公式，Freq_CH 为信道频率: 
   Freq_CH = CH_Index * 0.25M + 840.125M
 
-  美国信道参数计算公式，Freq_CH 为信道频率：
+  美国信道参数计算公式，Freq_CH 为信道频率: 
   Freq_CH = CH_Index * 0.5M + 902.25M
 
-  欧洲信道参数计算公式，Freq_CH 为信道频率：
+  欧洲信道参数计算公式，Freq_CH 为信道频率: 
   Freq_CH = CH_Index * 0.2M + 865.1M
 
-  韩国信道参数计算公式，Freq_CH 为信道频率：
+  韩国信道参数计算公式，Freq_CH 为信道频率: 
   Freq_CH = CH_Index * 0.2M + 917.1M
 
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

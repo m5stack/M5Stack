@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe：WIFI Smart Config.  WIFI智能配网
-* date：2021/7/30
+* describe: WIFI Smart Config.  WIFI智能配网
+* date: 2021/7/30
 *******************************************************************************
  *  Fill in WIFI configuration information through mobile APP to connect M5Core to relevant WIFI
  *  通过手机APP填写WIFI配置信息使 M5Core连接至相关WIFI

@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe：COLOR_TCS3472.  颜色识别
-* date：2021/8/11
+* describe: COLOR_TCS3472.  颜色识别
+* date: 2021/8/11
 *******************************************************************************
   Please connect to Port A(22、21),Use COLOR Unit to read C, R, G, B values
   请连接端口A(22、21),使用COLOR Unit读取C, R, G, B值

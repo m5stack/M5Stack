@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN
 *
 * describe: Ameter_ADS1115.  电流计
-* date：2021/8/19
+* date: 2021/8/19
 *******************************************************************************
   Please connect to Port A,Measure current and display in the screen.
   请连接端口A,测量电流并显示到屏幕上

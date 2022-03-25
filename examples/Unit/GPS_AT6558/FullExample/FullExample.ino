@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/unit/gps
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/gps
+* Visit the website for more information: https://docs.m5stack.com/en/unit/gps
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/gps
 *
-* describe：GPS.
-* date：2021/8/26
+* describe: GPS.
+* date: 2021/8/26
 *******************************************************************************
   Connect UNIT GPS to port C, Use GPS Unit to get the coordinate data and time of the current location.
   将UNIT GPS 连接到C端口,使用GPS单元获取当前位置的坐标数据和时间。

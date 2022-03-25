@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
 * describe: Light.  环境光传感器
-* date：2022/2/13
+* date: 2022/2/13
 *******************************************************************************
   Please connect to Port B,Use the Light Unit screen to display the current
 ambient lighting value 请连接端口 B ,使用Light Unit 屏幕显示当前环境光照值。

@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/unit/oled
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/oled
+* Visit the website for more information: https://docs.m5stack.com/en/unit/oled
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/oled
 *
 * describe: OLED.  显示屏
-* date：2021/8/31
+* date: 2021/8/31
 *******************************************************************************
   Please connect to Port A(22、21),Displays a string on the screen.
   请连接端口A(22、21),在屏幕上显示字符串。

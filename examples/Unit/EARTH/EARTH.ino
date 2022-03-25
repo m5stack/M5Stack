@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe：EARTH.  土壤湿度
-* date：2021/8/11
+* describe: EARTH.  土壤湿度
+* date: 2021/8/11
 *******************************************************************************
   Please connect to Port B(26、36),Read the analog quantity and digital quantity returned by the EARTH unit, and convert the analog quantity into 12-bit data and display it on the screen.
   请连接端口B(26、36),读取EARTH Unit 返回的模拟量和数字量，并将模拟量转换为12位数据显示在屏幕上。

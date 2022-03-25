@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe：ENVII_SHT30_BMP280.  环境传感器
-* date：2021/8/11
+* describe: ENVII_SHT30_BMP280.  环境传感器
+* date: 2021/8/11
 *******************************************************************************
   Please connect to Port A(22、21),Read temperature, humidity and atmospheric pressure and display them on the display screen
   请连接端口A(22、21),读取温度、湿度和大气压强并在显示屏上显示

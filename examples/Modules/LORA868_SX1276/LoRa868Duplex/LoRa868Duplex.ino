@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/module/lora868
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/module/lora868
+* Visit the website for more information: https://docs.m5stack.com/en/module/lora868
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/lora868
 *
 * describe: Module LoRa868.
-* date：2021/12/26
+* date: 2021/12/26
 *******************************************************************************
   LoRa868 Duplex communication.Send messages regularly "HeLoRa World!"
   LoRa868 双工通讯。定期发送消息“HeLoRa World！”
@@ -55,7 +55,7 @@ void loop() {
     interval = random(1000) + 500;
   }
 
-  // parse for a packet, and call onReceive with the result:.  解析数据包，并使用结果调用 onReceive：
+  // parse for a packet, and call onReceive with the result:.  解析数据包，并使用结果调用 onReceive: 
   onReceive(LoRa.parsePacket());
 
   if(M5.BtnA.wasPressed()){
@@ -124,7 +124,7 @@ void onReceive(int packetSize) {
     return;                             // skip rest of function.  跳过其余功能
   }
 
-  // if message is for this device, or broadcast, print details:.  如果消息是针对此设备或广播的，则打印详细信息：
+  // if message is for this device, or broadcast, print details:.  如果消息是针对此设备或广播的，则打印详细信息: 
   Serial.println("Received from: 0x" + String(sender, HEX));
   Serial.println("Sent to: 0x" + String(recipient, HEX));
   Serial.println("Message ID: " + String(incomingMsgId));

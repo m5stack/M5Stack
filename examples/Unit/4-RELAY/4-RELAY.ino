@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe：4-Relay.  4个继电器
-* date：2021/8/10
+* describe: 4-Relay.  4个继电器
+* date: 2021/8/10
 *******************************************************************************
   Please connect to port A,Control 4 relays and demonstrate the asynchronous control relay LED
   请连接A端口，控制4继电器，并演示异步控制继电器LED

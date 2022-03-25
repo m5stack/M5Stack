@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/unit/thermal
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/thermal
+* Visit the website for more information: https://docs.m5stack.com/en/unit/thermal
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/thermal
 *
 * describe: thermal.
-* date：2021/8/31
+* date: 2021/8/31
 *******************************************************************************
   Please connect to Port A, Read the THERMAL Unit (MLX90640 IR array) temperature pixels and display it on the screen.
   请连接端口A, 读取热单元(MLX90640红外阵列)温度像素，并显示在屏幕上。

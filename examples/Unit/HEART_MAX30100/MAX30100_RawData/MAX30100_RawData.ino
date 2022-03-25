@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe：Heart Rate.  心率
-* date：2021/8/16
+* describe: Heart Rate.  心率
+* date: 2021/8/16
 *******************************************************************************
   Please connect to Port A, HEART Unit obtains the original value of the heart rate detection and displays it on the screen. The user can also use the Arduino IDE Serial Plotter to view the line graph output.
   请连接端口A,HEART Unit获取心率检测的原始值并显示在屏幕上。用户还可以使用Arduino IDE Serial Plotter查看线图输出。

@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/unit/finger
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/finger
+* Visit the website for more information: https://docs.m5stack.com/en/unit/finger
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/finger
 *
 * describe: Finger.
-* date：2021/8/26
+* date: 2021/8/26
 *******************************************************************************
   Please connect to Port C. When using, two M5 devices are burned to the program,
   请连接端口C. 在屏幕上显示字符串。在使用时，两个M5设备会被烧到程序中，

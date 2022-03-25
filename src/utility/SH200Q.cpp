@@ -234,7 +234,7 @@ void SH200Q::getTempData(float *t){
   *t=(int16_t)((buf[1]<<8)|buf[0]) / 333.87 + 21.0;
 }
 
-//!俯仰，航向，横滚：pitch，yaw，roll，指三维空间中飞行器的旋转状态。
+//!俯仰，航向，横滚: pitch，yaw，roll，指三维空间中飞行器的旋转状态。
 void SH200Q::getAhrsData(float *pitch, float *roll, float *yaw) {
 
   float accX = 0; 

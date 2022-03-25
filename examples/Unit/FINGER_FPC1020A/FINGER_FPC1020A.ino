@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe：Finger Unit example
-* date：2021/10/28
+* describe: Finger Unit example
+* date: 2021/10/28
 *******************************************************************************
 Description: FINGER UNIT use case: Press the left button to enter the fingerprint entry mode. Press the middle button to enter the fingerprint identification mode，Right click to delete all saved users
 FINGER UNIT 使用案例按左键进入指纹录入模式，短按中间键进入指纹识别模式，按下右键删除所有保存的用户

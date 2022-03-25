@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/unit/sonic.i2c
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/sonic.i2c
+* Visit the website for more information: https://docs.m5stack.com/en/unit/sonic.i2c
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/sonic.i2c
 *
 * describe: Ultrasonic.  超声波测距传感器 I2C版本
-* date：2021/11/17
+* date: 2021/11/17
 *******************************************************************************
   Please connect to Port A,Display the distance measured by ultrasonic
   请连接端口A,显示超声波测量的距离

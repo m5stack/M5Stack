@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/module/servo2
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/module/servo2
+* Visit the website for more information: https://docs.m5stack.com/en/module/servo2
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/servo2
 *
 * describe: servo2.
-* date：2021/9/2
+* date: 2021/9/2
 *******************************************************************************
   Use SERVO2 Module to control the rotation of 16-channel servo.
   使用 SERVO2 模块控制 16 通道舵机的旋转。

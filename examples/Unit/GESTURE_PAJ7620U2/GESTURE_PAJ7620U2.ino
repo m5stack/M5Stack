@@ -3,17 +3,17 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/unit/gesture
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/gesture
+* Visit the website for more information: https://docs.m5stack.com/en/unit/gesture
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/gesture
 *
-* describe：GESTURE.  手势传感器
-* date：2021/11/17
+* describe: GESTURE.  手势传感器
+* date: 2021/11/17
 *******************************************************************************
   Please connect to Port A (G21, G22)
   请连接端口A (G21, G22)
 
   编译前请安装依赖库
-  Please install dependent libraries before compiling：
+  Please install dependent libraries before compiling: 
   https://github.com/ouki-wang/DFRobot_PAJ7620U2
 */
 

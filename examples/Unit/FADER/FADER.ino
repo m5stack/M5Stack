@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/unit/fader
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/fader
+* Visit the website for more information: https://docs.m5stack.com/en/unit/fader
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/fader
 *
-* describe：UNIT FADER. 滑动电位器/推子
-* date：2021/8/20
+* describe: UNIT FADER. 滑动电位器/推子
+* date: 2021/8/20
 *******************************************************************************
   Connect UNIT FADER to port B and push the FADER slider to adjust the input value and light brightness
   将UNIT FADER连接到B端口, 推动FADER滑杆即可实现调整输入数值大小与灯光亮度

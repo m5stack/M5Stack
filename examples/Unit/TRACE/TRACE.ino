@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/unit/trace
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/trace
+* Visit the website for more information: https://docs.m5stack.com/en/unit/trace
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/trace
 *
 * describe: TRACE.
-* date：2021/9/1
+* date: 2021/9/1
 *******************************************************************************
   Please connect to PORT-A, Read the status of the four line-tracking sensors of TRACE Unit and output them through UART.
   请连接端口A,读取TRACE Unit四个线跟踪传感器的状态，并通过UART输出。

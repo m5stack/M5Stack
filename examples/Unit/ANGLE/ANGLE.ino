@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe：Angle.  角度计
-* date：2021/8/9
+* describe: Angle.  角度计
+* date: 2021/8/9
 *******************************************************************************
   Description: Read the Angle of the angometer and convert it to digital display
   读取角度计的角度，并转换为数字量显示

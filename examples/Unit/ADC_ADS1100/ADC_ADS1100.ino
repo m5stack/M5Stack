@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN
 *
 * describe: ADC.  A/D转换器
-* date：2021/8/18
+* date: 2021/8/18
 *******************************************************************************
   Please connect to Port A,Use ADC Unit to convert 0 ~ 12V analog voltage into 16-bit data and display it on the screen.
   请连接端口A,利用ADC单元将0 ~ 12V模拟电压转换成16位数据显示在屏幕上。

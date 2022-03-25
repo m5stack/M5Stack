@@ -4,11 +4,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/unit/can
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/can
+* Visit the website for more information: https://docs.m5stack.com/en/unit/can
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/can
 *
-* describe：CA-IS3050G.  CAN transceiver unit
-* date：2021/11/01
+* describe: CA-IS3050G.  CAN transceiver unit
+* date: 2021/11/01
 ******************************************** ***********************************
   Please connect port B (26, 36), the device will automatically send and receive messages through the CAN bus
   If there are phenomena such as failure of normal communication, please check the communication rate or add a terminal resistance between the H and L phases

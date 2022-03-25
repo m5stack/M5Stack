@@ -3,12 +3,12 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe：SPIFFS Add(Write is to clean up the contents of the file and write it again.).
+* describe: SPIFFS Add(Write is to clean up the contents of the file and write it again.).
 *           向SPIFFS中添加信息(write是将文件内容完全清除重新写)
-* date：2021/8/4
+* date: 2021/8/4
 ******************************************************************************
 */
 

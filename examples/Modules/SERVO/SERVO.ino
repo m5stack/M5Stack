@@ -4,11 +4,11 @@
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
 * Visit the website for more
-information：https://docs.m5stack.com/en/module/servo
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/module/servo
+information: https://docs.m5stack.com/en/module/servo
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/servo
 *
 * describe: SERVO.
-* date：2021/9/2
+* date: 2021/9/2
 *******************************************************************************
   Use SERVO Module to control the rotation of 12-channel servo.
   使用 SERVO 模块控制 12 通道舵机的旋转。

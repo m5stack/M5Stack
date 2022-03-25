@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe：OTA Upload.  隔空传输程序
-* date：2021/7/30
+* describe: OTA Upload.  隔空传输程序
+* date: 2021/7/30
 *******************************************************************************
   PC and M5Core can only be used on the same wifi.  电脑和M5Core需在同一wifi下才可使用
   When the OTA is ready, restart the Arduino client from Tools > Ports > Network ports to instantly transmit the program wirelessly.

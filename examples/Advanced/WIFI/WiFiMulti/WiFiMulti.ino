@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/gray
+* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe：WIFI Multi.  多wifi择优
-* date：2021/7/29
+* describe: WIFI Multi.  多wifi择优
+* date: 2021/7/29
 *******************************************************************************
  *  Connect to the best AP based on a given wifi list
  *  根据给定wifi的列表连接到最好的AP

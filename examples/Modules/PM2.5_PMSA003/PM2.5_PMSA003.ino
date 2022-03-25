@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/module/pm2.5
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/module/pm2.5
+* Visit the website for more information: https://docs.m5stack.com/en/module/pm2.5
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/pm2.5
 *
 * describe: pm2.5.
-* date：2021/9/2
+* date: 2021/9/2
 *******************************************************************************
   Use PM2.5 module and SHT20 base to read, the current particulate matter concentration and temperature and humidity data.
   使用PM2.5模块和SHT20底座读取当前颗粒物浓度和温湿度数据。

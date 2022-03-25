@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/module/plus
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/module/plus
+* Visit the website for more information: https://docs.m5stack.com/en/module/plus
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/plus
 *
 * describe: PLUS.
-* date：2021/9/2
+* date: 2021/9/2
 *******************************************************************************
   This exmpale can display the encoder gear reading of the PLUS Module and the state of the keys.
   本例可以显示PLUS模块的编码器齿轮读数和按键状态。

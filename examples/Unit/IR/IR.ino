@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/unit/ir
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/ir
+* Visit the website for more information: https://docs.m5stack.com/en/unit/ir
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/ir
 *
 * describe: ir.
-* date：2021/8/27
+* date: 2021/8/27
 *******************************************************************************
   Please connect to Port B,Use IR Unit to receive and test infrared receiving and transmitting
   请连接端口B,使用红外单元接收和测试红外接收和发射.

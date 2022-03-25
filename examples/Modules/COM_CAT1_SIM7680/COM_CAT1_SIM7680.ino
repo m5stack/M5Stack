@@ -4,11 +4,11 @@
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
 * Visit the website for more
-information：https://docs.m5stack.com/en/module/comx_cat1
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/module/comx_cat1
+information: https://docs.m5stack.com/en/module/comx_cat1
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/comx_cat1
 *
 * describe: comx_cat1.
-* date：2022/01/11
+* date: 2022/01/11
 *******************************************************************************
 This case will use COM.CAT1 Module combined with M5Core to implement MQTT
 Client. After successfully connecting to MQTT, press button B to realize data

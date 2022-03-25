@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/unit/ncir
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/ncir
+* Visit the website for more information: https://docs.m5stack.com/en/unit/ncir
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/ncir
 *
 * describe: ncir.  单点红外测温传感器
-* date：2021/8/27
+* date: 2021/8/27
 *******************************************************************************
   Please connect to Port  A,Use NCIR Unit to measure the temperature without contact and display the value on the screen.
   请连接端口A,使用NCIR单元无接触测量温度，并在屏幕上显示。

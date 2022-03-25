@@ -3,11 +3,11 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information：https://docs.m5stack.com/en/unit/tvoc
-* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/unit/tvoc
+* Visit the website for more information: https://docs.m5stack.com/en/unit/tvoc
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/tvoc
 *
 * describe: TVOC/eCO2.
-* date：2021/8/26
+* date: 2021/8/26
 *******************************************************************************
   Description: The screen will display TVOC and CO2.  屏幕将显示TVOC和CO2。
   Note: SGP30 needs 15 seconds to initialize calibration after power on.  SGP30开机后需要15秒进行初始校准。
