@@ -23,7 +23,7 @@
 
 **UIFlow 快速上手**: [点击这里](https://docs.m5stack.com/zh_CN/quick_start/m5core/uiflow)
 
-**MicroPyhton API**: [点击这里](https://docs.m5stack.com/zh_CN/mpy/display/m5stack_lvgl)
+**MicroPython API**: [点击这里](https://docs.m5stack.com/zh_CN/mpy/display/m5stack_lvgl)
 
 **Arduino IDE 环境搭建**: [点击这里](https://docs.m5stack.com/zh_CN/quick_start/m5core/arduino)
 

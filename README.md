@@ -21,7 +21,7 @@ English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_starte
 
 **UIFlow Quick Start**: [Click Here](https://docs.m5stack.com/zh_CN/quick_start/m5core/uiflow)
 
-**MicroPyhton API**: [Click Here](https://docs.m5stack.com/zh_CN/mpy/display/m5stack_lvgl)
+**MicroPython API**: [Click Here](https://docs.m5stack.com/zh_CN/mpy/display/m5stack_lvgl)
 
 **Arduino IDE Development**: [Click Here](https://docs.m5stack.com/zh_CN/quick_start/m5core/arduino)
 
