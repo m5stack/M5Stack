@@ -278,10 +278,12 @@ class LoRaWanClass
          *  \param [in] *buffer The receive data cache
          *  \param [in] length The length of data cache
          *  \param [in] *rssi The RSSI cache
+         *  \param [in] *snr The SNR cache
+         *  \param [in] *gwcnt The Gateway count cache
          *
          *  \return Return Receive data number
          */
-        short receivePacket(char *buffer, short length, short *rssi);
+        short receivePacket(char *buffer, int length, short *rssi, float *snr, short *gwcnt);
 
         /**
          *  \brief Transfer the proprietary data
