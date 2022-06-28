@@ -773,6 +773,15 @@ void LoRaWanClass::setDeviceLowPower(void)
     delay(DEFAULT_TIMEWAIT);
 }
 
+void LoRaWanClass::sendDevicePing(void)
+{
+    sendCommand("AT\r\n");
+#if _DEBUG_SERIAL_
+    loraDebugPrint(DEFAULT_DEBUGTIME);
+#endif
+    smartDelay(DEFAULT_TIMEWAIT);
+}
+
 //
 // Reset the LoRa module. Does not factory reset
 //
