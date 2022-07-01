@@ -47,15 +47,13 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable, bool I2CEn
     Serial.println("OK");
   }
 
-  // if use M5GO button, need set gpio15 OD or PP mode to avoid affecting the wifi signal  
+  // if use M5GO button, need set gpio15 OD or PP mode to avoid affecting the wifi signal
   pinMode(15, OUTPUT_OPEN_DRAIN);
 }
 
 void M5Stack::update() {
   //Button update
-  BtnA.read();
-  BtnB.read();
-  BtnC.read();
+  Buttons.update();
 
   //Speaker update
   Speaker.update();
