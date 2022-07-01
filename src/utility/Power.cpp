@@ -7,7 +7,7 @@
  *----------------------------------------------------------------------*/
 #include "Power.h"
 #include "../M5Stack.h"
-#include <esp32/rom/rtc.h>
+#include "esp32/rom/rtc.h"
 #include <esp_sleep.h>
 #include <esp_bt_main.h>
 #include <esp_wifi.h>
