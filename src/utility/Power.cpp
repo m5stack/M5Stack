@@ -13,6 +13,7 @@
 #include <rom/rtc.h>
 
 #include "../M5Stack.h"
+#include "esp32/rom/rtc.h"
 
 
 // ================ Power IC IP5306 ===================
