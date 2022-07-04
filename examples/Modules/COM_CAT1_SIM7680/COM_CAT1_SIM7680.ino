@@ -7,8 +7,8 @@
 information: https://docs.m5stack.com/en/module/comx_cat1
 * 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/comx_cat1
 *
-* describe: comx_cat1.
-* date: 2022/01/11
+* Describe: comx_cat1.
+* Date: 2022/01/11
 *******************************************************************************
 This case will use COM.CAT1 Module combined with M5Core to implement MQTT
 Client. After successfully connecting to MQTT, press button B to realize data
@@ -19,6 +19,7 @@ Libraries:
 */
 
 #include <M5Stack.h>
+
 #include "M5GFX.h"
 
 // Compatible with SIM76XX series.
@@ -41,8 +42,8 @@ const char apn[]      = "YourAPN";
 const char gprsUser[] = "";
 const char gprsPass[] = "";
 
-#include <TinyGsmClient.h>
 #include <PubSubClient.h>
+#include <TinyGsmClient.h>
 
 TinyGsm modem(SerialAT);
 TinyGsmClient client(modem);
@@ -59,9 +60,7 @@ PubSubClient mqtt(client);
 
 unsigned long start;
 
-inline String time() {
-    return "..." + String((millis() - start) / 1000) + 's';
-}
+inline String time() { return "..." + String((millis() - start) / 1000) + 's'; }
 
 void log(String info) {
     SerialMon.println(info);

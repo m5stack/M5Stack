@@ -1,14 +1,14 @@
 /*
 *******************************************************************************
-* Copyright (c) 2021 by M5Stack
+* Copyright (c) 2022 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
 * Visit the website for more
 information: https://docs.m5stack.com/en/unit/nbiot_global
 * 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/nbiot_global
 *
-* describe: NBIoT UNIT.
-* date: 2022/01/04
+* Describe: NBIoT UNIT.
+* Date: 2022/01/04
 * Dependent library download:
 * TinyGSM:
 https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/arduino/lib/TinyGSM.zip
@@ -20,9 +20,8 @@ C端口(G16/17),
 连接MQTT服务器进行数据收发测试。编译前，请安装访问上方链接，下载TinyGSM依赖库。
 */
 
-#include "M5Stack.h"
 #include "M5GFX.h"
-
+#include "M5Stack.h"
 
 #define TINY_GSM_MODEM_SIM7020
 
@@ -30,7 +29,6 @@ C端口(G16/17),
 #include <TinyGsmClient.h>
 #include <sys/time.h>
 #include <time.h>
-
 
 #define SerialAT         Serial1
 #define SIM7020_BAUDRATE 115200

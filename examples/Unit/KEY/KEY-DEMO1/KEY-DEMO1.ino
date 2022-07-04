@@ -3,28 +3,27 @@
 * Copyright (c) 2022 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information: https://docs.m5stack.com/zh_CN/products
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/products
+* Visit for more information: https://docs.m5stack.com/en/unit/key
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/key
 *
-* Please follow the steps below to add FastLED library:
-* - Arduino menu --> Manage Libraries... --> FastLED --> install
-* 在烧录前请按以下步骤添加 FastLED 库:
-* - Arduino menu --> Manage Libraries... --> FastLED --> install
-*
-* describe: KEY.  按键.
-* date: 2022/6/1
+* Describe: KEY.  按键.
+* Date: 2022/6/1
 *******************************************************************************
+  Please follow the steps below to add FastLED library:
+  - Arduino menu --> Manage Libraries... --> FastLED --> install
+  在烧录前请按以下步骤添加 FastLED 库:
+  - Arduino menu --> Manage Libraries... --> FastLED --> install
 */
 
-#include <M5Stack.h>
 #include <FastLED.h>
+#include <M5Stack.h>
 
 uint8_t ledColor = 0;
 
 #define KEY_PIN  36
 #define DATA_PIN 26
 
-CRGB LED[1]; 
+CRGB LED[1];
 
 void setup() {
     M5.begin();

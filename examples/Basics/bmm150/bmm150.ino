@@ -1,13 +1,13 @@
 /*
 *******************************************************************************
-* Copyright (c) 2021 by M5Stack
+* Copyright (c) 2022 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more information: https://docs.m5stack.com/en/core/gray
+* Visit for more information: https://docs.m5stack.com/en/core/gray
 * 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
 *
-* describe: bmm150--Magnetometer 三轴磁力计
-* date: 2021/7/21
+* Describe: bmm150--Magnetometer 三轴磁力计
+* Date: 2021/7/21
 *******************************************************************************
 */
 
@@ -100,8 +100,8 @@ void bmm150_offset_load() {  // load the data.  加载bmm150的数据
 
 void setup() {
     M5.begin(true, false, true,
-             false);  // Init M5Core(Initialize LCD, serial port).  初始化
-                      // M5Core（初始化LCD、串口）
+             false);   // Init M5Core(Initialize LCD, serial port).  初始化
+                       // M5Core（初始化LCD、串口）
     M5.Power.begin();  // Init Power module.  初始化电源设置
     Wire.begin(
         21, 22,
@@ -110,7 +110,7 @@ void setup() {
     img.setColorDepth(1);  // Set bits per pixel for colour.  设置色深为1
     img.setTextColor(TFT_WHITE);  // Set the font foreground colour (background
                                   // is.  设置字体的前景色为TFT_WHITE
-    img.createSprite(320, 240);  // Create a sprite (bitmap) of defined width
+    img.createSprite(320, 240);   // Create a sprite (bitmap) of defined width
                                  // and height 创建一个指定宽度和高度的Sprite图
     img.setBitmapColor(TFT_WHITE, 0);  // Set the foreground and background
                                        // colour.  设置位图的前景色和背景颜色

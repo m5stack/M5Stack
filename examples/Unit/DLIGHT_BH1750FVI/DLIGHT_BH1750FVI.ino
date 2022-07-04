@@ -7,16 +7,16 @@
 information: https://docs.m5stack.com/en/unit/dlight
 * 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/dlight
 *
-* describe: 数字环境光检测传感器BH1750FVI
-* date: 2021/8/17
+* Describe: 数字环境光检测传感器BH1750FVI
+* Date: 2021/8/17
 *******************************************************************************
   Please connect the sensor to port A (22, 21), the Lux value will be displayed
 on the display after successful initialization 请将传感器连接至端口A(22、21),
 成功初始化后显示屏上将显示Lux数值
 */
 
-#include <M5Stack.h>
 #include <M5GFX.h>
+#include <M5Stack.h>
 #include <M5_BH1750FVI.h>
 
 M5GFX display;
