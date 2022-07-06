@@ -12,7 +12,7 @@
 #include <M5Stack.h>
 
 class PowerClass {
-  public:
+   public:
     // Initialize
     void begin();
 
@@ -23,11 +23,11 @@ class PowerClass {
     // (-1 if cannot communicate with the controller)
     int8_t getBatteryLevel();
 
-  private:
+   private:
     // Power control available
     bool canControl = false;
 };
 
 extern PowerClass Power;
 
-#endif // _POWER_H_
+#endif  // _POWER_H_

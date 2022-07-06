@@ -11,39 +11,37 @@
  * Initialize
  */
 void PowerClass::begin() {
-  // Initialize the power management module (based on IP5306 chip)
-  M5.Power.begin();
+    // Initialize the power management module (based on IP5306 chip)
+    M5.Power.begin();
 
-  // Check if the control can be operated
-  canControl = M5.Power.canControl();
+    // Check if the control can be operated
+    canControl = M5.Power.canControl();
 }
 
 /**
  * Adapt charging mode to avoid excessive charging
  */
 void PowerClass::adaptChargeMode() {
-  // If power management not available, ignore the routine
-  if(!canControl) {
-    return;
-  }
+    // If power management not available, ignore the routine
+    if (!canControl) {
+        return;
+    }
 
-  // Disable the charging if the battery is fully charged
-  if(M5.Power.isChargeFull()) {
-    M5.Power.setCharge(false);
-  } else {
-    M5.Power.setCharge(true);
-  }
+    // Disable the charging if the battery is fully charged
+    if (M5.Power.isChargeFull()) {
+        M5.Power.setCharge(false);
+    } else {
+        M5.Power.setCharge(true);
+    }
 
-  // Define the shutdown time at 64s
-  M5.Power.setLowPowerShutdownTime(M5.Power.ShutdownTime::SHUTDOWN_64S);
+    // Define the shutdown time at 64s
+    M5.Power.setLowPowerShutdownTime(M5.Power.ShutdownTime::SHUTDOWN_64S);
 }
 
 /**
  * Return battery level (0-100%)
  * (-1 if cannot communicate with the controller)
  */
-int8_t PowerClass::getBatteryLevel() {
-  return M5.Power.getBatteryLevel();
-}
+int8_t PowerClass::getBatteryLevel() { return M5.Power.getBatteryLevel(); }
 
 PowerClass Power;

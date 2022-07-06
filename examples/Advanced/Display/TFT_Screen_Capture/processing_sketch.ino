@@ -1,5 +1,6 @@
-// This is a copy of the processing sketch that can be used to capture the images
-// Copy the sketch below and remove the /* and */ at the beginning and end.
+// This is a copy of the processing sketch that can be used to capture the
+// images Copy the sketch below and remove the /* and */ at the beginning and
+// end.
 
 // The sketch runs in Processing version 3.3 on a PC, it can be downloaded here:
 // https://processing.org/download/
@@ -14,17 +15,23 @@
 // It has been created to work with the TFT_eSPI library here:
 // https://github.com/Bodmer/TFT_eSPI
 
-// The sketch must only be run when the designated serial port is available and enumerated
-// otherwise the screenshot window may freeze and that process will need to be terminated
+// The sketch must only be run when the designated serial port is available and
+enumerated
+// otherwise the screenshot window may freeze and that process will need to be
+terminated
 // This is a limitation of the Processing environment and not the sketch.
-// If anyone knows how to determine if a serial port is available at start up the PM me
+// If anyone knows how to determine if a serial port is available at start up
+the PM me
 // on (Bodmer) the Arduino forum.
 
-// The block below contains variables that the user may need to change for a particular setup
-// As a minimum set the serial port and baud rate must be defined. The capture window is
+// The block below contains variables that the user may need to change for a
+particular setup
+// As a minimum set the serial port and baud rate must be defined. The capture
+window is
 // automatically resized for landscape, portrait and different TFT resolutions.
 
-// Captured images are stored in the sketch folder, use the Processing IDE "Sketch" menu
+// Captured images are stored in the sketch folder, use the Processing IDE
+"Sketch" menu
 // option "Show Sketch Folder" or press Ctrl+K
 
 // Created by: Bodmer  5/3/17
@@ -34,36 +41,38 @@
 // MIT licence applies, all text above must be included in derivative works
 
 
-// ###########################################################################################
-// #                  These are the values to change for a particular setup                  #
-//                                                                                           #
-int serial_port = 0;     // Use enumerated value from list provided when sketch is run       #
-//                                                                                           #
-// On an Arduino Due Programming Port use a baud rate of:115200)                             #
-// On an Arduino Due Native USB Port use a baud rate of any value                            #
-int serial_baud_rate = 921600; //                                                            #
-//                                                                                           #
-// Change the image file type saved here, comment out all but one                            #
-//String image_type = ".jpg"; //                                                             #
-String image_type = ".png";   // Lossless compression                                        #
-//String image_type = ".bmp"; //                                                             #
-//String image_type = ".tif"; //                                                             #
-//                                                                                           #
-boolean save_border = true;   // Save the image with a border                                #
-int border = 5;               // Border pixel width                                          #
-boolean fade = false;         // Fade out image after saving                                 #
-//                                                                                           #
-int max_images = 100; // Maximum of numbered file images before over-writing files           #
-//                                                                                           #
-int max_allowed  = 1000; // Maximum number of save images allowed before a restart           #
-//                                                                                           #
-// #                   End of the values to change for a particular setup                    #
-// ###########################################################################################
+//
+###########################################################################################
+// #                  These are the values to change for a particular setup #
+// # int serial_port = 0;     // Use enumerated value from list provided when
+sketch is run       #
+// #
+// On an Arduino Due Programming Port use a baud rate of:115200) #
+// On an Arduino Due Native USB Port use a baud rate of any value # int
+serial_baud_rate = 921600; // #
+// #
+// Change the image file type saved here, comment out all but one #
+//String image_type = ".jpg"; // # String image_type = ".png";   // Lossless
+compression                                        #
+//String image_type = ".bmp"; // #
+//String image_type = ".tif"; // #
+// # boolean save_border = true;   // Save the image with a border # int border
+= 5;               // Border pixel width # boolean fade = false;         // Fade
+out image after saving                                 #
+// # int max_images = 100; // Maximum of numbered file images before
+over-writing files           #
+// # int max_allowed  = 1000; // Maximum number of save images allowed before a
+restart           #
+// #
+// #                   End of the values to change for a particular setup #
+//
+###########################################################################################
 
-// These are default values, this sketch obtains the actual values from the Arduino board
-int tft_width  = 480;    // default TFT width  (automatic - sent by Arduino)
-int tft_height = 480;    // default TFT height (automatic - sent by Arduino)
-int color_bytes = 2;     // 2 for 16 bit, 3 for three RGB bytes (automatic - sent by Arduino)
+// These are default values, this sketch obtains the actual values from the
+Arduino board int tft_width  = 480;    // default TFT width  (automatic - sent
+by Arduino) int tft_height = 480;    // default TFT height (automatic - sent by
+Arduino) int color_bytes = 2;     // 2 for 16 bit, 3 for three RGB bytes
+(automatic - sent by Arduino)
 
 import processing.serial.*;
 
@@ -72,8 +81,9 @@ Serial serial;           // Create an instance called serial
 int serialCount = 0;     // Count of colour bytes arriving
 
 // Stage window graded background colours
-color bgcolor1 = color(0, 100, 104);      // Arduino IDE style background color 1
-color bgcolor2 = color(77, 183, 187);     // Arduino IDE style background color 2
+color bgcolor1 = color(0, 100, 104);      // Arduino IDE style background color
+1 color bgcolor2 = color(77, 183, 187);     // Arduino IDE style background
+color 2
 //color bgcolor2 = color(255, 255, 255);  // White
 
 // TFT image frame greyscale value (dark grey)
@@ -202,24 +212,24 @@ void draw() {
       }
       requestTime = millis() + 1000;
     }
-    if ( getSize() == true ) { // Go to next state when we have the size and bits per pixel
-      getFilename();
-      flushBuffer(); // Precaution in case image header size increases in later versions
-      lastPixelTime = millis() + 1000;
-      beginTime = millis();
-      state = 3;
+    if ( getSize() == true ) { // Go to next state when we have the size and
+bits per pixel getFilename(); flushBuffer(); // Precaution in case image header
+size increases in later versions lastPixelTime = millis() + 1000; beginTime =
+millis(); state = 3;
     }
     break;
 
   case 3: // Request pixels and render returned RGB values
     state = renderPixels(); // State will change when all pixels are rendered
 
-    // Request more pixels, changing the number requested allows the average transfer rate to be controlled
+    // Request more pixels, changing the number requested allows the average
+transfer rate to be controlled
     // The pixel transfer rate is dependant on four things:
     //    1. The frame rate defined in this Processing sketch in setup()
     //    2. The baud rate of the serial link (~10 bit periods per byte)
     //    3. The number of request bytes 'R' sent in the lines below
-    //    4. The number of pixels sent in a burst by the server sketch (defined via NPIXELS)
+    //    4. The number of pixels sent in a burst by the server sketch (defined
+via NPIXELS)
 
     //serial.write("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR"); // 32 x NPIXELS more
     serial.write("RRRRRRRRRRRRRRRR"); // 16 x NPIXELS more
@@ -239,20 +249,18 @@ void draw() {
     saveScreenshot();
     saved_image_count++;
     println("Saved image count = " + saved_image_count);
-    if (bad_image_count > 0) System.err.println(" Bad image count = " + bad_image_count);
-    drawLoopCount = frameCount; // Reset value ready for counting in step 6
-    state = 6;
-    break;
+    if (bad_image_count > 0) System.err.println(" Bad image count = " +
+bad_image_count); drawLoopCount = frameCount; // Reset value ready for counting
+in step 6 state = 6; break;
 
   case 6: // Fade the old image if enabled
-    if ( fadedImage() == true ) state = 0; // Go to next state when image has faded
-    break;
+    if ( fadedImage() == true ) state = 0; // Go to next state when image has
+faded break;
 
   case 99: // Draw image viewer window
     drawWindow();
-    delay(50); // Delay here seems to be required for the IDE console to get ready
-    state = 0;
-    break;
+    delay(50); // Delay here seems to be required for the IDE console to get
+ready state = 0; break;
 
   default:
     println("");
@@ -314,8 +322,8 @@ boolean getSize()
       tint(0, 0, 0, 255);
       noStroke();
       fill(frameColor);
-      rect((width - tft_width)/2 - border, y_offset - border, tft_width + 2 * border, tft_height + 2 * border);
-      return true;
+      rect((width - tft_width)/2 - border, y_offset - border, tft_width + 2 *
+border, tft_height + 2 * border); return true;
     }
   }
   return false;
@@ -331,10 +339,9 @@ void saveScreenshot()
   println("Saving image as \"" + filename + "\"");
   if (save_border)
   {
-    PImage partialSave = get(x_offset - border, y_offset - border, tft_width + 2*border, tft_height + 2*border);
-    partialSave.save(filename);
-  } else {
-    PImage partialSave = get(x_offset, y_offset, tft_width, tft_height);
+    PImage partialSave = get(x_offset - border, y_offset - border, tft_width +
+2*border, tft_height + 2*border); partialSave.save(filename); } else { PImage
+partialSave = get(x_offset, y_offset, tft_width, tft_height);
     partialSave.save(filename);
   }
 
@@ -342,7 +349,8 @@ void saveScreenshot()
   }
   else
   {
-    System.err.println(max_allowed + " saved image count exceeded, restart the sketch");
+    System.err.println(max_allowed + " saved image count exceeded, restart the
+sketch");
   }
 }
 
@@ -374,15 +382,15 @@ void getFilename()
 boolean unicodeCheck(int unicode)
 {
   if (  unicode >= '0' && unicode <= '9' ) return true;
-  if ( (unicode >= 'A' && unicode <= 'Z' ) || (unicode >= 'a' && unicode <= 'z')) return true;
-  if (  unicode == '_' || unicode == '/' ) return true;
-  return false;
+  if ( (unicode >= 'A' && unicode <= 'Z' ) || (unicode >= 'a' && unicode <=
+'z')) return true; if (  unicode == '_' || unicode == '/' ) return true; return
+false;
 }
 
 String timeCode()
 {
  String timeCode  = (int)year() + "_" + (int)month()  + "_" + (int)day() + "_";
-        timeCode += (int)hour() + "_" + (int)minute() + "_" + (int)second(); 
+        timeCode += (int)hour() + "_" + (int)minute() + "_" + (int)second();
  return timeCode;
 }
 
@@ -404,19 +412,22 @@ int renderPixels()
           stroke(rgb[indexRed], rgb[indexGreen], rgb[indexBlue], 1000);
         } else
         { // Can cater for various byte orders
-          //stroke( (rgb[0] & 0x1F)<<3, (rgb[0] & 0xE0)>>3 | (rgb[1] & 0x07)<<5, (rgb[1] & 0xF8));
-          //stroke( (rgb[1] & 0x1F)<<3, (rgb[1] & 0xE0)>>3 | (rgb[0] & 0x07)<<5, (rgb[0] & 0xF8));
-          stroke( (rgb[0] & 0xF8), (rgb[1] & 0xE0)>>3 | (rgb[0] & 0x07)<<5, (rgb[1] & 0x1F)<<3);
-          //stroke( (rgb[1] & 0xF8), (rgb[0] & 0xE0)>>3 | (rgb[1] & 0x07)<<5, (rgb[0] & 0x1F)<<3);
+          //stroke( (rgb[0] & 0x1F)<<3, (rgb[0] & 0xE0)>>3 | (rgb[1] & 0x07)<<5,
+(rgb[1] & 0xF8));
+          //stroke( (rgb[1] & 0x1F)<<3, (rgb[1] & 0xE0)>>3 | (rgb[0] & 0x07)<<5,
+(rgb[0] & 0xF8)); stroke( (rgb[0] & 0xF8), (rgb[1] & 0xE0)>>3 | (rgb[0] &
+0x07)<<5, (rgb[1] & 0x1F)<<3);
+          //stroke( (rgb[1] & 0xF8), (rgb[0] & 0xE0)>>3 | (rgb[1] & 0x07)<<5,
+(rgb[0] & 0x1F)<<3);
         }
-        // We get some pixel merge aliasing if smooth() is defined, so draw pixel twice
-        point(xpos + x_offset, ypos + y_offset);
+        // We get some pixel merge aliasing if smooth() is defined, so draw
+pixel twice point(xpos + x_offset, ypos + y_offset);
         //point(xpos + x_offset, ypos + y_offset);
 
         lastPixelTime = millis();
         xpos++;
         if (xpos >= tft_width) {
-          xpos = 0; 
+          xpos = 0;
           progressBar();
           ypos++;
           if (ypos>=tft_height) {
@@ -439,8 +450,8 @@ int renderPixels()
       System.err.println(pixelWaitTime + "ms time-out for pixels exceeded...");
       if (pixel_count > 0) {
         bad_image_count++;
-        System.err.print("Pixels missing = " + (tft_width * tft_height - pixel_count));
-        System.err.println(", corrupted image not saved");
+        System.err.print("Pixels missing = " + (tft_width * tft_height -
+pixel_count)); System.err.println(", corrupted image not saved");
         System.err.println("Good image count = " + saved_image_count);
         System.err.println(" Bad image count = " + bad_image_count);
       }
@@ -527,8 +538,8 @@ void buttonClicked()
 }
 
 void mousePressed() {
-  if (mouseX > (500 - 100) && mouseX < (500 - 20) && mouseY > (540 - 26) && mouseY < (540 - 2)) {
-    mouseClick = true;
+  if (mouseX > (500 - 100) && mouseX < (500 - 20) && mouseY > (540 - 26) &&
+mouseY < (540 - 2)) { mouseClick = true;
   }
 }
 

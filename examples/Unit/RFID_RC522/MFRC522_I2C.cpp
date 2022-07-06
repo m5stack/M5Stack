@@ -635,8 +635,8 @@ byte MFRC522::PICC_REQA_or_WUPA(
  * 		single				 4						1				MIFARE
  * Classic double				 7						2				MIFARE
  * Ultralight
- * 		triple				10						3				Not currently
- * in use?
+ * 		triple				10						3				Not
+ * currently in use?
  *
  * @return STATUS_OK on success, STATUS_??? otherwise.
  */
@@ -670,8 +670,9 @@ byte MFRC522::PICC_Select(
 
     // Description of buffer structure:
     //		Byte 0: SEL 				Indicates the Cascade Level:
-    //PICC_CMD_SEL_CL1, PICC_CMD_SEL_CL2 or PICC_CMD_SEL_CL3 		Byte 1: NVB
-    //Number of Valid Bits (in complete command, not just the UID): High nibble:
+    // PICC_CMD_SEL_CL1, PICC_CMD_SEL_CL2 or PICC_CMD_SEL_CL3 		Byte 1: NVB
+    // Number of Valid Bits (in complete command, not just the UID): High
+    // nibble:
     // complete bytes, Low nibble: Extra bits. 		Byte 2: UID-data or CT
     // See explanation below. CT means Cascade Tag. 		Byte 3: UID-data
     // Byte 4: UID-data 		Byte 5: UID-data
@@ -920,7 +921,7 @@ byte MFRC522::PICC_HaltA() {
     // Send the command.
     // The standard says:
     //		If the PICC responds with any modulation during a period of 1 ms
-    //after the end of the frame containing the 		HLTA command, this
+    // after the end of the frame containing the 		HLTA command, this
     // response shall be interpreted as 'not acknowledge'.
     // We interpret that this way: Only STATUS_TIMEOUT is an success.
     result = PCD_TransceiveData(buffer, sizeof(buffer), NULL, 0);
@@ -1599,10 +1600,10 @@ void MFRC522::PICC_DumpMifareClassicSectorToSerial(
     // The access bits are stored in a peculiar fashion.
     // There are four groups:
     //		g[3]	Access bits for the sector trailer, block 3 (for sectors
-    //0-31) or block 15 (for sectors 32-39) 		g[2]	Access bits for
+    // 0-31) or block 15 (for sectors 32-39) 		g[2]	Access bits for
     // block 2 (for sectors 0-31) or blocks 10-14 (for sectors 32-39) 		g[1]
     // Access bits for block 1 (for sectors 0-31) or blocks 5-9 (for sectors
-    //32-39) 		g[0]	Access bits for block 0 (for sectors 0-31) or blocks
+    // 32-39) 		g[0]	Access bits for block 0 (for sectors 0-31) or blocks
     // 0-4 (for sectors 32-39)
     // Each group has access bits [C1 C2 C3]. In this code C1 is MSB and C3 is
     // LSB. The four CX bits are stored together in a nible cx and an inverted
