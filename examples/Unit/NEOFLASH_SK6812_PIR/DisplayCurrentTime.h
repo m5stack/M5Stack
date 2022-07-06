@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-#define NUM_LEDS    192
+#define NUM_LEDS 192
 extern CRGB leds[NUM_LEDS];
 extern void displayCurrentTime(uint16_t time4Day);
 extern void diaplayPoint();

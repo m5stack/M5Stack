@@ -1,22 +1,24 @@
 /*
-    Description: 
-    Supports configuring the Zigbee module into 3 working modes `Coordinator`, `Router`, `End Device`
-    You need to configure a `Coordinator` when using, and other devices can be configured as `End Device` for data sending and receiving.
-    Note: 16 and 17 of the DIP switch are set to ON. This case needs to use the Keyboard in the FACE Kit for information input
+    Description:
+    Supports configuring the Zigbee module into 3 working modes `Coordinator`,
+   `Router`, `End Device` You need to configure a `Coordinator` when using, and
+   other devices can be configured as `End Device` for data sending and
+   receiving. Note: 16 and 17 of the DIP switch are set to ON. This case needs
+   to use the Keyboard in the FACE Kit for information input
 */
 
-#include "M5Stack.h"
-#include "byteArray.h"
-#include "DRFZigbee.h"
-
 #include <stdarg.h>
+
 #include <initializer_list>
 
+#include "DRFZigbee.h"
+#include "M5Stack.h"
+#include "byteArray.h"
 #include "resource.h"
 
 DRFZigbee zigbee;
 
-uint16_t atNow = 29999;
+uint16_t atNow         = 29999;
 uint16_t iconpos[3][6] = {
     {0, 40, 120, 140, 53, 0},
     {100, 40, 120, 140, 0, 0},
@@ -34,18 +36,17 @@ size_t iconSizeBuff[3] = {
     26433,
 };
 
-char asciiHexList[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+char asciiHexList[16] = {'0', '1', '2', '3', '4', '5', '6', '7',
+                         '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
 bool flushFlag = true;
 
-int drawChatBubbles(String str,uint16_t addr)
-{
+int drawChatBubbles(String str, uint16_t addr) {
     uint16_t posY = 76;
     M5.Lcd.drawJpg(chatBubblesTop, 10561, 60, 66, 229, 10);
     M5.Lcd.setTextDatum(TL_DATUM);
     M5.Lcd.setTextColor(M5.Lcd.color565(0x44, 0x44, 0x44));
-    while (str.length() > 0)
-    {
+    while (str.length() > 0) {
         M5.Lcd.fillRect(60, posY, 228, 30, M5.Lcd.color565(0x88, 0xd1, 0xff));
         String dispalyStr = str.substring(0, 24);
         M5.Lcd.drawString(dispalyStr, 75, posY + 2, 2);
@@ -54,23 +55,21 @@ int drawChatBubbles(String str,uint16_t addr)
     }
     M5.Lcd.drawJpg(chatBubblesBottom, 11546, 60, posY, 229, 20);
 
-    M5.Lcd.fillEllipse(27,posY+18,23,23,M5.Lcd.color565(200, 200, 200));
+    M5.Lcd.fillEllipse(27, posY + 18, 23, 23, M5.Lcd.color565(200, 200, 200));
 
     char panIDchar[5] = {0, 0, 0, 0, 0};
-    for (int i = 0; i < 4; i++)
-    {
+    for (int i = 0; i < 4; i++) {
         panIDchar[i] = asciiHexList[addr & 0x000f];
         addr >>= 4;
     }
 
     M5.Lcd.setTextDatum(CC_DATUM);
     M5.Lcd.setTextColor(M5.Lcd.color565(20, 20, 20));
-    M5.Lcd.drawString(panIDchar,27,posY+20);
+    M5.Lcd.drawString(panIDchar, 27, posY + 20);
     return posY;
 }
 
-void setup()
-{
+void setup() {
     M5.begin();
     Serial2.begin(38400, SERIAL_8N1, 16, 17);
 
@@ -88,31 +87,34 @@ void setup()
 
     Serial.printf("PAIN ID:%04X\r\n", arg->main_PANID);
 
-    //drawChatBubbles("Fuck STC!!!!!");
+    // drawChatBubbles("Fuck STC!!!!!");
 
     /*
     xTaskCreate([](void *arg){
         uint8_t readbuff[128];
         while(1){
             int length = Serial2.available();
-            if( length > 0) { Serial2.readBytes(readbuff,length);Serial.write(readbuff,length);}
+            if( length > 0) {
+    Serial2.readBytes(readbuff,length);Serial.write(readbuff,length);}
             delay(10);
         }
     }, "reviceTask", 2048, nullptr, 2, nullptr);
     */
 
     /*
-    if( zigbee.sendCMDAndWaitRevice(0xfc,ZIGBEE_CMD_LINKMODULE) != DRFZigbee::kReviceOK )
+    if( zigbee.sendCMDAndWaitRevice(0xfc,ZIGBEE_CMD_LINKMODULE) !=
+    DRFZigbee::kReviceOK )
     {
-        Serial.printf("Link Zigbee module faild! code:%d\r\n",zigbee.lastErrorcode);
-        while(1) delay(100);
+        Serial.printf("Link Zigbee module faild!
+    code:%d\r\n",zigbee.lastErrorcode); while(1) delay(100);
     }
 
     byteArray array;
-    if( zigbee.sendCMDAndWaitRevice(0xfc,ZIGBEE_CMD_READPARM,&array) != DRFZigbee::kReviceOK )
+    if( zigbee.sendCMDAndWaitRevice(0xfc,ZIGBEE_CMD_READPARM,&array) !=
+    DRFZigbee::kReviceOK )
     {
-        Serial.printf("Read module pram faild! code:%d\r\n",zigbee.lastErrorcode);
-        while(1) delay(100);
+        Serial.printf("Read module pram faild!
+    code:%d\r\n",zigbee.lastErrorcode); while(1) delay(100);
     }
 
     if(( array.at(0) != 0x0A )||( array.at(1) != 0x0E ))
@@ -127,7 +129,7 @@ void setup()
     DRFZigbee::zigbee_arg arg;
     memcpy(arg.Wave,array.dataptr(),sizeof(DRFZigbee::zigbee_arg));
 
-    arg.main_pointType = DRFZigbee::kCoordinator; 
+    arg.main_pointType = DRFZigbee::kCoordinator;
     arg.main_PANID = DRFZigbee::swap<uint16_t>(0x6889);
     arg.main_channel = 20;
     arg.main_ATN = DRFZigbee::kANTEXP;
@@ -143,22 +145,24 @@ void setup()
 
     sendArray.printfArray<HardwareSerial>(&Serial);
 
-    if( zigbee.sendCMDAndWaitRevice(0xfc,sendArray,&array) != DRFZigbee::kReviceOK )
+    if( zigbee.sendCMDAndWaitRevice(0xfc,sendArray,&array) !=
+    DRFZigbee::kReviceOK )
     {
-        Serial.printf("Read module pram faild! code:%d\r\n",zigbee.lastErrorcode);
-        while(1) delay(100);
+        Serial.printf("Read module pram faild!
+    code:%d\r\n",zigbee.lastErrorcode); while(1) delay(100);
     }
-    
-    if( zigbee.sendCMDAndWaitRevice(0xfc,{0x06,0x44,0x54,0x4b,0xaa,0xbb}) != DRFZigbee::kReviceOK )
+
+    if( zigbee.sendCMDAndWaitRevice(0xfc,{0x06,0x44,0x54,0x4b,0xaa,0xbb}) !=
+    DRFZigbee::kReviceOK )
     {
-        Serial.printf("reboot Zigbee module faild! code:%d\r\n",zigbee.lastErrorcode);
-        while(1) delay(100);
+        Serial.printf("reboot Zigbee module faild!
+    code:%d\r\n",zigbee.lastErrorcode); while(1) delay(100);
     }
-    
+
     delay(1000);
     */
 
-    //zigbee.sendDataP2P(DRFZigbee::kP2PShortAddrMode,0x0000,{0x01,0x02,0x03,0x04});
+    // zigbee.sendDataP2P(DRFZigbee::kP2PShortAddrMode,0x0000,{0x01,0x02,0x03,0x04});
 
     delay(1000);
     /*
@@ -177,10 +181,11 @@ void setup()
     {
         int n = ( count < 3 ) ? 0 : (int)log2(1-(((count + 3) * (-1)/3)));
         int angle2 = 120 * pow(0.5,n);
-        int angle = (n > 0) ? angle2 + ( count - 3 * pow(2,n - 1))* angle2 * 2 : ( count % 3 ) * 120;
-        //int angle = ( count < 3 ) ? ( count % 3 ) * 120 : ((120 / (((count / 3) * 2))) + ( count % 3 ) * 120);
-        double posX = cos(PI*angle/180) * 100 + 160;
-        double posY = sin(PI*angle/180) * 100 + 120;
+        int angle = (n > 0) ? angle2 + ( count - 3 * pow(2,n - 1))* angle2 * 2 :
+    ( count % 3 ) * 120;
+        //int angle = ( count < 3 ) ? ( count % 3 ) * 120 : ((120 / (((count /
+    3) * 2))) + ( count % 3 ) * 120); double posX = cos(PI*angle/180) * 100 +
+    160; double posY = sin(PI*angle/180) * 100 + 120;
 
         Serial.printf("Point %02d:%03d,%03d\r\n",count,(int)posX,(int)posY);
 
@@ -195,7 +200,8 @@ void setup()
     {
         int count = 0;
         std::map<int,DRFZigbee::node>::iterator iter;
-        for( iter = zigbee.nodeList.begin(); iter != zigbee.nodeList.end();iter ++ )
+        for( iter = zigbee.nodeList.begin(); iter != zigbee.nodeList.end();iter
+    ++ )
         {
 
 
@@ -207,8 +213,7 @@ void setup()
     */
 }
 
-void AppCoordinator()
-{
+void AppCoordinator() {
     Serial.printf("AppCoordinator\r\n");
     M5.Lcd.fillRect(0, 0, 320, 240, M5.Lcd.color565(56, 56, 56));
     M5.Lcd.drawJpg(coordinatorTitle, 21823, 0, 10, 320, 35);
@@ -221,9 +226,8 @@ void AppCoordinator()
     M5.Lcd.setTextDatum(TC_DATUM);
 
     char panIDchar[5] = {0, 0, 0, 0, 0};
-    uint16_t panID = DRFZigbee::swap<uint16_t>(arg->main_PANID);
-    for (int i = 0; i < 4; i++)
-    {
+    uint16_t panID    = DRFZigbee::swap<uint16_t>(arg->main_PANID);
+    for (int i = 0; i < 4; i++) {
         panIDchar[i] = asciiHexList[panID & 0x000f];
         panID >>= 4;
     }
@@ -234,105 +238,94 @@ void AppCoordinator()
     M5.Lcd.drawString(panIDchar, 160, 90, 8);
     zigbee.setModuleparm(*arg);
     zigbee.rebootModule();
-    while (1)
-    {
+    while (1) {
         M5.update();
-        if (M5.BtnB.wasPressed())
-            break;
+        if (M5.BtnB.wasPressed()) break;
     }
 
     delete arg;
 }
 
-void AppRouter()
-{
+void AppRouter() {
     Serial.printf("AppRouter\r\n");
     M5.Lcd.fillRect(0, 0, 320, 240, M5.Lcd.color565(56, 56, 56));
     M5.Lcd.drawJpg(EndDeviceTitle, 17470, 0, 10, 320, 35);
 
     DRFZigbee::zigbee_arg_t *arg = new DRFZigbee::zigbee_arg_t;
     zigbee.readModuleparm(arg);
-    arg->main_pointType = DRFZigbee::kRouter;
-    arg->main_PANID = DRFZigbee::swap<uint16_t>(0x1617);
+    arg->main_pointType        = DRFZigbee::kRouter;
+    arg->main_PANID            = DRFZigbee::swap<uint16_t>(0x1617);
     arg->main_transmissionMode = DRFZigbee::kN2Ntransmission;
-    arg->main_channel = 20;
-    arg->main_ATN = DRFZigbee::kANTEXP;
+    arg->main_channel          = 20;
+    arg->main_ATN              = DRFZigbee::kANTEXP;
     zigbee.setModuleparm(*arg);
     zigbee.rebootModule();
 
     pinMode(5, INPUT_PULLUP);
 
-    while (1)
-    {
+    while (1) {
         DRFZigbee::reviceData_t revice;
-        if (zigbee.reviceData(&revice) == DRFZigbee::kReviceOK)
-        {
+        if (zigbee.reviceData(&revice) == DRFZigbee::kReviceOK) {
             revice.array->printfArray<HardwareSerial>(&Serial);
         }
     }
 }
 
-void AppEndDevice()
-{
+void AppEndDevice() {
     Serial.printf("AppEndDevice\r\n");
     M5.Lcd.fillRect(0, 0, 320, 240, M5.Lcd.color565(56, 56, 56));
     M5.Lcd.drawJpg(EndDeviceTitle, 17470, 0, 10, 320, 35);
 
     DRFZigbee::zigbee_arg_t *arg = new DRFZigbee::zigbee_arg_t;
     zigbee.readModuleparm(arg);
-    arg->main_pointType = DRFZigbee::kEndDevice;
-    arg->main_PANID = DRFZigbee::swap<uint16_t>(0x1617);
+    arg->main_pointType        = DRFZigbee::kEndDevice;
+    arg->main_PANID            = DRFZigbee::swap<uint16_t>(0x1617);
     arg->main_transmissionMode = DRFZigbee::kN2Ntransmission;
     zigbee.setModuleparm(*arg);
     zigbee.rebootModule();
 
     pinMode(5, INPUT_PULLUP);
-    Wire.begin(21,22);
+    Wire.begin(21, 22);
 
     M5.Lcd.fillRect(20, 200, 280, 30, M5.Lcd.color565(56, 56, 56));
     M5.Lcd.drawRect(20, 200, 280, 30, M5.Lcd.color565(200, 200, 200));
 
     uint8_t senduff[256];
-    char    revicechar[256];
+    char revicechar[256];
     uint16_t charPos = 0;
 
-    memset(senduff,0,256);
+    memset(senduff, 0, 256);
 
-    while (1)
-    {
+    while (1) {
         DRFZigbee::reviceData_t revice;
-        if (zigbee.reviceData(&revice,10) == DRFZigbee::kReviceOK)
-        {
+        if (zigbee.reviceData(&revice, 10) == DRFZigbee::kReviceOK) {
             revice.array->printfArray<HardwareSerial>(&Serial);
             M5.Lcd.fillRect(0, 66, 320, 128, M5.Lcd.color565(56, 56, 56));
-            memset(revicechar,0,256);
-            memcpy(revicechar,revice.array->dataptr(),revice.length);
-            drawChatBubbles(String(revicechar),revice.fromAddr);
+            memset(revicechar, 0, 256);
+            memcpy(revicechar, revice.array->dataptr(), revice.length);
+            drawChatBubbles(String(revicechar), revice.fromAddr);
         }
 
-        if (digitalRead(5) == LOW)
-        {
+        if (digitalRead(5) == LOW) {
             Wire.requestFrom(0x08, 1);
-            while (Wire.available())
-            {
+            while (Wire.available()) {
                 uint8_t key_val = Wire.read();
-                if (key_val != 0)
-                {
-                    if (key_val >= 0x20 && key_val < 0x7F)
-                    { 
+                if (key_val != 0) {
+                    if (key_val >= 0x20 && key_val < 0x7F) {
                         senduff[charPos] = key_val;
                         Serial.print((char)key_val);
                         M5.Lcd.setTextDatum(TL_DATUM);
                         M5.Lcd.setTextColor(M5.Lcd.color565(200, 200, 200));
-                        M5.Lcd.drawString(String((char*)senduff),30,206,2);
+                        M5.Lcd.drawString(String((char *)senduff), 30, 206, 2);
                         charPos++;
-                    }
-                    else if( key_val == 0x0d)
-                    {
-                        M5.Lcd.fillRect(20, 200, 280, 30, M5.Lcd.color565(56, 56, 56));
-                        M5.Lcd.drawRect(20, 200, 280, 30, M5.Lcd.color565(200, 200, 200));
-                        zigbee.sendDataP2P(DRFZigbee::kP2PShortAddrMode,0xffff,senduff,charPos);
-                        memset(senduff,0,256);
+                    } else if (key_val == 0x0d) {
+                        M5.Lcd.fillRect(20, 200, 280, 30,
+                                        M5.Lcd.color565(56, 56, 56));
+                        M5.Lcd.drawRect(20, 200, 280, 30,
+                                        M5.Lcd.color565(200, 200, 200));
+                        zigbee.sendDataP2P(DRFZigbee::kP2PShortAddrMode, 0xffff,
+                                           senduff, charPos);
+                        memset(senduff, 0, 256);
                         charPos = 0;
                     }
                 }
@@ -341,49 +334,36 @@ void AppEndDevice()
     }
 }
 
-void loop()
-{
-    if (M5.BtnA.wasPressed())
-    {
+void loop() {
+    if (M5.BtnA.wasPressed()) {
         atNow = (atNow >= 60000) ? 30000 : atNow;
         atNow++;
         flushFlag = true;
-    }
-    else if (M5.BtnB.wasPressed())
-    {
-        switch ((atNow + 2) % 3)
-        {
-        case 0:
-            AppRouter();
-            break;
-        case 1:
-            AppCoordinator();
-            break;
-        case 2:
-            AppEndDevice();
-            break;
+    } else if (M5.BtnB.wasPressed()) {
+        switch ((atNow + 2) % 3) {
+            case 0:
+                AppRouter();
+                break;
+            case 1:
+                AppCoordinator();
+                break;
+            case 2:
+                AppEndDevice();
+                break;
         }
         flushFlag = true;
-    }
-    else if (M5.BtnC.wasPressed())
-    {
+    } else if (M5.BtnC.wasPressed()) {
         atNow = (atNow == 0) ? 30000 : atNow;
         atNow--;
         flushFlag = true;
     }
-    if (flushFlag)
-    {
+    if (flushFlag) {
         flushFlag = false;
-        for (int i = 0; i < 3; i++)
-        {
+        for (int i = 0; i < 3; i++) {
             M5.Lcd.drawJpg(iconptrbuff[(atNow + i) % 3],
-                           iconSizeBuff[(atNow + i) % 3],
-                           iconpos[i][0],
-                           iconpos[i][1],
-                           iconpos[i][2],
-                           iconpos[i][3],
-                           iconpos[i][4],
-                           iconpos[i][5]);
+                           iconSizeBuff[(atNow + i) % 3], iconpos[i][0],
+                           iconpos[i][1], iconpos[i][2], iconpos[i][3],
+                           iconpos[i][4], iconpos[i][5]);
         }
     }
     M5.update();
