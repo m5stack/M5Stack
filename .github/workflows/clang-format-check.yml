@@ -8,7 +8,7 @@ jobs:
       matrix:
         path:
           - check: './'    # path to include
-            exclude: ''    # path to exclude
+            exclude: './src'    # path to exclude
           # - check: 'src'
           #   exclude: ''
           # - check: 'examples'
