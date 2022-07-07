@@ -7,8 +7,8 @@ jobs:
     strategy:
       matrix:
         path:
-          - check: './'    # path to include
-            exclude: './src'    # path to exclude
+          - check: './example'    # path to include
+            exclude: './examples/Advanced/Display'    # path to exclude
           # - check: 'src'
           #   exclude: ''
           # - check: 'examples'
