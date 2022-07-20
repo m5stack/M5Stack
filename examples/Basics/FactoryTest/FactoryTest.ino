@@ -1,4 +1,7 @@
+#include <Arduino.h>
 #include <M5Stack.h>
+#include <stdlib.h>
+//#include "FastLED.h"
 
 #include "WiFi.h"
 #include "utility/MPU9250.h"
@@ -11,6 +14,11 @@ extern const unsigned char m5stack_startup_music[];
 #endif
 
 MPU9250 IMU;
+
+
+// #define LEDS_PIN 15
+// #define LEDS_NUM 10
+// CRGB ledsBuff[LEDS_NUM];
 
 void startupLogo() {
     static uint8_t brightness, pre_brightness;
@@ -120,18 +128,51 @@ void writeFile(fs::FS &fs, const char *path, const char *message) {
 }
 
 void buttons_test() {
-    if (M5.BtnA.wasPressed()) {
+    if (M5.BtnA.wasReleased() || M5.BtnA.pressedFor(1000, 200)) {
         M5.Lcd.printf("A");
         Serial.printf("A");
     }
-    if (M5.BtnB.wasPressed()) {
+    if (M5.BtnB.wasReleased() || M5.BtnB.pressedFor(1000, 200)) {
         M5.Lcd.printf("B");
         Serial.printf("B");
     }
-    if (M5.BtnC.wasPressed()) {
+    if (M5.BtnC.wasReleased() || M5.BtnC.pressedFor(1000, 200)) {
         M5.Lcd.printf("C");
         Serial.printf("C");
     }
+}
+
+static byte c1;
+
+byte utf8ascii(byte ascii) {
+    if ( ascii<128 )   // Standard ASCII-set 0..0x7F handling  
+    {   c1=0;
+        return( ascii );
+    }
+
+    // get previous input
+    byte last = c1;   // get last char
+    c1=ascii;         // remember actual character
+
+    switch (last)     // conversion depending on first UTF8-character
+    {   case 0xC2: return  (ascii);  break;
+        case 0xC3: return  (ascii | 0xC0);  break;
+        case 0x82: if(ascii==0xAC) return(0x80);       // special case Euro-symbol
+    }
+
+    return  (0);                                     // otherwise: return zero, if character has to be ignored
+}
+
+String utf8ascii(String s)
+{      
+        String r="";
+        char c;
+        for (int i=0; i<s.length(); i++)
+        {
+                c = utf8ascii(s.charAt(i));
+                if (c!=0) r+=c;
+        }
+        return r;
 }
 
 void wifi_test() {
@@ -160,8 +201,8 @@ void wifi_test() {
             M5.Lcd.print(i + 1);
             Serial.print(": ");
             M5.Lcd.print(": ");
-            Serial.print(WiFi.SSID(i));
-            M5.Lcd.print(WiFi.SSID(i));
+            Serial.print(WiFi.SSID(i).c_str());
+            M5.Lcd.print(utf8ascii(WiFi.SSID(i).c_str()));
             Serial.print(" (");
             M5.Lcd.print(" (");
             Serial.print(WiFi.RSSI(i));
@@ -169,9 +210,9 @@ void wifi_test() {
             Serial.print(")");
             M5.Lcd.print(")");
             Serial.println((WiFi.encryptionType(i) == WIFI_AUTH_OPEN) ? " "
-                                                                      : "*");
+                                                                     : "*");
             M5.Lcd.println((WiFi.encryptionType(i) == WIFI_AUTH_OPEN) ? " "
-                                                                      : "*");
+                                                                     : "*");
             delay(5);
         }
     }
@@ -409,6 +450,15 @@ unsigned long testFilledRoundRects() {
     return micros() - start;
 }
 
+// void ledBar()
+// {
+//     FastLED.addLeds<SK6812, LEDS_PIN>(ledsBuff, LEDS_NUM);
+//     for (int i = 0; i < LEDS_NUM; i++) {
+//         ledsBuff[i].setRGB(20, 20, 20);
+//     }
+//     FastLED.show();
+// }
+
 // the setup routine runs once when M5Stack starts up
 void setup() {
     // gpio test
@@ -436,8 +486,8 @@ void setup() {
     // {
     //     adc_test();
     // }
-
     startupLogo();
+    //ledBar();
     Wire.begin();
 
     // Lcd display
