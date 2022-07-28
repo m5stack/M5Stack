@@ -14,8 +14,12 @@
  * limitations under the License.
  *
  */
+
+
 #ifndef _MLX640_API_H_
 #define _MLX640_API_H_
+
+#include <stdint.h>
 
 #define SCALEALPHA 0.000001
 
