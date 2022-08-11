@@ -15,7 +15,6 @@ extern const unsigned char m5stack_startup_music[];
 
 MPU9250 IMU;
 
-
 // #define LEDS_PIN 15
 // #define LEDS_NUM 10
 // CRGB ledsBuff[LEDS_NUM];
@@ -145,34 +144,39 @@ void buttons_test() {
 static byte c1;
 
 byte utf8ascii(byte ascii) {
-    if ( ascii<128 )   // Standard ASCII-set 0..0x7F handling  
-    {   c1=0;
-        return( ascii );
+    if (ascii < 128)  // Standard ASCII-set 0..0x7F handling
+    {
+        c1 = 0;
+        return (ascii);
     }
 
     // get previous input
-    byte last = c1;   // get last char
-    c1=ascii;         // remember actual character
+    byte last = c1;     // get last char
+    c1        = ascii;  // remember actual character
 
-    switch (last)     // conversion depending on first UTF8-character
-    {   case 0xC2: return  (ascii);  break;
-        case 0xC3: return  (ascii | 0xC0);  break;
-        case 0x82: if(ascii==0xAC) return(0x80);       // special case Euro-symbol
+    switch (last)  // conversion depending on first UTF8-character
+    {
+        case 0xC2:
+            return (ascii);
+            break;
+        case 0xC3:
+            return (ascii | 0xC0);
+            break;
+        case 0x82:
+            if (ascii == 0xAC) return (0x80);  // special case Euro-symbol
     }
 
-    return  (0);                                     // otherwise: return zero, if character has to be ignored
+    return (0);  // otherwise: return zero, if character has to be ignored
 }
 
-String utf8ascii(String s)
-{      
-        String r="";
-        char c;
-        for (int i=0; i<s.length(); i++)
-        {
-                c = utf8ascii(s.charAt(i));
-                if (c!=0) r+=c;
-        }
-        return r;
+String utf8ascii(String s) {
+    String r = "";
+    char c;
+    for (int i = 0; i < s.length(); i++) {
+        c = utf8ascii(s.charAt(i));
+        if (c != 0) r += c;
+    }
+    return r;
 }
 
 void wifi_test() {
@@ -210,9 +214,9 @@ void wifi_test() {
             Serial.print(")");
             M5.Lcd.print(")");
             Serial.println((WiFi.encryptionType(i) == WIFI_AUTH_OPEN) ? " "
-                                                                     : "*");
+                                                                      : "*");
             M5.Lcd.println((WiFi.encryptionType(i) == WIFI_AUTH_OPEN) ? " "
-                                                                     : "*");
+                                                                      : "*");
             delay(5);
         }
     }
@@ -487,7 +491,7 @@ void setup() {
     //     adc_test();
     // }
     startupLogo();
-    //ledBar();
+    // ledBar();
     Wire.begin();
 
     // Lcd display

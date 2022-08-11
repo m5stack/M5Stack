@@ -2,7 +2,8 @@
 
 #define BLK_PWM_CHANNEL 7  // LEDC_CHANNEL_7
 
-M5Display::M5Display() : TFT_eSPI() {}
+M5Display::M5Display() : TFT_eSPI() {
+}
 
 void M5Display::begin() {
     TFT_eSPI::begin();

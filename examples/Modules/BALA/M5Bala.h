@@ -48,12 +48,24 @@ class M5Bala {
     void readEncder();
     uint8_t i2c_readByte(uint8_t address, uint8_t subAddress);
 
-    void setAngleOffset(float offset) { angle_offset = offset; };
-    float getAngle() { return pitch; };
-    int16_t getSpeed0() { return speed_input0; };
-    int16_t getSpeed1() { return speed_input1; };
-    int16_t getOut0() { return pwm_out0; };
-    int16_t getOut1() { return pwm_out1; };
+    void setAngleOffset(float offset) {
+        angle_offset = offset;
+    };
+    float getAngle() {
+        return pitch;
+    };
+    int16_t getSpeed0() {
+        return speed_input0;
+    };
+    int16_t getSpeed1() {
+        return speed_input1;
+    };
+    int16_t getOut0() {
+        return pwm_out0;
+    };
+    int16_t getOut1() {
+        return pwm_out1;
+    };
 
     int16_t left_offset, right_offset;
     int16_t forward_offset;

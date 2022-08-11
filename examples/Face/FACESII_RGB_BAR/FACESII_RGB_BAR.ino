@@ -15,7 +15,9 @@
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(
     M5STACK_FIRE_NEO_NUM_LEDS, M5STACK_FIRE_NEO_DATA_PIN, NEO_GRB + NEO_KHZ800);
 
-void setup() { pixels.begin(); }
+void setup() {
+    pixels.begin();
+}
 
 void loop() {
     static int pixelNumber = 0;  // = random(0, M5STACK_FIRE_NEO_NUM_LEDS - 1);

@@ -5,7 +5,8 @@ TFTTerminal::TFTTerminal(TFT_eSprite *dis_buff_ptr) {
     memset(discharbuff, 0, 55 * 60);
 }
 
-TFTTerminal::~TFTTerminal() {}
+TFTTerminal::~TFTTerminal() {
+}
 
 void TFTTerminal::setcolor(uint16_t color, uint16_t bk_color) {
     _color   = color;

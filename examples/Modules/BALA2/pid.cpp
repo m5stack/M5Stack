@@ -53,9 +53,13 @@ void PID::SetDirection(int8_t dir) {
     _kd  = fabs(_kd) * _dir;
 }
 
-void PID::SetIntegral(float integral) { error_integral = integral; }
+void PID::SetIntegral(float integral) {
+    error_integral = integral;
+}
 
-void PID::SetIntegralOffset(float offset) { error_integral_offset = offset; }
+void PID::SetIntegralOffset(float offset) {
+    error_integral_offset = offset;
+}
 
 void PID::UpdateParam(float kp, float ki, float kd) {
     _kp = fabs(kp) * _dir;
@@ -63,4 +67,6 @@ void PID::UpdateParam(float kp, float ki, float kd) {
     _kd = fabs(kd) * _dir;
 }
 
-void PID::SetPoint(float point) { _point = point; }
+void PID::SetPoint(float point) {
+    _point = point;
+}

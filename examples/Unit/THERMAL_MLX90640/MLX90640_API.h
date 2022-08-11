@@ -15,7 +15,6 @@
  *
  */
 
-
 #ifndef _MLX640_API_H_
 #define _MLX640_API_H_
 

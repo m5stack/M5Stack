@@ -7,16 +7,16 @@ jobs:
     strategy:
       matrix:
         path:
-          - check: './example'    # path to include
-            exclude: './examples/Advanced/Display'    # path to exclude
+          - check: './'    # path to include
+            exclude: '(Fonts|utility)'  # path to exclude
           # - check: 'src'
-          #   exclude: ''
+          #   exclude: '(Fonts)' # Exclude file paths containing "Fonts"
           # - check: 'examples'
           #   exclude: ''
     steps:
     - uses: actions/checkout@v2
     - name: Run clang-format style check for C/C++/Protobuf programs.
-      uses: jidicula/clang-format-action@v4.5.0
+      uses: jidicula/clang-format-action@v4.8.0
       with:
         clang-format-version: '13'
         check-path: ${{ matrix.path['check'] }}

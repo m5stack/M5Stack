@@ -1,10 +1,15 @@
 #include "porthub.h"
 
-PortHub::PortHub() {}
+PortHub::PortHub() {
+}
 
-PortHub::PortHub(uint8_t iic_addr) { _iic_addr = iic_addr; }
+PortHub::PortHub(uint8_t iic_addr) {
+    _iic_addr = iic_addr;
+}
 
-void PortHub::begin() { Wire.begin(); }
+void PortHub::begin() {
+    Wire.begin();
+}
 
 uint16_t PortHub::hub_a_read_value(uint8_t reg) {
     Wire.beginTransmission(_iic_addr);

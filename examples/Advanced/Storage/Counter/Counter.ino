@@ -49,4 +49,5 @@ void setup() {
     delay(10000);   // delay 10.  延迟10s
     ESP.restart();  // Restart.  重启
 }
-void loop() {}
+void loop() {
+}

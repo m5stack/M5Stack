@@ -80,7 +80,9 @@ class M5Timer {
     int getNumTimers();
 
     // returns the number of available timers
-    int getNumAvailableTimers() { return MAX_TIMERS - numTimers; };
+    int getNumAvailableTimers() {
+        return MAX_TIMERS - numTimers;
+    };
 
    private:
     // deferred call constants

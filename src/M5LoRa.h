@@ -62,8 +62,12 @@ class LoRaClass : public Stream {
     void disableCrc();
 
     // deprecated
-    void crc() { enableCrc(); }
-    void noCrc() { disableCrc(); }
+    void crc() {
+        enableCrc();
+    }
+    void noCrc() {
+        disableCrc();
+    }
 
     byte random();
 

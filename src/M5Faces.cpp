@@ -16,7 +16,9 @@ bool M5Faces::canControlFaces() {
     return M5.I2C.writeCommand(KEYBOARD_I2C_ADDR, READI2CSUBADDR);
 }
 
-M5Faces::M5Faces() { pinMode(KEYBOARD_INT, INPUT_PULLUP); }
+M5Faces::M5Faces() {
+    pinMode(KEYBOARD_INT, INPUT_PULLUP);
+}
 
 uint8_t M5Faces::getch(void) {
     uint8_t data = 0x00;
@@ -33,4 +35,6 @@ uint8_t M5Faces::getch(void) {
     return 0x00;
 }
 
-bool M5Faces::kbhit(void) { return (digitalRead(KEYBOARD_INT) == LOW); }
+bool M5Faces::kbhit(void) {
+    return (digitalRead(KEYBOARD_INT) == LOW);
+}

@@ -33,8 +33,8 @@ class Button {
     uint8_t _pin;       // arduino pin number
     uint8_t _puEnable;  // internal pullup resistor enabled
     uint8_t _invert;    // if 0, interpret high state as pressed, else interpret
-                      // low state as pressed
-    uint8_t _state;           // current button state
+                        // low state as pressed
+    uint8_t _state;     // current button state
     uint8_t _lastState;       // previous button state
     uint8_t _changed;         // state changed since last read
     uint32_t _time;           // time of current state (all times are in ms)

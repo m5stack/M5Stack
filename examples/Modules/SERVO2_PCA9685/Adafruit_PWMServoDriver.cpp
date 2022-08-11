@@ -38,7 +38,8 @@
  * TwoWire interface
  */
 Adafruit_PWMServoDriver::Adafruit_PWMServoDriver()
-    : _i2caddr(PCA9685_I2C_ADDRESS), _i2c(&Wire) {}
+    : _i2caddr(PCA9685_I2C_ADDRESS), _i2c(&Wire) {
+}
 
 /*!
  *  @brief  Instantiates a new PCA9685 PWM driver chip with the I2C address on a
@@ -46,7 +47,8 @@ Adafruit_PWMServoDriver::Adafruit_PWMServoDriver()
  *  @param  addr The 7-bit I2C address to locate this chip, default is 0x40
  */
 Adafruit_PWMServoDriver::Adafruit_PWMServoDriver(const uint8_t addr)
-    : _i2caddr(addr), _i2c(&Wire) {}
+    : _i2caddr(addr), _i2c(&Wire) {
+}
 
 /*!
  *  @brief  Instantiates a new PCA9685 PWM driver chip with the I2C address on a
@@ -57,7 +59,8 @@ Adafruit_PWMServoDriver::Adafruit_PWMServoDriver(const uint8_t addr)
  */
 Adafruit_PWMServoDriver::Adafruit_PWMServoDriver(const uint8_t addr,
                                                  TwoWire &i2c)
-    : _i2caddr(addr), _i2c(&i2c) {}
+    : _i2caddr(addr), _i2c(&i2c) {
+}
 
 /*!
  *  @brief  Setups the I2C interface and hardware

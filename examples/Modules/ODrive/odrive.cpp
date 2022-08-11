@@ -28,9 +28,12 @@ const char* default_config =
     "w axis0.motor_thermistor.config.temp_limit_upper 90\n"
     "w axis0.motor_thermistor.config.enabled 1\n";
 
-ODrive::ODrive(Stream& serial_in) : serial(serial_in) {}
+ODrive::ODrive(Stream& serial_in) : serial(serial_in) {
+}
 
-void ODrive::setPosition(float position) { setPosition(position, 0.0f, 0.0f); }
+void ODrive::setPosition(float position) {
+    setPosition(position, 0.0f, 0.0f);
+}
 
 void ODrive::setPosition(float position, float velocity_feedforward) {
     setPosition(position, velocity_feedforward, 0.0f);
@@ -42,13 +45,17 @@ void ODrive::setPosition(float position, float velocity_feedforward,
                   current_feedforward);
 }
 
-void ODrive::setVelocity(float velocity) { setVelocity(velocity, 0.0f); }
+void ODrive::setVelocity(float velocity) {
+    setVelocity(velocity, 0.0f);
+}
 
 void ODrive::setVelocity(float velocity, float current_feedforward) {
     serial.printf("v 0 %f %f\n", velocity, current_feedforward);
 }
 
-void ODrive::setCurrent(float current) { serial.printf("c 0 %f\n", current); }
+void ODrive::setCurrent(float current) {
+    serial.printf("c 0 %f\n", current);
+}
 
 void ODrive::setGain(float pos, float vel, float vel_integrator) {
     writeConfig("axis0.controller.config.pos_gain", pos);
@@ -84,7 +91,9 @@ float ODrive::getVelocity() {
     return readConfigFloat("axis0.encoder.vel_estimate");
 }
 
-float ODrive::getVbusVoltage() { return readConfigFloat("vbus_voltage"); }
+float ODrive::getVbusVoltage() {
+    return readConfigFloat("vbus_voltage");
+}
 
 float ODrive::getPhaseCurrent() {
     return readConfigFloat("axis0.motor.current_control.Iq_measured");
@@ -106,11 +115,17 @@ float ODrive::getMotorTemp() {
     return readConfigFloat("axis0.motor_thermistor.temperature");
 }
 
-void ODrive::eraseConfig() { writeToDeive("se\n"); }
+void ODrive::eraseConfig() {
+    writeToDeive("se\n");
+}
 
-void ODrive::saveConfig() { writeToDeive("ss\n"); }
+void ODrive::saveConfig() {
+    writeToDeive("ss\n");
+}
 
-void ODrive::reboot() { writeToDeive("sr\n"); }
+void ODrive::reboot() {
+    writeToDeive("sr\n");
+}
 
 void ODrive::setDefaultConfig() {
     writeToDeive("\n");
@@ -170,9 +185,13 @@ String ODrive::readString() {
     return str;
 }
 
-float ODrive::readFloat() { return readString().toFloat(); }
+float ODrive::readFloat() {
+    return readString().toFloat();
+}
 
-int32_t ODrive::readInt() { return readString().toInt(); }
+int32_t ODrive::readInt() {
+    return readString().toInt();
+}
 
 void ODrive::writeToDeive(const char* data) {
     if (data == NULL) {

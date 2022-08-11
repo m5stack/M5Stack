@@ -4,7 +4,8 @@
 
 #include "M5Stack.h"
 
-M5Stack::M5Stack() : isInited(0) {}
+M5Stack::M5Stack() : isInited(0) {
+}
 
 void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable,
                     bool I2CEnable) {
@@ -67,7 +68,9 @@ void M5Stack::update() {
  * Function has been move to Power class.(for compatibility)
  * This name will be removed in a future release.
  */
-void M5Stack::setPowerBoostKeepOn(bool en) { M5.Power.setPowerBoostKeepOn(en); }
+void M5Stack::setPowerBoostKeepOn(bool en) {
+    M5.Power.setPowerBoostKeepOn(en);
+}
 /**
  * Function has been move to Power class.(for compatibility)
  * This name will be removed in a future release.
@@ -79,6 +82,8 @@ void M5Stack::setWakeupButton(uint8_t button) {
  * Function has been move to Power class.(for compatibility)
  * This name will be removed in a future release.
  */
-void M5Stack::powerOFF() { M5.Power.deepSleep(); }
+void M5Stack::powerOFF() {
+    M5.Power.deepSleep();
+}
 
 M5Stack M5;

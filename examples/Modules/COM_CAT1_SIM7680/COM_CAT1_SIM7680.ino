@@ -60,7 +60,9 @@ PubSubClient mqtt(client);
 
 unsigned long start;
 
-inline String time() { return "..." + String((millis() - start) / 1000) + 's'; }
+inline String time() {
+    return "..." + String((millis() - start) / 1000) + 's';
+}
 
 void log(String info) {
     SerialMon.println(info);

@@ -6,7 +6,8 @@
 #include "../M5Stack.h"
 #include "MahonyAHRS.h"
 
-SH200Q::SH200Q() {}
+SH200Q::SH200Q() {
+}
 
 void SH200Q::I2C_Read_NBytes(uint8_t driver_Addr, uint8_t start_Addr,
                              uint8_t number_Bytes, uint8_t* read_Buffer) {

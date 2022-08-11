@@ -5,9 +5,13 @@
 #define MPU9250_ID 0x71
 #define MPU6050_ID 0x68
 
-M5Bala::M5Bala() { wire = &Wire; }
+M5Bala::M5Bala() {
+    wire = &Wire;
+}
 
-M5Bala::M5Bala(TwoWire &w) { wire = &w; }
+M5Bala::M5Bala(TwoWire &w) {
+    wire = &w;
+}
 
 void M5Bala::begin() {
     // IMU

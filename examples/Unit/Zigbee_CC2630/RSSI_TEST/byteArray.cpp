@@ -58,7 +58,9 @@ byteArray &byteArray::append(const byteArray &array) {
     return *this;
 }
 
-uint8_t byteArray::at(size_t i) { return _ptr[i]; }
+uint8_t byteArray::at(size_t i) {
+    return _ptr[i];
+}
 
 int byteArray::indexof(char data, int pos) {
     if ((this->_length == 0) || (this->_ptr == nullptr) ||
@@ -124,10 +126,20 @@ byteArray &byteArray::operator=(const char *str) {
     return *this;
 }
 
-uint8_t &byteArray::operator[](size_t i) { return _ptr[i]; }
+uint8_t &byteArray::operator[](size_t i) {
+    return _ptr[i];
+}
 
-const uint8_t &byteArray::operator[](size_t i) const { return _ptr[i]; }
+const uint8_t &byteArray::operator[](size_t i) const {
+    return _ptr[i];
+}
 
-byteArray &byteArray::operator+=(char c) { return append(c); }
-byteArray &byteArray::operator+=(const char *s) { return append(s); }
-byteArray &byteArray::operator+=(const byteArray &a) { return append(a); }
+byteArray &byteArray::operator+=(char c) {
+    return append(c);
+}
+byteArray &byteArray::operator+=(const char *s) {
+    return append(s);
+}
+byteArray &byteArray::operator+=(const byteArray &a) {
+    return append(a);
+}

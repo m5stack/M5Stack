@@ -2,11 +2,11 @@
     Description: SIM800L serial transparent transmission debugging program
 */
 #include <M5Stack.h>
-#define RX_PIN      16
-#define TX_PIN      17
-#define RESET_PIN   5   
+#define RX_PIN    16
+#define TX_PIN    17
+#define RESET_PIN 5
 
-void header(const char *string, uint16_t color){
+void header(const char *string, uint16_t color) {
     M5.Lcd.fillScreen(color);
     M5.Lcd.setTextSize(1);
     M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLUE);
@@ -16,31 +16,29 @@ void header(const char *string, uint16_t color){
 }
 
 void setup() {
-  M5.begin();
-  M5.Power.begin();
-  header("SIM800L AT command", TFT_BLACK);
-  M5.Lcd.setTextFont(2);
-  M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
-  M5.Lcd.drawString("Please use serial port to Test AT command.",0, 35, 2);
-  // Host serial communication
+    M5.begin();
+    M5.Power.begin();
+    header("SIM800L AT command", TFT_BLACK);
+    M5.Lcd.setTextFont(2);
+    M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
+    M5.Lcd.drawString("Please use serial port to Test AT command.", 0, 35, 2);
+    // Host serial communication
 
-  // SIM800L serial communication
-  Serial2.begin(115200, SERIAL_8N1, RX_PIN, TX_PIN);   
-  pinMode(RESET_PIN, OUTPUT);
+    // SIM800L serial communication
+    Serial2.begin(115200, SERIAL_8N1, RX_PIN, TX_PIN);
+    pinMode(RESET_PIN, OUTPUT);
 }
 
 void loop() {
+    // AT instruction write
+    if (Serial.available()) {
+        Serial2.write(Serial.read());
+    }
 
-  //AT instruction write
-  if(Serial.available()){
-    Serial2.write(Serial.read());
-  }
+    // AT instruction result
+    if (Serial2.available()) {
+        Serial.write(Serial2.read());
+    }
 
-  //AT instruction result
-  if(Serial2.available()){    
-    Serial.write(Serial2.read());
-  }
-
-  delay(10);
-
+    delay(10);
 }

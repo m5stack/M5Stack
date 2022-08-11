@@ -23,9 +23,14 @@ class M5Display : public TFT_eSPI {
     void sleep();
     void wakeup();
     void setBrightness(uint8_t brightness);
-    void clearDisplay(uint32_t color = ILI9341_BLACK) { fillScreen(color); }
-    void clear(uint32_t color = ILI9341_BLACK) { fillScreen(color); }
-    void display() {}
+    void clearDisplay(uint32_t color = ILI9341_BLACK) {
+        fillScreen(color);
+    }
+    void clear(uint32_t color = ILI9341_BLACK) {
+        fillScreen(color);
+    }
+    void display() {
+    }
 
     inline void startWrite(void) {
 #if defined(SPI_HAS_TRANSACTION) && defined(SUPPORT_TRANSACTIONS) && \
@@ -50,7 +55,9 @@ class M5Display : public TFT_eSPI {
 #endif
         CS_H;
     }
-    inline void writePixel(uint16_t color) { SPI.write16(color); }
+    inline void writePixel(uint16_t color) {
+        SPI.write16(color);
+    }
     inline void writePixels(uint16_t *colors, uint32_t len) {
         SPI.writePixels((uint8_t *)colors, len * 2);
     }

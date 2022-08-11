@@ -1,8 +1,11 @@
 #include "GoPlus2.h"
 
-GoPlus2::GoPlus2() {}
+GoPlus2::GoPlus2() {
+}
 
-void GoPlus2::begin() { Wire.begin(); }
+void GoPlus2::begin() {
+    Wire.begin();
+}
 
 void GoPlus2::Servo_write_angle(uint8_t number, uint8_t angle) {
     Wire.beginTransmission(GOPLUS_ADDR);

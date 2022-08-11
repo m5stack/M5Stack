@@ -21,11 +21,11 @@
 #include <M5Stack.h>
 #include <M5LoRa.h>
 
-byte msgCount = 0;            // count of outgoing messages
-int interval = 2000;          // interval between sends
-long lastSendTime = 0;        // time of last packet send
+byte msgCount     = 0;     // count of outgoing messages
+int interval      = 2000;  // interval between sends
+long lastSendTime = 0;     // time of last packet send
 
-void header(const char *string, uint16_t color){
+void header(const char *string, uint16_t color) {
     M5.Lcd.fillScreen(color);
     M5.Lcd.setTextSize(1);
     M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLUE);
@@ -35,64 +35,65 @@ void header(const char *string, uint16_t color){
 }
 
 void setup() {
-  M5.begin();                   // initialize serial
-  M5.Power.begin();
-  while (!Serial);
-  
-  header("LoRa Set spreading factor", TFT_BLACK);
-  M5.Lcd.setTextFont(2);
-  M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
-  M5.Lcd.drawString("Please use serial port to view data.",0, 35, 2);
+    M5.begin();  // initialize serial
+    M5.Power.begin();
+    while (!Serial)
+        ;
 
-  Serial.println("LoRa Duplex - Set spreading factor");
+    header("LoRa Set spreading factor", TFT_BLACK);
+    M5.Lcd.setTextFont(2);
+    M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
+    M5.Lcd.drawString("Please use serial port to view data.", 0, 35, 2);
 
-  // override the default CS, reset, and IRQ pins (optional)
-  LoRa.setPins(); // set CS, reset, IRQ pin
+    Serial.println("LoRa Duplex - Set spreading factor");
 
-  if (!LoRa.begin(433E6)) {             // initialize ratio at 915 MHz
-    Serial.println("LoRa init failed. Check your connections.");
-    while (true);                       // if failed, do nothing
-  }
+    // override the default CS, reset, and IRQ pins (optional)
+    LoRa.setPins();  // set CS, reset, IRQ pin
 
-  LoRa.setSpreadingFactor(8);           // ranges from 6-12,default 7 see API docs
-  Serial.println("LoRa init succeeded.");
+    if (!LoRa.begin(433E6)) {  // initialize ratio at 915 MHz
+        Serial.println("LoRa init failed. Check your connections.");
+        while (true)
+            ;  // if failed, do nothing
+    }
+
+    LoRa.setSpreadingFactor(8);  // ranges from 6-12,default 7 see API docs
+    Serial.println("LoRa init succeeded.");
 }
 
 void loop() {
-  if (millis() - lastSendTime > interval) {
-    String message = "HeLoRa World! ";   // send a message
-    message += msgCount;
-    sendMessage(message);
-    Serial.println("Sending " + message);
-    lastSendTime = millis();            // timestamp the message
-    interval = random(2000) + 1000;    // 2-3 seconds
-    msgCount++;
-  }
+    if (millis() - lastSendTime > interval) {
+        String message = "HeLoRa World! ";  // send a message
+        message += msgCount;
+        sendMessage(message);
+        Serial.println("Sending " + message);
+        lastSendTime = millis();             // timestamp the message
+        interval     = random(2000) + 1000;  // 2-3 seconds
+        msgCount++;
+    }
 
-  // parse for a packet, and call onReceive with the result:
-  onReceive(LoRa.parsePacket());
+    // parse for a packet, and call onReceive with the result:
+    onReceive(LoRa.parsePacket());
 }
 
 void sendMessage(String outgoing) {
-  LoRa.beginPacket();                   // start packet
-  LoRa.print(outgoing);                 // add payload
-  LoRa.endPacket();                     // finish packet and send it
-  msgCount++;                           // increment message ID
+    LoRa.beginPacket();    // start packet
+    LoRa.print(outgoing);  // add payload
+    LoRa.endPacket();      // finish packet and send it
+    msgCount++;            // increment message ID
 }
 
 void onReceive(int packetSize) {
-  if (packetSize == 0) return;          // if there's no packet, return
+    if (packetSize == 0) return;  // if there's no packet, return
 
-  // read packet header bytes:
-  String incoming = "";
+    // read packet header bytes:
+    String incoming = "";
 
-  while (LoRa.available()) {
-    incoming += (char)LoRa.read();
-  }
+    while (LoRa.available()) {
+        incoming += (char)LoRa.read();
+    }
 
-  Serial.println("Message: " + incoming);
-  Serial.println("RSSI: " + String(LoRa.packetRssi()));
-  Serial.println("Snr: " + String(LoRa.packetSnr()));
-  Serial.println();
+    Serial.println("Message: " + incoming);
+    Serial.println("RSSI: " + String(LoRa.packetRssi()));
+    Serial.println("Snr: " + String(LoRa.packetSnr()));
+    Serial.println();
 }
-

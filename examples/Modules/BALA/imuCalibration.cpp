@@ -32,9 +32,13 @@ void imu_CalcInit() {
     M5.IMU.setGyroFsr(M5.IMU.GFS_1000DPS);
 }
 
-void imu_setOffsetX(float x) { gyroXOffset = x; }
+void imu_setOffsetX(float x) {
+    gyroXOffset = x;
+}
 
-float imu_getOffsetX() { return gyroXOffset; }
+float imu_getOffsetX() {
+    return gyroXOffset;
+}
 
 void imu_calcGyroOffsets() {
     float x = 0, y = 0, z = 0;

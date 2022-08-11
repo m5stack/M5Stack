@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/m5stack/m5stack.git"
   },
-  "version": "0.4.1",
+  "version": "0.4.2",
   "frameworks": "arduino",
   "platforms": "espressif32",
   "headers": "M5Stack.h"

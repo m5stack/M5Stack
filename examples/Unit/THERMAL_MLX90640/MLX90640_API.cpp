@@ -544,7 +544,9 @@ float MLX90640_GetTa(uint16_t *frameData, const paramsMLX90640 *params) {
 
 //------------------------------------------------------------------------------
 
-int MLX90640_GetSubPageNumber(uint16_t *frameData) { return frameData[833]; }
+int MLX90640_GetSubPageNumber(uint16_t *frameData) {
+    return frameData[833];
+}
 
 //------------------------------------------------------------------------------
 void MLX90640_BadPixelsCorrection(uint16_t *pixels, float *to, int mode,

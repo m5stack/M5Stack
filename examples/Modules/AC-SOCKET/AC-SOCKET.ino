@@ -73,6 +73,10 @@ void loop() {
     // put your main code here, to run repeatedly:
 }
 
-void mb_send_one_byte(uint8_t data) { Serial1.write(data); }
+void mb_send_one_byte(uint8_t data) {
+    Serial1.write(data);
+}
 
-void protocol_callback(CmdData cmd) { Serial.printf("got ... \r\n"); }
+void protocol_callback(CmdData cmd) {
+    Serial.printf("got ... \r\n");
+}

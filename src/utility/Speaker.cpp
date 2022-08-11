@@ -40,7 +40,9 @@ void SPEAKER::setBeep(uint16_t frequency, uint16_t duration) {
     _beep_duration = duration;
 }
 
-void SPEAKER::setVolume(uint8_t volume) { _volume = 11 - volume; }
+void SPEAKER::setVolume(uint8_t volume) {
+    _volume = 11 - volume;
+}
 
 void SPEAKER::mute() {
     ledcWriteTone(TONE_PIN_CHANNEL, 0);
@@ -56,7 +58,9 @@ void SPEAKER::update() {
     }
 }
 
-void SPEAKER::write(uint8_t value) { dacWrite(SPEAKER_PIN, value); }
+void SPEAKER::write(uint8_t value) {
+    dacWrite(SPEAKER_PIN, value);
+}
 
 void SPEAKER::playMusic(const uint8_t* music_data, uint16_t sample_rate) {
     uint32_t length         = strlen((char*)music_data);

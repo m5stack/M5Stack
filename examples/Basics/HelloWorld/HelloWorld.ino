@@ -30,4 +30,5 @@ void setup() {
 The loop() function is an infinite loop in which the program runs repeatedly
 在setup()函数中的程序执行完后，会接着执行loop()函数中的程序
 loop()函数是一个死循环，其中的程序会不断的重复运行 */
-void loop() {}
+void loop() {
+}

@@ -6,7 +6,8 @@
 #include "../M5Stack.h"
 #include "MahonyAHRS.h"
 
-MPU6886::MPU6886() {}
+MPU6886::MPU6886() {
+}
 
 void MPU6886::I2C_Read_NBytes(uint8_t driver_Addr, uint8_t start_Addr,
                               uint8_t number_Bytes, uint8_t* read_Buffer) {

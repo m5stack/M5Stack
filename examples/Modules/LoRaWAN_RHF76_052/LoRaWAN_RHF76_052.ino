@@ -67,11 +67,17 @@ void loop(void) {
     M5.update();
 }
 
-void init_433() { lora.initP2PMode(433, SF12, BW500, 8, 8, 20); }
+void init_433() {
+    lora.initP2PMode(433, SF12, BW500, 8, 8, 20);
+}
 
-void init_868() { lora.initP2PMode(868, SF12, BW500, 8, 8, 20); }
+void init_868() {
+    lora.initP2PMode(868, SF12, BW500, 8, 8, 20);
+}
 
-void send_data() { lora.transferPacketP2PMode("hello world"); }
+void send_data() {
+    lora.transferPacketP2PMode("hello world");
+}
 
 void onReceive() {
     short length = 0;

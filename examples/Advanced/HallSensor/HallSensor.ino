@@ -88,4 +88,6 @@ void showSignal() {
     }
 }
 
-void loop(void) { showSignal(); }
+void loop(void) {
+    showSignal();
+}

@@ -42,7 +42,9 @@ static float invSqrt(float x);
 //====================================================================================================
 // Functions
 
-void MadgwickAHRSetBeta(float beta_in) { beta = beta_in; }
+void MadgwickAHRSetBeta(float beta_in) {
+    beta = beta_in;
+}
 
 //---------------------------------------------------------------------------------------------------
 // AHRS algorithm update

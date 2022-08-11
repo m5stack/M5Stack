@@ -210,7 +210,9 @@ float LoRaClass::packetSnr() {
     return ((int8_t)readRegister(REG_PKT_SNR_VALUE)) * 0.25;
 }
 
-size_t LoRaClass::write(uint8_t byte) { return write(&byte, sizeof(byte)); }
+size_t LoRaClass::write(uint8_t byte) {
+    return write(&byte, sizeof(byte));
+}
 
 size_t LoRaClass::write(const uint8_t* buffer, size_t size) {
     int currentLength = readRegister(REG_PAYLOAD_LENGTH);
@@ -262,7 +264,8 @@ int LoRaClass::peek() {
     return b;
 }
 
-void LoRaClass::flush() {}
+void LoRaClass::flush() {
+}
 
 void LoRaClass::onReceive(void (*callback)(int)) {
     _onReceive = callback;
@@ -398,7 +401,9 @@ void LoRaClass::setPreambleLength(long length) {
     writeRegister(REG_PREAMBLE_LSB, (uint8_t)(length >> 0));
 }
 
-void LoRaClass::setSyncWord(int sw) { writeRegister(REG_SYNC_WORD, sw); }
+void LoRaClass::setSyncWord(int sw) {
+    writeRegister(REG_SYNC_WORD, sw);
+}
 
 void LoRaClass::enableCrc() {
     writeRegister(REG_MODEM_CONFIG_2, readRegister(REG_MODEM_CONFIG_2) | 0x04);
@@ -408,7 +413,9 @@ void LoRaClass::disableCrc() {
     writeRegister(REG_MODEM_CONFIG_2, readRegister(REG_MODEM_CONFIG_2) & 0xfb);
 }
 
-byte LoRaClass::random() { return readRegister(REG_RSSI_WIDEBAND); }
+byte LoRaClass::random() {
+    return readRegister(REG_RSSI_WIDEBAND);
+}
 
 void LoRaClass::setPins(int ss, int reset, int dio0) {
     _ss    = ss;
@@ -492,6 +499,8 @@ uint8_t LoRaClass::singleTransfer(uint8_t address, uint8_t value) {
     return response;
 }
 
-void LoRaClass::onDio0Rise() { LoRa.handleDio0Rise(); }
+void LoRaClass::onDio0Rise() {
+    LoRa.handleDio0Rise();
+}
 
 LoRaClass LoRa;

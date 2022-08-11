@@ -73,7 +73,9 @@ void Bala::SetSpeed(int16_t wheel_left, int16_t wheel_right) {
     }
 }
 
-void Bala::SetMutex(SemaphoreHandle_t* mutex) { i2c_mutex = *mutex; }
+void Bala::SetMutex(SemaphoreHandle_t* mutex) {
+    i2c_mutex = *mutex;
+}
 
 void Bala::SetServoAngle(uint8_t pos, uint8_t angle) {
     if (pos < 1) {

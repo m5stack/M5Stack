@@ -57,4 +57,5 @@ void setup() {
     M5.Lcd.println(WiFi.RSSI());  // Output signal strength.  输出信号强度
 }
 
-void loop() {}
+void loop() {
+}

@@ -8,7 +8,8 @@ class FunctionRequestHandler : public RequestHandler {
     FunctionRequestHandler(WebServer::THandlerFunction fn,
                            WebServer::THandlerFunction ufn, const String& uri,
                            HTTPMethod method)
-        : _fn(fn), _ufn(ufn), _uri(uri), _method(method) {}
+        : _fn(fn), _ufn(ufn), _uri(uri), _method(method) {
+    }
 
     bool canHandle(HTTPMethod requestMethod, String requestUri) override {
         if (_method != HTTP_ANY && _method != requestMethod) return false;

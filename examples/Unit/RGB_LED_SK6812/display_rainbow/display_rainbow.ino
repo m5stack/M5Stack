@@ -36,7 +36,8 @@ void setup() {
                             NULL, 1);
 }
 
-void loop() {}
+void loop() {
+}
 
 void FastLEDshowESP32() {
     if (userTaskHandle == 0) {
@@ -52,6 +53,8 @@ void FastLEDshowTask(void *pvParameters) {
     for (;;) {
         fill_rainbow(leds, NUM_LEDS, gHue, 7);  // rainbow effect
         FastLED.show();  // must be executed for neopixel becoming effective
-        EVERY_N_MILLISECONDS(20) { gHue++; }
+        EVERY_N_MILLISECONDS(20) {
+            gHue++;
+        }
     }
 }

@@ -47,13 +47,23 @@ class byteArray {
     byteArray &append(const char *s);
     byteArray &append(const byteArray &array);
     uint8_t at(size_t i);
-    uint8_t *dataptr() { return _ptr; };
+    uint8_t *dataptr() {
+        return _ptr;
+    };
 
-    bool isEmpty() { return (_length <= 0) ? true : false; }
-    bool isNull() { return (_ptr == nullptr) ? true : false; }
+    bool isEmpty() {
+        return (_length <= 0) ? true : false;
+    }
+    bool isNull() {
+        return (_ptr == nullptr) ? true : false;
+    }
 
-    size_t length() { return _length; }
-    size_t size() { return _length; }
+    size_t length() {
+        return _length;
+    }
+    size_t size() {
+        return _length;
+    }
 
     byteArray &operator=(const byteArray &);
     byteArray &operator=(const char *str);

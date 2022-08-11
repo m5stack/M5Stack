@@ -21,7 +21,9 @@ void GetGyroOffset(uint16_t times, int16_t* x_offset, int16_t* y_offset,
     *z_offset = z / times;
 }
 
-void calibrationInit() { preferences.begin("Bala2Cal", false); }
+void calibrationInit() {
+    preferences.begin("Bala2Cal", false);
+}
 
 void calibrationGet(int16_t* gyro_x_offset, int16_t* gyro_y_offset,
                     int16_t* gyro_z_offset, float* angle_center) {

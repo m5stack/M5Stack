@@ -65,4 +65,5 @@ void setup() {
     xTaskCreatePinnedToCore(task3, "task3", 4096, NULL, 3, NULL, 0);
 }
 
-void loop() {}
+void loop() {
+}

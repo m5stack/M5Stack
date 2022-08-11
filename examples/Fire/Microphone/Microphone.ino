@@ -11,7 +11,9 @@
 
 #define M5STACKFIRE_MICROPHONE_PIN 34
 
-void setup() { Serial.begin(115200); }
+void setup() {
+    Serial.begin(115200);
+}
 
 void loop() {
     int micValue = analogRead(M5STACKFIRE_MICROPHONE_PIN);

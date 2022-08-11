@@ -27,7 +27,9 @@
 
 // Select time function:
 // static inline unsigned long elapsed() { return micros(); }
-static inline unsigned long elapsed() { return millis(); }
+static inline unsigned long elapsed() {
+    return millis();
+}
 
 M5Timer::M5Timer() {
     unsigned long current_millis = elapsed();
@@ -215,4 +217,6 @@ void M5Timer::toggle(int numTimer) {
     enabled[numTimer] = !enabled[numTimer];
 }
 
-int M5Timer::getNumTimers() { return numTimers; }
+int M5Timer::getNumTimers() {
+    return numTimers;
+}

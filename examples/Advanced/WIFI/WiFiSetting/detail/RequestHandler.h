@@ -3,7 +3,8 @@
 
 class RequestHandler {
    public:
-    virtual ~RequestHandler() {}
+    virtual ~RequestHandler() {
+    }
     virtual bool canHandle(HTTPMethod method, String uri) {
         (void)method;
         (void)uri;
@@ -27,8 +28,12 @@ class RequestHandler {
         (void)upload;
     }
 
-    RequestHandler* next() { return _next; }
-    void next(RequestHandler* r) { _next = r; }
+    RequestHandler* next() {
+        return _next;
+    }
+    void next(RequestHandler* r) {
+        _next = r;
+    }
 
    private:
     RequestHandler* _next = nullptr;

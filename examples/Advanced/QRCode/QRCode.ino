@@ -24,4 +24,5 @@ void setup() {
     // characters.  请根据字符数量选择合适的二维码版本
 }
 
-void loop() {}
+void loop() {
+}

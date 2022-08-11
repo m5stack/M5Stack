@@ -84,9 +84,13 @@ uint8_t Button::read(void) {
  * read, and return false (0) or true (!=0) accordingly.                *
  * These functions do not cause the button to be read.                  *
  *----------------------------------------------------------------------*/
-uint8_t Button::isPressed(void) { return _state == 0 ? 0 : 1; }
+uint8_t Button::isPressed(void) {
+    return _state == 0 ? 0 : 1;
+}
 
-uint8_t Button::isReleased(void) { return _state == 0 ? 1 : 0; }
+uint8_t Button::isReleased(void) {
+    return _state == 0 ? 1 : 0;
+}
 
 /*----------------------------------------------------------------------*
  * wasPressed() and wasReleased() check the button state to see if it   *
@@ -94,7 +98,9 @@ uint8_t Button::isReleased(void) { return _state == 0 ? 1 : 0; }
  * true (!=0) accordingly.                                              *
  * These functions do not cause the button to be read.                  *
  *----------------------------------------------------------------------*/
-uint8_t Button::wasPressed(void) { return _state && _changed; }
+uint8_t Button::wasPressed(void) {
+    return _state && _changed;
+}
 
 uint8_t Button::wasReleased(void) {
     return !_state && _changed && millis() - _pressTime < _hold_time;
@@ -130,4 +136,6 @@ uint8_t Button::releasedFor(uint32_t ms) {
  * lastChange() returns the time the button last changed state,         *
  * in milliseconds.                                                     *
  *----------------------------------------------------------------------*/
-uint32_t Button::lastChange(void) { return _lastChange; }
+uint32_t Button::lastChange(void) {
+    return _lastChange;
+}

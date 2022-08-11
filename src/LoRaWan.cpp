@@ -913,7 +913,9 @@ void LoRaWanClass::loraDebugPrint(unsigned int timeout) {
 }
 #endif
 
-void LoRaWanClass::debugPrint(const char *str) { SerialUSB.print(str); }
+void LoRaWanClass::debugPrint(const char *str) {
+    SerialUSB.print(str);
+}
 
 void LoRaWanClass::sendCommand(const char *command) {
     SerialLoRa.print(command);

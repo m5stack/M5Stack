@@ -1,7 +1,6 @@
 #ifndef _RESOURCE_H_
 #define _RESOURCE_H_
 
-
 extern const unsigned char coordinator_jpeg_120x140[27537];
 extern const unsigned char endDevice_jpeg_120x140[24609];
 extern const unsigned char router_jpeg_120x140[26433];

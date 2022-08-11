@@ -10,11 +10,19 @@
 #include <esp_bt_main.h>
 #include <esp_sleep.h>
 #include <esp_wifi.h>
+
+#ifndef ESP_ARDUINO_VERSION_VAL
+#define ESP_ARDUINO_VERSION_VAL(major, minor, patch) \
+    ((major << 16) | (minor << 8) | (patch))
+#endif
+
+#if ESP_ARDUINO_VERSION >= ESP_ARDUINO_VERSION_VAL(2, 0, 0)
+#include "esp32/rom/rtc.h"
+#else
 #include <rom/rtc.h>
+#endif  // ESP_ARDUINO_VERSION
 
 #include "../M5Stack.h"
-#include "esp32/rom/rtc.h"
-
 
 // ================ Power IC IP5306 ===================
 #define IP5306_ADDR         (117)  // 0x75
@@ -74,7 +82,8 @@
 
 extern M5Stack M5;
 
-POWER::POWER() {}
+POWER::POWER() {
+}
 
 void POWER::begin() {
     uint8_t data;
@@ -310,9 +319,13 @@ int8_t POWER::getBatteryLevel() {
     return -1;
 }
 
-void POWER::setWakeupButton(uint8_t button) { _wakeupPin = button; }
+void POWER::setWakeupButton(uint8_t button) {
+    _wakeupPin = button;
+}
 
-void POWER::reset() { esp_restart(); }
+void POWER::reset() {
+    esp_restart();
+}
 
 bool POWER::isResetbySoftware() {
     RESET_REASON reset_reason = rtc_get_reset_reason(0);

@@ -18,15 +18,16 @@
 // Only define one driver, the other ones must be commented out
 #define ILI9341_DRIVER
 //#define ST7735_DRIVER      // Define additional parameters below for this
-//display #define ILI9163_DRIVER     // Define additional parameters below for
-//this display #define S6D02A1_DRIVER #define RPI_ILI9486_DRIVER // 20MHz
-//maximum SPI #define HX8357D_DRIVER #define ILI9481_DRIVER #define
-//ILI9486_DRIVER #define ILI9488_DRIVER     // WARNING: Do not connect ILI9488
-//display SDO to MISO if other devices share the SPI bus (TFT SDO does NOT
-//tristate when CS is high) #define ST7789_DRIVER      // Full configuration
-//option, define additional parameters below for this display #define
-//ST7789_2_DRIVER    // Minimal configuration option, define additional
-//parameters below for this display #define R61581_DRIVER #define RM68140_DRIVER
+// display #define ILI9163_DRIVER     // Define additional parameters below for
+// this display #define S6D02A1_DRIVER #define RPI_ILI9486_DRIVER // 20MHz
+// maximum SPI #define HX8357D_DRIVER #define ILI9481_DRIVER #define
+// ILI9486_DRIVER #define ILI9488_DRIVER     // WARNING: Do not connect ILI9488
+// display SDO to MISO if other devices share the SPI bus (TFT SDO does NOT
+// tristate when CS is high) #define ST7789_DRIVER      // Full configuration
+// option, define additional parameters below for this display #define
+// ST7789_2_DRIVER    // Minimal configuration option, define additional
+// parameters below for this display #define R61581_DRIVER #define
+// RM68140_DRIVER
 
 #include "ILI9341_Defines.h"
 #define TFT_DRIVER 0x9341
@@ -132,11 +133,11 @@
 //#define TFT_CS   PIN_D8  // Chip select control pin D8
 //#define TFT_DC   PIN_D3  // Data Command control pin
 //#define TFT_RST  PIN_D4  // Reset pin (could connect to NodeMCU RST, see next
-//line) #define TFT_RST  -1    // Set TFT_RST to -1 if the display RESET is
-//connected to NodeMCU RST or 3.3V
+// line) #define TFT_RST  -1    // Set TFT_RST to -1 if the display RESET is
+// connected to NodeMCU RST or 3.3V
 
 //#define TFT_BL PIN_D1  // LED back-light (only for ST7789 with backlight
-//control pin)
+// control pin)
 
 //#define TOUCH_CS PIN_D2     // Chip select pin (T_CS) of touch screen
 
@@ -158,8 +159,8 @@
 //#define TFT_CS   PIN_D3
 //#define TFT_DC   PIN_D5  // Data Command control pin
 //#define TFT_RST  PIN_D4  // Reset pin (could connect to NodeMCU RST, see next
-//line) #define TFT_RST  -1  // Set TFT_RST to -1 if the display RESET is
-//connected to NodeMCU RST or 3.3V
+// line) #define TFT_RST  -1  // Set TFT_RST to -1 if the display RESET is
+// connected to NodeMCU RST or 3.3V
 
 // ###### EDIT THE PIN NUMBERS IN THE LINES FOLLOWING TO SUIT YOUR ESP32 SETUP
 // ######
@@ -174,10 +175,10 @@
 //#define TFT_DC    2  // Data Command control pin
 //#define TFT_RST   4  // Reset pin (could connect to RST pin)
 //#define TFT_RST  -1  // Set TFT_RST to -1 if display RESET is connected to
-//ESP32 board RST
+// ESP32 board RST
 
 //#define TFT_BL   32  // LED back-light (only for ST7789 with backlight control
-//pin)
+// pin)
 
 //#define TOUCH_CS 21     // Chip select pin (T_CS) of touch screen
 
@@ -207,10 +208,10 @@
 // The ESP32 and TFT the pins used for testing are:
 //#define TFT_CS   33  // Chip select control pin (library pulls permanently low
 //#define TFT_DC   15  // Data Command control pin - must use a pin in the range
-//0-31 #define TFT_RST  32  // Reset pin, toggles on startup
+// 0-31 #define TFT_RST  32  // Reset pin, toggles on startup
 
 //#define TFT_WR    4  // Write strobe control pin - must use a pin in the range
-//0-31 #define TFT_RD    2  // Read strobe control pin
+// 0-31 #define TFT_RD    2  // Read strobe control pin
 
 //#define TFT_D0   12  // Must use pins in the range 0-31 for the data bus
 //#define TFT_D1   13  // so a single register write sets/clears all bits.
@@ -245,7 +246,7 @@
 #define LOAD_FONT8  // Font 8. Large 75 pixel font needs ~3256 bytes in FLASH,
                     // only characters 1234567890:-.
 //#define LOAD_FONT8N // Font 8. Alternative to Font 8 above, slightly narrower,
-//so 3 digits fit a 160 pixel TFT
+// so 3 digits fit a 160 pixel TFT
 #define LOAD_GFXFF  // FreeFonts. Include access to the 48 Adafruit_GFX free
                     // fonts FF1 to FF48 and custom fonts
 

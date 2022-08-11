@@ -165,4 +165,5 @@ void printString(unsigned char *str) {
     while (*str) termPutchar(*str++);
 }
 
-void loop() {}
+void loop() {
+}

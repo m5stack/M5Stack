@@ -42,6 +42,8 @@ void PowerClass::adaptChargeMode() {
  * Return battery level (0-100%)
  * (-1 if cannot communicate with the controller)
  */
-int8_t PowerClass::getBatteryLevel() { return M5.Power.getBatteryLevel(); }
+int8_t PowerClass::getBatteryLevel() {
+    return M5.Power.getBatteryLevel();
+}
 
 PowerClass Power;

@@ -60,7 +60,8 @@ class DRFZigbee {
               main_res1(0xa605),
               preset_res0(0xddcc),
               preset_res1(0xa605),
-              res3(0x01) {}
+              res3(0x01) {
+        }
     } zigbee_arg_t;
 
     typedef struct reviceData {
@@ -96,16 +97,21 @@ class DRFZigbee {
               routerLevel(__routerLevel),
               type{__type},
               parentAddr(__parentAddr),
-              rssi(__rssi) {}
+              rssi(__rssi) {
+        }
     } node_t;
 
    private:
     HardwareSerial *_uartp = nullptr;
 
    public:
-    DRFZigbee(/* args */) {}
-    ~DRFZigbee() {}
-    void begin(HardwareSerial &uart) { _uartp = &uart; }
+    DRFZigbee(/* args */) {
+    }
+    ~DRFZigbee() {
+    }
+    void begin(HardwareSerial &uart) {
+        _uartp = &uart;
+    }
 
     void sendData(uint8_t cmd, const std::initializer_list<uint8_t> args);
 

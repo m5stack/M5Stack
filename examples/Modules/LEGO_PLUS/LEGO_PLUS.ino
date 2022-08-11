@@ -136,4 +136,6 @@ void setup() {
     }
 }
 
-void loop() { motor_demo(); }
+void loop() {
+    motor_demo();
+}

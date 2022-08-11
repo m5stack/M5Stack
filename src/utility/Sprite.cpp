@@ -121,7 +121,7 @@ void *TFT_eSprite::callocSprite(int16_t w, int16_t h, uint8_t frames) {
     else  // Must be 1 bpp
     {
         //_dwidth   Display width+height in pixels always in rotation 0
-        //orientation _dheight  Not swapped for sprite rotations
+        // orientation _dheight  Not swapped for sprite rotations
         // Note: for 1bpp _iwidth and _iheight are swapped during Sprite
         // rotations
 
@@ -240,13 +240,17 @@ void TFT_eSprite::setPivot(int16_t x, int16_t y) {
 ** Function name:           getPivotX
 ** Description:             Get the x pivot position
 ***************************************************************************************/
-int16_t TFT_eSprite::getPivotX(void) { return _xpivot; }
+int16_t TFT_eSprite::getPivotX(void) {
+    return _xpivot;
+}
 
 /***************************************************************************************
 ** Function name:           getPivotY
 ** Description:             Get the y pivot position
 ***************************************************************************************/
-int16_t TFT_eSprite::getPivotY(void) { return _ypivot; }
+int16_t TFT_eSprite::getPivotY(void) {
+    return _ypivot;
+}
 
 /***************************************************************************************
 ** Function name:           pushRotated
@@ -703,7 +707,7 @@ void TFT_eSprite::pushImage(int32_t x, int32_t y, int32_t w, int32_t h,
             y          = _dheight - tx - 1;
         }
         // Plot a 1bpp image into a 1bpp Sprite
-        const uint8_t* pdata = (const uint8_t*)data;
+        const uint8_t *pdata = (const uint8_t *)data;
         uint32_t ww          = (w + 7) & 0xFFF8;
         for (int32_t yp = 0; yp < h; yp++) {
             for (uint32_t xp = 0; xp < ww; xp += 8) {
@@ -723,13 +727,17 @@ void TFT_eSprite::pushImage(int32_t x, int32_t y, int32_t w, int32_t h,
 ** Description:             Used by 16 bit pushImage() to swap byte order in
 *colours
 ***************************************************************************************/
-void TFT_eSprite::setSwapBytes(bool swap) { _iswapBytes = swap; }
+void TFT_eSprite::setSwapBytes(bool swap) {
+    _iswapBytes = swap;
+}
 
 /***************************************************************************************
 ** Function name:           getSwapBytes
 ** Description:             Return the swap byte order for colours
 ***************************************************************************************/
-bool TFT_eSprite::getSwapBytes(void) { return _iswapBytes; }
+bool TFT_eSprite::getSwapBytes(void) {
+    return _iswapBytes;
+}
 
 /***************************************************************************************
 ** Function name:           setWindow
@@ -960,7 +968,9 @@ void TFT_eSprite::scroll(int16_t dx, int16_t dy) {
 ** Function name:           fillSprite
 ** Description:             Fill the whole sprite with defined colour
 *************************************************************************************x*/
-void TFT_eSprite::fillScreen(uint32_t color) { fillSprite(color); }
+void TFT_eSprite::fillScreen(uint32_t color) {
+    fillSprite(color);
+}
 
 void TFT_eSprite::fillSprite(uint32_t color) {
     if (!_created) return;
@@ -1043,7 +1053,9 @@ void TFT_eSprite::setRotation(uint8_t rotation) {
 ** Description:             Get rotation for 1bpp sprite
 *************************************************************************************x*/
 
-uint8_t TFT_eSprite::getRotation(void) { return _rotation; }
+uint8_t TFT_eSprite::getRotation(void) {
+    return _rotation;
+}
 
 /***************************************************************************************
 ** Function name:           drawPixel

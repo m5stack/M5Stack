@@ -53,7 +53,8 @@ WebServer::WebServer(IPAddress addr, int port)
       _headerKeysCount(0),
       _currentHeaders(0),
       _contentLength(0),
-      _chunked(false) {}
+      _chunked(false) {
+}
 
 WebServer::WebServer(int port)
     : _server(port),
@@ -69,7 +70,8 @@ WebServer::WebServer(int port)
       _headerKeysCount(0),
       _currentHeaders(0),
       _contentLength(0),
-      _chunked(false) {}
+      _chunked(false) {
+}
 
 WebServer::~WebServer() {
     if (_currentHeaders) delete[] _currentHeaders;
@@ -227,9 +229,13 @@ void WebServer::handleClient() {
     }
 }
 
-void WebServer::close() { _server.end(); }
+void WebServer::close() {
+    _server.end();
+}
 
-void WebServer::stop() { close(); }
+void WebServer::stop() {
+    close();
+}
 
 void WebServer::sendHeader(const String& name, const String& value,
                            bool first) {
@@ -378,7 +384,9 @@ String WebServer::argName(int i) {
     return String();
 }
 
-int WebServer::args() { return _currentArgCount; }
+int WebServer::args() {
+    return _currentArgCount;
+}
 
 bool WebServer::hasArg(String name) {
     for (int i = 0; i < _currentArgCount; ++i) {
@@ -416,7 +424,9 @@ String WebServer::headerName(int i) {
     return String();
 }
 
-int WebServer::headers() { return _headerKeysCount; }
+int WebServer::headers() {
+    return _headerKeysCount;
+}
 
 bool WebServer::hasHeader(String name) {
     for (int i = 0; i < _headerKeysCount; ++i) {
@@ -427,11 +437,17 @@ bool WebServer::hasHeader(String name) {
     return false;
 }
 
-String WebServer::hostHeader() { return _hostHeader; }
+String WebServer::hostHeader() {
+    return _hostHeader;
+}
 
-void WebServer::onFileUpload(THandlerFunction fn) { _fileUploadHandler = fn; }
+void WebServer::onFileUpload(THandlerFunction fn) {
+    _fileUploadHandler = fn;
+}
 
-void WebServer::onNotFound(THandlerFunction fn) { _notFoundHandler = fn; }
+void WebServer::onNotFound(THandlerFunction fn) {
+    _notFoundHandler = fn;
+}
 
 void WebServer::_handleRequest() {
     bool handled = false;
