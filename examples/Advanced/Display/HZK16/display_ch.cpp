@@ -25,7 +25,9 @@ DisplayCh::DisplayCh() {
 
 ***************************************************************************************/
 
-void DisplayCh::setTextWrap(boolean w) { textwrap = w; }
+void DisplayCh::setTextWrap(boolean w) {
+    textwrap = w;
+}
 /***************************************************************************************
 
 ** Function name:           setTextSize

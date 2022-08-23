@@ -6,8 +6,8 @@
 * Visit for more information: https://docs.m5stack.com/en/unit/gesture
 * 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/gesture
 *
-* Describe: GESTURE.  手势传感器
-* Date: 2021/11/17
+* Product: GESTURE.  手势传感器
+* Date: 2022/8/17
 *******************************************************************************
   Please connect to Port A (G21, G22)
   请连接端口A (G21, G22)
@@ -17,9 +17,9 @@
   https://github.com/ouki-wang/DFRobot_PAJ7620U2
 */
 
-#include <DFRobot_PAJ7620U2.h>
-#include <M5GFX.h>
 #include <M5Stack.h>
+#include <M5GFX.h>
+#include <DFRobot_PAJ7620U2.h>
 
 M5GFX display;
 M5Canvas canvas(&display);

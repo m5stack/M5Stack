@@ -29,7 +29,9 @@ class DisplayCh {
 
     // Highlight the text (Once set to be true, the text background will not be
     // transparent any more)
-    inline void highlight(bool isHighlight) { highlighted = isHighlight; }
+    inline void highlight(bool isHighlight) {
+        highlighted = isHighlight;
+    }
     // Set highlight color
     inline void setHighlightColor(uint16_t color) {
         highlightcolor = color;
@@ -42,10 +44,14 @@ class DisplayCh {
     inline void setTransparentBgColor(bool isTransparent) {
         istransparent = isTransparent;
     }
-    inline bool isTransparentBg() { return istransparent; }
+    inline bool isTransparentBg() {
+        return istransparent;
+    }
     bool initHzk16(boolean use, const char* HZK16Path = nullptr,
                    const char* ASC16Path = nullptr);
-    inline bool isHzk16Used() { return hzk16Used; }
+    inline bool isHzk16Used() {
+        return hzk16Used;
+    }
     void setTextWrap(boolean wrap);
     void writeHzkAsc(const char c);
     void writeHzkGbk(const char* c);

@@ -8,7 +8,7 @@ jobs:
       matrix:
         path:
           - check: './'    # path to include
-            exclude: '(Fonts|utility)'  # path to exclude
+            exclude: '(Fonts|utility|RFID)'  # path to exclude
           # - check: 'src'
           #   exclude: '(Fonts)' # Exclude file paths containing "Fonts"
           # - check: 'examples'

@@ -12,4 +12,5 @@ void setup(void) {
     // jpeg_div_t scale);
 }
 
-void loop() {}
+void loop() {
+}
