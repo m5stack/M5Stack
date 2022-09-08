@@ -111,18 +111,14 @@
 #include "M5Display.h"
 #include "SD.h"
 #include "gitTagVersion.h"
+#include "IMU.h"
 #include "utility/Button.h"
 #include "utility/CommUtil.h"
 #include "utility/Config.h"
 #include "utility/Power.h"
 #include "utility/Speaker.h"
-
-#if defined(M5STACK_MPU6886) || defined(M5STACK_MPU9250) || \
-    defined(M5STACK_MPU6050)
 #include "utility/MPU6886.h"
-#elif defined M5STACK_200Q
 #include "utility/SH200Q.h"
-#endif
 
 class M5Stack {
    public:
@@ -130,6 +126,12 @@ class M5Stack {
     void begin(bool LCDEnable = true, bool SDEnable = true,
                bool SerialEnable = true, bool I2CEnable = false);
     void update();
+
+    // LCD
+    M5Display Lcd = M5Display();
+
+    // Power
+    POWER Power;
 
 // Button API
 #define DEBOUNCE_MS 10
@@ -140,25 +142,16 @@ class M5Stack {
     // SPEAKER
     SPEAKER Speaker;
 
-    // LCD
-    M5Display Lcd = M5Display();
-
-    // Power
-    POWER Power;
-
     // UART
     // HardwareSerial Serial0 = HardwareSerial(0);
     // HardwareSerial Serial2 = HardwareSerial(2);
 
-#if defined(M5STACK_MPU6886) || defined(M5STACK_MPU9250) || \
-    defined(M5STACK_MPU6050)
-    MPU6886 IMU = MPU6886();
-#elif defined M5STACK_200Q
-    SH200Q IMU = SH200Q();
-#endif
-
     // I2C
+    IMU Imu;
     CommUtil I2C = CommUtil();
+
+    MPU6886 Mpu6886;
+    SH200Q Sh200Q;
 
     /**
      * Function has been move to Power class.(for compatibility)
@@ -173,8 +166,14 @@ class M5Stack {
 };
 
 extern M5Stack M5;
-#define m5  M5
-#define lcd Lcd
+#define m5      M5
+#define lcd     Lcd
+#define imu     Imu
+#define IMU     Imu
+#define MPU6886 Mpu6886
+#define mpu6886 Mpu6886
+#define SH200Q  Sh200Q
+#define sh200q  Sh200Q
 #else
 #error "This library only supports boards with ESP32 processor."
 #endif

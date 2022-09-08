@@ -3,20 +3,32 @@
 #include <Arduino.h>
 #include <math.h>
 
-#include "../M5Stack.h"
-#include "MahonyAHRS.h"
-
 SH200Q::SH200Q() {
 }
 
 void SH200Q::I2C_Read_NBytes(uint8_t driver_Addr, uint8_t start_Addr,
                              uint8_t number_Bytes, uint8_t* read_Buffer) {
-    M5.I2C.readBytes(driver_Addr, start_Addr, number_Bytes, read_Buffer);
+    Wire.beginTransmission(driver_Addr);
+    Wire.write(start_Addr);
+    Wire.endTransmission();
+    uint8_t i = 0;
+    Wire.requestFrom(driver_Addr, number_Bytes);
+    // byte buf = Wire1.read();
+    //*read_Buffer = buf;
+    //! Put read results in the Rx buffer
+    while (Wire.available()) {
+        read_Buffer[i++] = Wire1.read();
+    }
 }
 
 void SH200Q::I2C_Write_NBytes(uint8_t driver_Addr, uint8_t start_Addr,
                               uint8_t number_Bytes, uint8_t* write_Buffer) {
-    M5.I2C.writeBytes(driver_Addr, start_Addr, write_Buffer, number_Bytes);
+    Wire.beginTransmission(driver_Addr);
+    Wire.write(start_Addr);
+    Wire.write(*write_Buffer);
+    Wire.endTransmission();
+    // Serial.printf("I2C Write OP, ADDR: 0x%02x, ADS: 0x%02x, NumBytes: %u,
+    // Data: 0x%02x\n\r", driver_Addr, start_Addr, number_Bytes, *write_Buffer);
 }
 
 void SH200Q::sh200i_ADCReset(void) {

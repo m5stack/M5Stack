@@ -4,6 +4,8 @@
 #include <Arduino.h>
 #include <Wire.h>
 
+#include "MahonyAHRS.h"
+
 #define SH200I_ADDRESS     0x6C  // 7bit i2c address
 #define SH200I_WHOAMI      0x30
 #define SH200I_ACC_CONFIG  0x0E

@@ -10,7 +10,9 @@ English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_starte
 
 * **For the Detailed documentation of Basic, please [Click here](https://docs.m5stack.com/en/core/basic_v2.6)**
 
-* **In order to buy Basic, please [Click here](https://shop.m5stack.com/collections/m5-controllers/products/esp32-basic-core-iot-development-kit-v2-6)**
+* **In order to buy Gray, please [Click here](https://shop.m5stack.com/products/grey-development-core)**
+
+* **In order to buy Basic, please [Click here](https://shop.m5stack.com/products/esp32-basic-core-iot-development-kit-v2-6)**
 
 *We have several master M5Cores with different configurations, this is the difference between them [Compared](https://docs.m5stack.com/en/products_selector).*
 

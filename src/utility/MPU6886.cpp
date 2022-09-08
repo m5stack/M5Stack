@@ -3,20 +3,29 @@
 #include <Arduino.h>
 #include <math.h>
 
-#include "../M5Stack.h"
-#include "MahonyAHRS.h"
-
 MPU6886::MPU6886() {
 }
 
 void MPU6886::I2C_Read_NBytes(uint8_t driver_Addr, uint8_t start_Addr,
                               uint8_t number_Bytes, uint8_t* read_Buffer) {
-    M5.I2C.readBytes(driver_Addr, start_Addr, number_Bytes, read_Buffer);
+    Wire.beginTransmission(driver_Addr);
+    Wire.write(start_Addr);
+    Wire.endTransmission(false);
+    uint8_t i = 0;
+    Wire.requestFrom(driver_Addr, number_Bytes);
+
+    //! Put read results in the Rx buffer
+    while (Wire.available()) {
+        read_Buffer[i++] = Wire.read();
+    }
 }
 
 void MPU6886::I2C_Write_NBytes(uint8_t driver_Addr, uint8_t start_Addr,
                                uint8_t number_Bytes, uint8_t* write_Buffer) {
-    M5.I2C.writeBytes(driver_Addr, start_Addr, write_Buffer, number_Bytes);
+    Wire.beginTransmission(driver_Addr);
+    Wire.write(start_Addr);
+    Wire.write(*write_Buffer);
+    Wire.endTransmission();
 }
 
 int MPU6886::Init(void) {
@@ -113,10 +122,10 @@ void MPU6886::getGyroAdc(int16_t* gx, int16_t* gy, int16_t* gz) {
 }
 
 void MPU6886::getTempAdc(int16_t* t) {
-    uint8_t buf[2];
-    I2C_Read_NBytes(MPU6886_ADDRESS, MPU6886_TEMP_OUT_H, 2, buf);
+    uint8_t buf[14];
+    I2C_Read_NBytes(MPU6886_ADDRESS, MPU6886_TEMP_OUT_H, 14, buf);
 
-    *t = ((uint16_t)buf[0] << 8) | buf[1];
+    *t = ((uint16_t)buf[6] << 8) | buf[7];
 }
 
 //!俯仰，航向，横滚: pitch，yaw，roll，指三维空间中飞行器的旋转状态。
