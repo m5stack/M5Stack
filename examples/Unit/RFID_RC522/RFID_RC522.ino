@@ -1,69 +1,48 @@
 /*
-    Description: Use the RFID Unit to read the Fudan card ID and display the ID on the screen.
+*******************************************************************************
+* Copyright (c) 2022 by M5Stack
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core 示例源代码
+* Visit for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
+*
+* Describe: RFID.
+* Date: 2021/8/19
+*******************************************************************************
+  Please connect to Port A(22、21),Use the RFID Unit to read the Fudan card ID
+and display the ID on the screen. 请连接端口A(22、21),使用RFID Unit
+读取ID卡并在屏幕上显示。
 */
-#include <Wire.h>
-#include "MFRC522_I2C.h"
+
 #include <M5Stack.h>
 
-// 0x28 is i2c address on SDA. Check your address with i2cscanner if not match.
-MFRC522 mfrc522(0x28);   // Create MFRC522 instance.
+#include "MFRC522_I2C.h"
+
+MFRC522 mfrc522(0x28);  // Create MFRC522 instance.  创建MFRC522实例
 
 void setup() {
-  M5.begin();
-  M5.Power.begin();
-  M5.Lcd.fillScreen( BLACK );
-  M5.Lcd.setCursor(0, 0);
-  M5.Lcd.setTextColor(YELLOW);  
-  M5.Lcd.setTextSize(2);
+    M5.begin();             // Init M5Stack.  初始化M5Stack
+    M5.Power.begin();       // Init power  初始化电源模块
+    M5.lcd.setTextSize(2);  // Set the text size to 2.  设置文字大小为2
+    M5.Lcd.println("MFRC522 Test");
+    Wire.begin();  // Wire init, adding the I2C bus.  Wire初始化, 加入i2c总线
 
-  M5.Lcd.fillScreen( BLACK );
-  M5.Lcd.setCursor(0, 0);
-  M5.Lcd.println("M5StackFire MFRC522");
-  Serial.begin(115200);           // Initialize serial communications with the PC
-  Wire.begin();                   // Initialize I2C
-  
-  mfrc522.PCD_Init();             // Init MFRC522
-  ShowReaderDetails();            // Show details of PCD - MFRC522 Card Reader details
-  Serial.println(F("Scan PICC to see UID, type, and data blocks..."));
-  M5.Lcd.println("Scan PICC to see UID, type, and data blocks...");
+    mfrc522.PCD_Init();  // Init MFRC522.  初始化 MFRC522
+    M5.Lcd.println("Please put the card\n\nUID:");
 }
 
 void loop() {
-  // Look for new cards, and select one if present
-  if ( ! mfrc522.PICC_IsNewCardPresent() || ! mfrc522.PICC_ReadCardSerial() ) {
-    delay(50);
-    return;
-  }
-  
-  // Now a card is selected. The UID and SAK is in mfrc522.uid.
-  
-  // Dump UID
-  Serial.print(F("Card UID:"));
-  M5.Lcd.println(" ");
-  for (byte i = 0; i < mfrc522.uid.size; i++) {
-    Serial.print(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " ");
-    Serial.print(mfrc522.uid.uidByte[i], HEX);
-    M5.Lcd.print(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " ");
-    M5.Lcd.print(mfrc522.uid.uidByte[i], HEX);
-  } 
-  Serial.println();
-  
-}
-
-void ShowReaderDetails() {
-  // Get the MFRC522 software version
-  byte v = mfrc522.PCD_ReadRegister(mfrc522.VersionReg);
-  Serial.print(F("MFRC522 Software Version: 0x"));
-  Serial.print(v, HEX);
-  if (v == 0x91)
-    Serial.print(F(" = v1.0"));
-  else if (v == 0x92)
-    Serial.print(F(" = v2.0"));
-  else
-    Serial.print(F(" (unknown)"));
-  Serial.println("");
-  // When 0x00 or 0xFF is returned, communication probably failed
-  if ((v == 0x00) || (v == 0xFF)) {
-    Serial.println(F("WARNING: Communication failure, is the MFRC522 properly connected?"));
-  }
+    M5.Lcd.setCursor(40, 47);
+    if (!mfrc522.PICC_IsNewCardPresent() ||
+        !mfrc522.PICC_ReadCardSerial()) {  //如果没有读取到新的卡片
+        delay(200);
+        return;
+    }
+    M5.Lcd.fillRect(42, 47, 320, 20, BLACK);
+    for (byte i = 0; i < mfrc522.uid.size;
+         i++) {  // Output the stored UID data.  将存储的UID数据输出
+        M5.Lcd.print(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " ");
+        M5.Lcd.print(mfrc522.uid.uidByte[i], HEX);
+    }
+    M5.Lcd.println("");
 }

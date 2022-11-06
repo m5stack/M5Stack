@@ -3,11 +3,9 @@
 TFT_eSprite TerminalBuff = TFT_eSprite(&M5.Lcd);
 TFTTerminal terminal(&TerminalBuff);
 
-String waitRevice()
-{
+String waitRevice() {
     String recvStr;
-    do
-    {
+    do {
         recvStr = Serial2.readStringUntil('\n');
     } while (recvStr.length() == 0);
     Serial.println(recvStr);
@@ -15,26 +13,21 @@ String waitRevice()
     return recvStr;
 }
 
-void sendATCMD(String cmdStr)
-{
+void sendATCMD(String cmdStr) {
     Serial2.print(cmdStr);
     delay(100);
 }
 
-int sendATCMDAndRevice(String cmdStr)
-{
+int sendATCMDAndRevice(String cmdStr) {
     delay(1000);
     Serial2.print(cmdStr);
     delay(100);
     waitRevice();
     String recvStr = waitRevice();
     delay(100);
-    if (recvStr.indexOf("OK") != -1)
-    {
+    if (recvStr.indexOf("OK") != -1) {
         return 0;
-    }
-    else
-    {
+    } else {
         return -1;
     }
 }
@@ -57,8 +50,8 @@ void GET() {
     sendATCMDAndRevice("AT+HTTPREAD\r\n");
     delay(1000);
     String recvStr;
-    while(Serial2.available()){
-      recvStr+= Serial2.readString();
+    while (Serial2.available()) {
+        recvStr += Serial2.readString();
     }
     Serial.println(recvStr);
     terminal.println(recvStr);
@@ -77,8 +70,10 @@ void POST() {
     sendATCMDAndRevice("AT+SAPBR=1,1\r\n");
     sendATCMDAndRevice("AT+HTTPINIT\r\n");
     sendATCMDAndRevice("AT+HTTPPARA=\"CID\",1\r\n");
-    sendATCMDAndRevice("AT+HTTPPARA=\"CONTENT\",\"application/x-www-form-urlencoded\"\r\n");
-    sendATCMDAndRevice("AT+HTTPPARA=\"URL\",\"http://header.json-json.com/\"\r\n");
+    sendATCMDAndRevice(
+        "AT+HTTPPARA=\"CONTENT\",\"application/x-www-form-urlencoded\"\r\n");
+    sendATCMDAndRevice(
+        "AT+HTTPPARA=\"URL\",\"http://header.json-json.com/\"\r\n");
     sendATCMD("AT+HTTPDATA=10,3000\r\n");
     sendATCMD("M5STACK,GO\r\n");
     sendATCMDAndRevice("AT+HTTPACTION=1\r\n");
@@ -86,16 +81,15 @@ void POST() {
     sendATCMDAndRevice("AT+HTTPREAD\r\n");
     delay(1000);
     String recvStr;
-    while(Serial2.available()){
-      recvStr+= Serial2.readString();
+    while (Serial2.available()) {
+        recvStr += Serial2.readString();
     }
     Serial.println(recvStr);
     terminal.println(recvStr);
     sendATCMDAndRevice("AT+HTTPTERM\r\n");
 }
 
-void setup()
-{
+void setup() {
     M5.begin();
     Serial2.begin(115200, SERIAL_8N1, 16, 17);
     Serial2.flush();
@@ -107,25 +101,22 @@ void setup()
     M5.Lcd.drawString("SIM800L HTTP GET/POST", 160, 10, 4);
     M5.Lcd.setTextDatum(TL_DATUM);
     M5.Lcd.setTextColor(TFT_WHITE);
-    TerminalBuff.createSprite(240,200);
-    terminal.setGeometry(20,55,300,200);
+    TerminalBuff.createSprite(240, 200);
+    terminal.setGeometry(20, 55, 300, 200);
     terminal.setFontsize(1);
     terminal.println("Press Btn A GET Request");
     terminal.println("Press Btn B POST Request");
 };
 
-
-void loop()
-{
-  M5.update();
-  if(M5.BtnA.wasPressed()) GET();
-  if(M5.BtnB.wasPressed()) POST();
-  if(M5.BtnC.wasPressed()) {
-    String recvStr;
-    recvStr = Serial2.readStringUntil('\n');
-    Serial.println(recvStr);
-    terminal.println(recvStr);
-  };
-  delay(10);
+void loop() {
+    M5.update();
+    if (M5.BtnA.wasPressed()) GET();
+    if (M5.BtnB.wasPressed()) POST();
+    if (M5.BtnC.wasPressed()) {
+        String recvStr;
+        recvStr = Serial2.readStringUntil('\n');
+        Serial.println(recvStr);
+        terminal.println(recvStr);
+    };
+    delay(10);
 }
-

@@ -1,70 +1,34 @@
-﻿# M5Stack 库
+﻿# M5Stack Library
 
 [English](../README.md) | 中文 | [日本語](getting_started_ja.md)
 
-## 1. 上手指南
+<img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/gray/gray_01.webp" alt="gray" width="350" height="350">
 
-*1.For MacOS*
+<img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/basic/basic_01.webp" alt="basic" width="350" height="350">
 
-https://docs.m5stack.com/#/zh_CN/quick_start/m5core/m5stack_core_get_started_Arduino_MacOS
+* **如果查看 Gray 的详细介绍文档，[点击这里](https://docs.m5stack.com/#/zh_CN/core/gray)**
 
-*2. For Windows*
+* **如果查看 Basic 的详细介绍文档，[点击这里](https://docs.m5stack.com/#/zh_CN/core/basic)**
 
-https://docs.m5stack.com/#/zh_CN/quick_start/m5core/m5stack_core_get_started_Arduino_Windows
+* **如果想要购买 Basic 的话，[点击这里](https://item.taobao.com/item.htm?spm=a1z10.5-c-s.w4002-22404213529.11.6b2349d8feN5U0&id=610634829528)**
 
-
-## 2. 例程
-
-https://github.com/m5stack/M5Stack/tree/master/examples
-
-## 3. API 参考
-
-https://github.com/m5stack/M5Stack/blob/master/src/M5Stack.h#L19
-
-https://docs.m5stack.com/#/zh_CN/api
-
-## 4. H/W 参考
-
-#### 管脚映射
-
-*我们有几款不同配置的主控 M5Cores，这是他们之间的[对比](https://github.com/m5stack/M5-Schematic/blob/master/Core/hardware_difference_between_cores.md).*
-
-**LCD & TF Card**
-
-*LCD 分辨率: 320x240*
-
-<table>
- <tr><td>ESP32 Chip</td><td>GPIO23</td><td>GPIO19</td><td>GPIO18</td><td>GPIO14</td><td>GPIO27</td><td>GPIO33</td><td>GPIO32</td><td>GPIO4</td></tr>
- <tr><td>ILI9341</td><td>/</td><td>MISO</td><td>CLK</td><td>CS</td><td>DC</td><td>RST</td><td>BL</td><td> </td></tr>
- <tr><td>TF Card</td><td>MOSI</td><td>MISO</td><td>CLK</td><td> </td><td> </td><td> </td><td> </td><td>CS</td></tr>
-
-</table>
-
-**Button & Speaker**
-
-<table>
- <tr><td>ESP32 Chip</td><td>GPIO39</td><td>GPIO38</td><td>GPIO37</td><td>GPIO25</td></tr>
- <tr><td>Button Pin</td><td>BUTTON A</td><td>BUTTON B</td><td>BUTTON C</td></tr>
- <tr><td>Speaker</td><td> </td><td> </td><td> </td><td>Speaker Pin</td></tr>
-</table>
-
-**GROVE A**
-
-<table>
- <tr><td>ESP32 Chip</td><td>GPIO22</td><td>GPIO21</td></tr>
- <tr><td>GROVE A</td><td>SCL</td><td>SDA</td></tr>
-</table>
+*我们有几款不同配置的主控 M5Cores，这是他们之间的[对比](https://docs.m5stack.com/zh_CN/products_selector).*
 
 
 ### M-BUS
 ![image](../docs/M-BUS.jpg)
 
-#### Note:
 
-* 如何安装 CP210x 串口驱动
+## 更多信息
 
-  https://docs.m5stack.com/#/zh_CN/related_documents/establish_serial_connection
+**UIFlow 快速上手**: [点击这里](https://docs.m5stack.com/zh_CN/quick_start/m5core/uiflow)
 
-* 如何升级 M5Stack 库
+**MicroPython API**: [点击这里](https://docs.m5stack.com/zh_CN/mpy/display/m5stack_lvgl)
 
-  https://docs.m5stack.com/#/zh_CN/related_documents/upgrade_m5stack_lib
+**Arduino IDE 环境搭建**: [点击这里](https://docs.m5stack.com/zh_CN/quick_start/m5core/arduino)
+
+**M5StickC Arduino API**: [点击这里](https://docs.m5stack.com/zh_CN/api/system)
+
+**Gray 引脚地图**: [点击这里](https://docs.m5stack.com/zh_CN/core/gray)
+
+**Basic 引脚地图**: [点击这里](https://docs.m5stack.com/zh_CN/core/basic)

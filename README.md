@@ -2,76 +2,45 @@
 
 English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_started_ja.md)
 
-Welcome to program with M5Stack Core
+<img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/gray/gray_01.webp" alt="gray" width="350" height="350">
 
-## 1. Get Started
+<img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/basic/basic_01.webp" alt="basic" width="350" height="350">
 
-#### Here is the article to get started
+* **For the Detailed documentation of Gray, please [Click here](https://docs.m5stack.com/en/core/gray)**
 
-*1.For MacOS*
+* **For the Detailed documentation of Basic, please [Click here](https://docs.m5stack.com/en/core/basic_v2.6)**
 
-https://docs.m5stack.com/#/en/quick_start/m5core/m5stack_core_get_started_Arduino_MacOS
+* **In order to buy Gray, please [Click here](https://shop.m5stack.com/products/grey-development-core)**
 
-*2. For Windows*
+* **In order to buy Basic, please [Click here](https://shop.m5stack.com/products/esp32-basic-core-iot-development-kit-v2-6)**
 
-https://docs.m5stack.com/#/en/quick_start/m5core/m5stack_core_get_started_Arduino_Windows
-
-
-## 2. Example
-
-https://github.com/m5stack/M5Stack/tree/master/examples
-
-## 3. API Reference
-
-https://github.com/m5stack/M5Stack/blob/master/src/M5Stack.h#L19
-
-https://docs.m5stack.com/#/en/api
-
-## 4. H/W Reference
-
-#### Pinout
-
-*We have several kinds of M5Cores, There is [their difference in schematic](https://github.com/m5stack/M5-Schematic/blob/master/Core/hardware_difference_between_cores.md).*
-
-**LCD & TF Card**
-
-*LCD Resolution: 320x240*
-
-<table>
- <tr><td>ESP32 Chip</td><td>GPIO23</td><td>GPIO19</td><td>GPIO18</td><td>GPIO14</td><td>GPIO27</td><td>GPIO33</td><td>GPIO32</td><td>GPIO4</td></tr>
- <tr><td>ILI9341</td><td>MOSI/MISO</td><td>/</td><td>CLK</td><td>CS</td><td>DC</td><td>RST</td><td>BL</td><td> </td></tr>
- <tr><td>TF Card</td><td>MOSI</td><td>MISO</td><td>CLK</td><td> </td><td> </td><td> </td><td> </td><td>CS</td></tr>
-
-</table>
-
-**Button & Speaker**
-
-<table>
- <tr><td>ESP32 Chip</td><td>GPIO39</td><td>GPIO38</td><td>GPIO37</td><td>GPIO25</td></tr>
- <tr><td>Button Pin</td><td>BUTTON A</td><td>BUTTON B</td><td>BUTTON C</td></tr>
- <tr><td>Speaker</td><td> </td><td> </td><td> </td><td>Speaker Pin</td></tr>
-</table>
-
-**GROVE A**
-
-<table>
- <tr><td>ESP32 Chip</td><td>GPIO22</td><td>GPIO21</td></tr>
- <tr><td>GROVE A</td><td>SCL</td><td>SDA</td></tr>
-</table>
-
+*We have several master M5Cores with different configurations, this is the difference between them [Compared](https://docs.m5stack.com/en/products_selector).*
 
 ### M-BUS
 ![image](docs/M-BUS.jpg)
 
-## 5. USER CASES
+## More Information
+
+**UIFlow Quick Start**: [Click Here](https://docs.m5stack.com/zh_CN/quick_start/m5core/uiflow)
+
+**MicroPython API**: [Click Here](https://docs.m5stack.com/zh_CN/mpy/display/m5stack_lvgl)
+
+**Arduino IDE Development**: [Click Here](https://docs.m5stack.com/zh_CN/quick_start/m5core/arduino)
+
+**M5StickC Arduino API**: [Click Here](https://docs.m5stack.com/zh_CN/api/system)
+
+**Gray PinMap**: [Click Here](https://docs.m5stack.com/zh_CN/core/gray)
+
+**Basic PinMap**: [Click Here](https://docs.m5stack.com/zh_CN/core/basic)
+
+
+## USER CASES
 
 * [M5Stack-SD-Updater](https://github.com/tobozo/M5Stack-SD-Updater) - Customizable menu system for M5Stack - loads apps from the Micro SD
   card
 
 * [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI)  - TFT library for the ESP8266 and ESP32 that supports different driver chips
 
-
-* [M5Widgets](https://github.com/Kongduino/M5Widgets) - Widgets for the M5Stack
 
 * [M5StackSAM](https://github.com/tomsuch/M5StackSAM) - Simple Applications Menu Arduino Library for M5Stack
 
@@ -123,18 +92,6 @@ https://docs.m5stack.com/#/en/api
 
 * [M5Stack-Thermal-Camera](https://github.com/hkoffer/M5Stack-Thermal-Camera-) - M5Stack Thermal Camera with AMG8833 thermal sensor
 
-* [M5Stack-3DPrintFiles](https://github.com/PartsandCircuits/M5Stack-3DPrintFiles) - Links to files for 3D printing custom case parts for the M5Stack
-
 * [truetype2gfx](https://github.com/ropg/truetype2gfx) - Converting fonts from TrueType to Adafruit GFX
 
 * [m5stack-onscreen-keyboard](https://github.com/yellowelise/m5stack-onscreen-keyboard) - Full size qwerty keyboard for M5Stack
-
-#### Note:
-
-* How to install USB driver for establishing serial port
-
-  https://docs.m5stack.com/#/en/related_documents/establish_serial_connection
-
-* How to upgrade M5Stack Libary
-
-  https://docs.m5stack.com/#/en/related_documents/upgrade_m5stack_lib

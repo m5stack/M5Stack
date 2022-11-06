@@ -24,97 +24,101 @@
  *
  */
 
-
 #ifndef M5Timer_H
-  #define M5Timer_H
+#define M5Timer_H
 
-  #include <functional>
-  #include <Arduino.h>
+#include <Arduino.h>
 
-  typedef std::function<void(void)> timer_callback;
+#include <functional>
 
-  class M5Timer {
-    public:
-      // maximum number of timers
-      const static int MAX_TIMERS = 10;
+typedef std::function<void(void)> timer_callback;
 
-      // setTimer() constants
-      const static int RUN_FOREVER = 0;
-      const static int RUN_ONCE = 1;
+class M5Timer {
+   public:
+    // maximum number of timers
+    const static int MAX_TIMERS = 10;
 
-      // constructor
-      M5Timer();
+    // setTimer() constants
+    const static int RUN_FOREVER = 0;
+    const static int RUN_ONCE    = 1;
 
-      // this function must be called inside loop()
-      void run();
+    // constructor
+    M5Timer();
 
-      // call function f every d milliseconds
-      int setInterval(long d, timer_callback f);
+    // this function must be called inside loop()
+    void run();
 
-      // call function f once after d milliseconds
-      int setTimeout(long d, timer_callback f);
+    // call function f every d milliseconds
+    int setInterval(long d, timer_callback f);
 
-      // call function f every d milliseconds for n times
-      int setTimer(long d, timer_callback f, int n);
+    // call function f once after d milliseconds
+    int setTimeout(long d, timer_callback f);
 
-      // destroy the specified timer
-      void deleteTimer(int numTimer);
+    // call function f every d milliseconds for n times
+    int setTimer(long d, timer_callback f, int n);
 
-      // restart the specified timer
-      void restartTimer(int numTimer);
+    // destroy the specified timer
+    void deleteTimer(int numTimer);
 
-      // returns true if the specified timer is enabled
-      boolean isEnabled(int numTimer);
+    // restart the specified timer
+    void restartTimer(int numTimer);
 
-      // enables the specified timer
-      void enable(int numTimer);
+    // returns true if the specified timer is enabled
+    boolean isEnabled(int numTimer);
 
-      // disables the specified timer
-      void disable(int numTimer);
+    // enables the specified timer
+    void enable(int numTimer);
 
-      // enables the specified timer if it's currently disabled,
-      // and vice-versa
-      void toggle(int numTimer);
+    // disables the specified timer
+    void disable(int numTimer);
 
-      // returns the number of used timers
-      int getNumTimers();
+    // enables the specified timer if it's currently disabled,
+    // and vice-versa
+    void toggle(int numTimer);
 
-      // returns the number of available timers
-      int getNumAvailableTimers() { return MAX_TIMERS - numTimers; };
+    // returns the number of used timers
+    int getNumTimers();
 
-    private:
-      // deferred call constants
-      const static int DEFCALL_DONTRUN = 0;   // don't call the callback function
-      const static int DEFCALL_RUNONLY = 1;   // call the callback function but don't delete the timer
-      const static int DEFCALL_RUNANDDEL = 2;  // call the callback function and delete the timer
+    // returns the number of available timers
+    int getNumAvailableTimers() {
+        return MAX_TIMERS - numTimers;
+    };
 
-      // find the first available slot
-      int findFirstFreeSlot();
+   private:
+    // deferred call constants
+    const static int DEFCALL_DONTRUN = 0;  // don't call the callback function
+    const static int DEFCALL_RUNONLY =
+        1;  // call the callback function but don't delete the timer
+    const static int DEFCALL_RUNANDDEL =
+        2;  // call the callback function and delete the timer
 
-      // value returned by the millis() function
-      // in the previous run() call
-      unsigned long prev_millis[MAX_TIMERS];
+    // find the first available slot
+    int findFirstFreeSlot();
 
-      // pointers to the callback functions
-      timer_callback callbacks[MAX_TIMERS];
+    // value returned by the millis() function
+    // in the previous run() call
+    unsigned long prev_millis[MAX_TIMERS];
 
-      // delay values
-      long delays[MAX_TIMERS];
+    // pointers to the callback functions
+    timer_callback callbacks[MAX_TIMERS];
 
-      // number of runs to be executed for each timer
-      int maxNumRuns[MAX_TIMERS];
+    // delay values
+    long delays[MAX_TIMERS];
 
-      // number of executed runs for each timer
-      int numRuns[MAX_TIMERS];
+    // number of runs to be executed for each timer
+    int maxNumRuns[MAX_TIMERS];
 
-      // which timers are enabled
-      boolean enabled[MAX_TIMERS];
+    // number of executed runs for each timer
+    int numRuns[MAX_TIMERS];
 
-      // deferred function call (sort of) - N.B.: this array is only used in run()
-      int toBeCalled[MAX_TIMERS];
+    // which timers are enabled
+    boolean enabled[MAX_TIMERS];
 
-      // actual number of timers in use
-      int numTimers;
-  };
+    // deferred function call (sort of) - N.B.: this array is only used in run()
+    int toBeCalled[MAX_TIMERS];
+
+    // actual number of timers in use
+    int numTimers;
+};
 
 #endif

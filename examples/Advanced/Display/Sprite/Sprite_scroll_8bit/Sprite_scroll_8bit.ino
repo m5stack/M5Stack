@@ -46,157 +46,151 @@
 
 #include <M5Stack.h>
 
-TFT_eSprite img = TFT_eSprite(&M5.Lcd);  // Create Sprite object "img" with pointer to "tft" object
-//                                       // the pointer is used by pushSprite() to push it onto the TFT
+TFT_eSprite img = TFT_eSprite(
+    &M5.Lcd);  // Create Sprite object "img" with pointer to "tft" object
+//                                       // the pointer is used by pushSprite()
+//                                       to push it onto the TFT
 
 // -------------------------------------------------------------------------
 // Setup
 // -------------------------------------------------------------------------
 void setup(void) {
-  M5.begin();
-  M5.Power.begin();
-  M5.Lcd.fillScreen(TFT_BLUE);
+    M5.begin();
+    M5.Power.begin();
+    M5.Lcd.fillScreen(TFT_BLUE);
 }
 
 // -------------------------------------------------------------------------
 // Main loop
 // -------------------------------------------------------------------------
 void loop() {
+    while (1) {
+        // Set colour depth of Sprite to 8 (or 16) bits
+        img.setColorDepth(8);
 
-  while (1)
-  {
-    // Set colour depth of Sprite to 8 (or 16) bits
-    img.setColorDepth(8);
-    
-    // Create the sprite and clear background to black
-    img.createSprite(IWIDTH, IHEIGHT);
-    //img.fillSprite(TFT_BLACK); // Optional here as we fill the sprite later anyway
+        // Create the sprite and clear background to black
+        img.createSprite(IWIDTH, IHEIGHT);
+        // img.fillSprite(TFT_BLACK); // Optional here as we fill the sprite
+        // later anyway
 
-    for (int pos = IWIDTH; pos > 0; pos--)
-    {
-      build_banner("Hello World", pos);
-      img.pushSprite(0, 0);
+        for (int pos = IWIDTH; pos > 0; pos--) {
+            build_banner("Hello World", pos);
+            img.pushSprite(0, 0);
 
-      build_banner("TFT_eSPI sprite" , pos);
-      img.pushSprite(0, 50);
+            build_banner("TFT_eSPI sprite", pos);
+            img.pushSprite(0, 50);
 
-      delay(WAIT);
+            delay(WAIT);
+        }
+
+        // Delete sprite to free up the memory
+        img.deleteSprite();
+
+        // Create a sprite of a different size
+        numberBox(random(100), 60, 100);
     }
-
-    // Delete sprite to free up the memory
-    img.deleteSprite();
-
-    // Create a sprite of a different size
-    numberBox(random(100), 60, 100);
-
-  }
 }
 
 // #########################################################################
 // Build the scrolling sprite image from scratch, draw text at x = xpos
 // #########################################################################
 
-void build_banner(String msg, int xpos)
-{
-  int h = IHEIGHT;
+void build_banner(String msg, int xpos) {
+    int h = IHEIGHT;
 
-  // We could just use fillSprite(color) but lets be a bit more creative...
+    // We could just use fillSprite(color) but lets be a bit more creative...
 
-  // Fill with rainbow stripes
-  while (h--) img.drawFastHLine(0, h, IWIDTH, rainbow(h * 4));
+    // Fill with rainbow stripes
+    while (h--) img.drawFastHLine(0, h, IWIDTH, rainbow(h * 4));
 
-  // Draw some graphics, the text will apear to scroll over these
-  img.fillRect  (IWIDTH / 2 - 20, IHEIGHT / 2 - 10, 40, 20, TFT_YELLOW);
-  img.fillCircle(IWIDTH / 2, IHEIGHT / 2, 10, TFT_ORANGE);
+    // Draw some graphics, the text will apear to scroll over these
+    img.fillRect(IWIDTH / 2 - 20, IHEIGHT / 2 - 10, 40, 20, TFT_YELLOW);
+    img.fillCircle(IWIDTH / 2, IHEIGHT / 2, 10, TFT_ORANGE);
 
-  // Now print text on top of the graphics
-  img.setTextSize(1);           // Font size scaling is x1
-  img.setTextFont(4);           // Font 4 selected
-  img.setTextColor(TFT_BLACK);  // Black text, no background colour
-  img.setTextWrap(false);       // Turn of wrap so we can print past end of sprite
+    // Now print text on top of the graphics
+    img.setTextSize(1);           // Font size scaling is x1
+    img.setTextFont(4);           // Font 4 selected
+    img.setTextColor(TFT_BLACK);  // Black text, no background colour
+    img.setTextWrap(false);  // Turn of wrap so we can print past end of sprite
 
-  // Need to print twice so text appears to wrap around at left and right edges
-  img.setCursor(xpos, 2);  // Print text at xpos
-  img.print(msg);
+    // Need to print twice so text appears to wrap around at left and right
+    // edges
+    img.setCursor(xpos, 2);  // Print text at xpos
+    img.print(msg);
 
-  img.setCursor(xpos - IWIDTH, 2); // Print text at xpos - sprite width
-  img.print(msg);
+    img.setCursor(xpos - IWIDTH, 2);  // Print text at xpos - sprite width
+    img.print(msg);
 }
 
 // #########################################################################
 // Create sprite, plot graphics in it, plot to screen, then delete sprite
 // #########################################################################
-void numberBox(int num, int x, int y)
-{
-  // Create a sprite 80 pixels wide, 50 high (8kbytes of RAM needed)
-  img.createSprite(80, 50);
+void numberBox(int num, int x, int y) {
+    // Create a sprite 80 pixels wide, 50 high (8kbytes of RAM needed)
+    img.createSprite(80, 50);
 
-  // Fill it with black
-  img.fillSprite(TFT_BLACK);
+    // Fill it with black
+    img.fillSprite(TFT_BLACK);
 
-  // Draw a backgorund of 2 filled triangles
-  img.fillTriangle(  0, 0,  0, 49, 40, 25, TFT_RED);
-  img.fillTriangle( 79, 0, 79, 49, 40, 25, TFT_DARKGREEN);
+    // Draw a backgorund of 2 filled triangles
+    img.fillTriangle(0, 0, 0, 49, 40, 25, TFT_RED);
+    img.fillTriangle(79, 0, 79, 49, 40, 25, TFT_DARKGREEN);
 
-  // Set the font parameters
-  img.setTextSize(1);           // Font size scaling is x1
-  img.setFreeFont(&FreeSerifBoldItalic24pt7b);  // Select free font
-  img.setTextColor(TFT_WHITE);  // White text, no background colour
+    // Set the font parameters
+    img.setTextSize(1);                           // Font size scaling is x1
+    img.setFreeFont(&FreeSerifBoldItalic24pt7b);  // Select free font
+    img.setTextColor(TFT_WHITE);  // White text, no background colour
 
-  // Set text coordinate datum to middle centre
-  img.setTextDatum(MC_DATUM);
+    // Set text coordinate datum to middle centre
+    img.setTextDatum(MC_DATUM);
 
-  // Draw the number in middle of 80 x 50 sprite
-  img.drawNumber(num, 40, 25);
+    // Draw the number in middle of 80 x 50 sprite
+    img.drawNumber(num, 40, 25);
 
-  // Push sprite to TFT screen CGRAM at coordinate x,y (top left corner)
-  img.pushSprite(x, y);
+    // Push sprite to TFT screen CGRAM at coordinate x,y (top left corner)
+    img.pushSprite(x, y);
 
-  // Delete sprite to free up the RAM
-  img.deleteSprite();
+    // Delete sprite to free up the RAM
+    img.deleteSprite();
 }
-
 
 // #########################################################################
 // Return a 16 bit rainbow colour
 // #########################################################################
-unsigned int rainbow(byte value)
-{
-  // Value is expected to be in range 0-127
-  // The value is converted to a spectrum colour from 0 = red through to 127 = blue
+unsigned int rainbow(byte value) {
+    // Value is expected to be in range 0-127
+    // The value is converted to a spectrum colour from 0 = red through to 127 =
+    // blue
 
-  byte red   = 0; // Red is the top 5 bits of a 16 bit colour value
-  byte green = 0;// Green is the middle 6 bits
-  byte blue  = 0; // Blue is the bottom 5 bits
+    byte red   = 0;  // Red is the top 5 bits of a 16 bit colour value
+    byte green = 0;  // Green is the middle 6 bits
+    byte blue  = 0;  // Blue is the bottom 5 bits
 
-  byte sector = value >> 5;
-  byte amplit = value & 0x1F;
+    byte sector = value >> 5;
+    byte amplit = value & 0x1F;
 
-  switch (sector)
-  {
-    case 0:
-      red   = 0x1F;
-      green = amplit;
-      blue  = 0;
-      break;
-    case 1:
-      red   = 0x1F - amplit;
-      green = 0x1F;
-      blue  = 0;
-      break;
-    case 2:
-      red   = 0;
-      green = 0x1F;
-      blue  = amplit;
-      break;
-    case 3:
-      red   = 0;
-      green = 0x1F - amplit;
-      blue  = 0x1F;
-      break;
-  }
+    switch (sector) {
+        case 0:
+            red   = 0x1F;
+            green = amplit;
+            blue  = 0;
+            break;
+        case 1:
+            red   = 0x1F - amplit;
+            green = 0x1F;
+            blue  = 0;
+            break;
+        case 2:
+            red   = 0;
+            green = 0x1F;
+            blue  = amplit;
+            break;
+        case 3:
+            red   = 0;
+            green = 0x1F - amplit;
+            blue  = 0x1F;
+            break;
+    }
 
-  return red << 11 | green << 6 | blue;
+    return red << 11 | green << 6 | blue;
 }
-
-

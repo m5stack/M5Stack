@@ -3,10 +3,11 @@
  * @Date: 2020-01-06 11:36:48
  * @LastEditTime : 2020-01-06 16:54:52
  * @Description: M5Stack project
- * @FilePath: /home/sakabin/Arduino/libraries/M5Stack/examples/Modules/Bala/imuCalibration.h
+ * @FilePath:
+ * /home/sakabin/Arduino/libraries/M5Stack/examples/Modules/Bala/imuCalibration.h
  */
-// #define M5STACK_MPU6050 
-#define M5STACK_MPU6886 
+// #define M5STACK_MPU6050
+#define M5STACK_MPU6886
 // #define M5STACK_200Q
 #include "M5Stack.h"
 

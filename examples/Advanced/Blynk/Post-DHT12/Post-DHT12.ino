@@ -22,13 +22,14 @@
     Value Display widget attached to Virtual Pin V5
  *************************************************************/
 
+#include <BlynkSimpleEsp32.h>
 #include <M5Stack.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
-#include <BlynkSimpleEsp32.h>
+#include <Wire.h>  //The DHT12 uses I2C comunication.
+
 #include "DHT12.h"
-#include <Wire.h> //The DHT12 uses I2C comunication.
-DHT12 dht12; //Preset scale CELSIUS and ID 0x5c.
+DHT12 dht12;  // Preset scale CELSIUS and ID 0x5c.
 
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
@@ -63,7 +64,7 @@ void setup() {
     M5.Power.begin();
     Wire.begin();
 
-    //Blynk start
+    // Blynk start
     Blynk.begin(auth, ssid, pass, "blynk.m5stack.com");
 
     // Setup a function to be called every second
@@ -72,8 +73,6 @@ void setup() {
 }
 
 void loop() {
-
-    Blynk.run();   
-    timer.run(); // Initiates BlynkTimer
+    Blynk.run();
+    timer.run();  // Initiates BlynkTimer
 }
-

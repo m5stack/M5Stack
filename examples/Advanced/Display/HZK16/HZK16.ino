@@ -1,76 +1,62 @@
-/* 
-  在 src.h 文件中 GbkStr 显示为乱码为正常现象
-  HZK16为GB2312中文编码格式字库, 需要显示中文建议使用notepad++或其它软件（Arduino IDE 为UTF-8）通过编码GB2312打开str.h
-  即可修改为个人想要输出中文字符
-*/
+/*
+*******************************************************************************
+* Copyright (c) 2022 by M5Stack
+*                  Equipped with M5Core sample source code
+*                          配套  M5Core 示例源代码
+* Visit for more information: https://docs.m5stack.com/en/core/gray
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
+*
+* Describe: Character library.  字库
+* Date: 2021/7/28
+*******************************************************************************
+
+-----PLEASE SEE THE README----
+------请在使用前看README文件----*/
 
 #include <M5Stack.h>
+
 #include "display_ch.h"
 #include "str.h"
 
 DisplayCh displaych;
 void setup() {
-  
-  M5.begin();
-  M5.Power.begin();
-  displaych.loadHzk16();
-
-  displaych.setTextColor(WHITE, BLACK);
-  
-  // Set text with red highlight color
-  displaych.setHighlightColor(RED);
-  
-  // Set text size to 1
-  displaych.setTextSize(1);
-  displaych.setCursor(0,0,1);
-  displaych.writeHzk(AscStr);
-  // Print some ASCII text on the screen
-  delay(1000);
-  // Highlight the text
-  displaych.highlight(true);
-  displaych.setCursor(0,32);
-  displaych.writeHzk(AscStr);
-  delay(1000); 
-  // Clear screen
-  //M5.Lcd.clear();
-  // Turn highlight off
-  displaych.highlight(false);
-  displaych.setCursor(0,70);
-  // print some GBK text on the screen
-  displaych.writeHzk(GbkStr);
-  
-  delay(1000);
-  displaych.highlight(true);
-  displaych.setCursor(0,90);
-  displaych.writeHzk(GbkStr);
-  
-  delay(1000);
-  displaych.fillScreen(BLACK);
- 
-  // Set text size to 2
-  displaych.setTextSize(2);
-  displaych.setCursor(0,0);
-  displaych.highlight(false);
-  displaych.writeHzk(AscStr);
-  delay(1000);
-  displaych.highlight(true);
-  displaych.setCursor(0,70);
-  displaych.writeHzk(AscStr);  
-  delay(1000);
-  
-  //displaych.clear();
-  displaych.highlight(false);
-  displaych.setCursor(0,145);
-  displaych.writeHzk(GbkStr);
-  delay(1000);
-  displaych.highlight(true);
-  displaych.setCursor(0,195);
-  displaych.writeHzk(GbkStr);
-
-  
+    M5.begin();             // Init M5Stack.  初始化M5Stack
+    M5.Power.begin();       // Init power  初始化电源模块
+    displaych.loadHzk16();  // Load the Chinese character library (be sure to
+                            // load before using the Chinese character library).
+                            // 加载汉字库(务必在使用汉字库前加载)
+    displaych.setTextColor(
+        WHITE, BLACK);  // Set the text color to white and the text background
+                        // color to black (mandatory).
+                        // 设置文字颜色为白色,文字背景颜色为黑色(必加)
+    // Set text with red highlight color
+    displaych.setHighlightColor(
+        RED);  // Set the text highlight color to red.  设置文字高亮颜色为红色
+    displaych.setTextSize(
+        1);  // Set text size to 1.  设置字号大小为1 Set text size to 1(必加)
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+    displaych.setCursor(
+        0, 0, 1);  // Set the cursor at (0,0) and the size to 1(mandatory).
+                   // 将光标设置在(0,0)处,并设置字号为1(必加)
+    displaych.writeHzk(
+        AscStr);  // Display the contents of AscStr here (which can be changed
+                  // in str.h).  在此处显示AscStr中的内容(可在str.h中更改)
+    delay(1000);  // delay 1000ms.  延迟1000ms
+    displaych.setCursor(0, 45);
+    displaych.writeHzk(
+        GbkStr);  // Display the contents of GbkStr here (which can be changed
+                  // in str.h).  在此处显示GbkStr中的内容(可在str.h中更改)
+    delay(1000);
+    // Highlight the text.  高亮显示文本
+    displaych.highlight(true);  // Turn on highlight.  开启高亮显示
+    displaych.setCursor(0, 65);
+    displaych.writeHzk(GbkStr);
+    delay(1000);
+    displaych.fillScreen(
+        BLACK);  // Fill the screen with black color, equivalent to empty the
+                 // screen.  填充屏幕颜色为黑色,等效于清空屏幕
+    displaych.highlight(false);  // Turn off highlight.  关闭高亮显示
+    delay(500);
 }

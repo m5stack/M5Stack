@@ -1,0 +1,81 @@
+# Source:
+# https://github.com/Tinyu-Zhao/M5-Depends/blob/main/.github/ISSUE_TEMPLATE/bug-report.yml
+# See:
+# https://docs.github.com/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms
+
+name: Bug report
+description: Report a problem with the code in this repository.
+labels:
+  - "type: bug"
+body:
+  - type: markdown
+    attributes:
+      value: "Thank you for opening an issue on an M5Stack Arduino library repository.\n\
+      To improve the speed of resolution please review the following guidelines and common troubleshooting steps below before creating the issue:\n\
+      Do not use GitHub issues for troubleshooting projects and issues. Instead use the forums at https://community.m5stack.com to ask questions and troubleshoot why something isn't working as expected.  In many cases the problem is a common issue that you will more quickly receive help from the forum community.  GitHub issues are meant for known defects in the code.  If you don't know if there is a defect in the code then start with troubleshooting on the forum first."
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: To reproduce
+      description: Provide the specific set of steps we can follow to reproduce the problem.
+      placeholder: |
+        1. In this environment...
+        2. With this config...
+        3. Run '...'
+        4. See error...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What would you expect to happen after following those instructions?
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+    validations:
+      required: false
+  - type: textarea
+    id: information
+    attributes:
+      label: Environment
+      description: |
+       If applicable, add screenshots to help explain your problem.
+        examples:
+          - **OS**: Ubuntu 20.04
+          - **IDE & IDE Version**: Arduino 1.8.19 Or Platform IO v2.5.0
+          - **Repository Version**: 0.4.0
+      value: |
+        - OS:
+        - IDE &IDE Version:
+        - Repository Version:
+    validations:
+      required: false
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add any additional information here.
+    validations:
+      required: false
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Issue checklist
+      description: Please double-check that you have done each of the following things before submitting the issue.
+      options:
+        - label: I searched for previous reports in [the issue tracker](https://github.com/m5stack/M5Stack/issues?q=)
+          required: true
+        - label: My report contains all necessary details
+          required: true
