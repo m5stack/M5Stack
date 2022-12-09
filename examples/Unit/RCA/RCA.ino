@@ -22,14 +22,14 @@ static bool is_pin_25                = true;
 
 void play_wav(void*) {
     while (true) {
-        M5.Speaker.playWav(sunrise_anna_single_left, sizeof(sunrise_anna_single_left), ~0u, 0,
-                           true);
+        M5.Speaker.playWav(sunrise_anna_single_left,
+                           sizeof(sunrise_anna_single_left), ~0u, 0, true);
         delay(3000);
         M5.Speaker.stop(0);
         delay(500);
 
-        M5.Speaker.playWav(sunrise_anna_single_right, sizeof(sunrise_anna_single_right), ~0u, 1,
-                           true);
+        M5.Speaker.playWav(sunrise_anna_single_right,
+                           sizeof(sunrise_anna_single_right), ~0u, 1, true);
         delay(3000);
         M5.Speaker.stop(1);
         delay(500);
@@ -52,50 +52,47 @@ void setup(void) {
     M5.Display.drawString("Pin 25", 25, 210);
     M5.Display.drawString("Pin 26", 220, 210);
 
-//    if (M5.getBoard() == m5gfx::boards::board_M5StackCore2) {
-//        {
-//            auto spk_cfg        = M5.Speaker.config();
-//            spk_cfg.i2s_port    = I2S_NUM_1;
-//            spk_cfg.sample_rate = 96000;
-//
-//            spk_cfg.pin_data_out = 2;
-//            spk_cfg.pin_bck      = 19;
-//            spk_cfg.pin_ws       = 0;  // LRCK
-//
-//            spk_cfg.stereo        = true;
-//            spk_cfg.buzzer        = false;
-//            spk_cfg.use_dac       = false;
-//            spk_cfg.magnification = 16;
-//            M5.Speaker.config(spk_cfg);
-//        }
-//    } 
-//    else 
-//        {
-//            auto spk_cfg        = M5.Speaker.config();
-//            spk_cfg.i2s_port    = I2S_NUM_1;
-//            spk_cfg.sample_rate = 96000;
-//
-//            spk_cfg.pin_data_out = 15;
-//            spk_cfg.pin_bck      = 13;
-//            spk_cfg.pin_ws       = 0;  // LRCK
-//
-//            spk_cfg.stereo        = true;
-//            spk_cfg.buzzer        = false;
-//            spk_cfg.use_dac       = false;
-//            spk_cfg.magnification = 16;
-//            M5.Speaker.config(spk_cfg);
-//        }
-    
+    // if (M5.getBoard() == m5gfx::boards::board_M5StackCore2) {
+    //     {
+    //         auto spk_cfg        = M5.Speaker.config();
+    //         spk_cfg.i2s_port    = I2S_NUM_1;
+    //         spk_cfg.sample_rate = 96000;
 
-//    M5.Speaker.begin();
-//    M5.Speaker.setVolume(128);
-//    M5.Speaker.setChannelVolume(0, 255);
-//    M5.Speaker.setChannelVolume(1, 255);
+    //         spk_cfg.pin_data_out = 2;
+    //         spk_cfg.pin_bck      = 19;
+    //         spk_cfg.pin_ws       = 0;  // LRCK
+
+    //         spk_cfg.stereo        = true;
+    //         spk_cfg.buzzer        = false;
+    //         spk_cfg.use_dac       = false;
+    //         spk_cfg.magnification = 16;
+    //         M5.Speaker.config(spk_cfg);
+    //     }
+    // } else {
+    //     auto spk_cfg        = M5.Speaker.config();
+    //     spk_cfg.i2s_port    = I2S_NUM_1;
+    //     spk_cfg.sample_rate = 96000;
+
+    //     spk_cfg.pin_data_out = 15;
+    //     spk_cfg.pin_bck      = 13;
+    //     spk_cfg.pin_ws       = 0;  // LRCK
+
+    //     spk_cfg.stereo        = true;
+    //     spk_cfg.buzzer        = false;
+    //     spk_cfg.use_dac       = false;
+    //     spk_cfg.magnification = 16;
+    //     M5.Speaker.config(spk_cfg);
+    // }
+
+    // M5.Speaker.begin();
+    // M5.Speaker.setVolume(128);
+    // M5.Speaker.setChannelVolume(0, 255);
+    // M5.Speaker.setChannelVolume(1, 255);
 
     gfx_rca.init();
     gfx_rca.setFont(&DejaVu24);
 
-//    xTaskCreatePinnedToCore(play_wav, "play_wav", 8192, NULL, 1, NULL, 1);
+    // xTaskCreatePinnedToCore(play_wav, "play_wav", 8192, NULL, 1, NULL, 1);
 
     pinMode(16, OUTPUT);
     pinMode(17, OUTPUT);
