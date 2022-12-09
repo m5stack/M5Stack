@@ -1,44 +1,19 @@
-#define LGFX_USE_V1
 #include <M5Unified.h>
+#include <M5UnitRCA.h>
 
 #include "wav_unsigned_8bit_click.cpp"
 
-class LGFX : public lgfx::LGFX_Device {
-   public:
-    lgfx::Panel_CVBS _panel_instance;
+M5UnitRCA gfx_rca;
 
-    LGFX(void) {
-        {
-            auto cfg = _panel_instance.config();
-
-            cfg.memory_width  = 240;
-            cfg.memory_height = 180;
-            cfg.panel_width   = 240;
-            cfg.panel_height  = 180;
-            cfg.offset_x      = 0;
-            cfg.offset_y      = 0;
-            _panel_instance.config(cfg);
-        }
-        {
-            auto cfg = _panel_instance.config_detail();
-
-            // cfg.signal_type = cfg.signal_type_t::NTSC_J;
-            // cfg.signal_type = cfg.signal_type_t::PAL;
-            // cfg.signal_type = cfg.signal_type_t::PAL_M;
-            cfg.signal_type = cfg.signal_type_t::PAL_N;
-
-            cfg.pin_dac      = 25;
-            cfg.use_psram    = 0;
-            cfg.output_level = 128;
-            cfg.chroma_level = 128;
-            _panel_instance.config_detail(cfg);
-        }
-
-        setPanel(&_panel_instance);
-    }
-};
-
-LGFX gfx_rca;
+// M5UnitRCA gfx_rca ( 216                            // logical_width
+//                   , 144                            // logical_height
+//                   , 256                            // output_width
+//                   , 160                            // output_height
+//                   , M5UnitRCA::signal_type_t::PAL  // signal_type
+//                   , 26                             // GPIO pin
+//                   );
+// signal_type: can be selected from NTSC / NTSC_J / PAL / PAL_M / PAL_N.
+// GPIO pin: can be selected from 25 / 26
 
 static constexpr int color_list[3]   = {TFT_RED, TFT_GREEN, TFT_BLUE};
 static int color_index               = 0;
@@ -73,7 +48,7 @@ void setup(void) {
     M5.Display.setTextColor(TFT_WHITE, TFT_BLACK);
     M5.Display.drawCenterString("M5 RCA Module :)", 160, 20);
 
-    M5.Display.drawCenterString("Using Pin 25", 160, 120);
+    M5.Display.drawCenterString("Using Pin 26", 160, 120);
     M5.Display.drawString("Pin 25", 25, 210);
     M5.Display.drawString("Pin 26", 220, 210);
 
@@ -160,24 +135,7 @@ void loop(void) {
         is_pin_25 = true;
         M5.Display.drawCenterString("Using Pin 25", 160, 120);
 
-        lgfx::Panel_CVBS* p = (lgfx::Panel_CVBS*)gfx_rca.panel();
-        p->deinit();
-        auto cfg = p->config();
-        cfg.memory_width  = 240;
-        cfg.memory_height = 180;
-        cfg.panel_width   = 240;
-        cfg.panel_height  = 180;
-        cfg.offset_x      = 0;
-        cfg.offset_y      = 0;
-        p->config(cfg);
-        auto cfg_d = p->config_detail();
-        cfg_d.pin_dac      = 25;
-        cfg_d.use_psram    = 0;
-        cfg_d.output_level = 128;
-        cfg_d.chroma_level = 128;
-        p->config_detail(cfg_d);
-
-        gfx_rca.init();
+        gfx_rca.setOutputPin(25);
         gfx_rca.setTextColor(TFT_WHITE, color_list[color_index]);
         gfx_rca.drawCenterString("Using Pin 25", 120, 110);
     }
@@ -189,24 +147,7 @@ void loop(void) {
         is_pin_25 = false;
         M5.Display.drawCenterString("Using Pin 26", 160, 120);
 
-        lgfx::Panel_CVBS* p = (lgfx::Panel_CVBS*)gfx_rca.panel();
-        p->deinit();
-        auto cfg = p->config();
-        cfg.memory_width  = 240;
-        cfg.memory_height = 180;
-        cfg.panel_width   = 240;
-        cfg.panel_height  = 180;
-        cfg.offset_x      = 0;
-        cfg.offset_y      = 0;
-        p->config(cfg);
-        auto cfg_d = p->config_detail();
-        cfg_d.pin_dac      = 26;
-        cfg_d.use_psram    = 0;
-        cfg_d.output_level = 128;
-        cfg_d.chroma_level = 128;
-        p->config_detail(cfg_d);
-
-        gfx_rca.init();
+        gfx_rca.setOutputPin(26);
         gfx_rca.setTextColor(TFT_WHITE, color_list[color_index]);
         gfx_rca.drawCenterString("Using Pin 26", 120, 110);
     }
