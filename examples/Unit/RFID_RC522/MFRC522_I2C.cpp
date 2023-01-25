@@ -76,8 +76,8 @@ byte MFRC522::PCD_ReadRegister(
     Wire.beginTransmission(_chipAddress);
     Wire.write(reg);
     Wire.endTransmission();
-
-    Wire.requestFrom(_chipAddress, 1);
+    const uint8_t sz = 1;
+    Wire.requestFrom(_chipAddress, sz);
     value = Wire.read();
     return value;
 }  // End PCD_ReadRegister()
