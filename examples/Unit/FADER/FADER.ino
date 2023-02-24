@@ -15,13 +15,13 @@ value and light brightness 将UNIT FADER连接到B端口,
 */
 
 #include "FastLED.h"
-#include "M5Stack.h"
+#include <M5StickCPlus.h>
 
 // How many leds in your strip?
 #define NUM_LEDS   14
-#define INPUT_PINS 36
+#define INPUT_PINS 33
 
-#define DATA_PIN 26
+#define DATA_PIN 32
 
 // Define the array of leds
 CRGB leds[NUM_LEDS];
