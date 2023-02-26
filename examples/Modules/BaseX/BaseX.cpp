@@ -153,7 +153,7 @@ void BASE_X::SetPositionPoint(uint8_t pos, int32_t position_point) {
  * @param  max_pwm: 0 ~ 127, POSITION mode, max speed
  * @return:
  */
-void BASE_X::SetPostionPIDMaxSpeed(uint8_t pos, uint8_t max_pwm) {
+void BASE_X::SetPositionPIDMaxSpeed(uint8_t pos, uint8_t max_pwm) {
     uint8_t addr;
     pos  = CheckPos(pos);
     addr = BASE_X_CONFIG_ADDR + pos * 0x10 + 0x08;

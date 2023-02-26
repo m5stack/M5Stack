@@ -40,7 +40,7 @@ void setup() {
 
     RTC.setTime(&RTCtime);  // Example Synchronize the set time to the RTC.
                             // 将设置的时间同步至RTC
-    RTC.setDate(&RTCdate);  // Synchronize the set date to the RTC.
+    RTC.setData(&RTCdate);  // Synchronize the set date to the RTC.
                             // 将设置的日期同步至RTC
 }
 

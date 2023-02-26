@@ -438,37 +438,37 @@ void TFT_eSPI::init(uint8_t tc) {
 #include "ST7735_Init.h"
 
 #elif defined(ILI9163_DRIVER)
-#include "TFT_Drivers/ILI9163_Init.h"
+#include "In_eSPI_Drivers/ILI9163_Init.h"
 
 #elif defined(S6D02A1_DRIVER)
-#include "TFT_Drivers/S6D02A1_Init.h"
+#include "In_eSPI_Drivers/S6D02A1_Init.h"
 
 #elif defined(RPI_ILI9486_DRIVER)
-#include "TFT_Drivers/ILI9486_Init.h"
+#include "In_eSPI_Drivers/ILI9486_Init.h"
 
 #elif defined(ILI9486_DRIVER)
-#include "TFT_Drivers/ILI9486_Init.h"
+#include "In_eSPI_Drivers/ILI9486_Init.h"
 
 #elif defined(ILI9481_DRIVER)
-#include "TFT_Drivers/ILI9481_Init.h"
+#include "In_eSPI_Drivers/ILI9481_Init.h"
 
 #elif defined(ILI9488_DRIVER)
-#include "TFT_Drivers/ILI9488_Init.h"
+#include "In_eSPI_Drivers/ILI9488_Init.h"
 
 #elif defined(HX8357D_DRIVER)
-#include "TFT_Drivers/HX8357D_Init.h"
+#include "In_eSPI_Drivers/HX8357D_Init.h"
 
 #elif defined(ST7789_DRIVER)
-#include "TFT_Drivers/ST7789_Init.h"
+#include "In_eSPI_Drivers/ST7789_Init.h"
 
 #elif defined(R61581_DRIVER)
-#include "TFT_Drivers/R61581_Init.h"
+#include "In_eSPI_Drivers/R61581_Init.h"
 
 #elif defined(RM68140_DRIVER)
-#include "TFT_Drivers/RM68140_Init.h"
+#include "In_eSPI_Drivers/RM68140_Init.h"
 
 #elif defined(ST7789_2_DRIVER)
-#include "TFT_Drivers/ST7789_2_Init.h"
+#include "In_eSPI_Drivers/ST7789_2_Init.h"
 
 #endif
 
@@ -517,37 +517,37 @@ void TFT_eSPI::setRotation(uint8_t m) {
 #include "ST7735_Rotation.h"
 
 #elif defined(ILI9163_DRIVER)
-#include "TFT_Drivers/ILI9163_Rotation.h"
+#include "In_eSPI_Drivers/ILI9163_Rotation.h"
 
 #elif defined(S6D02A1_DRIVER)
-#include "TFT_Drivers/S6D02A1_Rotation.h"
+#include "In_eSPI_Drivers/S6D02A1_Rotation.h"
 
 #elif defined(RPI_ILI9486_DRIVER)
-#include "TFT_Drivers/ILI9486_Rotation.h"
+#include "In_eSPI_Drivers/ILI9486_Rotation.h"
 
 #elif defined(ILI9486_DRIVER)
-#include "TFT_Drivers/ILI9486_Rotation.h"
+#include "In_eSPI_Drivers/ILI9486_Rotation.h"
 
 #elif defined(ILI9481_DRIVER)
-#include "TFT_Drivers/ILI9481_Rotation.h"
+#include "In_eSPI_Drivers/ILI9481_Rotation.h"
 
 #elif defined(ILI9488_DRIVER)
-#include "TFT_Drivers/ILI9488_Rotation.h"
+#include "In_eSPI_Drivers/ILI9488_Rotation.h"
 
 #elif defined(HX8357D_DRIVER)
-#include "TFT_Drivers/HX8357D_Rotation.h"
+#include "In_eSPI_Drivers/HX8357D_Rotation.h"
 
 #elif defined(ST7789_DRIVER)
-#include "TFT_Drivers/ST7789_Rotation.h"
+#include "In_eSPI_Drivers/ST7789_Rotation.h"
 
 #elif defined(R61581_DRIVER)
-#include "TFT_Drivers/R61581_Rotation.h"
+#include "In_eSPI_Drivers/R61581_Rotation.h"
 
 #elif defined(RM68140_DRIVER)
-#include "TFT_Drivers/RM68140_Rotation.h"
+#include "In_eSPI_Drivers/RM68140_Rotation.h"
 
 #elif defined(ST7789_2_DRIVER)
-#include "TFT_Drivers/ST7789_2_Rotation.h"
+#include "In_eSPI_Drivers/ST7789_2_Rotation.h"
 
 #endif
 
@@ -4743,7 +4743,7 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y,
 
 #ifdef RPI_WRITE_STROBE
             uint8_t textcolorBin[]   = {(uint8_t)(textcolor >> 8),
-                                      (uint8_t)textcolor};
+                                        (uint8_t)textcolor};
             uint8_t textbgcolorBin[] = {(uint8_t)(textbgcolor >> 8),
                                         (uint8_t)textbgcolor};
 #endif

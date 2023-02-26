@@ -39,7 +39,7 @@ void NormalMode() {
             mode = POSITION_MODE;
             base_x.SetMotorSpeed(i, 0);
             base_x.SetEncoderValue(i, 0);
-            base_x.SetPostionPIDMaxSpeed(i, max_speed);
+            base_x.SetPositionPIDMaxSpeed(i, max_speed);
             base_x.SetMode(i, mode);
         }
     }
@@ -70,7 +70,7 @@ void PositionMode() {
         }
 
         for (size_t i = 1; i < 5; i++) {
-            base_x.SetPostionPIDMaxSpeed(i, max_speed);
+            base_x.SetPositionPIDMaxSpeed(i, max_speed);
         }
     }
 }

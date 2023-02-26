@@ -45,7 +45,7 @@ class BASE_X {
 
     void SetPositionPID(uint8_t pos, uint8_t kp, uint8_t ki, uint8_t kd);
     void SetPositionPoint(uint8_t pos, int32_t position_point);
-    void SetPostionPIDMaxSpeed(uint8_t pos, uint8_t max_pwm);
+    void SetPositionPIDMaxSpeed(uint8_t pos, uint8_t max_pwm);
 
     void SetSpeedPID(uint8_t pos, uint8_t kp, uint8_t ki, uint8_t kd);
     void SetSpeedPoint(uint8_t pos, int8_t speed_point);
