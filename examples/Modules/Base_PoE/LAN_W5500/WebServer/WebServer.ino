@@ -1,12 +1,14 @@
 /*
-    Description: Start the Web Server in the local network and the user can
-   obtain the page response by accessing the assigned IP address. Please install
-   library before compiling: Ethernet2: file in M5stack lib examples -> modules
-   -> W5500 -> Ethernet2.zip （unzip the lib zip file to the Arduino Lib path）
+  Before compile this example, you have to change line 28 of the ESP32 core's
+  Server.h from: "virtual void begin(uint16_t port=0) =0;" To: "virtual void
+  begin() =0;" But that will break anything that uses the ESP32 WiFi library's
+  WebServer class.
+  Reference link:
+  https://community.m5stack.com/topic/3068/lan-module-w5500-with-poe-compilation-error
 */
 #include <M5Stack.h>
 #include <SPI.h>
-#include <Ethernet2.h>
+#include <Ethernet.h>
 #define SCK  18
 #define MISO 19
 #define MOSI 23
