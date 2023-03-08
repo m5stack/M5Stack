@@ -46,7 +46,7 @@ uint8_t PortHub::hub_d_read_value_B(uint8_t reg) {
     Wire.write(reg | 0x05);
     Wire.endTransmission();
 
-    uint8_t RegValue;
+    uint8_t RegValue = 0;
 
     Wire.requestFrom(_iic_addr, 1);
     while (Wire.available()) {
