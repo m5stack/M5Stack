@@ -27,6 +27,12 @@ class IMU {
 
     void getAhrsData(float *pitch, float *roll, float *yaw);
 
+    void setFIFOEnable(bool enable_flag);
+    uint8_t ReadFIFO();
+    void ReadFIFOBuff(uint8_t* data_buf, uint16_t length);
+    uint16_t ReadFIFOCount();
+    void RestFIFO();
+
     ImuType imuType;
     float aRes, gRes;
 };
