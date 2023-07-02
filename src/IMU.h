@@ -29,7 +29,7 @@ class IMU {
 
     void setFIFOEnable(bool enable_flag);
     uint8_t ReadFIFO();
-    void ReadFIFOBuff(uint8_t* data_buf, uint16_t length);
+    void ReadFIFOBuff(uint8_t *data_buf, uint16_t length);
     uint16_t ReadFIFOCount();
     void RestFIFO();
 
