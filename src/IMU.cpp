@@ -107,3 +107,49 @@ void IMU::getAhrsData(float *pitch, float *roll, float *yaw) {
     MahonyAHRSupdateIMU(gyroX * DEG_TO_RAD, gyroY * DEG_TO_RAD,
                         gyroZ * DEG_TO_RAD, accX, accY, accZ, pitch, roll, yaw);
 }
+
+void IMU::setFIFOEnable(bool enable_flag) {
+    if (imuType == IMU_SH200Q) {
+        Serial.println("IMU_SH200Q: setFIFOEnable() not implemented");
+    } else if (imuType == IMU_MPU6886) {
+        M5.Mpu6886.setFIFOEnable(enable_flag);
+    }
+}
+
+uint8_t IMU::ReadFIFO() {
+    uint8_t read_fifo = 0;
+
+    if (imuType == IMU_SH200Q) {
+        Serial.println("IMU_SH200Q: ReadFIFO() not implemented");
+    } else if (imuType == IMU_MPU6886) {
+        read_fifo = M5.Mpu6886.ReadFIFO();
+    }
+    return read_fifo;
+}
+
+void IMU::ReadFIFOBuff(uint8_t *data_buf, uint16_t length) {
+    if (imuType == IMU_SH200Q) {
+        Serial.println("IMU_SH200Q: ReadFIFOBuff() not implemented");
+    } else if (imuType == IMU_MPU6886) {
+        M5.Mpu6886.ReadFIFOBuff(data_buf, length);
+    }
+}
+
+uint16_t IMU::ReadFIFOCount() {
+    uint16_t fifo_count = 0;
+
+    if (imuType == IMU_SH200Q) {
+        Serial.println("IMU_SH200Q: ReadFIFOCount() not implemented");
+    } else if (imuType == IMU_MPU6886) {
+        fifo_count = M5.Mpu6886.ReadFIFOCount();
+    }
+    return fifo_count;
+}
+
+void IMU::RestFIFO() {
+    if (imuType == IMU_SH200Q) {
+        Serial.println("IMU_SH200Q: RestFIFO() not implemented");
+    } else if (imuType == IMU_MPU6886) {
+        M5.Mpu6886.RestFIFO();
+    }
+}
