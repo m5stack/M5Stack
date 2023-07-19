@@ -14,9 +14,9 @@
 */
 
 #include "M5Stack.h"
-#include "M5_BM8563.h"
+#include "Unit_RTC.h"
 
-BM8563 RTC;
+Unit_RTC RTC;
 
 rtc_time_type RTCtime;
 rtc_date_type RTCdate;
@@ -40,7 +40,7 @@ void setup() {
 
     RTC.setTime(&RTCtime);  // Example Synchronize the set time to the RTC.
                             // 将设置的时间同步至RTC
-    RTC.setData(&RTCdate);  // Synchronize the set date to the RTC.
+    RTC.setDate(&RTCdate);  // Synchronize the set date to the RTC.
                             // 将设置的日期同步至RTC
 }
 

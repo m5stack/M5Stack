@@ -2,7 +2,6 @@
     Description: Use UART communication to control the LED matrix on microbit.
 */
 #include <M5Stack.h>
-#include <M5StackUpdater.h>
 
 #define WIDTH       320
 #define HEIGHT      240

@@ -3,19 +3,29 @@
    for debugging and functional verification.
 */
 #include <M5Stack.h>
+#include "M5GFX.h"
 
 HardwareSerial GPSRaw(2);
+
+M5GFX display;
+M5Canvas canvas(&display);
 
 void setup() {
     M5.begin();
     M5.Power.begin();
     GPSRaw.begin(9600);
 
-    Serial.println("hello");
-    termInit();
-    M5.Lcd.setTextFont(4);
-    M5.Lcd.setCursor(50, 100, 4);
-    M5.Lcd.println(("GPS Raw Example"));
+    display.begin();
+
+    canvas.setColorDepth(1);  // mono color
+    canvas.setFont(&fonts::efontCN_14);
+    canvas.createSprite(display.width(), display.height());
+    canvas.setTextSize(2);
+    canvas.setPaletteColor(1, GREEN);
+    canvas.setTextScroll(true);
+
+    canvas.println("GPS Raw Example");
+    canvas.pushSprite(0, 0);
 }
 
 void loop() {
@@ -28,6 +38,7 @@ void loop() {
     if (GPSRaw.available()) {
         int ch = GPSRaw.read();
         Serial.write(ch);
-        termPutchar(ch);
+        canvas.print(ch);
+        canvas.pushSprite(0, 0);
     }
 }
