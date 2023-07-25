@@ -19,8 +19,8 @@ confirm for calibration. 将WEIGHT UNIT连接至端口B（G26/36）， 校准说
 
 */
 
-#include <M5GFX.h>
 #include <M5Stack.h>
+#include <M5GFX.h>
 
 #include "HX711.h"
 
@@ -34,8 +34,8 @@ M5Canvas canvas(&display);
 HX711 scale;
 
 void setup() {
-    M5.begin();        // Init M5Stack.  初始化M5Stack
-    M5.Power.begin();  // Init power  初始化电源模块
+    M5.begin();               // Init M5Stack.  初始化M5Stack
+    M5.Power.begin();         // Init power  初始化电源模块
     display.begin();
     canvas.setColorDepth(1);  // mono color
     canvas.createSprite(display.width(), display.height());

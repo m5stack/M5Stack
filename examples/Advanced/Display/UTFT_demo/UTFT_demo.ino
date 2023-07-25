@@ -20,7 +20,6 @@
 
 unsigned long runTime = 0;
 void setup() {
-    randomSeed(analogRead(A0));
     // Setup the LCD
     M5.begin();
     M5.Power.begin();

@@ -29,7 +29,6 @@ byte pos[42];
 uint16_t xPos = 0;
 
 void setup() {
-    randomSeed(analogRead(A0));
     M5.begin();
     M5.Power.begin();
     // M5.Lcd.setRotation(2);

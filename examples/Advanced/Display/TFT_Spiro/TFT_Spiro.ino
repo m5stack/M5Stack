@@ -10,7 +10,6 @@ float sx = 0, sy = 0;
 uint16_t x0 = 0, x1 = 0, yy0 = 0, yy1 = 0;
 
 void setup() {
-    // randomSeed(analogRead(A0));
 
     // Setup the LCD
     M5.begin();

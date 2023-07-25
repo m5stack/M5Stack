@@ -3,8 +3,9 @@
     Please install library before compiling:
     Arduino-ADXL345: https://github.com/jakalada/Arduino-ADXL345
 */
-#include <ADXL345.h>
 #include <M5Stack.h>
+#include <ADXL345.h>
+
 ADXL345 accel(ADXL345_ALT);
 
 void setup() {
