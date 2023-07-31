@@ -1,5 +1,8 @@
 # M5Stack Library
 
+[![Arduino Lint](https://github.com/m5stack/M5Stack/actions/workflows/Arduino-Lint-Check.yml/badge.svg)](https://github.com/m5stack/M5Stack/actions/workflows/Arduino-Lint-Check.yml)
+[![Clang Format](https://github.com/m5stack/M5Stack/actions/workflows/clang-format-check.yml/badge.svg)](https://github.com/m5stack/M5Stack/actions/workflows/clang-format-check.yml)
+
 English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_started_ja.md)
 
 <img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/gray/gray_01.webp" alt="gray" width="350" height="350">
