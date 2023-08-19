@@ -1,10 +1,9 @@
 /*
 *******************************************************************************
-* Copyright (c) 2022 by M5Stack
+* Copyright (c) 2023 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
-* Visit the website for more
-information: https://docs.m5stack.com/en/unit/joystick
+* Visit for more information: https://docs.m5stack.com/en/unit/joystick
 * 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/joystick
 *
 * Describe: JOYSTICK.

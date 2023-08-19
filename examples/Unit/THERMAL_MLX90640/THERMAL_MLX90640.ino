@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-* Copyright (c) 2022 by M5Stack
+* Copyright (c) 2023 by M5Stack
 *                  Equipped with M5Core sample source code
 *                          配套  M5Core 示例源代码
 * Visit for more information: https://docs.m5stack.com/en/unit/thermal
@@ -328,7 +328,7 @@ void loop() {
     }
 
     uint16_t boxsize  = min(M5.Lcd.width() / INTERPOLATED_ROWS,
-                           M5.Lcd.height() / INTERPOLATED_COLS);
+                            M5.Lcd.height() / INTERPOLATED_COLS);
     uint16_t boxWidth = M5.Lcd.width() / INTERPOLATED_ROWS;
     // uint16_t boxWidth = 192 / INTERPOLATED_ROWS;
     uint16_t boxHeight =
