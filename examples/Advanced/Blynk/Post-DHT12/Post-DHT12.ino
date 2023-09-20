@@ -29,6 +29,11 @@
 #include <Wire.h>  //The DHT12 uses I2C comunication.
 
 #include "DHT12.h"
+
+
+#define BLYNK_TEMPLATE_ID           "TMPxxxxxx"
+#define BLYNK_TEMPLATE_NAME         "Device"
+
 DHT12 dht12;  // Preset scale CELSIUS and ID 0x5c.
 
 // You should get Auth Token in the Blynk App.

@@ -14,7 +14,7 @@
 */
 #include <M5Stack.h>
 
-#include "MODULE_GRBL13.2.h"
+#include "Module_GRBL_13.2.h"
 
 /*
  * The I2C address of GRBL 13.2  Module is 0x70 by default.
@@ -26,7 +26,7 @@
 #define STEPMOTOR_I2C_ADDR 0x70
 // #define STEPMOTOR_I2C_ADDR 0x71
 
-GRBL _GRBL = GRBL(STEPMOTOR_I2C_ADDR);
+Module_GRBL _GRBL(STEPMOTOR_I2C_ADDR);
 
 void setup() {
     // put your setup code here, to run once:
