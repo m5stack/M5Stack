@@ -2,7 +2,7 @@
     Description: The command data of the USB UART  is forwarded to the GPS Unit
    for debugging and functional verification.
 */
-#include <M5Stack.h>
+#include <M5Unified.h>
 #include "M5GFX.h"
 
 HardwareSerial GPSRaw(2);

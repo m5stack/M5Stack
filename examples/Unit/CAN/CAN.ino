@@ -19,7 +19,7 @@ https://github.com/miwagner/ESP32-Arduino-CAN
 
 #include <CAN_config.h>
 #include <ESP32CAN.h>
-#include <M5Stack.h>
+#include <M5Unified.h>
 #include <M5GFX.h>
 
 M5GFX display;

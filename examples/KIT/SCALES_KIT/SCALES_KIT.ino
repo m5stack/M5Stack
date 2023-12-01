@@ -19,7 +19,7 @@ confirm for calibration. 将WEIGHT UNIT连接至端口B（G26/36）， 校准说
 
 */
 
-#include <M5Stack.h>
+#include <M5Unified.h>
 #include <M5GFX.h>
 
 #include "HX711.h"

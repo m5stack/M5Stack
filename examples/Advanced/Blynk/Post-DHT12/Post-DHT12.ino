@@ -21,6 +21,8 @@
   App project setup:
     Value Display widget attached to Virtual Pin V5
  *************************************************************/
+#define BLYNK_TEMPLATE_ID   "TMPxxxxxx"
+#define BLYNK_TEMPLATE_NAME "Device"
 
 #include <BlynkSimpleEsp32.h>
 #include <M5Stack.h>
@@ -29,10 +31,6 @@
 #include <Wire.h>  //The DHT12 uses I2C comunication.
 
 #include "DHT12.h"
-
-
-#define BLYNK_TEMPLATE_ID           "TMPxxxxxx"
-#define BLYNK_TEMPLATE_NAME         "Device"
 
 DHT12 dht12;  // Preset scale CELSIUS and ID 0x5c.
 

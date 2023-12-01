@@ -20,7 +20,7 @@ C端口(G16/17),
 */
 
 #include "M5GFX.h"
-#include "M5Stack.h"
+#include <M5Unified.h>
 
 #define TINY_GSM_MODEM_SIM7020
 

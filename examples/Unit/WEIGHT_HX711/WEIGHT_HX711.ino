@@ -15,7 +15,7 @@ M5Core,Press ButtonA to calibrate 请连接端口B,使用WEIGHT
 Unit读取压力传感器返回的模拟值，将其转换为直观的重量数据，发送到M5Core，按下按钮A进行校准
 */
 
-#include <M5Stack.h>
+#include <M5Unified.h>
 #include <M5GFX.h>
 
 #include "HX711.h"

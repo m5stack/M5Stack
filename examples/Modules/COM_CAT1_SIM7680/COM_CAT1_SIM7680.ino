@@ -17,7 +17,7 @@ Libraries:
 - [PubSubClient](https://github.com/knolleary/pubsubclient.git)
 */
 
-#include <M5Stack.h>
+#include <M5Unified.h>
 
 #include "M5GFX.h"
 

@@ -17,7 +17,7 @@
   https://github.com/ouki-wang/DFRobot_PAJ7620U2
 */
 
-#include <M5Stack.h>
+#include <M5Unified.h>
 #include <M5GFX.h>
 #include <DFRobot_PAJ7620U2.h>
 
