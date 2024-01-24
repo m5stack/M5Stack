@@ -708,8 +708,11 @@ const PROGMEM fontinfo fontdata[] = {
     {(const uint8_t *)chrtbl_null, widtbl_null, 0, 0},
 #endif
 
-    // Font 3 current unused
+#ifdef LOAD_FONT3
     {(const uint8_t *)chrtbl_null, widtbl_null, 16, 11},
+#else
+    {(const uint8_t *)chrtbl_null, widtbl_null, 0, 0},
+#endif
 
 #ifdef LOAD_FONT4
     {(const uint8_t *)chrtbl_f32, widtbl_f32, chr_hgt_f32, baseline_f32},

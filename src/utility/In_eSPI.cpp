@@ -2548,8 +2548,8 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color,
         boolean fillbg = (bg != color);
 
         if ((size == 1) && fillbg) {
-            uint16_t column[6];
-            uint16_t mask = 0x1;
+            uint8_t column[6];
+            uint8_t mask = 0x1;
             spi_begin();
 
             if (textfont==3) {                 
@@ -2569,6 +2569,8 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color,
             bg    = (bg >> 8) | (bg << 8);
 
             if (textfont==3) {
+#ifdef LOAD_FONT3
+
    				// bits are in horizontal order
             	for (int8_t j = 0; j < 16; j++) {
                 	uint8_t ck = pgm_read_byte(ASC16 + (c * 16) + j);
@@ -2584,6 +2586,7 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color,
                     	}
                 	}
 				}
+#endif
             } else {
             	// bits are in vertical order
             	for (int8_t j = 0; j < 8; j++) {
@@ -2602,7 +2605,9 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color,
             }
 #else  // for ESP32 or ILI9488
 
+
 			if (textfont==3) {
+#ifdef LOAD_FONT3
 				// bits are in horizontal order
             	for (int8_t j = 0; j < 16; j++) {
                	    uint8_t ck = pgm_read_byte(ASC16 + (c * 16) + j);
@@ -2614,7 +2619,8 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color,
         	            }
         	            ck <<= 1;
                 	}
-				}			
+				}
+#endif			
 			} else {
 				// bits are in vertical order
 		        for (int8_t j = 0; j < 8; j++) {
@@ -2635,6 +2641,7 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color,
             // spi_begin();          // Sprite class can use this function,
             // avoiding spi_begin()
             if (textfont==3) {
+#ifdef LOAD_FONT3
 				inTransaction = true;
 				for (int8_t i = 0; i < 16; i++) {
 					uint8_t line = pgm_read_byte(ASC16 + (c * 16) + i);
@@ -2658,7 +2665,8 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color,
 					}
 				}
 				inTransaction = false;
-				spi_end();  // Does nothing if Sprite class uses this function            
+				spi_end();  // Does nothing if Sprite class uses this function
+#endif         
             } else {
 				inTransaction = true;
 				for (int8_t i = 0; i < 6; i++) {
