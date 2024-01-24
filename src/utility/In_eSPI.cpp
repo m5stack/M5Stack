@@ -284,6 +284,10 @@ TFT_eSPI::TFT_eSPI(int16_t w, int16_t h) {
     fontsloaded |= 0x0004;  // Bit 2 set
 #endif
 
+#ifdef LOAD_FONT3
+    fontsloaded |= 0x0008;  // Bit 3 set
+#endif
+
 #ifdef LOAD_FONT4
     fontsloaded |= 0x0010;  // Bit 4 set
 #endif
@@ -2523,10 +2527,14 @@ int16_t TFT_eSPI::fontHeight(void) {
 ***************************************************************************************/
 void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color,
                         uint32_t bg, uint8_t size) {
+    
+    int w6=6, w5=5, h8=8;
+    if (textfont==3) w6=8, w5=7, h8=16;                    
+                        
     if ((x >= _width) ||             // Clip right
         (y >= _height) ||            // Clip bottom
-        ((x + 6 * size - 1) < 0) ||  // Clip left
-        ((y + 8 * size - 1) < 0))    // Clip top
+        ((x + w6 * size - 1) < 0) ||  // Clip left
+        ((y + h8 * size - 1) < 0))    // Clip top
         return;
 
     if (c < 32) return;
@@ -2540,87 +2548,147 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color,
         boolean fillbg = (bg != color);
 
         if ((size == 1) && fillbg) {
-            uint8_t column[6];
-            uint8_t mask = 0x1;
+            uint16_t column[6];
+            uint16_t mask = 0x1;
             spi_begin();
 
-            setWindow(x, y, x + 5, y + 8);
+            if (textfont==3) {                 
+	            setWindow(x, y, x + 7, y + 16);
+	            mask = 0x1;           
+            } else {
+	            setWindow(x, y, x + 5, y + 8);
+	            for (int8_t i = 0; i < 5; i++)
+    	            column[i] = pgm_read_byte(font + (c * 5) + i);
+        	    column[5] = 0;    
+            }
 
-            for (int8_t i = 0; i < 5; i++)
-                column[i] = pgm_read_byte(font + (c * 5) + i);
-            column[5] = 0;
+			mask = 0x1;
 
 #if defined(ESP8266) && !defined(ILI9488_DRIVER)
             color = (color >> 8) | (color << 8);
             bg    = (bg >> 8) | (bg << 8);
 
-            for (int8_t j = 0; j < 8; j++) {
-                for (int8_t k = 0; k < 5; k++) {
-                    if (column[k] & mask) {
-                        SPI1W0 = color;
-                    } else {
-                        SPI1W0 = bg;
-                    }
-                    SPI1CMD |= SPIBUSY;
-                    while (SPI1CMD & SPIBUSY) {
-                    }
-                }
-
-                mask <<= 1;
-
-                SPI1W0 = bg;
-                SPI1CMD |= SPIBUSY;
-                while (SPI1CMD & SPIBUSY) {
-                }
+            if (textfont==3) {
+   				// bits are in horizontal order
+            	for (int8_t j = 0; j < 16; j++) {
+                	uint8_t ck = pgm_read_byte(ASC16 + (c * 16) + j);
+                	for (int8_t k = 0; k < 8; k++) {
+                    	if (ck & 0x80) {
+                        	SPI1W0 = color;
+	                    } else {
+    	                    SPI1W0 = bg;
+        	            }
+            	        SPI1CMD |= SPIBUSY;
+            	        ck <<= 1;
+                	    while (SPI1CMD & SPIBUSY) {
+                    	}
+                	}
+				}
+            } else {
+            	// bits are in vertical order
+            	for (int8_t j = 0; j < 8; j++) {
+                	for (int8_t k = 0; k < 6; k++) {
+                    	if (column[k] & mask) {
+                        	SPI1W0 = color;
+	                    } else {
+    	                    SPI1W0 = bg;
+        	            }
+            	        SPI1CMD |= SPIBUSY;
+                	    while (SPI1CMD & SPIBUSY) {
+                    	}
+                	}
+                	mask <<= 1;
+				}
             }
 #else  // for ESP32 or ILI9488
 
-        for (int8_t j = 0; j < 8; j++) {
-            for (int8_t k = 0; k < 5; k++) {
-                if (column[k] & mask) {
-                    tft_Write_16(color);
-                } else {
-                    tft_Write_16(bg);
-                }
-            }
-            mask <<= 1;
-            tft_Write_16(bg);
-        }
-
+			if (textfont==3) {
+				// bits are in horizontal order
+            	for (int8_t j = 0; j < 16; j++) {
+               	    uint8_t ck = pgm_read_byte(ASC16 + (c * 16) + j);
+                	for (int8_t k = 0; k < 8; k++) {
+                    	if (ck & 0x80) {
+            		        tft_Write_16(color);
+	                    } else {
+    		                tft_Write_16(bg);
+        	            }
+        	            ck <<= 1;
+                	}
+				}			
+			} else {
+				// bits are in vertical order
+		        for (int8_t j = 0; j < 8; j++) {
+    		        for (int8_t k = 0; k < 6; k++) {
+        		        if (column[k] & mask) {
+            		        tft_Write_16(color);
+		                } else {
+    		                tft_Write_16(bg);
+        		        }
+            		}
+            		mask <<= 1;
+    	    	}
+			}
 #endif
-
+			
             spi_end();
         } else {
             // spi_begin();          // Sprite class can use this function,
             // avoiding spi_begin()
-            inTransaction = true;
-            for (int8_t i = 0; i < 6; i++) {
-                uint8_t line;
-                if (i == 5)
-                    line = 0x0;
-                else
-                    line = pgm_read_byte(font + (c * 5) + i);
+            if (textfont==3) {
+				inTransaction = true;
+				for (int8_t i = 0; i < 16; i++) {
+					uint8_t line = pgm_read_byte(ASC16 + (c * 16) + i);
 
-                if (size == 1)  // default size
-                {
-                    for (int8_t j = 0; j < 8; j++) {
-                        if (line & 0x1) drawPixel(x + i, y + j, color);
-                        line >>= 1;
-                    }
-                } else {  // big size
-                    for (int8_t j = 0; j < 8; j++) {
-                        if (line & 0x1)
-                            fillRect(x + (i * size), y + (j * size), size, size,
-                                     color);
-                        else if (fillbg)
-                            fillRect(x + i * size, y + j * size, size, size,
-                                     bg);
-                        line >>= 1;
-                    }
-                }
-            }
-            inTransaction = false;
-            spi_end();  // Does nothing if Sprite class uses this function
+					if (size == 1)  // default size
+					{
+						for (int8_t j = 0; j < 8; j++) {
+							if (line & 0x80) drawPixel(x + j, y + i, color);
+							line <<= 1;
+						}
+					} else {  // big size
+						for (int8_t j = 0; j < 8; j++) {
+							if (line & 0x80)
+								fillRect(x + (j * size), y + (i * size), size, size,
+										 color);
+							else if (fillbg)
+								fillRect(x + j * size, y + i * size, size, size,
+										 bg);
+							line <<= 1;
+						}
+					}
+				}
+				inTransaction = false;
+				spi_end();  // Does nothing if Sprite class uses this function            
+            } else {
+				inTransaction = true;
+				for (int8_t i = 0; i < 6; i++) {
+					uint8_t line;
+					if (i == 5)
+						line = 0x0;
+					else
+						line = pgm_read_byte(font + (c * 5) + i);
+
+					if (size == 1)  // default size
+					{
+						for (int8_t j = 0; j < 8; j++) {
+							if (line & 0x1) drawPixel(x + i, y + j, color);
+							line >>= 1;
+						}
+					} else {  // big size
+						for (int8_t j = 0; j < 8; j++) {
+							if (line & 0x1)
+								fillRect(x + (i * size), y + (j * size), size, size,
+										 color);
+							else if (fillbg)
+								fillRect(x + i * size, y + j * size, size, size,
+										 bg);
+							line >>= 1;
+						}
+					}
+				}
+				inTransaction = false;
+				spi_end();  // Does nothing if Sprite class uses this function
+			}
         }
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -4339,7 +4407,7 @@ size_t TFT_eSPI::write(uint8_t utf8) {
 
     if (uniCode == '\n')
         uniCode += 22;  // Make it a valid space character to stop errors
-    else if (uniCode < 32)
+    else if (uniCode < 32 && textfont != 3)
         return 1;
 
     uint16_t width  = 0;
@@ -4358,8 +4426,9 @@ size_t TFT_eSPI::write(uint8_t utf8) {
 #endif
         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+        if (textfont == 0) {}
 #ifdef LOAD_FONT2
-        if (textfont == 2) {
+        else if (textfont == 2) {
             if (uniCode > 127) return 1;
 
             width  = pgm_read_byte(widtbl_f16 + uniCode - 32);
@@ -4370,12 +4439,16 @@ size_t TFT_eSPI::write(uint8_t utf8) {
                                   // + 7 but must allow for font width change
             width = width * 8;    // Width converted back to pixels
         }
+#endif
+#ifdef LOAD_FONT3
+        else if (textfont == 3) {
+            if (uniCode > 255) return 1;
+            width = 8;
+            height = 16;
+        }
+#endif
 #ifdef LOAD_RLE
         else
-#endif
-#endif
-
-#ifdef LOAD_RLE
         {
             if ((textfont > 2) && (textfont < 9)) {
                 if (uniCode > 127) return 1;
@@ -4531,7 +4604,14 @@ int16_t TFT_eSPI::drawChar(uint16_t uniCode, int32_t x, int32_t y,
 #endif
     }
 
-    if ((font > 1) && (font < 9) && ((uniCode < 32) || (uniCode > 127)))
+#ifdef LOAD_FONT3
+    if (font==3) {
+      if (uniCode > 255) return 0;
+      drawChar(x, y, uniCode, textcolor, textbgcolor, textsize);
+      return 8 * textsize;
+    } else
+#endif
+    if ((font > 1) && (font != 3) && (font < 9) && ((uniCode < 32) || (uniCode > 127)))
         return 0;
 
     int32_t width          = 0;

@@ -66,6 +66,10 @@
 #include <Fonts/Font16.h>
 #endif
 
+#ifdef LOAD_FONT3
+#include <Fonts/ASC16.h>
+#endif
+
 #ifdef LOAD_FONT4
 #include <Fonts/Font32rle.h>
 #define LOAD_RLE
@@ -705,7 +709,7 @@ const PROGMEM fontinfo fontdata[] = {
 #endif
 
     // Font 3 current unused
-    {(const uint8_t *)chrtbl_null, widtbl_null, 0, 0},
+    {(const uint8_t *)chrtbl_null, widtbl_null, 16, 11},
 
 #ifdef LOAD_FONT4
     {(const uint8_t *)chrtbl_f32, widtbl_f32, chr_hgt_f32, baseline_f32},
