@@ -2553,16 +2553,16 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color,
             spi_begin();
 
             if (textfont==3) {                 
-	            setWindow(x, y, x + 7, y + 16);
-	            mask = 0x1;           
+                setWindow(x, y, x + 7, y + 16);
+                mask = 0x1;           
             } else {
-	            setWindow(x, y, x + 5, y + 8);
-	            for (int8_t i = 0; i < 5; i++)
-    	            column[i] = pgm_read_byte(font + (c * 5) + i);
-        	    column[5] = 0;    
+                setWindow(x, y, x + 5, y + 8);
+                for (int8_t i = 0; i < 5; i++)
+                    column[i] = pgm_read_byte(font + (c * 5) + i);
+                column[5] = 0;    
             }
 
-			mask = 0x1;
+            mask = 0x1;
 
 #if defined(ESP8266) && !defined(ILI9488_DRIVER)
             color = (color >> 8) | (color << 8);
@@ -2571,132 +2571,132 @@ void TFT_eSPI::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color,
             if (textfont==3) {
 #ifdef LOAD_FONT3
 
-   				// bits are in horizontal order
-            	for (int8_t j = 0; j < 16; j++) {
-                	uint8_t ck = pgm_read_byte(ASC16 + (c * 16) + j);
-                	for (int8_t k = 0; k < 8; k++) {
-                    	if (ck & 0x80) {
-                        	SPI1W0 = color;
-	                    } else {
-    	                    SPI1W0 = bg;
-        	            }
-            	        SPI1CMD |= SPIBUSY;
-            	        ck <<= 1;
-                	    while (SPI1CMD & SPIBUSY) {
-                    	}
-                	}
-				}
+                // bits are in horizontal order
+                for (int8_t j = 0; j < 16; j++) {
+                    uint8_t ck = pgm_read_byte(ASC16 + (c * 16) + j);
+                    for (int8_t k = 0; k < 8; k++) {
+                        if (ck & 0x80) {
+                            SPI1W0 = color;
+                        } else {
+                            SPI1W0 = bg;
+                        }
+                        SPI1CMD |= SPIBUSY;
+                        ck <<= 1;
+                        while (SPI1CMD & SPIBUSY) {
+                        }
+                    }
+                }
 #endif
             } else {
-            	// bits are in vertical order
-            	for (int8_t j = 0; j < 8; j++) {
-                	for (int8_t k = 0; k < 6; k++) {
-                    	if (column[k] & mask) {
-                        	SPI1W0 = color;
-	                    } else {
-    	                    SPI1W0 = bg;
-        	            }
-            	        SPI1CMD |= SPIBUSY;
-                	    while (SPI1CMD & SPIBUSY) {
-                    	}
-                	}
-                	mask <<= 1;
-				}
+                // bits are in vertical order
+                for (int8_t j = 0; j < 8; j++) {
+                    for (int8_t k = 0; k < 6; k++) {
+                        if (column[k] & mask) {
+                            SPI1W0 = color;
+                        } else {
+                            SPI1W0 = bg;
+                        }
+                        SPI1CMD |= SPIBUSY;
+                        while (SPI1CMD & SPIBUSY) {
+                        }
+                    }
+                    mask <<= 1;
+                }
             }
 #else  // for ESP32 or ILI9488
 
 
-			if (textfont==3) {
+            if (textfont==3) {
 #ifdef LOAD_FONT3
-				// bits are in horizontal order
-            	for (int8_t j = 0; j < 16; j++) {
-               	    uint8_t ck = pgm_read_byte(ASC16 + (c * 16) + j);
-                	for (int8_t k = 0; k < 8; k++) {
-                    	if (ck & 0x80) {
-            		        tft_Write_16(color);
-	                    } else {
-    		                tft_Write_16(bg);
-        	            }
-        	            ck <<= 1;
-                	}
-				}
-#endif			
-			} else {
-				// bits are in vertical order
-		        for (int8_t j = 0; j < 8; j++) {
-    		        for (int8_t k = 0; k < 6; k++) {
-        		        if (column[k] & mask) {
-            		        tft_Write_16(color);
-		                } else {
-    		                tft_Write_16(bg);
-        		        }
-            		}
-            		mask <<= 1;
-    	    	}
-			}
+                // bits are in horizontal order
+                for (int8_t j = 0; j < 16; j++) {
+                    uint8_t ck = pgm_read_byte(ASC16 + (c * 16) + j);
+                    for (int8_t k = 0; k < 8; k++) {
+                        if (ck & 0x80) {
+                            tft_Write_16(color);
+                        } else {
+                            tft_Write_16(bg);
+                        }
+                        ck <<= 1;
+                    }
+                }
+#endif          
+            } else {
+                // bits are in vertical order
+                for (int8_t j = 0; j < 8; j++) {
+                    for (int8_t k = 0; k < 6; k++) {
+                        if (column[k] & mask) {
+                            tft_Write_16(color);
+                        } else {
+                            tft_Write_16(bg);
+                        }
+                    }
+                    mask <<= 1;
+                }
+            }
 #endif
-			
+            
             spi_end();
         } else {
             // spi_begin();          // Sprite class can use this function,
             // avoiding spi_begin()
             if (textfont==3) {
 #ifdef LOAD_FONT3
-				inTransaction = true;
-				for (int8_t i = 0; i < 16; i++) {
-					uint8_t line = pgm_read_byte(ASC16 + (c * 16) + i);
+                inTransaction = true;
+                for (int8_t i = 0; i < 16; i++) {
+                    uint8_t line = pgm_read_byte(ASC16 + (c * 16) + i);
 
-					if (size == 1)  // default size
-					{
-						for (int8_t j = 0; j < 8; j++) {
-							if (line & 0x80) drawPixel(x + j, y + i, color);
-							line <<= 1;
-						}
-					} else {  // big size
-						for (int8_t j = 0; j < 8; j++) {
-							if (line & 0x80)
-								fillRect(x + (j * size), y + (i * size), size, size,
-										 color);
-							else if (fillbg)
-								fillRect(x + j * size, y + i * size, size, size,
-										 bg);
-							line <<= 1;
-						}
-					}
-				}
-				inTransaction = false;
-				spi_end();  // Does nothing if Sprite class uses this function
+                    if (size == 1)  // default size
+                    {
+                        for (int8_t j = 0; j < 8; j++) {
+                            if (line & 0x80) drawPixel(x + j, y + i, color);
+                            line <<= 1;
+                        }
+                    } else {  // big size
+                        for (int8_t j = 0; j < 8; j++) {
+                            if (line & 0x80)
+                                fillRect(x + (j * size), y + (i * size), size, size,
+                                         color);
+                            else if (fillbg)
+                                fillRect(x + j * size, y + i * size, size, size,
+                                         bg);
+                            line <<= 1;
+                        }
+                    }
+                }
+                inTransaction = false;
+                spi_end();  // Does nothing if Sprite class uses this function
 #endif         
             } else {
-				inTransaction = true;
-				for (int8_t i = 0; i < 6; i++) {
-					uint8_t line;
-					if (i == 5)
-						line = 0x0;
-					else
-						line = pgm_read_byte(font + (c * 5) + i);
+                inTransaction = true;
+                for (int8_t i = 0; i < 6; i++) {
+                    uint8_t line;
+                    if (i == 5)
+                        line = 0x0;
+                    else
+                        line = pgm_read_byte(font + (c * 5) + i);
 
-					if (size == 1)  // default size
-					{
-						for (int8_t j = 0; j < 8; j++) {
-							if (line & 0x1) drawPixel(x + i, y + j, color);
-							line >>= 1;
-						}
-					} else {  // big size
-						for (int8_t j = 0; j < 8; j++) {
-							if (line & 0x1)
-								fillRect(x + (i * size), y + (j * size), size, size,
-										 color);
-							else if (fillbg)
-								fillRect(x + i * size, y + j * size, size, size,
-										 bg);
-							line >>= 1;
-						}
-					}
-				}
-				inTransaction = false;
-				spi_end();  // Does nothing if Sprite class uses this function
-			}
+                    if (size == 1)  // default size
+                    {
+                        for (int8_t j = 0; j < 8; j++) {
+                            if (line & 0x1) drawPixel(x + i, y + j, color);
+                            line >>= 1;
+                        }
+                    } else {  // big size
+                        for (int8_t j = 0; j < 8; j++) {
+                            if (line & 0x1)
+                                fillRect(x + (i * size), y + (j * size), size, size,
+                                         color);
+                            else if (fillbg)
+                                fillRect(x + i * size, y + j * size, size, size,
+                                         bg);
+                            line >>= 1;
+                        }
+                    }
+                }
+                inTransaction = false;
+                spi_end();  // Does nothing if Sprite class uses this function
+            }
         }
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>
