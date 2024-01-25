@@ -14,7 +14,8 @@ The M5Stack library  provides access to the built-in hardware of the M5Stack Bas
 
 To use the M5Stack library, `#include "M5Stack.h"` must appear at the top of your sketch.
 
-The most productive way to become acquainted with the class is through the numerous included examples.
+The most productive way to become acquainted with the class is through the numerous included examples.  Additional documentation within this library:
+- [docs/Power_capabilities.md](docs/Power_capabilities.md)
 
 Additional optional include files:
 - `M5Faces.h` for access to M5Stack Faces accessories (EOL)
@@ -24,7 +25,7 @@ Additional optional include files:
 
 * **Hardware documentation for [Gray v1.0 (EOL)](https://docs.m5stack.com/en/core/gray)**
 
-* **Hardware documentation for [Basic v1.0 (EOL)](https://docs.m5stack.com/en/core/basic)  [Basic v2.6 (EOL)](https://docs.m5stack.com/en/core/basic_v2.6)  [Basic v2.7](https://docs.m5stack.com/en/core/basic_v2.7)**
+* **Hardware documentation for [Basic v1.0 (EOL)](https://docs.m5stack.com/en/core/basic)  [Basic v2.6 (EOL)](https://docs.m5stack.com/en/core/basic_v2.6)  [Basic v2.7](https://docs.m5stack.com/en/core/basic_v2.7)**.  The version number may be printed on the main circuit board next to the SD card slot.
 
 * **[Buy Basic](https://shop.m5stack.com/products/esp32-basic-core-iot-development-kit-v2-7)**
 
@@ -58,15 +59,13 @@ Additional optional include files:
 
 * [M5ez](https://github.com/M5ez/M5ez) - The easy way to program on the M5Stack
 
-
 * [M5Stack MultiApp Advanced](https://github.com/botofancalin/M5Stack-MultiApp-Advanced) - A M5Stack firmware made on PlatformIO
-
 
 * [M5Stack ESP32 Oscilloscope](https://github.com/botofancalin/M5Stack-ESP32-Oscilloscope) - A fully functional oscilloscope based on ESP32 M5Stack
 
 * [M5Stack-Avatar](https://github.com/meganetaaan/m5stack-avatar) - An M5Stack library for rendering avatar faces
 
-* [M5Stack_CrackScreen](https://github.com/nomolk/M5Stack_CrackScreen) - Crack your M5Stack!!
+* [M5Stack_CrackScreen](https://github.com/nomolk/M5Stack_CrackScreen) - Crack your M5Stack
 
 * [M5_Shuttle_Run](https://github.com/n0bisuke/M5_Shuttle_Run) - M5_Shuttle_Run
 
@@ -86,7 +85,7 @@ Additional optional include files:
 
 * [ArduinoWiFiPhotoBackup](https://github.com/moononournation/ArduinoWiFiPhotoBackup) - M5STACK Arduino WiFi Photo Backup device
 
-* [M5StackHIDCtrlAltDel](https://github.com/mhama/M5StackHIDCtrlAltDel) - You can send ctrl+alt+del to your PC from M5Stack
+* [M5StackHIDCtrlAltDel](https://github.com/mhama/M5StackHIDCtrlAltDel) - You can send ctrl+alt+del to your PC via Bluetooth from M5Stack
 
 * [M5Stack Markdown Web Server](https://github.com/PartsandCircuits/M5Stack-MarkdownWebServer) - Markdown & icons loaded from an Micro SD card/TF card to run a web page
 
