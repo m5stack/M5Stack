@@ -7,12 +7,14 @@ English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_starte
 
 The M5Stack library  provides access to the built-in hardware of the M5Stack Basic and Gray controllers through the M5Stack class, referenced as `M5`, including:
 - LCD display via `M5.Lcd`, a customized version of the [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI) LCD library, adapted for Basic and Gray.  The display resolution is 320x240 supporting 262K colors.  Several fonts, graphics primitives, QR code rendering, and PNG/BMP/JPEG support are included.
-- Power control via `M5.Power` and the IP5306 power management chip
+- Power control, including device shutoff and battery level detection via `M5.Power` and the IP5306 power management chip
 - Hardware buttons via `M5.BtnA`, `M5.BtnB`, `M5.BtnC`
-- Speaker, via `M5.Speaker`, supporting tones, volume control, and basic wave audio playback
+- Speaker, via `M5.Speaker`, supporting tones, volume control, and basic wave audio playback using ESP32's DAC function
 - Accelerometer, via `M5.Imu`, `M5.Mpu6886`, or `M5.Sh200Q` (accelerometer type depends on version of Basic/Gray) 
 
 To use the M5Stack library, `#include "M5Stack.h"` must appear at the top of your sketch.
+
+The most productive way to become acquainted with the class is through the numerous included examples.
 
 Additional optional include files:
 - `M5Faces.h` for access to M5Stack Faces accessories (EOL)
