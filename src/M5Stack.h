@@ -13,7 +13,7 @@
  * @brief   Header for M5Stack.cpp module
  *
  * \par Description
- * This file is a drive for M5Stack core.
+ * This file is a driver for M5Stack Core/Basic/Gray.
  *
  * \par Method List:
  *
@@ -37,24 +37,20 @@
     LCD:
         M5.lcd.setBrightness(uint8_t brightness);
         M5.Lcd.drawPixel(int16_t x, int16_t y, uint16_t color);
-        M5.Lcd.drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t
- color); M5.Lcd.fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t
- color); M5.Lcd.fillScreen(uint16_t color); M5.Lcd.drawCircle(int16_t x0,
- int16_t y0, int16_t r, uint16_t color); M5.Lcd.drawCircleHelper(int16_t x0,
- int16_t y0, int16_t r, uint8_t cornername,uint16_t color);
+        M5.Lcd.drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
+        M5.Lcd.fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
+        M5.Lcd.fillScreen(uint16_t color); M5.Lcd.drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
+        M5.Lcd.drawCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername,uint16_t color);
         M5.Lcd.fillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
-        M5.Lcd.fillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t
- cornername,int16_t delta, uint16_t color); M5.Lcd.drawTriangle(int16_t x0,
- int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
-        M5.Lcd.fillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
- int16_t x2, int16_t y2, uint16_t color); M5.Lcd.drawRoundRect(int16_t x0,
- int16_t y0, int16_t w, int16_t h, int16_t radius, uint16_t color);
-        M5.Lcd.fillRoundRect(int16_t x0, int16_t y0, int16_t w, int16_t h,
- int16_t radius, uint16_t color); M5.Lcd.drawBitmap(int16_t x, int16_t y, const
- uint8_t bitmap[], int16_t w, int16_t h, uint16_t color);
-        M5.Lcd.drawRGBBitmap(int16_t x, int16_t y, const uint16_t bitmap[],
- int16_t w, int16_t h), M5.Lcd.drawChar(uint16_t x, uint16_t y, char c, uint16_t
- color, uint16_t bg, uint8_t size); M5.Lcd.setCursor(uint16_t x0, uint16_t y0);
+        M5.Lcd.fillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername,int16_t delta, uint16_t color);
+        M5.Lcd.drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
+        M5.Lcd.fillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color);
+        M5.Lcd.drawRoundRect(int16_t x0, int16_t y0, int16_t w, int16_t h, int16_t radius, uint16_t color);
+        M5.Lcd.fillRoundRect(int16_t x0, int16_t y0, int16_t w, int16_t h, int16_t radius, uint16_t color); 
+        M5.Lcd.drawBitmap(int16_t x, int16_t y, const uint8_t bitmap[], int16_t w, int16_t h, uint16_t color);
+        M5.Lcd.drawRGBBitmap(int16_t x, int16_t y, const uint16_t bitmap[], int16_t w, int16_t h), 
+        M5.Lcd.drawChar(uint16_t x, uint16_t y, char c, uint16_t color, uint16_t bg, uint8_t size);
+        M5.Lcd.setCursor(uint16_t x0, uint16_t y0);
         M5.Lcd.setTextColor(uint16_t color);
         M5.Lcd.setTextColor(uint16_t color, uint16_t backgroundcolor);
         M5.Lcd.setTextSize(uint8_t size);
@@ -64,13 +60,12 @@
         M5.Lcd.println();
         M5.Lcd.drawCentreString(const char *string, int dX, int poY, int font);
         M5.Lcd.drawRightString(const char *string, int dX, int poY, int font);
-        M5.Lcd.drawJpg(const uint8_t *jpg_data, size_t jpg_len, uint16_t x,
- uint16_t y); M5.Lcd.drawJpgFile(fs::FS &fs, const char *path, uint16_t x,
- uint16_t y); M5.Lcd.drawBmpFile(fs::FS &fs, const char *path, uint16_t x,
- uint16_t y);
+        M5.Lcd.drawJpg(const uint8_t *jpg_data, size_t jpg_len, uint16_t x, uint16_t y);
+        M5.Lcd.drawJpgFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y);
+        M5.Lcd.drawBmpFile(fs::FS &fs, const char *path, uint16_t x, uint16_t y);
 
     Button:
-        M5.BtnA/B/C.read();
+        M5.BtnA/B/C.read(); // Must be called in loop(), or via update()
         M5.BtnA/B/C.isPressed();
         M5.BtnA/B/C.isReleased();
         M5.BtnA/B/C.wasPressed();
@@ -125,21 +120,30 @@ class M5Stack {
     M5Stack();
     void begin(bool LCDEnable = true, bool SDEnable = true,
                bool SerialEnable = true, bool I2CEnable = false);
+
+    // Updates the status of hardware buttons, and ends any completed tone on the speaker.
+    // Recommended to be placed in loop()
     void update();
 
-    // LCD
+    // LCD display, derived from TFT_eSPI.  See examples
     M5Display Lcd = M5Display();
 
-    // Power
+    // Power and battery charge control.  Call Power.begin() in setup().
     POWER Power;
 
 // Button API
 #define DEBOUNCE_MS 10
+
+    // Hardware button A.  Call read() before checking if isPressed()
     Button BtnA = Button(BUTTON_A_PIN, true, DEBOUNCE_MS);
+
+    // Hardware button B.  Call read() before checking if isPressed()
     Button BtnB = Button(BUTTON_B_PIN, true, DEBOUNCE_MS);
+
+    // Hardware button C.  Call read() before checking if isPressed()
     Button BtnC = Button(BUTTON_C_PIN, true, DEBOUNCE_MS);
 
-    // SPEAKER
+    // SPEAKER on DAC pin 25
     SPEAKER Speaker;
 
     // UART
@@ -154,7 +158,7 @@ class M5Stack {
     SH200Q Sh200Q;
 
     /**
-     * Function has been move to Power class.(for compatibility)
+     * Function has been moved to Power class (for compatibility)
      * This name will be removed in a future release.
      */
     void setPowerBoostKeepOn(bool en) __attribute__((deprecated));
