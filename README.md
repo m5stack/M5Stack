@@ -5,12 +5,16 @@
 
 English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_started_ja.md)
 
-The M5Stack library provides access to the built-in hardware of the M5Stack Basic and Gray controllers through the M5Stack class, including:
-- LCD display via `M5.Lcd`, a customized version of the [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI) LCD library, adapted for Basic and Gray.  The display resolution is 320x240 supporting 262K colors.  Several fonts, graphics primitives, and JPEG support are included.
-- Power management via `M5.Power`
+The M5Stack library is included with `#include <M5Stack.h>`, and provides access to the built-in hardware of the M5Stack Basic and Gray controllers through the M5Stack class, referenced as `M5`, including:
+- LCD display via `M5.Lcd`, a customized version of the [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI) LCD library, adapted for Basic and Gray.  The display resolution is 320x240 supporting 262K colors.  Several fonts, graphics primitives, QR code rendering, and PNG/BMP/JPEG support are included.
+- Power control via `M5.Power` and the IP5306 power management chip
 - Hardware buttons via `M5.BtnA`, `M5.BtnB`, `M5.BtnC`
 - Speaker, via `M5.Speaker`, supporting tones, volume control, and basic wave audio playback
 - Accelerometer, via `M5.Imu`, `M5.Mpu6886`, or `M5.Sh200Q` (accelerometer type depends on version of Basic/Gray) 
+
+Additional include files:
+- `M5Faces.h` for access to M5Stack Faces products (EOL)
+- `LoRaWan.h`
 
 <img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/gray/gray_01.webp" alt="gray" width="350" height="350"><img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/basic/basic_01.webp" alt="basic" width="350" height="350">
 
