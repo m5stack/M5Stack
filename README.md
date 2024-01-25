@@ -5,37 +5,30 @@
 
 English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_started_ja.md)
 
-<img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/gray/gray_01.webp" alt="gray" width="350" height="350">
+<img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/gray/gray_01.webp" alt="gray" width="350" height="350"><img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/basic/basic_01.webp" alt="basic" width="350" height="350">
 
-<img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/basic/basic_01.webp" alt="basic" width="350" height="350">
+* **Hardware documentation for [Gray v1.0 (EOL)](https://docs.m5stack.com/en/core/gray)**
 
-* **For the Detailed documentation of Gray, please [Click here](https://docs.m5stack.com/en/core/gray)**
+* **Hardware documentation for [Basic v1.0 (EOL)](https://docs.m5stack.com/en/core/basic)  [Basic v2.6 (EOL)](https://docs.m5stack.com/en/core/basic_v2.6)  [Basic v2.7](https://docs.m5stack.com/en/core/basic_v2.7)**
 
-* **For the Detailed documentation of Basic, please [Click here](https://docs.m5stack.com/en/core/basic_v2.6)**
+* **[Buy Basic](https://shop.m5stack.com/products/esp32-basic-core-iot-development-kit-v2-7)**
 
-* **In order to buy Gray, please [Click here](https://shop.m5stack.com/products/grey-development-core)**
-
-* **In order to buy Basic, please [Click here](https://shop.m5stack.com/products/esp32-basic-core-iot-development-kit-v2-6)**
-
-*We have several master M5Cores with different configurations, this is the difference between them [Compared](https://docs.m5stack.com/en/products_selector).*
+*[Comparison of M5Stack controllers](https://docs.m5stack.com/en/products_selector).*
 
 ### M-BUS
 ![image](docs/M-BUS.jpg)
 
 ## More Information
 
-**UIFlow Quick Start**: [Click Here](https://docs.m5stack.com/zh_CN/quick_start/m5core/uiflow)
+**UIFlow Quick Start**: [Click Here](https://docs.m5stack.com/en/quick_start/m5core/uiflow)
 
-**MicroPython API**: [Click Here](https://docs.m5stack.com/zh_CN/mpy/display/m5stack_lvgl)
+**MicroPython API**: [Click Here](https://docs.m5stack.com/en/mpy/display/m5stack_lvgl)
 
-**Arduino IDE Development**: [Click Here](https://docs.m5stack.com/zh_CN/quick_start/m5core/arduino)
+**Arduino IDE Development**: [Click Here](https://docs.m5stack.com/en/quick_start/m5core/arduino)
 
-**M5StickC Arduino API**: [Click Here](https://docs.m5stack.com/zh_CN/api/system)
+**Gray PinMap**: [Click Here](https://docs.m5stack.com/en/core/gray)
 
-**Gray PinMap**: [Click Here](https://docs.m5stack.com/zh_CN/core/gray)
-
-**Basic PinMap**: [Click Here](https://docs.m5stack.com/zh_CN/core/basic)
-
+**Basic PinMap**: [v1.0 (EOL)](https://docs.m5stack.com/en/core/basic)  [v2.6 (EOL)](https://docs.m5stack.com/en/core/basic_v2.6)  [v2.7](https://docs.m5stack.com/en/core/basic_v2.7)**
 
 ## USER CASES
 
@@ -43,7 +36,6 @@ English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_starte
   card
 
 * [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI)  - TFT library for the ESP8266 and ESP32 that supports different driver chips
-
 
 * [M5StackSAM](https://github.com/tomsuch/M5StackSAM) - Simple Applications Menu Arduino Library for M5Stack
 
