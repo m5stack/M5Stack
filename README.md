@@ -5,6 +5,13 @@
 
 English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_started_ja.md)
 
+The M5Stack library provides access to the built-in hardware of the M5Stack Basic and Gray controllers through the M5Stack class, including:
+- LCD display via `M5.Lcd`, a customized version of the [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI) LCD library, adapted for Basic and Gray.  The display resolution is 320x240 supporting 262K colors.  Several fonts, graphics primitives, and JPEG support are included.
+- Power management via `M5.Power`
+- Hardware buttons via `M5.BtnA`, `M5.BtnB`, `M5.BtnC`
+- Speaker, via `M5.Speaker`, supporting tones, volume control, and basic wave audio playback
+- Accelerometer, via `M5.Imu`, `M5.Mpu6886`, or `M5.Sh200Q` (accelerometer type depends on version of Basic/Gray) 
+
 <img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/gray/gray_01.webp" alt="gray" width="350" height="350"><img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/basic/basic_01.webp" alt="basic" width="350" height="350">
 
 * **Hardware documentation for [Gray v1.0 (EOL)](https://docs.m5stack.com/en/core/gray)**
@@ -13,7 +20,7 @@ English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_starte
 
 * **[Buy Basic](https://shop.m5stack.com/products/esp32-basic-core-iot-development-kit-v2-7)**
 
-*[Comparison of M5Stack controllers](https://docs.m5stack.com/en/products_selector).*
+*[Comparison of M5Stack controllers](https://docs.m5stack.com/en/products_selector)*
 
 ### M-BUS
 ![image](docs/M-BUS.jpg)
