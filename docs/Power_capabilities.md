@@ -22,7 +22,7 @@ that can be accessed on the I2C bus at address 0x75.  Access is possible via M5.
 - **Can communication with the IP5306 power controller be tested and confirmed?** Yes, with `canControl()`
 - **Where does the IP5306 power controller get its own power?** Only from either the battery or the USB port.  The 5V connection on the M5Stack
     Core/Basic/Gray controller is not a power *source* for the IP5306 chip and is considered downstream from the chip (i.e. the *output*).  If the M5Stack controller
-    is being powered through the 5V pin (for example, through a base or some other accessory), this power is not an *input* to the IP5306 chip,
+    is being powered through the 5V connection other than the USB port (for example, through a base or some other accessory), this power is not an *input* to the IP5306 chip,
     and will not charge the battery.  The IP5306 will shut down under this condition to minimize battery drain, unless configured not to. 
     When the chip is shut down, it will not respond to I2C communication
     (for example, `getBatteryLevel()` will return -1)
