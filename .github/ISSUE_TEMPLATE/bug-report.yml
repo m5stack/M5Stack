@@ -14,7 +14,9 @@ body:
         "Thank you for opening an issue on an M5Stack Arduino library repository.\n\
         To improve the speed of resolution please review the following guidelines and common troubleshooting steps below before creating the issue:\n\
         Do not use GitHub issues for troubleshooting projects and issues. Instead use the forums at https://community.m5stack.com to ask questions and troubleshoot why something isn't working as expected.  In many cases the problem is a common issue that you will more quickly receive help from the forum community.  GitHub issues are meant for known defects in the code.  If you don't know if there is a defect in the code then start with troubleshooting on the forum first.\n\
-        If you have any questions about UIFLOW, please ask them in the UIFLOW section of the [forum](https://community.m5stack.com/category/5/uiflow)"
+        If you have any questions about UIFLOW, please ask them in the UIFLOW section of the [forum](https://community.m5stack.com/category/5/uiflow)\n\
+        \n\ Please note that this repository only accepts Arduino/PlatformIO issues for Gray, Fire and Basic products.
+        \n\ Please do not ask questions about other products or platforms here."
   - type: textarea
     id: description
     attributes:
