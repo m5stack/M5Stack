@@ -7,8 +7,7 @@
 M5Stack::M5Stack() : isInited(0) {
 }
 
-void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable,
-                    bool I2CEnable) {
+void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable, bool I2CEnable) {
     // Correct init once
     if (isInited == true) {
         return;
@@ -16,6 +15,12 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable,
         isInited = true;
     }
 
+    for (auto gpio : (const uint8_t[]){18, 19, 23}) {
+        *(volatile uint32_t*)(GPIO_PIN_MUX_REG[gpio]) |= FUN_DRV_M;
+        gpio_pulldown_dis((gpio_num_t)gpio);
+        gpio_pullup_en((gpio_num_t)gpio);
+    }
+    
     // UART
     if (SerialEnable == true) {
         Serial.begin(115200);
