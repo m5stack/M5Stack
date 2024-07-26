@@ -27,7 +27,7 @@ Additional optional include files:
 - `M5Faces.h` for access to M5Stack Faces accessories (EOL)
 - `LoRaWan.h`
 
-<img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/basic/basic_01.webp" alt="basic" width="350" height="350"><img src="https://static-cdn.m5stack.com/resource/docs/static/assets/img/product_pics/core/gray/gray_01.webp" alt="gray" width="350" height="350">
+<img src="https://static-cdn.m5stack.com/resource/docs/products/core/basic/basic_01.webp" alt="basic" width="350" height="350"><img src="https://static-cdn.m5stack.com/resource/docs/products/core/gray/gray_01.webp" alt="gray" width="350" height="350">
 
 * **Hardware documentation for [Gray v1.0 (EOL)](https://docs.m5stack.com/en/core/gray)**
 
