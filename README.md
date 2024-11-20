@@ -35,7 +35,7 @@ Additional optional include files:
 
 * **[Buy Basic](https://shop.m5stack.com/products/esp32-basic-core-iot-development-kit-v2-7)**
 
-*[Comparison of M5Stack controllers](https://docs.m5stack.com/en/products_selector)*
+*[Comparison of M5Stack controllers](https://docs.m5stack.com/en/products_selector/m5core_compare)*
 
 ### M-BUS
 <img src="docs/M-BUS.jpg" width="300" />

@@ -12,7 +12,7 @@
 
 * **如果想要购买 Basic 的话，[点击这里](https://item.taobao.com/item.htm?spm=a1z10.5-c-s.w4002-22404213529.11.6b2349d8feN5U0&id=610634829528)**
 
-*我们有几款不同配置的主控 M5Cores，这是他们之间的[对比](https://docs.m5stack.com/zh_CN/products_selector).*
+*我们有几款不同配置的主控 M5Cores，这是他们之间的[对比](https://docs.m5stack.com/zh_CN/products_selector/m5core_compare).*
 
 
 ### M-BUS
