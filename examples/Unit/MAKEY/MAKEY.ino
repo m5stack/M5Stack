@@ -1,32 +1,28 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
-*
-* Describe: MAKEY.
-* Date: 2021/8/19
-*******************************************************************************
-  Please connect to Port A(22、21),Connect port G on the MAKEY Unit to other
-ports (except 5V) to control the tone it emits 请连接端口A(22、21),将MAKEY
-Unit上的G口与其他口连接(除5V外)控制其发出音调
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit ?
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
 
-#define NOTE_D1 294
+#define NOTE_D1  (294)
+#define NOTE_DL1 (261)
+#define NOTE_DL2 (293)
+#define NOTE_DL3 (329)
+#define NOTE_DL4 (349)
+#define NOTE_DL5 (392)
+#define NOTE_DL6 (440)
+#define NOTE_DL7 (494)
 
-#define NOTE_DL1 261
-#define NOTE_DL2 293
-#define NOTE_DL3 329
-#define NOTE_DL4 349
-#define NOTE_DL5 392
-#define NOTE_DL6 440
-#define NOTE_DL7 494
-
-void setup() {
+void setup()
+{
     M5.begin();             // Init M5Stack.  初始化M5Stack
     M5.Power.begin();       // Init power  初始化电源模块
     M5.lcd.setTextSize(2);  // Set the text size to 2.  设置文字大小为2
@@ -35,7 +31,8 @@ void setup() {
 }
 
 int Key1 = 0, Key2 = 0, Index = 0;
-void showKey() {
+void showKey()
+{
     M5.Lcd.setCursor(20, 200);
     M5.Lcd.setTextColor(BLUE, BLACK);
     M5.Lcd.print(Index);
@@ -108,7 +105,8 @@ void showKey() {
 }
 
 int CommandStatus = 0;
-void loop() {
+void loop()
+{
     Wire.requestFrom(0x51, 2);
     while (Wire.available()) {
         Key1 = Wire.read();

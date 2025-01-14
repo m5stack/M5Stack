@@ -1,20 +1,28 @@
 /*
-    Description: Control CAT EAR to run rainbow light show
-    Please install library before compiling:
-    FastLED: https://github.com/FastLED/FastLED
-*/
-#include <M5Stack.h>
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + SK6812
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ * FastLED@^3.9.10: https://github.com/FastLED/FastLED
+ */
 
+#include <M5Stack.h>
 #include "FastLED.h"
 
-#define Neopixel_PIN 21
-#define NUM_LEDS     118
+#define Neopixel_PIN (21)
+#define NUM_LEDS     (118)
 
 CRGB leds[NUM_LEDS];
 uint8_t gHue                              = 0;
 static TaskHandle_t FastLEDshowTaskHandle = 0;
 static TaskHandle_t userTaskHandle        = 0;
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
 
@@ -25,17 +33,17 @@ void setup() {
     M5.Lcd.println("CatEar Example");
     M5.Lcd.setTextColor(WHITE);
     // Neopixel initialization
-    FastLED.addLeds<WS2811, Neopixel_PIN, GRB>(leds, NUM_LEDS)
-        .setCorrection(TypicalLEDStrip);
+    FastLED.addLeds<WS2811, Neopixel_PIN, GRB>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
     FastLED.setBrightness(10);
-    xTaskCreatePinnedToCore(FastLEDshowTask, "FastLEDshowTask", 2048, NULL, 2,
-                            NULL, 1);
+    xTaskCreatePinnedToCore(FastLEDshowTask, "FastLEDshowTask", 2048, NULL, 2, NULL, 1);
 }
 
-void loop() {
+void loop()
+{
 }
 
-void FastLEDshowESP32() {
+void FastLEDshowESP32()
+{
     if (userTaskHandle == 0) {
         userTaskHandle = xTaskGetCurrentTaskHandle();
         xTaskNotifyGive(FastLEDshowTaskHandle);
@@ -45,11 +53,13 @@ void FastLEDshowESP32() {
     }
 }
 
-void FastLEDshowTask(void *pvParameters) {
+void FastLEDshowTask(void *pvParameters)
+{
     for (;;) {
         fill_rainbow(leds, NUM_LEDS, gHue, 7);  // rainbow effect
-        FastLED.show();  // must be executed for neopixel becoming effective
-        EVERY_N_MILLISECONDS(20) {
+        FastLED.show();                         // must be executed for neopixel becoming effective
+        EVERY_N_MILLISECONDS(20)
+        {
             gHue++;
         }
     }

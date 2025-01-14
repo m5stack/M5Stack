@@ -1,23 +1,21 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/unit/joystick
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/joystick
-*
-* Describe: JOYSTICK.
-* Date: 2021/8/30
-*******************************************************************************
-  Please connect to Port A,Read JOYSTICK Unit X, Y axis offset data and button
-status 请连接端口 A,读取操纵杆单位X, Y轴偏移数据和按钮状态
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit Joystick v1.1
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
 
-#define JOY_ADDR 0x52  // define Joystick I2C address.  定义摇杆的I2C地址
+#define JOY_ADDR (0x52)  // define Joystick I2C address.  定义摇杆的I2C地址
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
     M5.Lcd.setCursor(70, 0, 4);
@@ -27,11 +25,11 @@ void setup() {
 }
 
 char data[100];
-void loop() {
+void loop()
+{
     static uint8_t x_data, y_data, button_data;
-    Wire.requestFrom(
-        JOY_ADDR,
-        3);  // Request 3 bytes from the slave device.  向从设备请求3个字节
+    Wire.requestFrom(JOY_ADDR,
+                     3);     // Request 3 bytes from the slave device.  向从设备请求3个字节
     if (Wire.available()) {  // If data is received.  如果接收到数据
         x_data      = Wire.read();
         y_data      = Wire.read();

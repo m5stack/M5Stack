@@ -1,3 +1,17 @@
+/*
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit 8Angle
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5GFX@^0.2.3: https://github.com/m5stack/M5GFX
+ * M5Unified@^0.2.2: https://github.com/m5stack/M5Unified
+ * M5Unit-8Angle：https://github.com/m5stack/M5Unit-8Angle
+ */
+
 #include <M5Unified.h>
 #include <M5GFX.h>
 #include "M5_ANGLE8.h"
@@ -8,7 +22,8 @@ M5_ANGLE8 angle8;
 
 uint32_t rgb_c = 0;
 
-void print_adc_val(uint8_t i, uint16_t adc_v) {
+void print_adc_val(uint8_t i, uint16_t adc_v)
+{
     canvas.drawRect(0, i * 20, 200, 15, 1);
     canvas.fillRect(0, i * 20, map(adc_v, 0, 4096, 0, 200), 15, 1);
     canvas.setCursor(215, i * 20);
@@ -17,7 +32,8 @@ void print_adc_val(uint8_t i, uint16_t adc_v) {
 }
 
 // ADC 12 Bit
-void TaskADC12(uint16_t delay_t) {
+void TaskADC12(uint16_t delay_t)
+{
     canvas.createSprite(display.width(), 160);
     canvas.fillSprite(0);
     uint16_t adc_v = 0;
@@ -30,7 +46,8 @@ void TaskADC12(uint16_t delay_t) {
 }
 
 // Breathing RGBLED
-void TaskRGBLED_1(uint8_t br, uint16_t delay_t) {
+void TaskRGBLED_1(uint8_t br, uint16_t delay_t)
+{
     canvas.createSprite(display.width(), 35);
     rgb_c = 0;
     canvas.fillSprite(0);
@@ -47,7 +64,8 @@ void TaskRGBLED_1(uint8_t br, uint16_t delay_t) {
     }
 }
 
-void TaskRGBLED_2(uint8_t br, uint16_t delay_t) {
+void TaskRGBLED_2(uint8_t br, uint16_t delay_t)
+{
     canvas.createSprite(display.width(), 35);
     rgb_c = 0;
     canvas.fillSprite(0);
@@ -64,7 +82,8 @@ void TaskRGBLED_2(uint8_t br, uint16_t delay_t) {
     }
 }
 
-void TaskRGBLED_3(uint32_t color, uint8_t br, uint16_t delay_t) {
+void TaskRGBLED_3(uint32_t color, uint8_t br, uint16_t delay_t)
+{
     canvas.createSprite(display.width(), 35);
     rgb_c = 0;
     canvas.fillSprite(0);
@@ -77,7 +96,8 @@ void TaskRGBLED_3(uint32_t color, uint8_t br, uint16_t delay_t) {
     canvas.pushSprite(0, 205);
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     display.begin();
     canvas.setColorDepth(1);  // mono color
@@ -96,7 +116,8 @@ void setup() {
     canvas.pushSprite(0, 0);
 }
 
-void loop() {
+void loop()
+{
     M5.update();
     if (M5.BtnA.wasReleased()) {
         TaskRGBLED_3(0xffffff, 100, 2);

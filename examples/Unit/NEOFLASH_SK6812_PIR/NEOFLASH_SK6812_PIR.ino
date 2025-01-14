@@ -1,17 +1,22 @@
 /*
-    Description: NEOFLASH real-time clock case: fill in your personal WiFi
-   information in the code below. After the program runs, it will automatically
-   send an HTTP request to obtain the current time data, combined with PIR
-   induction to control the RGB LED on and off. Please install library before
-   compiling: FastLED: https://github.com/FastLED/FastLED
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit ?
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * FastLED@^3.9.10: https://github.com/FastLED/FastLED
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
+
 #include <Arduino.h>
 #include <HTTPClient.h>
 #include <M5Stack.h>
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 #include <WiFiMulti.h>
-
 #include "DisplayCurrentTime.h"
 #include "FastLED.h"
 #include "time.h"
@@ -23,7 +28,7 @@ FASTLED_USING_NAMESPACE
 #endif
 
 #define DATA_PIN 26
-//#define CLK_PIN   4
+// #define CLK_PIN   4
 #define LED_TYPE    WS2811
 #define COLOR_ORDER GRB
 #define NUM_LEDS    192
@@ -86,7 +91,8 @@ const char* rootCACertificate =
     "-----END CERTIFICATE-----\n";
 
 uint16_t time4Day;
-uint16_t printLocalTime() {
+uint16_t printLocalTime()
+{
     struct tm timeinfo;
     if (!getLocalTime(&timeinfo)) {
         Serial.println("Failed to obtain time");
@@ -110,7 +116,8 @@ uint16_t printLocalTime() {
  *  Call this function instead of FastLED.show(). It signals core 0 to issue a
  * show, then waits for a notification that it is done.
  */
-void FastLEDshowESP32() {
+void FastLEDshowESP32()
+{
     if (userTaskHandle == 0) {
         // -- Store the handle of the current task, so that the show task can
         //    notify it when it's done
@@ -130,7 +137,8 @@ void FastLEDshowESP32() {
  *  This function runs on core 0 and just waits for requests to call
  * FastLED.show()
  */
-void FastLEDshowTask(void* pvParameters) {
+void FastLEDshowTask(void* pvParameters)
+{
     // -- Run forever...
     for (;;) {
         // -- Wait for the trigger
@@ -146,7 +154,8 @@ void FastLEDshowTask(void* pvParameters) {
 
 WiFiMulti WiFiMulti;
 
-void InitWifi() {
+void InitWifi()
+{
     Serial.printf("Connecting to %s ", ssid);
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
@@ -163,7 +172,8 @@ void InitWifi() {
     // WiFi.disconnect(true);
     // WiFi.mode(WIFI_OFF);
 }
-void setup() {
+void setup()
+{
     delay(3000);  // 3 second delay for recovery
     M5.begin();
     M5.Power.begin();
@@ -178,8 +188,7 @@ void setup() {
     pinMode(36, INPUT);
     dacWrite(25, 0);
     // tell FastLED about the LED strip configuration
-    FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS)
-        .setCorrection(TypicalLEDStrip);
+    FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
     // FastLED.addLeds<LED_TYPE,DATA_PIN,CLK_PIN,COLOR_ORDER>(leds,
     // NUM_LEDS).setCorrection(TypicalLEDStrip);
 
@@ -191,8 +200,8 @@ void setup() {
     Serial.println(core);
 
     // -- Create the FastLED show task
-    xTaskCreatePinnedToCore(FastLEDshowTask, "FastLEDshowTask", 2048, NULL, 2,
-                            &FastLEDshowTaskHandle, FASTLED_SHOW_CORE);
+    xTaskCreatePinnedToCore(FastLEDshowTask, "FastLEDshowTask", 2048, NULL, 2, &FastLEDshowTaskHandle,
+                            FASTLED_SHOW_CORE);
 }
 
 // List of patterns to cycle through.  Each is defined as a separate function
@@ -201,11 +210,12 @@ typedef void (*SimplePatternList[])();
 SimplePatternList gPatterns = {confetti, sinelon};
 
 uint8_t gCurrentPatternNumber = 0;  // Index number of which pattern is current
-uint8_t gHue = 0;  // rotating "base color" used by many of the patterns
-uint8_t i    = 0;
+uint8_t gHue                  = 0;  // rotating "base color" used by many of the patterns
+uint8_t i                     = 0;
 uint32_t sys_time;
 uint16_t curtime;
-void loop() {
+void loop()
+{
     uint8_t i;
     uint16_t lasttime;
     // https_test();
@@ -236,55 +246,62 @@ void loop() {
 
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 
-void nextPattern() {
+void nextPattern()
+{
     // add one to the current pattern number, and wrap around at the end
     gCurrentPatternNumber = (gCurrentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
     i++;
 }
 
-void rainbow() {
+void rainbow()
+{
     // FastLED's built-in rainbow generator
     fill_rainbow(leds, NUM_LEDS, gHue, 7);
 }
 
-void rainbowWithGlitter() {
+void rainbowWithGlitter()
+{
     // built-in FastLED rainbow, plus some random sparkly glitter
     rainbow();
     addGlitter(80);
 }
 
-void addGlitter(fract8 chanceOfGlitter) {
+void addGlitter(fract8 chanceOfGlitter)
+{
     if (random8() < chanceOfGlitter) {
         leds[random16(NUM_LEDS)] += CRGB::White;
     }
 }
 
-void confetti() {
+void confetti()
+{
     // random colored speckles that blink in and fade smoothly
     fadeToBlackBy(leds, NUM_LEDS, 10);
     int pos = random16(NUM_LEDS);
     leds[pos] += CHSV(gHue + random8(64), 200, 255);
 }
 
-void sinelon() {
+void sinelon()
+{
     // a colored dot sweeping back and forth, with fading trails
     fadeToBlackBy(leds, NUM_LEDS, 20);
     int pos = beatsin16(13, 0, NUM_LEDS - 1);
     leds[pos] += CHSV(gHue, 255, 192);
 }
 
-void bpm() {
+void bpm()
+{
     // colored stripes pulsing at a defined Beats-Per-Minute (BPM)
     uint8_t BeatsPerMinute = 62;
     CRGBPalette16 palette  = PartyColors_p;
     uint8_t beat           = beatsin8(BeatsPerMinute, 64, 255);
     for (int i = 0; i < NUM_LEDS; i++) {  // 9948
-        leds[i] =
-            ColorFromPalette(palette, gHue + (i * 2), beat - gHue + (i * 10));
+        leds[i] = ColorFromPalette(palette, gHue + (i * 2), beat - gHue + (i * 10));
     }
 }
 
-void juggle() {
+void juggle()
+{
     // eight colored dots, weaving in and out of sync with each other
     fadeToBlackBy(leds, NUM_LEDS, 20);
     byte dothue = 0;
@@ -294,7 +311,8 @@ void juggle() {
     }
 }
 
-void https_test(void) {
+void https_test(void)
+{
     WiFiClientSecure* client = new WiFiClientSecure;
     if (client) {
         client->setCACert(rootCACertificate);
@@ -304,8 +322,7 @@ void https_test(void) {
             HTTPClient https;
 
             Serial.print("[HTTPS] begin...\n");
-            if (https.begin(
-                    "https://jigsaw.w3.org/HTTP/connection.html")) {  // HTTPS
+            if (https.begin("https://jigsaw.w3.org/HTTP/connection.html")) {  // HTTPS
                 Serial.print("[HTTPS] GET...\n");
                 // start connection and send HTTP header
                 int httpCode = https.GET();
@@ -317,14 +334,12 @@ void https_test(void) {
                     Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
 
                     // file found at server
-                    if (httpCode == HTTP_CODE_OK ||
-                        httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
+                    if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
                         String payload = https.getString();
                         Serial.println(payload);
                     }
                 } else {
-                    Serial.printf("[HTTPS] GET... failed, error: %s\n",
-                                  https.errorToString(httpCode).c_str());
+                    Serial.printf("[HTTPS] GET... failed, error: %s\n", https.errorToString(httpCode).c_str());
                 }
 
                 https.end();

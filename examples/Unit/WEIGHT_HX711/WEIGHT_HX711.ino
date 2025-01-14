@@ -1,23 +1,19 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
-*
-* Describe: Weight.
-* Date: 2021/8/20
-*******************************************************************************
-  Please connect to Port B,Use WEIGHT Unit to read the analog value returned by
-the pressure sensor, convert it into intuitive weight data and send it to
-M5Core,Press ButtonA to calibrate 请连接端口B,使用WEIGHT
-Unit读取压力传感器返回的模拟值，将其转换为直观的重量数据，发送到M5Core，按下按钮A进行校准
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit Weight
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5GFX@^0.2.3: https://github.com/m5stack/M5GFX
+ * M5Unified@^0.2.2: https://github.com/m5stack/M5Unified
+ * HX711: https://github.com/bogde/HX711
+ */
 
 #include <M5Unified.h>
 #include <M5GFX.h>
-
 #include "HX711.h"
 
 M5GFX display;
@@ -29,7 +25,8 @@ M5Canvas canvas(&display);
 
 HX711 scale;
 
-void setup() {
+void setup()
+{
     M5.begin();        // Init M5Stack.  初始化M5Stack
     M5.Power.begin();  // Init power  初始化电源模块
     display.begin();
@@ -46,7 +43,8 @@ void setup() {
     scale.tare();            // auto set offset
 }
 
-void loop() {
+void loop()
+{
     canvas.fillSprite(BLACK);
     canvas.setTextSize(1);
     canvas.drawString("Connect the Weight Unit to PortB(G26,G36)", 160, 40);

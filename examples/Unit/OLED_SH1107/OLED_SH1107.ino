@@ -1,17 +1,14 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/unit/oled
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/oled
-*
-* Describe: OLED.  显示屏
-* Date: 2021/8/31
-*******************************************************************************
-  Please connect to Port A(22、21),Displays a string on the screen.
-  请连接端口A(22、21),在屏幕上显示字符串。
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit OLED
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5GFX@^0.2.3: https://github.com/m5stack/M5GFX
+ */
 #include <M5UnitOLED.h>
 
 M5UnitOLED display;
@@ -28,20 +25,21 @@ static constexpr size_t textlen = sizeof(text) / sizeof(text[0]);
 int textpos                     = 0;
 int scrollstep                  = 2;
 
-void setup(void) {
-    display.init();           // Initialize the display.  初始化显示屏
-    display.setRotation(2);   // Rotating display.  旋转显示屏
-    canvas.setColorDepth(1);  // Set the color depth.  设置色深
+void setup(void)
+{
+    display.init();                               // Initialize the display.  初始化显示屏
+    display.setRotation(2);                       // Rotating display.  旋转显示屏
+    canvas.setColorDepth(1);                      // Set the color depth.  设置色深
     canvas.setFont(&fonts::lgfxJapanMinchoP_32);  // Set the font.  设置字体
     canvas.setTextWrap(false);
     canvas.setTextSize(2);  // Set the font size.  设置字号
-    canvas.createSprite(
-        display.width() + 64,
-        72);  // Create a canvas with a wide display width of +64 and a height
-              // of 72.  创建一块宽显示屏宽度+64,高72的画布
+    canvas.createSprite(display.width() + 64,
+                        72);  // Create a canvas with a wide display width of +64 and a height
+                              // of 72.  创建一块宽显示屏宽度+64,高72的画布
 }
 
-void loop(void) {
+void loop(void)
+{
     int32_t cursor_x = canvas.getCursorX() - scrollstep;
     if (cursor_x <= 0) {
         textpos  = 0;
@@ -57,6 +55,5 @@ void loop(void) {
     display.waitDisplay();
     canvas.pushSprite(
         &display, 0,
-        (display.height() - canvas.height()) >>
-            1);  // Displays the contents of the canvas.  显示画布上的内容
+        (display.height() - canvas.height()) >> 1);  // Displays the contents of the canvas.  显示画布上的内容
 }

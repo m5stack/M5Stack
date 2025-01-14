@@ -1,33 +1,26 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/unit/nbiot_global
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/nbiot_global
-*
-* Describe: NBIoT UNIT.
-* Date: 2022/01/04
-* Dependent library download:
-* TinyGSM:
-https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/arduino/lib/TinyGSM.zip
-*******************************************************************************
-  Connect NBIoT UNIT to PORT C port (G16/17), connect to MQTT server for data
-sending and receiving test. Before compiling, please install and visit the link
-above to download the TinyGSM dependency library. 将NBIoT UNIT连接到PORT
-C端口(G16/17),
-连接MQTT服务器进行数据收发测试。编译前，请安装访问上方链接，下载TinyGSM依赖库。
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit NBIoT
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5GFX@^0.2.3: https://github.com/m5stack/M5GFX
+ * M5Unified@^0.2.2: https://github.com/m5stack/M5Unified
+ * TinyGSM: https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/arduino/lib/TinyGSM.zip
+ * pubsubclient: https://github.com/knolleary/pubsubclient
+ */
 
 #include "M5GFX.h"
 #include <M5Unified.h>
-
-#define TINY_GSM_MODEM_SIM7020
-
 #include <PubSubClient.h>
 #include <TinyGsmClient.h>
 #include <sys/time.h>
 #include <time.h>
+
+#define TINY_GSM_MODEM_SIM7020
 
 #define SerialAT         Serial1
 #define SIM7020_BAUDRATE 115200
@@ -59,13 +52,15 @@ char s_time[50];
 M5GFX display;
 M5Canvas canvas(&display);
 
-void log(String info) {
+void log(String info)
+{
     canvas.println(info);
     canvas.pushSprite(0, 0);
     Serial.println(info);
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     display.begin();
     canvas.setColorDepth(1);  // mono color
@@ -77,15 +72,15 @@ void setup() {
     canvas.println(">>UNIT NBIoT");
     canvas.println(">>MQTT TEST");
     canvas.pushSprite(0, 0);
-    SerialAT.begin(SIM7020_BAUDRATE, SERIAL_8N1, UNIT_SIM7020_RX,
-                   UNIT_SIM7020_TX);
+    SerialAT.begin(SIM7020_BAUDRATE, SERIAL_8N1, UNIT_SIM7020_RX, UNIT_SIM7020_TX);
     nbConnect();
     mqttClient.setBufferSize(4096);
     mqttClient.setCallback(mqttCallback);
     mqttClient.setKeepAlive(300);
 }
 
-void loop() {
+void loop()
+{
     static unsigned long timer = 0;
 
     if (!mqttClient.connected()) {
@@ -104,13 +99,15 @@ void loop() {
     mqttClient.loop();
 }
 
-void mqttCallback(char *topic, byte *payload, unsigned int len) {
+void mqttCallback(char *topic, byte *payload, unsigned int len)
+{
     log("Message arrived [" + String(topic) + "]: ");
     String payload_str = String((char *)payload);
     log(payload_str);
 }
 
-void mqttConnect(void) {
+void mqttConnect(void)
+{
     log("Connecting to " + String(MQTT_BROKER) + "...");
 
     // Connect to MQTT Broker
@@ -125,7 +122,8 @@ void mqttConnect(void) {
     }
 }
 
-void nbConnect(void) {
+void nbConnect(void)
+{
     unsigned long start = millis();
     log("Initializing modem...");
     while (!modem.init()) {

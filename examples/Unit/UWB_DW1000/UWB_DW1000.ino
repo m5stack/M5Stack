@@ -1,24 +1,17 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/unit/finger
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/finger
-*
-* Describe: Finger.
-* Date: 2021/8/26
-*******************************************************************************
-  Please connect to Port C. When using, two M5 devices are burned to the
-program, 请连接端口C. 在屏幕上显示字符串。在使用时，两个M5设备会被烧到程序中，
-  and the buttons A and B are used to configure them to base station mode and
-Tag mode respectively. A键和B键分别设置为基站模式和标签模式。 For more details,
-please refer to the code comments below. Before use, it is recommended to
-configure the base station first, and then configure the Tag
-  有关更多细节，请参阅下面的代码注释。在使用前，建议先配置基站，再配置Tag
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit UWB
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
+
 String DATA  = " ";  // Used to store distance data .  用于存储距离数据
 int UWB_MODE = 2;    // Used to set UWB mode .  设置超宽频模式
 
@@ -34,7 +27,8 @@ uint32_t timer_data = 0;
 static void IRAM_ATTR Timer0_CallBack(void);
 
 // Data display.  数据显示
-void UWB_display() {
+void UWB_display()
+{
     switch (UWB_MODE) {
         case 0:  // Tag mode 标签模式
             if (UWB_T_NUMBER > 0 && UWB_T_NUMBER < 5) {
@@ -42,11 +36,9 @@ void UWB_display() {
                 int b = 4 - UWB_T_NUMBER;
                 while (c > 0) {
                     c--;
-                    M5.Lcd.drawString(DATA.substring(2 + c * 11, 3 + c * 11),
-                                      37, 50 + c * 40,
+                    M5.Lcd.drawString(DATA.substring(2 + c * 11, 3 + c * 11), 37, 50 + c * 40,
                                       4);  // Tag the serial number 标签序号
-                    M5.Lcd.drawString(DATA.substring(4 + c * 11, 8 + c * 11),
-                                      210, 50 + c * 40, 4);  // Distance 距离
+                    M5.Lcd.drawString(DATA.substring(4 + c * 11, 8 + c * 11), 210, 50 + c * 40, 4);  // Distance 距离
                 }
                 while (b > 0) {
                     b--;
@@ -65,7 +57,8 @@ void UWB_display() {
 }
 
 // UI display
-void UWB_ui_display() {
+void UWB_ui_display()
+{
     M5.Lcd.drawString("UWB Example", 90, 0, 4);  // UI
     M5.Lcd.drawString("Tag", 50, 210, 4);
     M5.Lcd.drawString("Base", 130, 210, 4);
@@ -73,8 +66,7 @@ void UWB_ui_display() {
 
     switch (UWB_MODE) {
         case 0:
-            if (UWB_T_NUMBER > 0 &&
-                UWB_T_NUMBER < 5) {  // Tag mode UI display  标签模式UI显示
+            if (UWB_T_NUMBER > 0 && UWB_T_NUMBER < 5) {  // Tag mode UI display  标签模式UI显示
                 int c = UWB_T_NUMBER;
                 int b = 4 - UWB_T_NUMBER;
                 while (c > 0) {
@@ -104,7 +96,8 @@ void UWB_ui_display() {
     }
 }
 //  Display and data clear.  屏幕和数据清除
-void UWB_clear() {
+void UWB_clear()
+{
     if (Serial2.available()) {
         delay(3);
         DATA = Serial2.readString();
@@ -115,18 +108,16 @@ void UWB_clear() {
     M5.Lcd.fillRect(0, 50, 340, 150, BLACK);
 }
 // Read UART data  读取串口数据
-void UWB_readString() {
+void UWB_readString()
+{
     switch (UWB_MODE) {
         case 0:
             if (Serial2.available()) {
                 delay(20);
-                UWB_T_NUMBER =
-                    (Serial2.available() /
-                     11);  // Count the number of Base stations  计算基站数目
+                UWB_T_NUMBER = (Serial2.available() / 11);  // Count the number of Base stations  计算基站数目
                 delay(20);
                 if (UWB_T_NUMBER != UWB_T_UI_NUMBER_1 ||
-                    UWB_T_UI_NUMBER_2 ==
-                        0) {  // Changing the UI display  更改UI显示
+                    UWB_T_UI_NUMBER_2 == 0) {  // Changing the UI display  更改UI显示
                     UWB_ui_display();
                     UWB_T_UI_NUMBER_1 = UWB_T_NUMBER;
                     UWB_T_UI_NUMBER_2 = 1;
@@ -139,9 +130,8 @@ void UWB_readString() {
             } else {
                 timer_flag = 1;
             }
-            if (timer_data == 0 ||
-                timer_data > 8) {  // Count the number of Base stations
-                                   // 提示与基站0断连（测试）
+            if (timer_data == 0 || timer_data > 8) {  // Count the number of Base stations
+                                                      // 提示与基站0断连（测试）
                 if (timer_data == 9) {
                     M5.Lcd.fillRect(210, 50, 50, 30, BLACK);
                 }
@@ -150,9 +140,8 @@ void UWB_readString() {
             }
             break;
         case 1:
-            if (timer_data == 0 ||
-                timer_data > 70) {  // Indicates successful or lost connection
-                                    // with Tag  提示与标签连接成功或丢失断连
+            if (timer_data == 0 || timer_data > 70) {  // Indicates successful or lost connection
+                                                       // with Tag  提示与标签连接成功或丢失断连
                 if (Serial2.available()) {
                     delay(2);
                     DATA       = Serial2.readString();
@@ -171,22 +160,20 @@ void UWB_readString() {
 }
 
 // AT command
-void UWB_setupmode() {
+void UWB_setupmode()
+{
     switch (UWB_MODE) {
         case 0:
-            for (int b = 0; b < 2;
-                 b++) {  // Repeat twice to stabilize the connection
+            for (int b = 0; b < 2; b++) {  // Repeat twice to stabilize the connection
                 delay(50);
                 Serial2.write("AT+anchor_tag=0\r\n");  // Set up the Tag
                                                        // 设置标签
                 delay(50);
-                Serial2.write(
-                    "AT+interval=5\r\n");  // Set the calculation precision, the
-                                           // larger the response is, the slower
-                                           // it will be
-                delay(50);  //设置计算精度，越大响应越慢
-                Serial2.write(
-                    "AT+switchdis=1\r\n");  // Began to distance 开始测距
+                Serial2.write("AT+interval=5\r\n");   // Set the calculation precision, the
+                                                      // larger the response is, the slower
+                                                      // it will be
+                delay(50);                            // 设置计算精度，越大响应越慢
+                Serial2.write("AT+switchdis=1\r\n");  // Began to distance 开始测距
                 delay(50);
                 if (b == 0) {
                     Serial2.write("AT+RST\r\n");  // RESET 复位
@@ -197,10 +184,8 @@ void UWB_setupmode() {
         case 1:
             for (int b = 0; b < 2; b++) {
                 delay(50);
-                Serial2.write(
-                    "AT+anchor_tag=1,");  // Set the base station 设置基站
-                Serial2.print(
-                    UWB_B_NUMBER);  // UWB_B_NUMBER is base station ID0~ID3
+                Serial2.write("AT+anchor_tag=1,");  // Set the base station 设置基站
+                Serial2.print(UWB_B_NUMBER);        // UWB_B_NUMBER is base station ID0~ID3
                 Serial2.write("\r\n");
                 delay(1);
                 delay(50);
@@ -213,7 +198,8 @@ void UWB_setupmode() {
     }
 }
 
-void UWB_Keyscan() {
+void UWB_Keyscan()
+{
     if (M5.BtnA.isPressed()) {
         UWB_MODE = 0;
         UWB_setupmode();
@@ -239,7 +225,8 @@ void UWB_Keyscan() {
     }
 }
 
-void UWB_Timer() {
+void UWB_Timer()
+{
     timer = timerBegin(0, 80, true);  // Timer setting 定时器设置
     timerAttachInterrupt(timer, Timer0_CallBack, true);
     timerAlarmWrite(timer, 1000000, true);
@@ -258,7 +245,8 @@ static void IRAM_ATTR Timer0_CallBack(void)  // Timer function 定时器函数
     }
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
     Serial2.begin(115200, SERIAL_8N1, 16, 17);
@@ -267,7 +255,8 @@ void setup() {
     UWB_ui_display();
 }
 
-void loop() {
+void loop()
+{
     M5.update();
     UWB_Keyscan();
     UWB_readString();

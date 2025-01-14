@@ -1,27 +1,24 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/unit/extio
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/extio
-*
-* Describe: extio.
-* Date: 2021/8/30
-*******************************************************************************
-  Please connect to Port A,Control the 8 extended IOs on the EXT.IO Unit to
-cycle high and low level changes. 请连接端口 A,在EXT.IO
-Unit上控制8个扩展的IO来循环高电平和低电平的变化。
-*/
-#include <M5Stack.h>
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit EXT.IO
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ * PCA9554: https://github.com/Tinyu-Zhao/PCA9554
+ */
 
+#include <M5Stack.h>
 #include "PCA9554.h"
 
-PCA9554 ioCon1(
-    0x27);  // Create an object at this address.  在这个地址上创建一个对象
+PCA9554 ioCon1(0x27);  // Create an object at this address.  在这个地址上创建一个对象
 
 uint8_t res;
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
     Wire.begin();
@@ -30,18 +27,17 @@ void setup() {
     M5.Lcd.setCursor(0, 90);
     M5.Lcd.print("UNIT_IO EXAMPLE\n");
 
-    ioCon1.twiWrite(
-        21, 22);  // Sets the I2C pin of the connection.  设置连接的I2C引脚
+    ioCon1.twiWrite(21, 22);  // Sets the I2C pin of the connection.  设置连接的I2C引脚
     delay(10);
     res = 1;
     ioCon1.twiRead(res);
     Serial.printf("res:%d\r\n", res);
 
-    ioCon1.portMode(
-        ALLOUTPUT);  // Set the port as all output.  设置所有引脚为输出模式
+    ioCon1.portMode(ALLOUTPUT);  // Set the port as all output.  设置所有引脚为输出模式
 }
 
-void loop() {
+void loop()
+{
     for (int i = 0; i < 8; i++) ioCon1.digitalWrite(i, LOW);
     delay(1000);
     for (int i = 0; i < 8; i++) ioCon1.digitalWrite(i, HIGH);

@@ -1,18 +1,14 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/unit/trace
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/trace
-*
-* Describe: TRACE.
-* Date: 2021/9/1
-*******************************************************************************
-  Please connect to PORT-A, Read the status of the four line-tracking sensors of
-TRACE Unit and output them through UART. 请连接端口A,读取TRACE
-Unit四个线跟踪传感器的状态，并通过UART输出。
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit ?
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
 
@@ -21,11 +17,11 @@ Unit四个线跟踪传感器的状态，并通过UART输出。
 uint8_t value;
 int SensorArray[4] = {0};
 
-void SensorStatus(void) {
-    Wire.beginTransmission(
-        0x5a);  // The data transfer to 0x5A begins.  开始向0x5a传输数据
+void SensorStatus(void)
+{
+    Wire.beginTransmission(0x5a);  // The data transfer to 0x5A begins.  开始向0x5a传输数据
     Wire.write(0x00);
-    Wire.endTransmission();  // End the data transmission.结束数据传输
+    Wire.endTransmission();     // End the data transmission.结束数据传输
     Wire.requestFrom(0x5a, 1);  // Request a byte from 0x5a.  向0x5a请求一个字节
     while (Wire.available()) {  // If data is received.  如果数据被接收到
         value = Wire.read();
@@ -49,7 +45,8 @@ void SensorStatus(void) {
 #endif
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
 
@@ -61,7 +58,8 @@ void setup() {
     M5.Lcd.setTextColor(WHITE);
 }
 
-void loop() {
+void loop()
+{
     M5.Lcd.fillRect(0, 20, 320, 180, BLACK);
     M5.Lcd.setCursor(100, 70);
     SensorStatus();

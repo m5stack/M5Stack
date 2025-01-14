@@ -1,16 +1,17 @@
 /*
-    Description:
-    By enabling or deleting the macro definition `COORDINNATOR`, burn the
-   program to the two devices respectively After booting, `Coordinator` will
-   continuously broadcast data, `End Device` will display the current signal
-   strength and data packet loss Note: 16 and 17 of the DIP switch are set to
-   ON.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit Zigbee
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <stdarg.h>
-
 #include <initializer_list>
-
 #include "DRFZigbee.h"
 #include "M5Stack.h"
 #include "byteArray.h"
@@ -19,8 +20,8 @@
 DRFZigbee zigbee;
 
 #define ZIGBEE_PANID 0x1620
-//#define ZIGBEE_PANID    0x162A
-//#define COORDINNATOR
+// #define ZIGBEE_PANID    0x162A
+// #define COORDINNATOR
 
 #define ZIGBEE_RSSI_TEST
 
@@ -48,12 +49,12 @@ uint16_t posbuff[10][2] = {
     {180, 80}, {200, 80}, {220, 80}, {240, 80}, {260, 80},
 };
 
-char asciiHexList[16] = {'0', '1', '2', '3', '4', '5', '6', '7',
-                         '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+char asciiHexList[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
 bool flushFlag = true;
 
-void configZigbee() {
+void configZigbee()
+{
 #ifdef COORDINNATOR
     M5.Lcd.drawJpg(iconptrbuff[0], iconSizeBuff[0], 100, 40, 120, 140, 0, 0);
 #else
@@ -80,7 +81,8 @@ void configZigbee() {
     delay(500);
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     Serial2.begin(38400, SERIAL_8N1, 16, 17);
     zigbee.begin(Serial2);
@@ -97,31 +99,25 @@ void setup() {
     reviceTime = millis();
 }
 
-void loop() {
+void loop()
+{
 #ifdef COORDINNATOR
-    zigbee.sendDataP2P(DRFZigbee::kP2PShortAddrMode, 0xffff,
-                       {0xaa, 0x55, 0x01, 0x12});
+    zigbee.sendDataP2P(DRFZigbee::kP2PShortAddrMode, 0xffff, {0xaa, 0x55, 0x01, 0x12});
     delay(50);
 #else
     DRFZigbee::reviceData_t revice;
-    if (zigbee.reviceData(&revice, DRFZigbee::kP2PShortAddrMode, 1000) ==
-        DRFZigbee::kReviceOK) {
+    if (zigbee.reviceData(&revice, DRFZigbee::kP2PShortAddrMode, 1000) == DRFZigbee::kReviceOK) {
         revice.array->printfArray<HardwareSerial>(&Serial);
-        if ((revice.array->at(0) == 0xaa) && (revice.array->at(1) == 0x55) &&
-            (revice.array->at(3) == 0x12)) {
-            M5.Lcd.fillRect(posbuff[reviceCount + errorCount][0] + 2,
-                            posbuff[reviceCount + errorCount][1] + 2, 15, 15,
+        if ((revice.array->at(0) == 0xaa) && (revice.array->at(1) == 0x55) && (revice.array->at(3) == 0x12)) {
+            M5.Lcd.fillRect(posbuff[reviceCount + errorCount][0] + 2, posbuff[reviceCount + errorCount][1] + 2, 15, 15,
                             M5.Lcd.color565(0x10, 0x10, 0x10));
-            M5.Lcd.fillRect(posbuff[reviceCount + errorCount][0],
-                            posbuff[reviceCount + errorCount][1], 15, 15,
+            M5.Lcd.fillRect(posbuff[reviceCount + errorCount][0], posbuff[reviceCount + errorCount][1], 15, 15,
                             M5.Lcd.color565(0xab, 0xff, 0x58));
             reviceCount++;
         } else {
-            M5.Lcd.fillRect(posbuff[reviceCount + errorCount][0] + 2,
-                            posbuff[reviceCount + errorCount][1] + 2, 15, 15,
+            M5.Lcd.fillRect(posbuff[reviceCount + errorCount][0] + 2, posbuff[reviceCount + errorCount][1] + 2, 15, 15,
                             M5.Lcd.color565(0x10, 0x10, 0x10));
-            M5.Lcd.fillRect(posbuff[reviceCount + errorCount][0],
-                            posbuff[reviceCount + errorCount][1], 15, 15,
+            M5.Lcd.fillRect(posbuff[reviceCount + errorCount][0], posbuff[reviceCount + errorCount][1], 15, 15,
                             TFT_RED);
             errorCount++;
             Serial.printf("Error\r\n");
@@ -129,16 +125,14 @@ void loop() {
     }
     if (reviceCount + errorCount == 10) {
         char strbuff[256];
-        sprintf(strbuff, "%d %d %d %ld\r\n", reviceCount + errorCount,
-                reviceCount, errorCount, (millis() - reviceTime));
+        sprintf(strbuff, "%d %d %d %ld\r\n", reviceCount + errorCount, reviceCount, errorCount,
+                (millis() - reviceTime));
         M5.Lcd.setTextDatum(TL_DATUM);
 
-        M5.Lcd.fillRect(180 + 2, 120 + 2, 20, 20,
-                        M5.Lcd.color565(0x10, 0x10, 0x10));
+        M5.Lcd.fillRect(180 + 2, 120 + 2, 20, 20, M5.Lcd.color565(0x10, 0x10, 0x10));
         if (((millis() - reviceTime) < 2500) && (errorCount < 2)) {
             M5.Lcd.setTextColor(M5.Lcd.color565(0xab, 0xff, 0x58));
-            M5.Lcd.fillRect(180, 120, 20, 20,
-                            M5.Lcd.color565(0xab, 0xff, 0x58));
+            M5.Lcd.fillRect(180, 120, 20, 20, M5.Lcd.color565(0xab, 0xff, 0x58));
             M5.Lcd.drawString("OK", 210, 120, 4);
         } else {
             M5.Lcd.setTextColor(TFT_RED);

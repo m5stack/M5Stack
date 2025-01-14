@@ -1,14 +1,23 @@
 /*
-    Description: Read ACCEL Unit three-axis acceleration
-    Please install library before compiling:
-    Arduino-ADXL345: https://github.com/jakalada/Arduino-ADXL345
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit Accel
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ * Arduino-ADXL345: https://github.com/jakalada/Arduino-ADXL345
+ */
+
 #include <M5Stack.h>
 #include <ADXL345.h>
 
 ADXL345 accel(ADXL345_ALT);
 
-void setup() {
+void setup()
+{
     // put your setup code here, to run once:
     M5.begin();
     M5.Power.begin();
@@ -72,7 +81,8 @@ void setup() {
     }
 }
 
-void loop() {
+void loop()
+{
     // put your main code here, to run repeatedly:
     if (accel.update()) {
         M5.Lcd.fillRect(0, 130, 360, 30, BLACK);

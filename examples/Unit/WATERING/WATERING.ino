@@ -1,7 +1,14 @@
 /*
-    Description: Read the ADC value measured by the Watering Unit, and the water
-   pump can be switched on and off through the middle button.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit Watering
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
 
@@ -11,7 +18,8 @@
 bool flag = true;
 int rawADC;
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Lcd.setTextColor(GREEN);
     M5.Lcd.setTextSize(3);
@@ -26,7 +34,8 @@ void setup() {
 
 char info[30];
 
-void loop() {
+void loop()
+{
     rawADC = analogRead(INPUT_PIN);
     M5.lcd.fillRect(80, 100, 240, 50, BLACK);
     M5.Lcd.setCursor(80, 100);

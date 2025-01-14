@@ -1,16 +1,22 @@
 /*
-    Description: LASER Unit wireless UART application: burn the program to two
-M5Cores     And connect LASER.TX and LASER.RX to PORTC port respectively. Point
-LASER.TX to LASER.RX and press the button on the panel to send characters to the
-receiver of LASER.RX.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit Laser R/TX
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
 
 char ch;
 // serial 2 write and read
-//#define RX
-void setup() {
+// #define RX
+void setup()
+{
     M5.begin();
     M5.Power.begin();
     Serial.begin(115200);
@@ -41,7 +47,8 @@ void setup() {
     M5.Lcd.setCursor(0, 100);
 }
 
-void loop() {
+void loop()
+{
 #ifdef RX
     M5.update();
     if (Serial2.available()) {

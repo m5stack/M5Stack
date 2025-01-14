@@ -1,10 +1,11 @@
-
 /*
- * SPDX-FileCopyrightText: 2024 M5Stack Technology CO LTD
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
  *
  * SPDX-License-Identifier: MIT
- *
+ */
+/*
  * @Dependent Library:
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
  * M5GFX@^0.2.3: https://github.com/m5stack/M5GFX
  * M5Unified@^0.2.2: https://github.com/m5stack/M5Unified
  * ClosedCube_I2C_Arduino: https://github.com/HariMurti12/ClosedCube_I2C_Arduino

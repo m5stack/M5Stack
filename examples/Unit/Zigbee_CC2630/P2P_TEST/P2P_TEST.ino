@@ -1,16 +1,17 @@
 /*
-    Description:
-    Supports configuring the Zigbee module into 3 working modes `Coordinator`,
-   `Router`, `End Device` You need to configure a `Coordinator` when using, and
-   other devices can be configured as `End Device` for data sending and
-   receiving. Note: 16 and 17 of the DIP switch are set to ON. This case needs
-   to use the Keyboard in the FACE Kit for information input
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit Zigbee
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <stdarg.h>
-
 #include <initializer_list>
-
 #include "DRFZigbee.h"
 #include "M5Stack.h"
 #include "byteArray.h"
@@ -36,12 +37,12 @@ size_t iconSizeBuff[3] = {
     26433,
 };
 
-char asciiHexList[16] = {'0', '1', '2', '3', '4', '5', '6', '7',
-                         '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+char asciiHexList[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
 bool flushFlag = true;
 
-int drawChatBubbles(String str, uint16_t addr) {
+int drawChatBubbles(String str, uint16_t addr)
+{
     uint16_t posY = 76;
     M5.Lcd.drawJpg(chatBubblesTop, 10561, 60, 66, 229, 10);
     M5.Lcd.setTextDatum(TL_DATUM);
@@ -69,7 +70,8 @@ int drawChatBubbles(String str, uint16_t addr) {
     return posY;
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     Serial2.begin(38400, SERIAL_8N1, 16, 17);
 
@@ -213,7 +215,8 @@ void setup() {
     */
 }
 
-void AppCoordinator() {
+void AppCoordinator()
+{
     Serial.printf("AppCoordinator\r\n");
     M5.Lcd.fillRect(0, 0, 320, 240, M5.Lcd.color565(56, 56, 56));
     M5.Lcd.drawJpg(coordinatorTitle, 21823, 0, 10, 320, 35);
@@ -246,7 +249,8 @@ void AppCoordinator() {
     delete arg;
 }
 
-void AppRouter() {
+void AppRouter()
+{
     Serial.printf("AppRouter\r\n");
     M5.Lcd.fillRect(0, 0, 320, 240, M5.Lcd.color565(56, 56, 56));
     M5.Lcd.drawJpg(EndDeviceTitle, 17470, 0, 10, 320, 35);
@@ -271,7 +275,8 @@ void AppRouter() {
     }
 }
 
-void AppEndDevice() {
+void AppEndDevice()
+{
     Serial.printf("AppEndDevice\r\n");
     M5.Lcd.fillRect(0, 0, 320, 240, M5.Lcd.color565(56, 56, 56));
     M5.Lcd.drawJpg(EndDeviceTitle, 17470, 0, 10, 320, 35);
@@ -319,12 +324,9 @@ void AppEndDevice() {
                         M5.Lcd.drawString(String((char *)senduff), 30, 206, 2);
                         charPos++;
                     } else if (key_val == 0x0d) {
-                        M5.Lcd.fillRect(20, 200, 280, 30,
-                                        M5.Lcd.color565(56, 56, 56));
-                        M5.Lcd.drawRect(20, 200, 280, 30,
-                                        M5.Lcd.color565(200, 200, 200));
-                        zigbee.sendDataP2P(DRFZigbee::kP2PShortAddrMode, 0xffff,
-                                           senduff, charPos);
+                        M5.Lcd.fillRect(20, 200, 280, 30, M5.Lcd.color565(56, 56, 56));
+                        M5.Lcd.drawRect(20, 200, 280, 30, M5.Lcd.color565(200, 200, 200));
+                        zigbee.sendDataP2P(DRFZigbee::kP2PShortAddrMode, 0xffff, senduff, charPos);
                         memset(senduff, 0, 256);
                         charPos = 0;
                     }
@@ -334,7 +336,8 @@ void AppEndDevice() {
     }
 }
 
-void loop() {
+void loop()
+{
     if (M5.BtnA.wasPressed()) {
         atNow = (atNow >= 60000) ? 30000 : atNow;
         atNow++;
@@ -360,10 +363,8 @@ void loop() {
     if (flushFlag) {
         flushFlag = false;
         for (int i = 0; i < 3; i++) {
-            M5.Lcd.drawJpg(iconptrbuff[(atNow + i) % 3],
-                           iconSizeBuff[(atNow + i) % 3], iconpos[i][0],
-                           iconpos[i][1], iconpos[i][2], iconpos[i][3],
-                           iconpos[i][4], iconpos[i][5]);
+            M5.Lcd.drawJpg(iconptrbuff[(atNow + i) % 3], iconSizeBuff[(atNow + i) % 3], iconpos[i][0], iconpos[i][1],
+                           iconpos[i][2], iconpos[i][3], iconpos[i][4], iconpos[i][5]);
         }
     }
     M5.update();

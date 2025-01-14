@@ -46,8 +46,8 @@
 #define USE_SPLIT_RADIX 1
 #define LARGE_BASE_CASE 1
 
-fft_config_t *fft_init(int size, fft_type_t type, fft_direction_t direction,
-                       float *input, float *output) {
+fft_config_t *fft_init(int size, fft_type_t type, fft_direction_t direction, float *input, float *output)
+{
     /*
      * Prepare an FFT of correct size and types.
      *
@@ -108,7 +108,8 @@ fft_config_t *fft_init(int size, fft_type_t type, fft_direction_t direction,
     return config;
 }
 
-void fft_destroy(fft_config_t *config) {
+void fft_destroy(fft_config_t *config)
+{
     if (config->flags & FFT_OWN_INPUT_MEM) free(config->input);
 
     if (config->flags & FFT_OWN_OUTPUT_MEM) free(config->output);
@@ -117,22 +118,20 @@ void fft_destroy(fft_config_t *config) {
     free(config);
 }
 
-void fft_execute(fft_config_t *config) {
+void fft_execute(fft_config_t *config)
+{
     if (config->type == FFT_REAL && config->direction == FFT_FORWARD)
-        rfft(config->input, config->output, config->twiddle_factors,
-             config->size);
+        rfft(config->input, config->output, config->twiddle_factors, config->size);
     else if (config->type == FFT_REAL && config->direction == FFT_BACKWARD)
-        irfft(config->input, config->output, config->twiddle_factors,
-              config->size);
+        irfft(config->input, config->output, config->twiddle_factors, config->size);
     else if (config->type == FFT_COMPLEX && config->direction == FFT_FORWARD)
-        fft(config->input, config->output, config->twiddle_factors,
-            config->size);
+        fft(config->input, config->output, config->twiddle_factors, config->size);
     else if (config->type == FFT_COMPLEX && config->direction == FFT_BACKWARD)
-        ifft(config->input, config->output, config->twiddle_factors,
-             config->size);
+        ifft(config->input, config->output, config->twiddle_factors, config->size);
 }
 
-void fft(float *input, float *output, float *twiddle_factors, int n) {
+void fft(float *input, float *output, float *twiddle_factors, int n)
+{
     /*
      * Forward fast Fourier transform
      * DIT, radix-2, out-of-place implementation
@@ -154,7 +153,8 @@ void fft(float *input, float *output, float *twiddle_factors, int n) {
 #endif
 }
 
-void ifft(float *input, float *output, float *twiddle_factors, int n) {
+void ifft(float *input, float *output, float *twiddle_factors, int n)
+{
     /*
      * Inverse fast Fourier transform
      * DIT, radix-2, out-of-place implementation
@@ -171,7 +171,8 @@ void ifft(float *input, float *output, float *twiddle_factors, int n) {
     ifft_primitive(input, output, n, 2, twiddle_factors, 2);
 }
 
-void rfft(float *x, float *y, float *twiddle_factors, int n) {
+void rfft(float *x, float *y, float *twiddle_factors, int n)
+{
     // This code uses the two-for-the-price-of-one strategy
 #if USE_SPLIT_RADIX
     split_radix_fft(x, y, n / 2, 2, twiddle_factors, 4);
@@ -216,7 +217,8 @@ void rfft(float *x, float *y, float *twiddle_factors, int n) {
     }
 }
 
-void irfft(float *x, float *y, float *twiddle_factors, int n) {
+void irfft(float *x, float *y, float *twiddle_factors, int n)
+{
     /*
      * Destroys content of input vector
      */
@@ -254,8 +256,8 @@ void irfft(float *x, float *y, float *twiddle_factors, int n) {
     ifft_primitive(x, y, n / 2, 2, twiddle_factors, 4);
 }
 
-void fft_primitive(float *x, float *y, int n, int stride,
-                   float *twiddle_factors, int tw_stride) {
+void fft_primitive(float *x, float *y, int n, int stride, float *twiddle_factors, int tw_stride)
+{
     /*
      * This code will compute the FFT of the input vector x
      *
@@ -337,8 +339,8 @@ void fft_primitive(float *x, float *y, int n, int stride,
     }
 }
 
-void split_radix_fft(float *x, float *y, int n, int stride,
-                     float *twiddle_factors, int tw_stride) {
+void split_radix_fft(float *x, float *y, int n, int stride, float *twiddle_factors, int tw_stride)
+{
     /*
      * This code will compute the FFT of the input vector x
      *
@@ -395,10 +397,8 @@ void split_radix_fft(float *x, float *y, int n, int stride,
 
     // Recursion -- Decimation In Time algorithm
     split_radix_fft(x, y, n / 2, 2 * stride, twiddle_factors, 2 * tw_stride);
-    split_radix_fft(x + stride, y + n, n / 4, 4 * stride, twiddle_factors,
-                    4 * tw_stride);
-    split_radix_fft(x + 3 * stride, y + n + n / 2, n / 4, 4 * stride,
-                    twiddle_factors, 4 * tw_stride);
+    split_radix_fft(x + stride, y + n, n / 4, 4 * stride, twiddle_factors, 4 * tw_stride);
+    split_radix_fft(x + 3 * stride, y + n + n / 2, n / 4, 4 * stride, twiddle_factors, 4 * tw_stride);
 
     // Stitch together the output
     float u1r, u1i, u2r, u2i, x1r, x1i, x2r, x2i;
@@ -466,8 +466,8 @@ void split_radix_fft(float *x, float *y, int n, int stride,
     }
 }
 
-void ifft_primitive(float *input, float *output, int n, int stride,
-                    float *twiddle_factors, int tw_stride) {
+void ifft_primitive(float *input, float *output, int n, int stride, float *twiddle_factors, int tw_stride)
+{
 #if USE_SPLIT_RADIX
     split_radix_fft(input, output, n, stride, twiddle_factors, tw_stride);
 #else
@@ -499,7 +499,8 @@ void ifft_primitive(float *input, float *output, int n, int stride,
     }
 }
 
-inline void fft8(float *input, int stride_in, float *output, int stride_out) {
+inline void fft8(float *input, int stride_in, float *output, int stride_out)
+{
     /*
      * Unrolled implementation of FFT8 for a little more performance
      */
@@ -625,7 +626,8 @@ inline void fft8(float *input, int stride_in, float *output, int stride_out) {
     output[7 * stride_out + 1] = a6i - a7i;
 }
 
-inline void fft4(float *input, int stride_in, float *output, int stride_out) {
+inline void fft4(float *input, int stride_in, float *output, int stride_out)
+{
     /*
      * Unrolled implementation of FFT4 for a little more performance
      */
@@ -636,9 +638,9 @@ inline void fft4(float *input, int stride_in, float *output, int stride_out) {
     output[0]              = t1 + t2;
     output[2 * stride_out] = t1 - t2;
 
-    t1        = input[1] + input[2 * stride_in + 1];
-    t2        = input[stride_in + 1] + input[3 * stride_in + 1];
-    output[1] = t1 + t2;
+    t1                         = input[1] + input[2 * stride_in + 1];
+    t2                         = input[stride_in + 1] + input[3 * stride_in + 1];
+    output[1]                  = t1 + t2;
     output[2 * stride_out + 1] = t1 - t2;
 
     t1                     = input[0] - input[2 * stride_in];

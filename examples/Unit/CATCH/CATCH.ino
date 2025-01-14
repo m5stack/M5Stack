@@ -1,6 +1,14 @@
 /*
-    Description: Control Catch Unit through PWM.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Catch
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
 
@@ -8,7 +16,8 @@ const int servoPin = 26;
 int freq           = 50;
 int ledChannel     = 0;
 int resolution     = 10;
-void setup() {
+void setup()
+{
     // put your setup code here, to run once:
     M5.begin();
     M5.Power.begin();
@@ -20,7 +29,8 @@ void setup() {
     ledcAttachPin(servoPin, ledChannel);
 }
 
-void loop() {
+void loop()
+{
     // High level 0.5ms is angle 0°
     // duty = 0.5/20ms = 0.025, 0.025*1023≈25
     ledcWrite(ledChannel, 25);

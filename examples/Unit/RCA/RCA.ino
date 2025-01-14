@@ -1,6 +1,18 @@
+/*
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit RCA
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5GFX@^0.2.3: https://github.com/m5stack/M5GFX
+ * M5Unified@^0.2.2: https://github.com/m5stack/M5Unified
+ */
+
 #include <M5Unified.h>
 #include <M5UnitRCA.h>
-
 #include "wav_unsigned_8bit_click.cpp"
 
 M5UnitRCA gfx_rca;
@@ -20,23 +32,23 @@ static int color_index               = 0;
 static unsigned long last_clear_time = 0;
 static bool is_pin_25                = true;
 
-void play_wav(void*) {
+void play_wav(void*)
+{
     while (true) {
-        M5.Speaker.playWav(sunrise_anna_single_left,
-                           sizeof(sunrise_anna_single_left), ~0u, 0, true);
+        M5.Speaker.playWav(sunrise_anna_single_left, sizeof(sunrise_anna_single_left), ~0u, 0, true);
         delay(3000);
         M5.Speaker.stop(0);
         delay(500);
 
-        M5.Speaker.playWav(sunrise_anna_single_right,
-                           sizeof(sunrise_anna_single_right), ~0u, 1, true);
+        M5.Speaker.playWav(sunrise_anna_single_right, sizeof(sunrise_anna_single_right), ~0u, 1, true);
         delay(3000);
         M5.Speaker.stop(1);
         delay(500);
     }
 }
 
-void setup(void) {
+void setup(void)
+{
     auto cfg         = M5.config();
     cfg.external_spk = true;
     cfg.internal_spk = false;
@@ -99,7 +111,8 @@ void setup(void) {
 }
 
 int blink_flag = 0;
-void loop(void) {
+void loop(void)
+{
     M5.update();
 
     if ((millis() - last_clear_time) > 1000) {

@@ -1,29 +1,33 @@
 /*
-    Description: This example shows how the HEART Unit obtains the original
-   value of the heart rate detection and displays the line graph on the screen.
-   Before the program runs, put the finger to the sensor detection position.
-    Please install library before compiling:
-    Arduino-MAX30100: https://github.com/oxullo/Arduino-MAX30100
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit Heart
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ * Arduino-MAX30100: https://github.com/oxullo/Arduino-MAX30100
+ */
 
 #include <M5Stack.h>
 #include <math.h>
-
 #include "MAX30100.h"
 
-#define SAMPLING_RATE MAX30100_SAMPRATE_50HZ
+#define SAMPLING_RATE (MAX30100_SAMPRATE_50HZ)
 
 // The LEDs currents must be set to a level that avoids clipping and maximises
 // the dynamic range
-#define IR_LED_CURRENT  MAX30100_LED_CURR_11MA
-#define RED_LED_CURRENT MAX30100_LED_CURR_11MA
+#define IR_LED_CURRENT  (MAX30100_LED_CURR_11MA)
+#define RED_LED_CURRENT (MAX30100_LED_CURR_11MA)
 
 // The pulse width of the LEDs driving determines the resolution of
 // the ADC (which is a Sigma-Delta).
 // set HIGHRES_MODE to true only when setting PULSE_WIDTH to
 // MAX30100_SPC_PW_1600US_16BITS
-#define PULSE_WIDTH  MAX30100_SPC_PW_400US_14BITS
-#define HIGHRES_MODE true
+#define PULSE_WIDTH  (MAX30100_SPC_PW_400US_14BITS)
+#define HIGHRES_MODE (true)
 
 TFT_eSprite Disbuff = TFT_eSprite(&M5.Lcd);
 MAX30100 sensor;
@@ -31,7 +35,8 @@ MAX30100 sensor;
 uint64_t realTime[4], time_count = 0;
 bool k_ready = false;
 
-void setup() {
+void setup()
+{
     // put your setup code here, to run once:
     M5.begin();
     M5.Power.begin();
@@ -42,8 +47,7 @@ void setup() {
 
     if (!sensor.begin()) {
         Serial.println("FAILED");
-        for (;;)
-            ;
+        for (;;);
     } else {
         Serial.println("SUCCESS");
     }
@@ -67,15 +71,15 @@ double k_standard_deviation, k_sumdata;
 uint32_t k_pos, k_pos_count = 0;
 
 uint32_t led_pos = 0, ir_Pos = 0;
-uint16_t ir_max = 0, led_max = 0, ir_min = 0, led_min = 0, ir_last = 0,
-         led_last    = 0;
+uint16_t ir_max = 0, led_max = 0, ir_min = 0, led_min = 0, ir_last = 0, led_last = 0;
 int16_t k_number_min = 0, k_number_max = 0, k_last = 0;
 uint16_t ir_last_raw = 0, led_last_raw = 0, k_last_raw = 0;
 uint16_t ir_disdata, led_disdata, k_disdata;
 uint16_t Alpha     = 0.3 * 256;
 uint16_t count_min = 0, count_max = 0;
 
-void loop() {
+void loop()
+{
     // put your main code here, to run repeatedly:
     uint16_t ir, red;
 
@@ -86,13 +90,9 @@ void loop() {
     }
 
     while (1) {
-        line[0][(led_pos + 160) % 320] =
-            (led_last_raw * (256 - Alpha) + red * Alpha) / 256;
-        line[1][(ir_Pos + 160) % 320] =
-            (ir_last_raw * (256 - Alpha) + ir * Alpha) / 256;
-
-        k_number[(led_pos + 160) % 320] =
-            line[0][(led_pos + 160) % 320] - led_last_raw;
+        line[0][(led_pos + 160) % 320]  = (led_last_raw * (256 - Alpha) + red * Alpha) / 256;
+        line[1][(ir_Pos + 160) % 320]   = (ir_last_raw * (256 - Alpha) + ir * Alpha) / 256;
+        k_number[(led_pos + 160) % 320] = line[0][(led_pos + 160) % 320] - led_last_raw;
 
         led_last_raw = line[0][(led_pos + 160) % 320];
         ir_last_raw  = line[1][(led_pos + 160) % 320];
@@ -111,37 +111,21 @@ void loop() {
             ir_max = ir_min = line[1][(ir_Pos + i) % 320];
             k_number_min = k_number_max = k_number[(ir_Pos + i) % 320];
         } else {
-            led_max = (line[0][(led_pos + i) % 320] > led_max)
-                          ? line[0][(led_pos + i) % 320]
-                          : led_max;
-            led_min = (line[0][(led_pos + i) % 320] < led_min)
-                          ? line[0][(led_pos + i) % 320]
-                          : led_min;
-
-            ir_max = (line[1][(ir_Pos + i) % 320] > ir_max)
-                         ? line[1][(ir_Pos + i) % 320]
-                         : ir_max;
-            ir_min = (line[1][(ir_Pos + i) % 320] < ir_min)
-                         ? line[1][(ir_Pos + i) % 320]
-                         : ir_min;
-
-            k_number_max = (k_number[(ir_Pos + i) % 320] > k_number_max)
-                               ? k_number[(ir_Pos + i) % 320]
-                               : k_number_max;
-            k_number_min = (k_number[(ir_Pos + i) % 320] < k_number_min)
-                               ? k_number[(ir_Pos + i) % 320]
-                               : k_number_min;
+            led_max      = (line[0][(led_pos + i) % 320] > led_max) ? line[0][(led_pos + i) % 320] : led_max;
+            led_min      = (line[0][(led_pos + i) % 320] < led_min) ? line[0][(led_pos + i) % 320] : led_min;
+            ir_max       = (line[1][(ir_Pos + i) % 320] > ir_max) ? line[1][(ir_Pos + i) % 320] : ir_max;
+            ir_min       = (line[1][(ir_Pos + i) % 320] < ir_min) ? line[1][(ir_Pos + i) % 320] : ir_min;
+            k_number_max = (k_number[(ir_Pos + i) % 320] > k_number_max) ? k_number[(ir_Pos + i) % 320] : k_number_max;
+            k_number_min = (k_number[(ir_Pos + i) % 320] < k_number_min) ? k_number[(ir_Pos + i) % 320] : k_number_min;
         }
     }
 
     Disbuff.fillRect(0, 0, 160, 160, BLACK);
 
     for (int i = 0; i < 160; i++) {
-        led_disdata =
-            map(line[0][(led_pos + i) % 320], led_max, led_min, 0, 160);
-        ir_disdata = map(line[1][(ir_Pos + i) % 320], ir_max, ir_min, 0, 160);
-        k_disdata  = map(k_number[(ir_Pos + i) % 320], k_number_max,
-                        k_number_min, 0, 160);
+        led_disdata = map(line[0][(led_pos + i) % 320], led_max, led_min, 0, 160);
+        ir_disdata  = map(line[1][(ir_Pos + i) % 320], ir_max, ir_min, 0, 160);
+        k_disdata   = map(k_number[(ir_Pos + i) % 320], k_number_max, k_number_min, 0, 160);
         {
             Disbuff.drawLine(i, led_last, i + 1, led_disdata, WHITE);
             Disbuff.drawLine(i, ir_last, i + 1, ir_disdata, RED);

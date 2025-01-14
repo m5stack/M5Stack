@@ -1,41 +1,38 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/unit/tvoc
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/tvoc
-*
-* Describe: TVOC/eCO2.
-* Date: 2021/8/26
-*******************************************************************************
-  Description: The screen will display TVOC and CO2.  屏幕将显示TVOC和CO2。
-  Note: SGP30 needs 15 seconds to initialize calibration after power on.
-SGP30开机后需要15秒进行初始校准。
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit TVOC/eCO2
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ * Adafruit_SGP30: https://github.com/adafruit/Adafruit_SGP30
+ */
 
 #include <M5Stack.h>
-
 #include "Adafruit_SGP30.h"
 
 Adafruit_SGP30 sgp;
 long last_millis = 0;
 
-void setup() {
+void setup()
+{
     M5.begin(true, false, true, true);
     M5.Lcd.setTextSize(2);
     M5.Lcd.setCursor(80, 0);
     M5.Lcd.println("TVOC TEST");
     if (!sgp.begin()) {  // Init the sensor. 初始化传感器
         M5.Lcd.println("Sensor not found");
-        while (1)
-            ;
+        while (1);
     }
     M5.Lcd.setCursor(0, 80);
     M5.Lcd.println("\nInitialization...");
 }
 
-void loop() {
+void loop()
+{
     static int i = 15;
     while (i > 0) {
         if (millis() - last_millis > 1000) {

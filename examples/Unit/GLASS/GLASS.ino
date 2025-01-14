@@ -1,25 +1,24 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/unit/Glass%20Unit
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/Glass%20Unit
-*
-* Describe: Glass.
-* Date: 2023/2/23
-*******************************************************************************
-Connect the Unit_Glass to Port A and press the buttons on the left/right side of
-the Unit Glass to subtract/add to the counter.
-将Unit_Glass连接到Port A,按Unit Glass左/右侧的按键来对计数器进行减/加.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit Glass
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ * M5Unit-GLASS: https://github.com/m5stack/M5Unit-GLASS
+ */
+
 #include <M5Stack.h>
 #include <UNIT_GLASS.h>
 
 UNIT_GLASS Glass;
 String string_buffer;
 
-void setup() {
+void setup()
+{
     M5.begin(1, 0, 1, 0);
     M5.Lcd.setTextSize(3);
     M5.Lcd.setTextColor(0x867D);
@@ -44,7 +43,8 @@ void setup() {
     Glass.show();
 }
 
-void loop() {
+void loop()
+{
     /* When key on Unit-Glass was pressed, update conut and print it out */
     static int count = 0;
     if (Glass.getKeyA() == 0) {

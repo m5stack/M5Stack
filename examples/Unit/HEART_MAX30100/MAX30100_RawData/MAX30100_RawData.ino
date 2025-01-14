@@ -1,35 +1,29 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
-*
-* Describe: Heart Rate.  心率
-* Date: 2021/8/16
-*******************************************************************************
-  Please connect to Port A, HEART Unit obtains the original value of the heart
-rate detection and displays it on the screen. The user can also use the Arduino
-IDE Serial Plotter to view the line graph output. 请连接端口A,HEART
-Unit获取心率检测的原始值并显示在屏幕上。用户还可以使用Arduino IDE Serial
-Plotter查看线图输出。
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit Heart
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ * Arduino-MAX30100: https://github.com/oxullo/Arduino-MAX30100
+ */
 
 #include <M5Stack.h>
-
 #include "MAX30100.h"
 
-#define SAMPLING_RATE   MAX30100_SAMPRATE_100HZ
-#define IR_LED_CURRENT  MAX30100_LED_CURR_24MA
-#define RED_LED_CURRENT MAX30100_LED_CURR_27_1MA
-#define PULSE_WIDTH     MAX30100_SPC_PW_1600US_16BITS
-#define HIGHRES_MODE    true
+#define SAMPLING_RATE   (MAX30100_SAMPRATE_100HZ)
+#define IR_LED_CURRENT  (MAX30100_LED_CURR_24MA)
+#define RED_LED_CURRENT (MAX30100_LED_CURR_27_1MA)
+#define PULSE_WIDTH     (MAX30100_SPC_PW_1600US_16BITS)
+#define HIGHRES_MODE    (true)
 
-MAX30100
-sensor;  // Instantiate a MAX30100 sensor class.  实例化一个MAX30100传感器类
+MAX30100 sensor;  // Instantiate a MAX30100 sensor class.  实例化一个MAX30100传感器类
 
-void setup() {
+void setup()
+{
     M5.begin();        // Init M5Stack.  初始化M5Stack
     M5.Power.begin();  // Init power  初始化电源模块
     Serial.print("Initializing MAX30100..");
@@ -49,10 +43,11 @@ void setup() {
     sensor.setHighresModeEnabled(HIGHRES_MODE);
 }
 
-void loop() {
+void loop()
+{
     uint16_t ir, red;
-    sensor.update();  //更新传感器读取到的数据
-    while (sensor.getRawValues(&ir, &red)) {  //如果获取到数据
+    sensor.update();                          // 更新传感器读取到的数据
+    while (sensor.getRawValues(&ir, &red)) {  // 如果获取到数据
         M5.Lcd.setTextFont(4);
         M5.Lcd.setCursor(100, 100, 4);
         M5.Lcd.printf("IR:%d               ", ir);

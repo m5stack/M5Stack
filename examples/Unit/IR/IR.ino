@@ -1,17 +1,14 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/unit/ir
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/ir
-*
-* Describe: ir.
-* Date: 2021/8/27
-*******************************************************************************
-  Please connect to Port B,Use IR Unit to receive and test infrared receiving
-and transmitting 请连接端口B,使用红外单元接收和测试红外接收和发射.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit IR
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
 
@@ -21,7 +18,8 @@ int ir_send_pin = 26;
 int last_recv_value = 0;
 int cur_recv_value  = 0;
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
     pinMode(ir_recv_pin, INPUT);
@@ -35,7 +33,8 @@ void setup() {
     M5.Lcd.print("Test for IR receiver: ");
 }
 
-void loop() {
+void loop()
+{
     // now, once you press the button on a remote controller to send infrared
     // light.  现在，一旦你按下遥控器上的按钮发送红外线 the screen will display
     // "detected!"  屏幕将显示“检测到!”
@@ -43,8 +42,7 @@ void loop() {
     if (last_recv_value != cur_recv_value) {
         M5.Lcd.setCursor(0, 25);
         M5.Lcd.fillRect(0, 25, 150, 25, BLACK);
-        if (cur_recv_value ==
-            0) {  // 0: detected 1: not detected,  0检测到,1没有检测到
+        if (cur_recv_value == 0) {  // 0: detected 1: not detected,  0检测到,1没有检测到
             M5.Lcd.print("detected!");
         }
         last_recv_value = cur_recv_value;

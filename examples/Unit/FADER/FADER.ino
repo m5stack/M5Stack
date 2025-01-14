@@ -1,27 +1,23 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/unit/fader
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/fader
-*
-* Describe: UNIT FADER. 滑动电位器/推子
-* Date: 2021/8/20
-*******************************************************************************
-  Connect UNIT FADER to port B and push the FADER slider to adjust the input
-value and light brightness 将UNIT FADER连接到B端口,
-推动FADER滑杆即可实现调整输入数值大小与灯光亮度
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit Fader
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ * FastLED@^3.9.10: https://github.com/FastLED/FastLED
+ */
 
 #include "FastLED.h"
 #include "M5Stack.h"
 
 // How many leds in your strip?
-#define NUM_LEDS   14
-#define INPUT_PINS 36
-
-#define DATA_PIN 26
+#define NUM_LEDS   (14)
+#define INPUT_PINS (36)
+#define DATA_PIN   (26)
 
 // Define the array of leds
 CRGB leds[NUM_LEDS];
@@ -31,7 +27,8 @@ uint8_t deltaHue   = 30;
 uint8_t brightness = 100;
 uint16_t rawADC    = 0;
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Lcd.setTextDatum(MC_DATUM);
     M5.Lcd.drawString("FADER UNIT TEST", 160, 60, 4);
@@ -41,13 +38,13 @@ void setup() {
     fill_rainbow(leds, NUM_LEDS, beginHue, deltaHue);
 }
 
-void loop() {
-    rawADC     = analogRead(INPUT_PINS);  // Read ADC value 读取ADC数值
-    brightness = map(rawADC, 0, 4095, 0,
-                     255);  // The mapping ADC value is the brightness value
-                            // range  映射ADC值为亮度值范围
-    FastLED.setBrightness(brightness);  // Adjust the brightness of the FADER
-                                        // LED 调整FADER LED灯亮度
+void loop()
+{
+    rawADC     = analogRead(INPUT_PINS);        // Read ADC value 读取ADC数值
+    brightness = map(rawADC, 0, 4095, 0, 255);  // The mapping ADC value is the brightness value
+                                                // range  映射ADC值为亮度值范围
+    FastLED.setBrightness(brightness);          // Adjust the brightness of the FADER
+                                                // LED 调整FADER LED灯亮度
     FastLED.show();
     Serial.printf("%d\r\n", rawADC);
     M5.Lcd.fillRect(0, 120, 320, 100, BLACK);

@@ -1,7 +1,14 @@
 /*
-    Description: Use Pbhub to read the analog input value of the slave device,
-   or drive multiple sets of RGB LEDs.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Unit PbHub
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
 #include <Wire.h>
@@ -12,10 +19,10 @@
 #define Y_OFFSET 18
 
 PortHub porthub;
-uint8_t HUB_ADDR[6] = {HUB1_ADDR, HUB2_ADDR, HUB3_ADDR,
-                       HUB4_ADDR, HUB5_ADDR, HUB6_ADDR};
+uint8_t HUB_ADDR[6] = {HUB1_ADDR, HUB2_ADDR, HUB3_ADDR, HUB4_ADDR, HUB5_ADDR, HUB6_ADDR};
 
-void setup() {
+void setup()
+{
     M5.begin(true, false, true);
     M5.Power.begin();
     porthub.begin();
@@ -24,7 +31,8 @@ void setup() {
     M5.Lcd.setTextSize(4);
 }
 
-void loop() {
+void loop()
+{
     M5.Lcd.clear(BLACK);
     for (int i = 0; i < 6; i++) {
         M5.Lcd.setCursor(8 * X_OFFSET, (i * 2) * Y_OFFSET);
