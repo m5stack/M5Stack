@@ -1,27 +1,28 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/module/plus
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/plus
-*
-* Describe: PLUS.
-* Date: 2021/9/2
-*******************************************************************************
-  This exmpale can display the encoder gear reading of the PLUS Module and the
-state of the keys. 本例可以显示PLUS模块的编码器齿轮读数和按键状态。
-*/
-#include <Arduino.h>
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module Plus
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
+
 #include <M5Stack.h>
 
-#define IrPin     13
-#define PLUS_ADDR 0x62
+// This exmpale can display the encoder gear reading of the PLUS Module and the
+// state of the keys. 本例可以显示PLUS模块的编码器齿轮读数和按键状态。
+
+#define IrPin     (13)
+#define PLUS_ADDR (0x62)
 
 int32_t number = 0;
 uint8_t press  = 0;
 
-void setup() {
+void setup()
+{
     M5.begin(true, false, false);
     M5.Power.begin();
     M5.Lcd.setTextFont(6);
@@ -32,7 +33,8 @@ void setup() {
     ledcAttachPin(IrPin, 1);
 }
 
-void plus_encode() {
+void plus_encode()
+{
     Wire.requestFrom(PLUS_ADDR, 2);
     while (Wire.available()) {
         int8_t encode   = Wire.read();
@@ -46,7 +48,8 @@ void plus_encode() {
     }
 }
 
-void loop() {
+void loop()
+{
     char data[20];
 
     plus_encode();

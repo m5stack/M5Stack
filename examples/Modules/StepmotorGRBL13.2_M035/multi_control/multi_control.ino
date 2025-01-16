@@ -1,25 +1,25 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information:
-https://docs.m5stack.com/en/module/stepmotor_driver
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/stepmotor_driver
-*
-* Describe: GRBL 13.2 Module.
-* Date: 2021/11/14
-*******************************************************************************
-  GRBL 13.2 Module TEST Example,use I2C to control stepper motors(Stack two
-Module at the same time)
-  步进电机模块测试示例,使用I2C控制步进电机(同时堆叠两个模块)
-*/
-#include <M5Stack.h>
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module13.2 GRBL
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ * M5Module-GRBL-13.2：https://github.com/m5stack/M5Module-GRBL-13.2
+ */
 
+#include <M5Stack.h>
 #include "Module_GRBL_13.2.h"
 
+//  Module13.2 GRBL TEST Example,use I2C to control stepper motors(Stack two
+// Module at the same time)
+//   步进电机模块测试示例,使用I2C控制步进电机(同时堆叠两个模块)
+
 /*
- * The I2C address of GRBL 13.2  Module is 0x70 by default.
+ * The I2C address of Module13.2 GRBL is 0x70 by default.
  * GRBL 13.2 模块的 I2C 地址默认为 0x70。
  * You could use the DIP Switch for modify I2C address to 0x71
  * 您可以使用拨码开关将 I2C 地址修改为 0x71
@@ -31,7 +31,8 @@ Module at the same time)
 Module_GRBL _GRBL_A(STEPMOTOR_I2C_ADDR_1);
 Module_GRBL _GRBL_B(STEPMOTOR_I2C_ADDR_2);
 
-void setup() {
+void setup()
+{
     // put your setup code here, to run once:
     M5.begin();
     M5.Power.begin();
@@ -52,7 +53,8 @@ void setup() {
     _GRBL_B.setMode("absolute");
 }
 
-void loop() {
+void loop()
+{
     /*
         If Button A was pressed,
         stepmotor will rotate back and forth at a time

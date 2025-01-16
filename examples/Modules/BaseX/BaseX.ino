@@ -1,9 +1,19 @@
 /*
-    Description: Provide three LEGO motor drive modes。Press button B to switch
-   the mode, button A and C control parameter value increase and decrease
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Base X
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
+
+// Description : Provide three LEGO motor drive modes。Press button B to switch the mode,
+// button A and C control parameter value increase and decrease
 
 #include "BaseX.h"
 
@@ -13,7 +23,8 @@ int8_t mode            = NORMAL_MODE;
 uint8_t max_speed      = 20;
 int8_t speed_point     = 0;
 
-void setup() {
+void setup()
+{
     M5.begin(true, false, true, true);
     M5.Power.begin();
     for (uint8_t i = 1; i < 5; i++) {
@@ -21,7 +32,8 @@ void setup() {
     }
 }
 
-void NormalMode() {
+void NormalMode()
+{
     if (M5.BtnA.wasPressed()) {
         for (size_t i = 1; i < 5; i++) {
             base_x.SetMotorSpeed(i, 125);
@@ -45,7 +57,8 @@ void NormalMode() {
     }
 }
 
-void PositionMode() {
+void PositionMode()
+{
     if (M5.BtnA.wasPressed()) {
         position_point += 200;
         for (size_t i = 1; i < 5; i++) {
@@ -75,7 +88,8 @@ void PositionMode() {
     }
 }
 
-void SpeedMode() {
+void SpeedMode()
+{
     if (M5.BtnA.wasPressed()) {
         speed_point += 2;
         for (size_t i = 1; i < 5; i++) {
@@ -101,15 +115,15 @@ void SpeedMode() {
     }
 }
 
-void loop() {
+void loop()
+{
     int32_t encoder[4];
     for (size_t i = 1; i < 5; i++) {
         encoder[i - 1] = base_x.GetEncoderValue(i);
     }
 
     M5.update();
-    Serial.printf("encoder: 1: %d, 2: %d, 3: %d, 4: %d\r\n", encoder[0],
-                  encoder[1], encoder[2], encoder[3]);
+    Serial.printf("encoder: 1: %d, 2: %d, 3: %d, 4: %d\r\n", encoder[0], encoder[1], encoder[2], encoder[3]);
     if (mode == NORMAL_MODE) {
         NormalMode();
     } else if (mode == POSITION_MODE) {

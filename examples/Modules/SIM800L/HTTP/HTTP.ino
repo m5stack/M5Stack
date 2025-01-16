@@ -1,9 +1,23 @@
+/*
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module SIM800L
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
+
 #include "M5Stack.h"
 #include "TFTTerminal.h"
+
 TFT_eSprite TerminalBuff = TFT_eSprite(&M5.Lcd);
 TFTTerminal terminal(&TerminalBuff);
 
-String waitRevice() {
+String waitRevice()
+{
     String recvStr;
     do {
         recvStr = Serial2.readStringUntil('\n');
@@ -13,12 +27,14 @@ String waitRevice() {
     return recvStr;
 }
 
-void sendATCMD(String cmdStr) {
+void sendATCMD(String cmdStr)
+{
     Serial2.print(cmdStr);
     delay(100);
 }
 
-int sendATCMDAndRevice(String cmdStr) {
+int sendATCMDAndRevice(String cmdStr)
+{
     delay(1000);
     Serial2.print(cmdStr);
     delay(100);
@@ -32,7 +48,8 @@ int sendATCMDAndRevice(String cmdStr) {
     }
 }
 
-void GET() {
+void GET()
+{
     terminal.println("GET Request");
     sendATCMD("AT?\r\n");
     delay(100);
@@ -58,7 +75,8 @@ void GET() {
     sendATCMDAndRevice("AT+HTTPTERM\r\n");
 }
 
-void POST() {
+void POST()
+{
     terminal.println("POST Request");
     sendATCMD("AT?\r\n");
     delay(100);
@@ -70,10 +88,8 @@ void POST() {
     sendATCMDAndRevice("AT+SAPBR=1,1\r\n");
     sendATCMDAndRevice("AT+HTTPINIT\r\n");
     sendATCMDAndRevice("AT+HTTPPARA=\"CID\",1\r\n");
-    sendATCMDAndRevice(
-        "AT+HTTPPARA=\"CONTENT\",\"application/x-www-form-urlencoded\"\r\n");
-    sendATCMDAndRevice(
-        "AT+HTTPPARA=\"URL\",\"http://header.json-json.com/\"\r\n");
+    sendATCMDAndRevice("AT+HTTPPARA=\"CONTENT\",\"application/x-www-form-urlencoded\"\r\n");
+    sendATCMDAndRevice("AT+HTTPPARA=\"URL\",\"http://header.json-json.com/\"\r\n");
     sendATCMD("AT+HTTPDATA=10,3000\r\n");
     sendATCMD("M5STACK,GO\r\n");
     sendATCMDAndRevice("AT+HTTPACTION=1\r\n");
@@ -89,7 +105,8 @@ void POST() {
     sendATCMDAndRevice("AT+HTTPTERM\r\n");
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     Serial2.begin(115200, SERIAL_8N1, 16, 17);
     Serial2.flush();
@@ -108,7 +125,8 @@ void setup() {
     terminal.println("Press Btn B POST Request");
 };
 
-void loop() {
+void loop()
+{
     M5.update();
     if (M5.BtnA.wasPressed()) GET();
     if (M5.BtnB.wasPressed()) POST();

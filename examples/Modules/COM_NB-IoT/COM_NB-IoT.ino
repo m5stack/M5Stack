@@ -1,14 +1,22 @@
 /*
-    Description: Check signal strength,Register to the network
-    Note: 5 and 13 of the DIP switch are set to ON.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module COMX NBIoT
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
 #include <stdint.h>
-
 #include <vector>
-
 #include "TFTTerminal.h"
+
+// Description: Check signal strength,Register to the network
+// Note: 5 and 13 of the DIP switch are set to ON.
 
 TFT_eSprite Disbuff      = TFT_eSprite(&M5.Lcd);
 TFT_eSprite TerminalBuff = TFT_eSprite(&M5.Lcd);
@@ -54,7 +62,8 @@ struct ATCommand {
 using namespace std;
 vector<ATCommand> serial_at;
 String zmmi_str;
-void LTEModuleTask(void* arg) {
+void LTEModuleTask(void* arg)
+{
     int Number = 0;
     String restr;
     while (1) {
@@ -69,12 +78,10 @@ void LTEModuleTask(void* arg) {
 
             if (restr.indexOf("+ZMMI:") != -1) {
                 zmmi_str = restr;
-            } else if ((restr.indexOf("OK") != -1) ||
-                       (restr.indexOf("ERROR") != -1)) {
+            } else if ((restr.indexOf("OK") != -1) || (restr.indexOf("ERROR") != -1)) {
                 Serial.print(restr);
                 if (restr.indexOf("OK") != -1) {
-                    if ((serial_at[0].command_type == kACTION_MO) ||
-                        (serial_at[0].command_type == kASSIGN_MO)) {
+                    if ((serial_at[0].command_type == kACTION_MO) || (serial_at[0].command_type == kASSIGN_MO)) {
                         serial_at.erase(serial_at.begin());
                         Serial.printf("erase now %d\n", serial_at.size());
                     } else {
@@ -140,7 +147,8 @@ void LTEModuleTask(void* arg) {
     }
 }
 
-void AddMsg(String str, uint8_t type, uint16_t sendcount, uint16_t sendtime) {
+void AddMsg(String str, uint8_t type, uint16_t sendcount, uint16_t sendtime)
+{
     struct ATCommand newcommand;
     newcommand.str_command      = str;
     newcommand.command_type     = type;
@@ -154,34 +162,39 @@ void AddMsg(String str, uint8_t type, uint16_t sendcount, uint16_t sendtime) {
     xSemaphoreGive(command_list_samap);
 }
 
-uint8_t readSendState(uint32_t number) {
+uint8_t readSendState(uint32_t number)
+{
     xSemaphoreTake(command_list_samap, portMAX_DELAY);
     uint8_t restate = serial_at[number].state;
     xSemaphoreGive(command_list_samap);
     return restate;
 }
 
-uint32_t getATMsgSize() {
+uint32_t getATMsgSize()
+{
     xSemaphoreTake(command_list_samap, portMAX_DELAY);
     uint32_t restate = serial_at.size();
     xSemaphoreGive(command_list_samap);
     return restate;
 }
-String ReadMsgstr(uint32_t number) {
+String ReadMsgstr(uint32_t number)
+{
     xSemaphoreTake(command_list_samap, portMAX_DELAY);
     String restate = serial_at[number].read_str;
     xSemaphoreGive(command_list_samap);
     return restate;
 }
 
-bool EraseFirstMsg() {
+bool EraseFirstMsg()
+{
     xSemaphoreTake(command_list_samap, portMAX_DELAY);
     serial_at.erase(serial_at.begin());
     xSemaphoreGive(command_list_samap);
     return true;
 }
 
-uint16_t GetstrNumber(String Str, uint32_t* ptrbuff) {
+uint16_t GetstrNumber(String Str, uint32_t* ptrbuff)
+{
     uint16_t count = 0;
     String Numberstr;
     int indexpos = 0;
@@ -201,13 +214,13 @@ uint16_t GetstrNumber(String Str, uint32_t* ptrbuff) {
     return count;
 }
 vector<String> restr_v;
-uint16_t GetstrNumber(String StartStr, String EndStr, String Str) {
+uint16_t GetstrNumber(String StartStr, String EndStr, String Str)
+{
     uint16_t count = 0;
     String Numberstr;
     int indexpos = 0;
 
-    Str = Str.substring(Str.indexOf(StartStr) + StartStr.length(),
-                        Str.indexOf(EndStr));
+    Str = Str.substring(Str.indexOf(StartStr) + StartStr.length(), Str.indexOf(EndStr));
     Str.trim();
     restr_v.clear();
 
@@ -228,21 +241,21 @@ uint16_t GetstrNumber(String StartStr, String EndStr, String Str) {
     return count;
 }
 
-String getReString(uint16_t Number) {
+String getReString(uint16_t Number)
+{
     if (restr_v.empty()) {
         return String("");
     }
     return restr_v.at(Number);
 }
 
-uint16_t GetstrNumber(String StartStr, String EndStr, String Str,
-                      uint32_t* ptrbuff) {
+uint16_t GetstrNumber(String StartStr, String EndStr, String Str, uint32_t* ptrbuff)
+{
     uint16_t count = 0;
     String Numberstr;
     int indexpos = 0;
 
-    Str = Str.substring(Str.indexOf(StartStr) + StartStr.length(),
-                        Str.indexOf(EndStr));
+    Str = Str.substring(Str.indexOf(StartStr) + StartStr.length(), Str.indexOf(EndStr));
     Str.trim();
 
     while (Str.length() > 0) {
@@ -264,7 +277,8 @@ uint32_t numberbuff[128];
 String readstr;
 uint8_t restate;
 
-void setup() {
+void setup()
+{
     // put your setup code here, to run once:
     M5.begin();
     Serial2.begin(115200, SERIAL_8N1, 5, 13);
@@ -296,16 +310,15 @@ void setup() {
     }
     digitalWrite(2, 1);
 
-    xTaskCreate(LTEModuleTask, "LTEModuleTask", 1024 * 2, (void*)0, 4,
-                &xhandle_lte_event);
+    xTaskCreate(LTEModuleTask, "LTEModuleTask", 1024 * 2, (void*)0, 4, &xhandle_lte_event);
     command_list_samap = xSemaphoreCreateMutex();
     xSemaphoreGive(command_list_samap);
 }
 
-void loop() {
+void loop()
+{
     AddMsg("AT+CSQ\r\n", kQUERY_MT, 1000, 1000);
-    while ((readSendState(0) == kSendReady) || (readSendState(0) == kSending) ||
-           (readSendState(0) == kWaitforMsg))
+    while ((readSendState(0) == kSendReady) || (readSendState(0) == kSending) || (readSendState(0) == kWaitforMsg))
         delay(50);
     restate = readSendState(0);
     readstr = ReadMsgstr(0).c_str();
@@ -315,8 +328,7 @@ void loop() {
         if (count != 0) {
             M5.Lcd.drawString("RSSI", 240, 60);
             // printf("CSQ-%d:%d\r\n",numberbuff[0],numberbuff[1]);
-            if ((numberbuff[0] >= 2) && (numberbuff[0] <= 31) &&
-                (numberbuff[1] != 99)) {
+            if ((numberbuff[0] >= 2) && (numberbuff[0] <= 31) && (numberbuff[1] != 99)) {
                 int rssi = 110 - ((numberbuff[0] - 2) * 2);
                 terminal.printf("RSSI:-%d\r\n", rssi);
                 M5.Lcd.fillRect(200, 50, 30, 30, GREEN);
@@ -331,8 +343,7 @@ void loop() {
     terminal.print(readstr);
 
     AddMsg("AT+CREG?\r\n", kQUERY_MT, 1000, 1000);
-    while ((readSendState(0) == kSendReady) || (readSendState(0) == kSending) ||
-           (readSendState(0) == kWaitforMsg))
+    while ((readSendState(0) == kSendReady) || (readSendState(0) == kSending) || (readSendState(0) == kWaitforMsg))
         delay(50);
     restate = readSendState(0);
     readstr = ReadMsgstr(0).c_str();
@@ -341,8 +352,7 @@ void loop() {
     terminal.print(readstr);
 
     AddMsg("AT+COPS?\r\n", kQUERY_MT, 1000, 1000);
-    while ((readSendState(0) == kSendReady) || (readSendState(0) == kSending) ||
-           (readSendState(0) == kWaitforMsg))
+    while ((readSendState(0) == kSendReady) || (readSendState(0) == kSending) || (readSendState(0) == kWaitforMsg))
         delay(50);
     restate = readSendState(0);
     readstr = ReadMsgstr(0).c_str();

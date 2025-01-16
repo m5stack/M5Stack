@@ -1,26 +1,26 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/module/usb
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/usb
-*
-* Describe: USB.
-* Date: 2021/9/1
-*******************************************************************************
-  This sample code demonstrates the normal use of a USB_Host_SHield_Library_2.0
-object. 此示例代码演示了 USB_Host_SHield_Library_2.0 对象的正常使用。
-*/
+/*
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module USB
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ * USB_Host_Shield_2.0: https://github.com/felis/USB_Host_Shield_2.0
+ */
 
 #include <M5Stack.h>
-// #include <SPI.h>
 #include <Usb.h>
 #include <hidboot.h>
 #include <hiduniversal.h>
 #include <usbhub.h>
-
 #include "M5Mouse.h"
+
+//   This sample code demonstrates the normal use of a USB_Host_SHield_Library_2.0
+// object. 此示例代码演示了 USB_Host_SHield_Library_2.0 对象的正常使用。
 
 USB Usb;
 USBHub Hub(&Usb);
@@ -29,7 +29,8 @@ MouseRptParser Prs;
 
 int StaPotX = 160, StaPotY = 120;
 
-void Mouse_Pointer(int PotDataX, int PotDataY) {
+void Mouse_Pointer(int PotDataX, int PotDataY)
+{
     static int OldDataX, OldDataY;
 
     if ((StaPotX + PotDataX) <= 320 && (StaPotX + PotDataX) > 0)
@@ -48,16 +49,11 @@ void Mouse_Pointer(int PotDataX, int PotDataY) {
 
     // clear draw
     if (OldDataX != StaPotX || OldDataY != StaPotY) {
-        M5.Lcd.drawLine(OldDataX + 0, OldDataY + 0, OldDataX + 0, OldDataY + 10,
-                        BLACK);
-        M5.Lcd.drawLine(OldDataX + 0, OldDataY + 0, OldDataX + 7, OldDataY + 7,
-                        BLACK);
-        M5.Lcd.drawLine(OldDataX + 4, OldDataY + 7, OldDataX + 7, OldDataY + 7,
-                        BLACK);
-        M5.Lcd.drawLine(OldDataX + 4, OldDataY + 7, OldDataX + 0, OldDataY + 10,
-                        BLACK);
-        M5.Lcd.drawLine(OldDataX + 3, OldDataY + 7, OldDataX + 6, OldDataY + 12,
-                        BLACK);
+        M5.Lcd.drawLine(OldDataX + 0, OldDataY + 0, OldDataX + 0, OldDataY + 10, BLACK);
+        M5.Lcd.drawLine(OldDataX + 0, OldDataY + 0, OldDataX + 7, OldDataY + 7, BLACK);
+        M5.Lcd.drawLine(OldDataX + 4, OldDataY + 7, OldDataX + 7, OldDataY + 7, BLACK);
+        M5.Lcd.drawLine(OldDataX + 4, OldDataY + 7, OldDataX + 0, OldDataY + 10, BLACK);
+        M5.Lcd.drawLine(OldDataX + 3, OldDataY + 7, OldDataX + 6, OldDataY + 12, BLACK);
     }
 
     // draw
@@ -71,7 +67,8 @@ void Mouse_Pointer(int PotDataX, int PotDataY) {
     OldDataY = StaPotY;
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
     Serial.println("M5USB_Demo Start...");
@@ -80,7 +77,8 @@ void setup() {
     delay(200);
 }
 
-void loop() {
+void loop()
+{
     Usb.Task();
     if (Usb.getUsbTaskState() == USB_STATE_RUNNING) {
         Mouse_Pointer(mou_px, mou_py);

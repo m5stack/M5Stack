@@ -1,20 +1,21 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core2示例源代码
-* Visit for more information: https://docs.m5stack.com/en/module/comx_gps
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/comx_gps
-*
-* Describe: comx_gps.
-* Date: 2021/9/2
-*******************************************************************************
-  Use COM.GPS Module to get the coordinate data and time of the current
-location. 使用 COM.GPS 模块获取当前位置的坐标数据和时间。
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module COMX GPS
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ * TinyGPSPlus: https://github.com/mikalhart/TinyGPSPlus
+ */
 
 #include <M5Stack.h>
 #include <TinyGPS++.h>
+
+// Use COM.GPS Module to get the coordinate data and time of the current
+// location.使用 COM.GPS 模块获取当前位置的坐标数据和时间。
 
 // A sample NMEA stream.
 const char *gpsStream =
@@ -24,7 +25,8 @@ const char *gpsStream =
 // The TinyGPS++ object
 TinyGPSPlus gps;
 
-void setup() {
+void setup()
+{
     M5.begin();
     Serial2.begin(9600, SERIAL_8N1, 5, 13);
     M5.Lcd.setTextColor(GREEN, BLACK);
@@ -34,12 +36,14 @@ void setup() {
     //      displayInfo();
 }
 
-void loop() {
+void loop()
+{
     displayInfo();
     smartDelay(1000);
 }
 
-static void smartDelay(unsigned long ms) {
+static void smartDelay(unsigned long ms)
+{
     unsigned long start = millis();
     do {
         while (Serial2.available() > 0) gps.encode(Serial2.read());
@@ -47,7 +51,8 @@ static void smartDelay(unsigned long ms) {
     M5.Lcd.clear();
 }
 
-void displayInfo() {
+void displayInfo()
+{
     M5.Lcd.setCursor(0, 40, 4);
     M5.Lcd.print(F("Latitude:    "));
     if (gps.location.isValid()) {

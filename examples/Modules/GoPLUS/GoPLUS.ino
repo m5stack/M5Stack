@@ -1,11 +1,20 @@
 /*
-    Description: Use GoPLUS Module for four-channel servo test and three-channel
-   ADC test.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module GoPlus
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
+
 #include <M5Stack.h>
 #include <Wire.h>
-
 #include "GoPlus.h"
+
+// Description: Use GoPLUS Module for four-channel servo test and three-channel ADC test.
 
 GoPlus goPlus;
 
@@ -16,7 +25,8 @@ GoPlus goPlus;
 #define Y_OFFSET 23
 
 // Print the header for a display screen
-void header(const char *string, uint16_t color) {
+void header(const char *string, uint16_t color)
+{
     M5.Lcd.fillScreen(color);
     M5.Lcd.setTextSize(1);
     M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLUE);
@@ -25,7 +35,8 @@ void header(const char *string, uint16_t color) {
     M5.Lcd.drawString(string, 160, 3, 4);
 }
 
-void Motor(void) {
+void Motor(void)
+{
     goPlus.Motor_write_speed(MOTOR_NUM0, (uint8_t)0x80, 250);
     goPlus.Motor_write_speed(MOTOR_NUM1, (uint8_t)0x80, 250);
     delay(500);
@@ -41,7 +52,8 @@ void Motor(void) {
     delay(500);
 }
 
-void setup() {
+void setup()
+{
     // put your setup code here, to run once:
     M5.begin();
     M5.Power.begin();
@@ -64,7 +76,8 @@ void setup() {
 uint8_t a             = 20;
 uint16_t adInValue[6] = {0};
 int led               = 0;
-void loop() {
+void loop()
+{
     // put your main code here, to run repeatedly:
     digitalWrite(13, led);
     goPlus.Servo_write_angle(SERVO_NUM0, a);

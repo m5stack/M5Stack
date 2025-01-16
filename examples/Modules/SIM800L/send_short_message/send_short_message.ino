@@ -1,16 +1,27 @@
 /*
-    Description: Use SIM800L module to send SMS . before compile pls change the
-   SMS center number and the Send number. ps: Module reset resistance is not
-   soldered. if necessary, weld it yourself.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module SIM800L
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
+
 #include <M5Stack.h>
 #define RX_PIN    16
 #define TX_PIN    17
 #define RESET_PIN 5  // pin to the reset pin Sim800L
 
-String _buffer;
+//  Description: Use SIM800L module to send SMS . before compile pls change the
+//  SMS center number and the Send number. ps: Module reset resistance is not
+//  soldered. if necessary, weld it yourself.
 
-void header(const char *string, uint16_t color) {
+String _buffer;
+void header(const char *string, uint16_t color)
+{
     M5.Lcd.fillScreen(color);
     M5.Lcd.setTextSize(1);
     M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLUE);
@@ -19,7 +30,8 @@ void header(const char *string, uint16_t color) {
     M5.Lcd.drawString(string, 160, 3, 4);
 }
 
-String _readSerial(uint32_t timeout) {
+String _readSerial(uint32_t timeout)
+{
     uint64_t timeOld = millis();
 
     while (!Serial2.available() && !(millis() > timeOld + timeout)) {
@@ -38,7 +50,8 @@ String _readSerial(uint32_t timeout) {
     return str;
 }
 
-bool _sendSms() {
+bool _sendSms()
+{
     // Can take up to 60 seconds
     Serial2.print(F("AT+CMGF=1\r"));  // Text mode
     _buffer = _readSerial(5000);
@@ -72,7 +85,8 @@ bool _sendSms() {
     // Error NOT found, return 0
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
     header("SIM800L Send message", TFT_BLACK);
@@ -93,5 +107,6 @@ void setup() {
     _sendSms();
 }
 
-void loop() {
+void loop()
+{
 }

@@ -1,13 +1,22 @@
 /*
-    Description: Use GoPLUS Module for four-channel servo test and three-channel
-   ADC test.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module13.2 GoPlus2
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
+
 #include <M5Stack.h>
 #include <Wire.h>
 #include <driver/rmt.h>
 #include <math.h>
-
 #include "GoPlus2.h"
+
+// Description: Use GoPLUS Module for four-channel servo test and three-channel ADC test.
 
 GoPlus2 goPlus;
 
@@ -26,7 +35,8 @@ size_t received = 0;
 int flag = 0;
 int num  = 0;
 
-void header(const char *string, uint16_t color) {
+void header(const char *string, uint16_t color)
+{
     M5.Lcd.fillScreen(color);
     M5.Lcd.setTextSize(1);
     M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
@@ -35,7 +45,8 @@ void header(const char *string, uint16_t color) {
     M5.Lcd.drawString(string, 160, 3, 4);
 }
 
-void Motor() {
+void Motor()
+{
     while (num == 0) {
         M5.Lcd.fillRect(0, 40, 320, 100, TFT_BLACK);
         M5.Lcd.setCursor(20, 40, 4);
@@ -60,7 +71,8 @@ void Motor() {
     }
 }
 
-void Servo() {
+void Servo()
+{
     while (num == 1) {
         M5.Lcd.fillRect(0, 40, 320, 100, TFT_BLACK);
         M5.Lcd.setCursor(20, 40, 4);
@@ -83,7 +95,8 @@ void Servo() {
     }
 }
 
-void Port_B() {
+void Port_B()
+{
     M5.Lcd.fillRect(0, 40, 320, 100, TFT_BLACK);
     while (num == 2) {
         M5.Lcd.setCursor(0, 40, 4);
@@ -104,7 +117,8 @@ void Port_B() {
     }
 }
 
-void rx_channel_init() {
+void rx_channel_init()
+{
     rmt_config_t rmt_rx;
     rmt_rx.channel                       = RMT_CHANNEL_0;
     rmt_rx.gpio_num                      = GPIO_NUM_35;
@@ -119,7 +133,8 @@ void rx_channel_init() {
     rmt_driver_install(rmt_rx.channel, 1000, 0);
 }
 
-void tx_channel_init() {
+void tx_channel_init()
+{
     rmt_config_t rmt_tx;
     rmt_tx.rmt_mode                       = RMT_MODE_TX;
     rmt_tx.channel                        = RMT_CHANNEL_4;
@@ -137,7 +152,8 @@ void tx_channel_init() {
     rmt_driver_install(rmt_tx.channel, 0, 0);
 }
 
-void rmt_rx_task() {
+void rmt_rx_task()
+{
     RingbufHandle_t rb = NULL;
     rmt_get_ringbuf_handle(RMT_CHANNEL_0, &rb);
     rmt_rx_start(RMT_CHANNEL_0, 1);
@@ -166,7 +182,8 @@ void rmt_rx_task() {
     rmt_tx_task();
 }
 
-void rmt_tx_task() {
+void rmt_tx_task()
+{
     M5.Lcd.println("send...");
     M5.Lcd.println(received);
     rmt_write_items(RMT_CHANNEL_4, signals, received, false);
@@ -174,14 +191,16 @@ void rmt_tx_task() {
     M5.Lcd.println("send done");
 }
 
-void IR() {
+void IR()
+{
     while (num == 3) {
         M5.Lcd.fillRect(0, 40, 320, 200, TFT_BLACK);
         rmt_rx_task();
     }
 }
 
-void doTask() {
+void doTask()
+{
     if (num == 4) {
         num = 0;
     } else {
@@ -190,7 +209,8 @@ void doTask() {
     Serial.println(num);
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     goPlus.begin();
     delay(100);
@@ -207,7 +227,8 @@ void setup() {
     attachInterrupt(digitalPinToInterrupt(38), doTask, RISING);
 }
 
-void loop() {
+void loop()
+{
     Servo();
     Motor();
     Port_B();

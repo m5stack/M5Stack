@@ -1,13 +1,22 @@
 /*
-    Description: Use DHT12 Sensor to read temperature, humidity and display the
-   data on the screen.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + DHT12
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
+
 #include <M5Stack.h>
 #include <Wire.h>  //The DHT12 uses I2C comunication.
-
 #include "DHT12.h"
-DHT12 dht12;  // Preset scale CELSIUS and ID 0x5c.
 
+// Description: Use DHT12 Sensor to read temperature, humidity and display the data on the screen.
+
+DHT12 dht12;  // Preset scale CELSIUS and ID 0x5c.
 /*
 For configuration library:
 DHT12 dht12("Scale temperature","ID device for I2C");
@@ -24,7 +33,8 @@ the preset scale is KELVIN and ID is 0x5c.
 The preset scale is FAHRENHEIT and ID is 0x53.
 */
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
     Wire.begin();
@@ -32,7 +42,8 @@ void setup() {
     M5.Lcd.println("Prueba de libreria DHT12:");
 }
 
-void loop() {
+void loop()
+{
     // Read temperature with preset scale.
     Serial.print("Temperatura: ");
     M5.Lcd.print("Temperatura: ");

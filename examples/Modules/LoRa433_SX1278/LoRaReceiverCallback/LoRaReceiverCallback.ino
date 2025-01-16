@@ -1,7 +1,21 @@
-#include <M5Stack.h>
-#include <M5LoRa.h>
+/*
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module LoRa433
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ * arduino-LoRa：https://github.com/sandeepmistry/arduino-LoRa
+ */
 
-void header(const char *string, uint16_t color) {
+#include <LoRa.h>
+#include <M5Stack.h>
+
+void header(const char *string, uint16_t color)
+{
     M5.Lcd.fillScreen(color);
     M5.Lcd.setTextSize(1);
     M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLUE);
@@ -10,7 +24,8 @@ void header(const char *string, uint16_t color) {
     M5.Lcd.drawString(string, 160, 3, 4);
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
     // initialize serial
@@ -23,8 +38,7 @@ void setup() {
     // frequency in Hz (433E6, 866E6, 915E6)
     if (!LoRa.begin(433E6)) {
         Serial.println("Starting LoRa failed!");
-        while (1)
-            ;
+        while (1);
     }
 
     // register the receive callback
@@ -34,12 +48,14 @@ void setup() {
     LoRa.receive();
 }
 
-void loop() {
+void loop()
+{
     // do nothing
     LoRa.receive();
 }
 
-void onReceive(int packetSize) {
+void onReceive(int packetSize)
+{
     // received a packet
     Serial.print("Received packet '");
 

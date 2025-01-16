@@ -1,12 +1,21 @@
 /*
-    Description: Use LEGO PLUS Module to drive the LEGO motor to rotate and
-   monitor the encoder value.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module DCMotor
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
+
 #include <M5Stack.h>
 #include <Wire.h>
-
 #include "Free_Fonts.h"
 #include "utility/CommUtil.h"
+
+// Description: Use LEGO PLUS Module to drive the LEGO motor to rotate and monitor the encoder value.
 
 #define SLAVE_ADDR        0x56
 #define MOTOR_ADDR_BASE   0x00
@@ -31,7 +40,8 @@ Input:
 Return: Successful return 1
 Others:
 *************************************************/
-int32_t MotorRun(uint8_t n, int16_t Speed) {
+int32_t MotorRun(uint8_t n, int16_t Speed)
+{
     if (n > 3) return 0;
 
     if (Speed <= -255) Speed = -255;
@@ -52,7 +62,8 @@ Input:
 Return: Successful return 1
 Others:
 *************************************************/
-int32_t ReadEncoder(uint8_t n) {
+int32_t ReadEncoder(uint8_t n)
+{
     uint8_t dest[4] = {0};
 
     if (n > 3) return 0;
@@ -69,7 +80,8 @@ Input:
 Return:
 Others:
 *************************************************/
-void header(const char *string, uint16_t color) {
+void header(const char *string, uint16_t color)
+{
     M5.Lcd.fillScreen(color);
     M5.Lcd.setTextSize(1);
     M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLUE);
@@ -86,7 +98,8 @@ Input:
 Return:
 Others:A -> Speed--   B -> Speed=0   C -> Speed++
 *************************************************/
-void motor_demo(void) {
+void motor_demo(void)
+{
     uint8_t BtnFlag = 0;
     M5.update();
 
@@ -122,7 +135,8 @@ void motor_demo(void) {
     }
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
     Wire.begin();
@@ -136,6 +150,7 @@ void setup() {
     }
 }
 
-void loop() {
+void loop()
+{
     motor_demo();
 }

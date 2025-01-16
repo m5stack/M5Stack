@@ -1,20 +1,32 @@
 /*
-    Description: Use LoRaWAN Module to send "Hello World" message. Click button
-   A to clear the screen, click button B to switch the 433 band, and click
-   button C to switch the 868 band.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module LoRaWAN
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ * OTAA-LoRaWAN-Seeed: https://github.com/toddkrein/OTAA-LoRaWAN-Seeed
+ */
 
 #include <LoRaWan.h>
 #include <M5Stack.h>
 
 #define SerialUSB Serial
 
+// Description: Use LoRaWAN Module to send "Hello World" message. Click button
+// A to clear the screen, click button B to switch the 433 band, and click
+// button C to switch the 868 band.
+
 unsigned char buffer[128] = {
     0,
 };
 uint8_t flag_test_868 = 0;
 
-void key_scan(void *arg) {
+void key_scan(void *arg)
+{
     while (1) {
         onReceive();
         delay(10);
@@ -23,7 +35,8 @@ void key_scan(void *arg) {
     vTaskDelete(NULL);
 }
 
-void setup(void) {
+void setup(void)
+{
     M5.begin();
     M5.Power.begin();
     SerialUSB.begin(9600);
@@ -38,7 +51,8 @@ void setup(void) {
     xTaskCreatePinnedToCore(key_scan, "key_scan", 3096, NULL, 5, NULL, 0);
 }
 
-void loop(void) {
+void loop(void)
+{
     // lora.loraDebug();
     if (M5.BtnA.wasPressed()) {
         M5.Lcd.setCursor(0, 18);
@@ -67,19 +81,23 @@ void loop(void) {
     M5.update();
 }
 
-void init_433() {
+void init_433()
+{
     lora.initP2PMode(433, SF12, BW500, 8, 8, 20);
 }
 
-void init_868() {
+void init_868()
+{
     lora.initP2PMode(868, SF12, BW500, 8, 8, 20);
 }
 
-void send_data() {
+void send_data()
+{
     lora.transferPacketP2PMode("hello world");
 }
 
-void onReceive() {
+void onReceive()
+{
     short length = 0;
     short rssi   = 0;
 

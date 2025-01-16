@@ -1,19 +1,28 @@
 /*
-  LoRa Duplex communication wth callback
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module LoRa433
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ * arduino-LoRa：https://github.com/sandeepmistry/arduino-LoRa
+ */
 
-  Sends a message every half second, and uses callback
-  for new incoming messages. Implements a one-byte addressing scheme,
-  with 0xFF as the broadcast address.
-
-  Note: while sending, LoRa radio is not listening for incoming messages.
-  Note2: when using the callback method, you can't use any of the Stream
-  functions that rely on the timeout, such as readString, parseInt(), etc.
-
-  created 28 April 2017
-  by Tom Igoe
-*/
+#include <LoRa.h>
 #include <M5Stack.h>
-#include <M5LoRa.h>
+
+// LoRa Duplex communication wth callback
+// Sends a message every half second, and uses callback
+// for new incoming messages. Implements a one-byte addressing scheme,
+// with 0xFF as the broadcast address.
+// Note: while sending, LoRa radio is not listening for incoming messages.
+// Note2: when using the callback method, you can't use any of the Stream
+// functions that rely on the timeout, such as readString, parseInt(), etc.
+// created 28 April 2017
+// by Tom Igoe
 
 String outgoing;           // outgoing message
 byte msgCount     = 0;     // count of outgoing messages
@@ -22,7 +31,8 @@ byte destination  = 0xFF;  // destination to send to
 long lastSendTime = 0;     // last send time
 int interval      = 2000;  // interval between sends
 
-void header(const char *string, uint16_t color) {
+void header(const char *string, uint16_t color)
+{
     M5.Lcd.fillScreen(color);
     M5.Lcd.setTextSize(1);
     M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLUE);
@@ -31,11 +41,11 @@ void header(const char *string, uint16_t color) {
     M5.Lcd.drawString(string, 160, 3, 4);
 }
 
-void setup() {
+void setup()
+{
     M5.begin();  // initialize serial
     M5.Power.begin();
-    while (!Serial)
-        ;
+    while (!Serial);
 
     header("LoRa Duplex with callback", TFT_BLACK);
     M5.Lcd.setTextFont(2);
@@ -49,8 +59,7 @@ void setup() {
 
     if (!LoRa.begin(433E6)) {  // initialize ratio at 915 MHz
         Serial.println("LoRa init failed. Check your connections.");
-        while (true)
-            ;  // if failed, do nothing
+        while (true);  // if failed, do nothing
     }
 
     LoRa.onReceive(onReceive);
@@ -58,7 +67,8 @@ void setup() {
     Serial.println("LoRa init succeeded.");
 }
 
-void loop() {
+void loop()
+{
     if (millis() - lastSendTime > interval) {
         String message = "HeLoRa World!";  // send a message
         sendMessage(message);
@@ -69,7 +79,8 @@ void loop() {
     }
 }
 
-void sendMessage(String outgoing) {
+void sendMessage(String outgoing)
+{
     LoRa.beginPacket();             // start packet
     LoRa.write(destination);        // add destination address
     LoRa.write(localAddress);       // add sender address
@@ -80,7 +91,8 @@ void sendMessage(String outgoing) {
     msgCount++;                     // increment message ID
 }
 
-void onReceive(int packetSize) {
+void onReceive(int packetSize)
+{
     if (packetSize == 0) return;  // if there's no packet, return
 
     // read packet header bytes:
@@ -91,7 +103,7 @@ void onReceive(int packetSize) {
 
     String incoming = "";  // payload of packet
 
-    while (LoRa.available()) {  // can't use readString() in callback, so
+    while (LoRa.available()) {          // can't use readString() in callback, so
         incoming += (char)LoRa.read();  // add bytes one by one
     }
 

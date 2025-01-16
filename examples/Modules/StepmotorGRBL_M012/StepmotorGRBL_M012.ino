@@ -1,20 +1,21 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/module/stepmotor
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/stepmotor
-*
-* Describe: Stepmotor With GRBL.
-* Date: 2021/9/2
-*******************************************************************************
-  STEP-MOTOR Module TEST Example,If Button A was pressed, stepmotor will rotate
-back and forth at a time.
-  步进电机模块测试示例，如果按下按钮A，步进电机将一次来回旋转。
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module Stepmotor
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
+
 #include <M5Stack.h>
 #include <Wire.h>
+
+// STEP-MOTOR Module TEST Example,If Button A was pressed, stepmotor will rotate
+// back and forth at a time.
+// 步进电机模块测试示例，如果按下按钮A，步进电机将一次来回旋转。
 
 /*
  * The I2C address of StepMotor Module is 0x70 by default.
@@ -26,10 +27,11 @@ back and forth at a time.
  * 此后您需要使用 I2C 地址“0x71”才能正确通信。
  */
 
-#define STEPMOTOR_I2C_ADDR 0x70
-// #define STEPMOTOR_I2C_ADDR 0x71
+#define STEPMOTOR_I2C_ADDR (0x70)
+// #define STEPMOTOR_I2C_ADDR (0x71)
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
     Wire.begin();
@@ -42,13 +44,15 @@ void setup() {
     M5.Lcd.println("Press A: 0x70");
 }
 
-void SendByte(byte addr, byte b) {
+void SendByte(byte addr, byte b)
+{
     Wire.beginTransmission(addr);
     Wire.write(b);
     Wire.endTransmission();
 }
 
-void SendCommand(byte addr, char *c) {
+void SendCommand(byte addr, char *c)
+{
     Wire.beginTransmission(addr);
     while ((*c) != 0) {
         Wire.write(*c);
@@ -59,7 +63,8 @@ void SendCommand(byte addr, char *c) {
     Wire.endTransmission();
 }
 
-void loop() {
+void loop()
+{
     /*If Button A was pressed,stepmotor will rotate back and forth at a time.\\
       如果按下按钮A，步进电机将一次来回旋转*/
     if (digitalRead(39) == LOW)  // A button

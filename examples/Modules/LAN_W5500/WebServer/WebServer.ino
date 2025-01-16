@@ -1,6 +1,20 @@
+/*
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Base LAN PoE/PoE v1.2
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ * M5-Ethernet: https://github.com/m5stack/M5-Ethernet
+ */
+
 #include <M5Stack.h>
 #include <SPI.h>
 #include <M5_Ethernet.h>
+
 #define SCK  18
 #define MISO 19
 #define MOSI 23
@@ -27,7 +41,8 @@ IPAddress ip(192, 168, 1, 177);
 // (port 80 is default for HTTP):
 EthernetServer server(80);
 
-void setup() {
+void setup()
+{
     // Open serial communications and wait for port to open:
     M5.begin(true, false, true);
     M5.Power.begin();
@@ -47,7 +62,8 @@ void setup() {
     M5.Lcd.print(Ethernet.localIP());
 }
 
-void loop() {
+void loop()
+{
     // listen for incoming clients
     EthernetClient client = server.available();
     if (client) {
@@ -65,12 +81,11 @@ void loop() {
                     // send a standard http response header
                     client.println("HTTP/1.1 200 OK");
                     client.println("Content-Type: text/html");
-                    client.println(
-                        "Connection: close");  // the connection will be closed
-                                               // after completion of the
-                                               // response
-                    client.println("Refresh: 5");  // refresh the page
-                                                   // automatically every 5 sec
+                    client.println("Connection: close");  // the connection will be closed
+                                                          // after completion of the
+                                                          // response
+                    client.println("Refresh: 5");         // refresh the page
+                                                          // automatically every 5 sec
                     client.println();
                     client.println("<!DOCTYPE HTML>");
                     client.println("<html>");
@@ -79,8 +94,7 @@ void loop() {
                     client.println("<h1>M5Stack W5500 Test</h1>");
                     client.println("<br />");
                     client.println("<p>Please click here</p>");
-                    client.println(
-                        "<a href=\"http://www.M5Stack.com\">M5Stack</a>");
+                    client.println("<a href=\"http://www.M5Stack.com\">M5Stack</a>");
                     client.println("<br />");
                     client.println("<br />");
                     client.println("<br />");

@@ -1,12 +1,22 @@
 /*
-  please add MCP_CAN_LIB to your library first........
-  MCP_CAN_LIB file in M5stack lib examples -> modules -> COMMU ->
-  MCP_CAN_lib.rar
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module COMMU
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
 #include <mcp_can.h>
 #include "m5_logo.h"
+
+// please add MCP_CAN_LIB to your library first........
+// MCP_CAN_LIB file in M5stack lib examples -> modules -> COMMU ->
+// MCP_CAN_lib.rar
 
 /*
     test RS485 first by default
@@ -77,19 +87,17 @@ void init_can();
 void test_rs485();
 void test_can();
 
-void updatedata() {
+void updatedata()
+{
     Send_Count = (Send_Count + 1) & 0xffff;
     // Update values
     UART_DATA.datahigh = (Send_Count & 0xff00) >> 8;
     UART_DATA.datalow  = Send_Count & 0xff;
     // Calculates and verifies values
-    UART_DATA.check = UART_DATA.framelow + UART_DATA.framehigh +
-                      UART_DATA.datalengthlow + UART_DATA.datalengthhigh +
-                      UART_DATA.functionlow + UART_DATA.functionhigh +
-                      UART_DATA.datalow + UART_DATA.datahigh;
+    UART_DATA.check = UART_DATA.framelow + UART_DATA.framehigh + UART_DATA.datalengthlow + UART_DATA.datalengthhigh +
+                      UART_DATA.functionlow + UART_DATA.functionhigh + UART_DATA.datalow + UART_DATA.datahigh;
 
-    for (stringnum = 0; stringnum < 9; stringnum++)
-        Serial2.print(UART_DATA.buff[stringnum]);
+    for (stringnum = 0; stringnum < 9; stringnum++) Serial2.print(UART_DATA.buff[stringnum]);
 
     M5.Lcd.fillRect(0, 30, 300, 20, WHITE);
     M5.Lcd.setCursor(0, 30);
@@ -100,7 +108,8 @@ void updatedata() {
     M5.Lcd.printf("Send count OK: %d\r\n", Send_OK);
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
     Serial.begin(9600);
@@ -114,7 +123,8 @@ void setup() {
     init_rs485();
 }
 
-void loop() {
+void loop()
+{
     if (M5.BtnA.wasPressed()) {
         flag_test_can   = 1;
         flag_test_rs485 = 0;
@@ -136,7 +146,8 @@ void loop() {
     }
 }
 
-void init_rs485() {
+void init_rs485()
+{
     M5.Lcd.drawBitmap(0, 0, 320, 240, (uint16_t *)gImage_m5_logo);
     delay(500);
 
@@ -152,7 +163,8 @@ void init_rs485() {
     // updatedata();
 }
 
-void init_can() {
+void init_can()
+{
     // M5.fillScreen(BLACK);
     M5.Lcd.setCursor(0, 10);
     M5.Lcd.setTextSize(2);
@@ -170,17 +182,16 @@ void init_can() {
                                // transmitted
 }
 
-void test_rs485() {
+void test_rs485()
+{
     while (Serial2.available() > 0) {
         Num = Serial2.readBytes(uart_buffer, 9);  // Read the serial string
         if (Num == 9) {
             memcpy(UART_RECDATA.buff, uart_buffer, 9);
             // Calculates and verifies values
-            RECcheck = UART_RECDATA.framelow + UART_RECDATA.framehigh +
-                       UART_RECDATA.datalengthlow +
-                       UART_RECDATA.datalengthhigh + UART_RECDATA.functionlow +
-                       UART_RECDATA.functionhigh + UART_RECDATA.datalow +
-                       UART_RECDATA.datahigh;
+            RECcheck = UART_RECDATA.framelow + UART_RECDATA.framehigh + UART_RECDATA.datalengthlow +
+                       UART_RECDATA.datalengthhigh + UART_RECDATA.functionlow + UART_RECDATA.functionhigh +
+                       UART_RECDATA.datalow + UART_RECDATA.datahigh;
             if (UART_RECDATA.check == (RECcheck & 0xff)) {
                 Send_OK++;
             }
@@ -189,7 +200,8 @@ void test_rs485() {
     }
 }
 
-void test_can() {
+void test_can()
+{
     // send data:  ID = 0x100, Standard CAN Frame, Data length = 8 bytes, 'data'
     // = array of data bytes to send
     byte sndStat = CAN0.sendMsgBuf(0x100, 0, 8, data);

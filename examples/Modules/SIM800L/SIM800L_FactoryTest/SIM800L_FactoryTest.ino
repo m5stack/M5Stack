@@ -1,15 +1,28 @@
 /*
-    Description: Press btnB init to test SIMcard,signal,GPRS. Press btnC get
-   host ip and test ping website.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module SIM800L
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
+
 #include <M5Stack.h>
+
+// Description: Press btnB init to test SIMcard,signal,GPRS. Press btnC get
+// host ip and test ping website.
+
 #define RX_PIN 16
 #define TX_PIN 17
 #define RESET_PIN \
     5  // Module reset resistance is not soldered. if necessary, weld it
        // yourself.
 
-void header(const char *string) {
+void header(const char *string)
+{
     M5.Lcd.setTextSize(1);
     M5.Lcd.setTextColor(WHITE, BLUE);
     M5.Lcd.fillRect(0, 0, 320, 30, BLUE);
@@ -24,7 +37,8 @@ void header(const char *string) {
     M5.Lcd.print("AT Command Pass-through");
 }
 
-String _readSerial(uint32_t timeout) {
+String _readSerial(uint32_t timeout)
+{
     uint64_t timeOld = millis();
     while (!Serial2.available() && !(millis() > timeOld + timeout)) {
         delay(13);
@@ -39,7 +53,8 @@ String _readSerial(uint32_t timeout) {
     return str;
 }
 
-void simcard_test() {
+void simcard_test()
+{
     Serial2.print(F("AT+CPIN?\r"));
     String simcard_status = _readSerial(3000);
     Serial.print(simcard_status);
@@ -53,7 +68,8 @@ void simcard_test() {
     }
 }
 
-void signal_test() {
+void signal_test()
+{
     String csq_data;
     M5.Lcd.setCursor(0, 65, 2);
     M5.Lcd.setTextColor(WHITE, RED);
@@ -66,11 +82,11 @@ void signal_test() {
         csq_data = _readSerial(3000);
     } while (csq_data.indexOf("+CSQ: 0,0") != -1);
     M5.Lcd.setCursor(0, 65, 2);
-    M5.Lcd.print(
-        csq_data.substring(csq_data.indexOf("+CSQ:"), csq_data.indexOf("OK")));
+    M5.Lcd.print(csq_data.substring(csq_data.indexOf("+CSQ:"), csq_data.indexOf("OK")));
 }
 
-void GPRS_init() {
+void GPRS_init()
+{
     Serial2.print(F("AT+CIPSHUT\r"));
     String init_data = _readSerial(4000);
     Serial2.print(F("AT+CSTT=\"CMNET\"\r"));
@@ -79,8 +95,7 @@ void GPRS_init() {
     init_data = _readSerial(4000);
     Serial.print(init_data);
     M5.Lcd.setCursor(0, 90, 2);
-    if ((init_data.indexOf("ERROR") != -1) ||
-        (init_data.indexOf("DEACT") != -1) || (init_data == "")) {
+    if ((init_data.indexOf("ERROR") != -1) || (init_data.indexOf("DEACT") != -1) || (init_data == "")) {
         M5.Lcd.setTextColor(WHITE, RED);
         M5.Lcd.print("NOT");
     } else {
@@ -89,7 +104,8 @@ void GPRS_init() {
     }
 }
 
-void ping_test() {
+void ping_test()
+{
     String ping_data;
     Serial2.print(F("AT+CIFSR\r"));
     M5.Lcd.setCursor(0, 115, 2);
@@ -111,7 +127,8 @@ void ping_test() {
     }
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
     header("SIM800L Factory Test");
@@ -122,7 +139,8 @@ void setup() {
     GPRS_init();
 }
 
-void loop() {
+void loop()
+{
     // AT instruction write
     if (Serial.available()) {
         Serial2.write(Serial.read());

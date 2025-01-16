@@ -1,10 +1,24 @@
+/*
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module COMX LoRAWAN470
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
+
 #include "M5Stack.h"
 #include "TFTTerminal.h"
 #include "freertos/queue.h"
+
 TFT_eSprite TerminalBuff = TFT_eSprite(&M5.Lcd);
 TFTTerminal terminal(&TerminalBuff);
 
-String waitRevice() {
+String waitRevice()
+{
     String recvStr;
     do {
         recvStr = Serial2.readStringUntil('\n');
@@ -14,12 +28,14 @@ String waitRevice() {
     return recvStr;
 }
 
-void sendATCMD(String cmdStr) {
+void sendATCMD(String cmdStr)
+{
     Serial2.print(cmdStr);
     delay(100);
 }
 
-int sendATCMDAndRevice(String cmdStr) {
+int sendATCMDAndRevice(String cmdStr)
+{
     Serial2.print(cmdStr);
     delay(100);
     waitRevice();
@@ -31,7 +47,8 @@ int sendATCMDAndRevice(String cmdStr) {
     }
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     Serial2.begin(115200, SERIAL_8N1, 16, 17);
     Serial2.flush();
@@ -107,7 +124,8 @@ int system_fsm = kIdel;
 int loraWanSendNUM = -1;
 int loraWanSendCNT = -1;
 
-void loop() {
+void loop()
+{
     String recvStr = waitRevice();
     if (recvStr.indexOf("+CJOIN:") != -1) {
         if (recvStr.indexOf("OK") != -1) {
@@ -129,8 +147,7 @@ void loop() {
                 sprintf(strbuff, "TSET OK CNT: %d", loraWanSendCNT);
                 terminal.println(strbuff);
             } else {
-                sprintf(strbuff, "FAILD NUM:%d CNT:%d", loraWanSendNUM,
-                        loraWanSendCNT);
+                sprintf(strbuff, "FAILD NUM:%d CNT:%d", loraWanSendNUM, loraWanSendCNT);
                 terminal.println(strbuff);
             }
         }

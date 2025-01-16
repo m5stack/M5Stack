@@ -1,29 +1,30 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/core/gray
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/gray
-*
-* Describe: RS485
-* Date: 2022/5/21
-*******************************************************************************
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Base LAN PoE
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
+
 #include <M5Stack.h>
 
-void setup() {
+void setup()
+{
     M5.begin(true, false, true, false);  // Init M5Core.  初始化 M5Core
-    M5.Power.begin();  // Init Power module.  初始化电源模块
-    M5.Lcd.setTextColor(
-        YELLOW);  // Set the font color to yellow.  设置字体颜色为黄色
-    M5.Lcd.setTextSize(2);  // Set the font size.  设置字体大小为2
+    M5.Power.begin();                    // Init Power module.  初始化电源模块
+    M5.Lcd.setTextColor(YELLOW);         // Set the font color to yellow.  设置字体颜色为黄色
+    M5.Lcd.setTextSize(2);               // Set the font size.  设置字体大小为2
     M5.Lcd.drawString("RS485", 130, 10);
     M5.Lcd.drawString("Signal", 0, 60);
     Serial2.begin(115200, SERIAL_8N1, 5, 15);
 }
 
-void loop() {
+void loop()
+{
     if (M5.BtnA.wasPressed()) {  // Press the buttonA to send a
                                  // message.按下按键A发送信息
         M5.Lcd.fillCircle(100, 65, 15,

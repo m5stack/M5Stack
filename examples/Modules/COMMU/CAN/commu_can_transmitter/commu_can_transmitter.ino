@@ -1,12 +1,22 @@
 /*
-  please add MCP_CAN_LIB to your library first........
-  MCP_CAN_LIB file in M5stack lib examples -> modules -> COMMU ->
-  MCP_CAN_lib.rar
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module COMMU
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
 #include <mcp_can.h>
 #include "m5_logo.h"
+
+// Please add MCP_CAN_LIB to your library first........
+// MCP_CAN_LIB file in M5stack lib examples -> modules -> COMMU ->
+// MCP_CAN_lib.rar
 
 /**
  * variable for loop
@@ -28,7 +38,8 @@ MCP_CAN CAN0(12);    // Set CS to pin 10
 void init_can();
 void test_can();
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
     Serial.begin(9600);
@@ -43,7 +54,8 @@ void setup() {
     Serial.println("Test CAN...");
 }
 
-void loop() {
+void loop()
+{
     if (M5.BtnA.wasPressed()) {
         M5.Lcd.clear();
         M5.Lcd.printf("CAN Test B!\n");
@@ -54,7 +66,8 @@ void loop() {
     M5.update();
 }
 
-void init_can() {
+void init_can()
+{
     M5.Lcd.setTextSize(1);
     M5.Lcd.setCursor(0, 10);
     M5.Lcd.pushImage(0, 0, 320, 240, (uint16_t *)gImage_logoM5);
@@ -71,7 +84,8 @@ void init_can() {
                                // transmitted
 }
 
-void test_can() {
+void test_can()
+{
     // send data:  ID = 0x100, Standard CAN Frame, Data length = 8 bytes, 'data'
     // = array of data bytes to send
     byte sndStat = CAN0.sendMsgBuf(0x100, 0, 8, data);

@@ -1,30 +1,30 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/products
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/products
-*
-* Describe: AC Socket.
-* Date: 2021/9/1
-*******************************************************************************
-  Click button B to turn on the power. Click button A to turn off the power.
-  单击按钮 B 打开电源。 单击按钮 A 关闭电源。
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + AC-Socket
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
+
 #include <Arduino.h>
 #include <M5Stack.h>
-
 #include "modbus.h"
 #include "protocol.h"
 
+// Click button B to turn on the power. Click button A to turn off the power.
+// 单击按钮 B 打开电源。 单击按钮 A 关闭电源。
+
 volatile uint32_t tim = 0;
+uint32_t time_now     = 0;
+uint8_t ucTestFlag    = 0;
+bool ubCoilState      = false;
 
-uint32_t time_now  = 0;
-uint8_t ucTestFlag = 0;
-bool ubCoilState   = false;
-
-void setup() {
+void setup()
+{
     M5.begin(true, false, true, false);
     M5.Power.begin();
     mb_init(0xac, 9600, &tim);
@@ -33,7 +33,8 @@ void setup() {
     // put your setup code here, to run once:
 }
 
-void loop() {
+void loop()
+{
     M5.update();
 
     if (millis() - time_now > 60000UL) {
@@ -73,10 +74,12 @@ void loop() {
     // put your main code here, to run repeatedly:
 }
 
-void mb_send_one_byte(uint8_t data) {
+void mb_send_one_byte(uint8_t data)
+{
     Serial1.write(data);
 }
 
-void protocol_callback(CmdData cmd) {
+void protocol_callback(CmdData cmd)
+{
     Serial.printf("got ... \r\n");
 }

@@ -1,25 +1,35 @@
 /*
-    Description: This code only for mpu6886! first init need press BtnC and
-   reboot to calibrate !
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Bala
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
 #include <Preferences.h>
 #include <Wire.h>
-
 #include "M5Bala.h"
 #include "imuCalibration.h"
+
+// Description: This code only for mpu6886! first init need press BtnC and reboot to calibrate !
+
+#define MAX_LEN  120
+#define X_OFFSET 0
+#define Y_OFFSET 100
+#define X_SCALE  3
 
 Preferences preferences;
 
 M5Bala m5bala(Wire);
 
 // ================ Draw Angle Wavefrom =================
-void draw_waveform() {
-#define MAX_LEN  120
-#define X_OFFSET 0
-#define Y_OFFSET 100
-#define X_SCALE  3
+void draw_waveform()
+{
     static int16_t val_buf[MAX_LEN] = {0};
     static int16_t pt               = MAX_LEN - 1;
 
@@ -33,14 +43,14 @@ void draw_waveform() {
         M5.Lcd.drawLine(i, val_buf[(now_pt + 1) % MAX_LEN] + Y_OFFSET, i + 1,
                         val_buf[(now_pt + 2) % MAX_LEN] + Y_OFFSET, TFT_BLACK);
         if (i < MAX_LEN - 1)
-            M5.Lcd.drawLine(i, val_buf[now_pt] + Y_OFFSET, i + 1,
-                            val_buf[(now_pt + 1) % MAX_LEN] + Y_OFFSET,
+            M5.Lcd.drawLine(i, val_buf[now_pt] + Y_OFFSET, i + 1, val_buf[(now_pt + 1) % MAX_LEN] + Y_OFFSET,
                             TFT_GREEN);
     }
 }
 
 // ================ GYRO offset param ==================
-void auto_tune_gyro_offset() {
+void auto_tune_gyro_offset()
+{
     M5.Speaker.tone(500, 200);
     delay(300);
     M5.update();
@@ -63,7 +73,8 @@ void auto_tune_gyro_offset() {
     preferences.end();
 }
 
-void setup() {
+void setup()
+{
     // Power ON Stabilizing...
     M5.begin();
     M5.Power.begin();
@@ -89,16 +100,15 @@ void setup() {
     }
 }
 
-void loop() {
+void loop()
+{
     // LCD display
     static uint32_t print_interval = millis() + 30;
     if (millis() > print_interval) {
         print_interval = millis() + 100;
         M5.Lcd.setCursor(0, 190);
-        M5.Lcd.printf("Input  Encoer0: %+4d  Encoer1: %+4d    \r\n",
-                      m5bala.getSpeed0(), m5bala.getSpeed1());
-        M5.Lcd.printf("Output PWM0: %+4d     PWM1: %+4d    \r\n",
-                      m5bala.getOut0(), m5bala.getOut1());
+        M5.Lcd.printf("Input  Encoer0: %+4d  Encoer1: %+4d    \r\n", m5bala.getSpeed0(), m5bala.getSpeed1());
+        M5.Lcd.printf("Output PWM0: %+4d     PWM1: %+4d    \r\n", m5bala.getOut0(), m5bala.getOut1());
         M5.Lcd.printf("AngleX: %+05.2f\r\n", m5bala.getAngle());
     }
 

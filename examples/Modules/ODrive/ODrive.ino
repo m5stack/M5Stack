@@ -1,28 +1,40 @@
 /*
-    Description:
-    This case uses the ODrive module to control the high-speed and precise
-   rotation of the servo motor Press button C to calibrate (do not touch the
-   motor shaft during this period), long press and short button A to control the
-   motor rotation. Note: The motor parameter configuration in this case is only
-   applicable to the motor model matched with the M5 Odrive kit. When driving
-   other types of motors, please configure the parameters according to the motor
-   used.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module13.2 ODrive
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include "M5Stack.h"
 #include "odrive.h"
 
+// Description:
+// This case uses the ODrive module to control the high-speed and precise
+// rotation of the servo motor Press button C to calibrate (do not touch the
+// motor shaft during this period), long press and short button A to control the
+// motor rotation. Note: The motor parameter configuration in this case is only
+// applicable to the motor model matched with the M5 Odrive kit. When driving
+// other types of motors, please configure the parameters according to the motor
+// used.
+
 ODrive odrive(Serial1);
 TFT_eSprite canvas = TFT_eSprite(&M5.Lcd);
 
-void showStringCenter(const char* str, uint16_t color) {
+void showStringCenter(const char* str, uint16_t color)
+{
     canvas.fillScreen(TFT_BLACK);
     canvas.setTextColor(color);
     canvas.drawString(str, 160, 120, 4);
     canvas.pushSprite(0, 0);
 }
 
-void setup() {
+void setup()
+{
     M5.begin(true, false, true, true);
     canvas.setColorDepth(1);
     canvas.createSprite(320, 240);
@@ -32,7 +44,8 @@ void setup() {
     showStringCenter("ODrive", TFT_GREEN);
 }
 
-void loop() {
+void loop()
+{
     M5.update();
     if (M5.BtnA.wasReleased()) {
         odrive.setPosition(10);
@@ -83,8 +96,7 @@ void loop() {
     }
 
     char data_show[100];
-    sprintf(data_show, "%f, %d, %d\r\n", odrive.getVbusVoltage(),
-            odrive.getEncoderShadowCount(), odrive.checkError());
+    sprintf(data_show, "%f, %d, %d\r\n", odrive.getVbusVoltage(), odrive.getEncoderShadowCount(), odrive.checkError());
     showStringCenter(data_show, TFT_WHITE);
     Serial.printf(data_show);
     delay(20);

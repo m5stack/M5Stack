@@ -1,25 +1,22 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/module/comx_cat1
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/comx_cat1
-*
-* Describe: comx_cat1.
-* Date: 2022/01/11
-*******************************************************************************
-This case will use COM.CAT1 Module combined with M5Core to implement MQTT
-Client. After successfully connecting to MQTT, press button B to realize data
-publishing. Before use, adjust the DIP switch of the module base to G16/17 ON
-Libraries:
-- [TinyGSM](https://github.com/vshymanskyy/TinyGSM)
-- [PubSubClient](https://github.com/knolleary/pubsubclient.git)
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module COMX Cat1
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5GFX@^0.2.3: https://github.com/m5stack/M5GFX
+ * M5Unified@^0.2.2: https://github.com/m5stack/M5Unified
+ * TinyGSM: https://github.com/vshymanskyy/TinyGSM
+ * PubSubClient: https://github.com/knolleary/pubsubclient.git
+ */
 
 #include <M5Unified.h>
-
 #include "M5GFX.h"
+#include <PubSubClient.h>
+#include <TinyGsmClient.h>
 
 // Compatible with SIM76XX series.
 #define TINY_GSM_MODEM_SIM7600
@@ -41,9 +38,6 @@ const char apn[]      = "YourAPN";
 const char gprsUser[] = "";
 const char gprsPass[] = "";
 
-#include <PubSubClient.h>
-#include <TinyGsmClient.h>
-
 TinyGsm modem(SerialAT);
 TinyGsmClient client(modem);
 
@@ -59,17 +53,20 @@ PubSubClient mqtt(client);
 
 unsigned long start;
 
-inline String time() {
+inline String time()
+{
     return "..." + String((millis() - start) / 1000) + 's';
 }
 
-void log(String info) {
+void log(String info)
+{
     SerialMon.println(info);
     canvas.println(info);
     canvas.pushSprite(0, 0);
 }
 
-void mqttCallback(char* topic, byte* payload, unsigned int len) {
+void mqttCallback(char* topic, byte* payload, unsigned int len)
+{
     log("Message arrived :");
     log(topic);
     log("payload: ");
@@ -79,7 +76,8 @@ void mqttCallback(char* topic, byte* payload, unsigned int len) {
     log(_payload);
 }
 
-boolean mqttConnect() {
+boolean mqttConnect()
+{
     log("Connecting to ");
     log(broker);
 
@@ -100,7 +98,8 @@ boolean mqttConnect() {
     return mqtt.connected();
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     display.begin();
     start = millis();
@@ -127,7 +126,8 @@ void setup() {
     }
 }
 
-void loop() {
+void loop()
+{
     log("Waiting for network...." + time());
     if (!modem.waitForNetwork()) {
         log("fail" + time());

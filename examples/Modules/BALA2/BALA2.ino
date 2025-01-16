@@ -1,21 +1,30 @@
 /*
-    Description: BALA2 stand and run in balance.
-    Note: click the device power button and Long press button B will setup
-   calibration mode. at calibration mode Press the A/C key to increase or
-   decrease the correction value. When it is adjusted to a satisfactory value,
-   press the B key to save the parameter.
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Bala2
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #define M5STACK_MPU6886
 
 #include <M5Stack.h>
-
 #include "MadgwickAHRS.h"
 #include "bala.h"
 #include "calibration.h"
 #include "freertos/FreeRTOS.h"
 #include "imu_filter.h"
 #include "pid.h"
+
+// Description: BALA2 stand and run in balance.
+// Note: click the device power button and Long press button B will setup
+// calibration mode. at calibration mode Press the A/C key to increase or
+// decrease the correction value. When it is adjusted to a satisfactory value,
+// press the B key to save the parameter.
 
 extern uint8_t bala_img[41056];
 static void PIDTask(void *arg);
@@ -34,7 +43,8 @@ PID pid(angle_point, kp, ki, kd);
 PID speed_pid(0, s_kp, s_ki, s_kd);
 
 // the setup routine runs once when M5Stack starts up
-void setup() {
+void setup()
+{
     // Initialize the M5Stack object
 
     M5.begin(true, false, false, false);
@@ -52,8 +62,7 @@ void setup() {
     }
 
     calibrationGet(&x_offset, &y_offset, &z_offset, &angle_center);
-    Serial.printf("x: %d, y: %d, z:%d, angle: %.2f", x_offset, y_offset,
-                  z_offset, angle_center);
+    Serial.printf("x: %d, y: %d, z:%d, angle: %.2f", x_offset, y_offset, z_offset, angle_center);
 
     angle_point = angle_center;
     pid.SetPoint(angle_point);
@@ -73,7 +82,8 @@ void setup() {
 }
 
 // the loop routine runs over and over again forever
-void loop() {
+void loop()
+{
     static uint32_t next_show_time = 0;
     vTaskDelay(pdMS_TO_TICKS(5));
 
@@ -100,7 +110,8 @@ void loop() {
     }
 }
 
-static void PIDTask(void *arg) {
+static void PIDTask(void *arg)
+{
     float bala_angle;
     float motor_speed = 0;
 
@@ -153,14 +164,15 @@ static void PIDTask(void *arg) {
     }
 }
 
-static void draw_waveform() {
+static void draw_waveform()
+{
 #define MAX_LEN  120
 #define X_OFFSET 100
 #define Y_OFFSET 95
 #define X_SCALE  3
     static int16_t val_buf[MAX_LEN] = {0};
     static int16_t pt               = MAX_LEN - 1;
-    val_buf[pt] = constrain((int16_t)(getAngle() * X_SCALE), -50, 50);
+    val_buf[pt]                     = constrain((int16_t)(getAngle() * X_SCALE), -50, 50);
 
     if (--pt < 0) {
         pt = MAX_LEN - 1;
@@ -168,14 +180,11 @@ static void draw_waveform() {
 
     for (int i = 1; i < (MAX_LEN); i++) {
         uint16_t now_pt = (pt + i) % (MAX_LEN);
-        M5.Lcd.drawLine(i + X_OFFSET,
-                        val_buf[(now_pt + 1) % MAX_LEN] + Y_OFFSET,
-                        i + 1 + X_OFFSET,
+        M5.Lcd.drawLine(i + X_OFFSET, val_buf[(now_pt + 1) % MAX_LEN] + Y_OFFSET, i + 1 + X_OFFSET,
                         val_buf[(now_pt + 2) % MAX_LEN] + Y_OFFSET, TFT_BLACK);
         if (i < MAX_LEN - 1) {
-            M5.Lcd.drawLine(
-                i + X_OFFSET, val_buf[now_pt] + Y_OFFSET, i + 1 + X_OFFSET,
-                val_buf[(now_pt + 1) % MAX_LEN] + Y_OFFSET, TFT_GREEN);
+            M5.Lcd.drawLine(i + X_OFFSET, val_buf[now_pt] + Y_OFFSET, i + 1 + X_OFFSET,
+                            val_buf[(now_pt + 1) % MAX_LEN] + Y_OFFSET, TFT_GREEN);
         }
     }
 }

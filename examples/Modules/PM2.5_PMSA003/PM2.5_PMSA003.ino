@@ -1,24 +1,24 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/module/pm2.5
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/pm2.5
-*
-* Describe: pm2.5.
-* Date: 2021/9/2
-*******************************************************************************
-  Use PM2.5 module and SHT20 base to read, the current particulate matter
-concentration and temperature and humidity data.
-  使用PM2.5模块和SHT20底座读取当前颗粒物浓度和温湿度数据。
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + PM2.5 Air Quality Kit-SHT30
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
 #include <Wire.h>
-
 #include "DFRobot_SHT20.h"
 #include "Free_Fonts.h"
+
+// Use PM2.5 module and SHT20 base to read, the current particulate matter
+// concentration and temperature and humidity data.
+// 使用PM2.5模块和SHT20底座读取当前颗粒物浓度和温湿度数据。
+
 DFRobot_SHT20 sht20;
 
 #define TFT_GREY 0x7BEF
@@ -34,7 +34,8 @@ DFRobot_SHT20 sht20;
 uint16_t CheckSum;
 uint16_t CheckCode;
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
     Serial.begin(9600);
@@ -60,7 +61,8 @@ uint8_t i           = 0;
 
 #define FRONT 2
 
-void LCD_Display_Val(void) {
+void LCD_Display_Val(void)
+{
     for (int i = 0, j = 0; i < 32; i++) {
         if (i % 2 == 0) {
             p_val[j] = Air_val[i];
@@ -158,7 +160,8 @@ void LCD_Display_Val(void) {
     M5.Lcd.print(p_val[13]);
 }
 
-void TempHumRead(void) {
+void TempHumRead(void)
+{
     float humd = sht20.readHumidity();     // Read Humidity
     float temp = sht20.readTemperature();  // Read Temperature
 
@@ -176,7 +179,8 @@ void TempHumRead(void) {
     M5.Lcd.print(humd);
 }
 
-void loop() {
+void loop()
+{
     if (Serial2.available()) {
         Air_val[i] = Serial2.read();
         Serial.write(Air_val[i]);

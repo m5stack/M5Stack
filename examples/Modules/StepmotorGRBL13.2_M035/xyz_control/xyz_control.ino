@@ -1,20 +1,21 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/module/grbl13.2
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/grbl13.2
-*
-* Describe: GRBL 13.2 Module.
-* Date: 2021/11/14
-*******************************************************************************
-  GRBL 13.2 Module TEST Example,use I2C to control stepper motors
-  步进电机模块测试示例,使用I2C控制步进电机
-*/
-#include <M5Stack.h>
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module13.2 GRBL
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ * M5Module-GRBL-13.2：https://github.com/m5stack/M5Module-GRBL-13.2
+ */
 
+#include <M5Stack.h>
 #include "Module_GRBL_13.2.h"
+
+// GRBL 13.2 Module TEST Example,use I2C to control stepper motors
+// 步进电机模块测试示例,使用I2C控制步进电机
 
 /*
  * The I2C address of GRBL 13.2  Module is 0x70 by default.
@@ -28,7 +29,8 @@
 
 Module_GRBL _GRBL(STEPMOTOR_I2C_ADDR);
 
-void setup() {
+void setup()
+{
     // put your setup code here, to run once:
     M5.begin();
     M5.Power.begin();
@@ -47,7 +49,8 @@ void setup() {
     _GRBL.setMode("absolute");
 }
 
-void loop() {
+void loop()
+{
     // If Button A was pressed,stepmotor will rotate back and forth at a time
     // 如果按下按钮 A，步进电机将一次来回旋转
     if (M5.BtnA.wasPressed())  // A button

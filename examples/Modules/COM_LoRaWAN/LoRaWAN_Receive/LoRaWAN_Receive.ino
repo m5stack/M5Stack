@@ -1,16 +1,27 @@
 /*
-  Description: Receive 868Mhz Frequency message
-  AT+RX=0(timeout) needs to be sent every time a message is received
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module COMX LoRaWAN
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
 #include "TFTTerminal.h"
+
+// Description: Receive 868Mhz Frequency message
+// AT+RX=0(timeout) needs to be sent every time a message is received
 
 TFT_eSprite Disbuff      = TFT_eSprite(&M5.Lcd);
 TFT_eSprite TerminalBuff = TFT_eSprite(&M5.Lcd);
 TFTTerminal terminal(&TerminalBuff);
 
-void ATCommand(char cmd[], char date[], uint32_t timeout = 300) {
+void ATCommand(char cmd[], char date[], uint32_t timeout = 300)
+{
     char buf[256] = {0};
     if (date == NULL) {
         sprintf(buf, "AT+%s", cmd);
@@ -22,7 +33,8 @@ void ATCommand(char cmd[], char date[], uint32_t timeout = 300) {
     ReceiveAT(timeout);
 }
 
-bool ReceiveAT(uint32_t timeout) {
+bool ReceiveAT(uint32_t timeout)
+{
     uint32_t nowtime = millis();
     while (millis() - nowtime < timeout) {
         if (Serial2.available() != 0) {
@@ -41,7 +53,8 @@ bool ReceiveAT(uint32_t timeout) {
     return false;
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     Serial2.begin(115200, SERIAL_8N1, 15, 13);
 
@@ -57,7 +70,8 @@ void setup() {
     ATCommand("RX", "0");
 }
 
-void loop() {
+void loop()
+{
     if (Serial2.available() > 0) {
         String receive_data = Serial2.readString();
         Serial.println(receive_data);

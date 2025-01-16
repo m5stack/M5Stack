@@ -1,16 +1,14 @@
-/**
- * @file DriverSample.ino
- * @author SeanKwok (shaoxiang@m5stack.com)
- * @brief Module 4EncoderMotor Test Demo.
- * @version 0.1
- * @date 2024-01-19
+/*
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
  *
- *
+ * SPDX-License-Identifier: MIT
+ */
+/*
  * @Hardwares: M5Core + Module 4EncoderMotor
- * @Platform Version: Arduino M5Stack Board Manager v2.1.0
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
  * @Dependent Library:
- * M5Unified: https://github.com/m5stack/M5Unified
- * M5GFX: https://github.com/m5stack/M5GFX
+ * M5GFX@^0.2.3: https://github.com/m5stack/M5GFX
+ * M5Unified@^0.2.2: https://github.com/m5stack/M5Unified
  * M5Module4EncoderMotor: https://github.com/m5stack/M5Module-4EncoderMotor
  */
 
@@ -20,7 +18,7 @@
 
 M5Module4EncoderMotor driver;
 
-#define MAX_RECORD_SIZE 256
+#define MAX_RECORD_SIZE (256)
 
 float amp_record[MAX_RECORD_SIZE] = {0};
 uint8_t record_index              = 0;
@@ -28,7 +26,8 @@ float amp_value                   = 0.0f;
 
 uint8_t avg_filter_level = 20;
 
-float avg_filter(float *data, int len) {
+float avg_filter(float *data, int len)
+{
     float sum = 0;
     float min = data[0];
     float max = data[0];
@@ -46,7 +45,8 @@ float avg_filter(float *data, int len) {
     return sum / (len - 2);
 }
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Display.begin();
 
@@ -78,13 +78,13 @@ void setup() {
 bool direction = true;
 int mode       = NORMAL_MODE;
 
-void loop() {
+void loop()
+{
     M5.update();
     for (uint8_t i = 0; i < 4; i++) {
         M5.Display.fillRect(20, 40 + 35 * i, 300, 35, BLACK);
         int32_t encoder_value = driver.getEncoderValue(i);
-        M5.Display.drawString("CH" + String(i) + ": " + String(encoder_value),
-                              20, 40 + 35 * i);
+        M5.Display.drawString("CH" + String(i) + ": " + String(encoder_value), 20, 40 + 35 * i);
     }
 
     if (avg_filter_level != 0) {
@@ -100,12 +100,9 @@ void loop() {
     float current = amp_value;
 
     M5.Display.fillRect(20, 40 + 35 * 4, 300, 35, BLACK);
-    M5.Display.drawString(
-        "POWER: " + String(voltage) + "V/" + String(current) + "A", 20,
-        40 + 35 * 4);
+    M5.Display.drawString("POWER: " + String(voltage) + "V/" + String(current) + "A", 20, 40 + 35 * 4);
 
-    if (M5.BtnA.wasClicked() ||
-        (M5.Touch.getCount() && M5.Touch.getDetail(0).wasClicked())) {
+    if (M5.BtnA.wasClicked() || (M5.Touch.getCount() && M5.Touch.getDetail(0).wasClicked())) {
         mode++;
         if (mode > SPEED_MODE) {
             mode = NORMAL_MODE;

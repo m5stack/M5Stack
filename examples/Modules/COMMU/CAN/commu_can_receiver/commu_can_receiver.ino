@@ -1,12 +1,22 @@
 /*
-  Please add MCP_CAN_LIB to your library first........
-  MCP_CAN_LIB file in M5stack lib examples -> modules -> COMMU ->
-  MCP_CAN_lib.rar
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module COMMU
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
 #include <mcp_can.h>
 #include "m5_logo.h"
+
+// Please add MCP_CAN_LIB to your library first........
+// MCP_CAN_LIB file in M5stack lib examples -> modules -> COMMU ->
+// MCP_CAN_lib.rar
 
 /**
  * variable for loop
@@ -28,7 +38,8 @@ MCP_CAN CAN0(12);    // Set CS to pin 10
 void init_can();
 void test_can();
 
-void setup() {
+void setup()
+{
     M5.begin();
     M5.Power.begin();
     Serial.begin(9600);
@@ -43,7 +54,8 @@ void setup() {
     Serial.println("Test CAN...");
 }
 
-void loop() {
+void loop()
+{
     if (M5.BtnA.wasPressed()) {
         M5.Lcd.clear();
         M5.Lcd.printf("CAN Test A!\n");
@@ -55,7 +67,8 @@ void loop() {
     M5.update();
 }
 
-void init_can() {
+void init_can()
+{
     M5.Lcd.setTextSize(1);
     M5.Lcd.setCursor(0, 10);
     M5.Lcd.pushImage(0, 0, 320, 240, (uint16_t *)gImage_logoM5);
@@ -79,26 +92,22 @@ void init_can() {
     Serial.println("MCP2515 Library Receive Example...");
 }
 
-void test_can() {
+void test_can()
+{
     if (!digitalRead(CAN0_INT))  // If CAN0_INT pin is low, read receive buffer
     {
-        CAN0.readMsgBuf(
-            &rxId, &len,
-            rxBuf);  // Read data: len = data length, buf = data byte(s)
+        CAN0.readMsgBuf(&rxId, &len,
+                        rxBuf);  // Read data: len = data length, buf = data byte(s)
 
-        if ((rxId & 0x80000000) ==
-            0x80000000)  // Determine if ID is standard (11 bits) or extended
-                         // (29 bits)
-            sprintf(msgString, "Extended ID: 0x%.8lX  DLC: %1d  Data:",
-                    (rxId & 0x1FFFFFFF), len);
+        if ((rxId & 0x80000000) == 0x80000000)  // Determine if ID is standard (11 bits) or extended
+                                                // (29 bits)
+            sprintf(msgString, "Extended ID: 0x%.8lX  DLC: %1d  Data:", (rxId & 0x1FFFFFFF), len);
         else
-            sprintf(msgString,
-                    "Standard ID: 0x%.3lX       DLC: %1d  Data:", rxId, len);
+            sprintf(msgString, "Standard ID: 0x%.3lX       DLC: %1d  Data:", rxId, len);
 
         Serial.print(msgString);
         M5.Lcd.printf(msgString);
-        if ((rxId & 0x40000000) ==
-            0x40000000) {  // Determine if message is a remote request frame.
+        if ((rxId & 0x40000000) == 0x40000000) {  // Determine if message is a remote request frame.
             sprintf(msgString, " REMOTE REQUEST FRAME");
             Serial.print(msgString);
         } else {

@@ -1,22 +1,22 @@
 /*
-*******************************************************************************
-* Copyright (c) 2023 by M5Stack
-*                  Equipped with M5Core sample source code
-*                          配套  M5Core 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/module/servo2
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/module/servo2
-*
-* Describe: servo2.
-* Date: 2021/9/2
-*******************************************************************************
-  Use SERVO2 Module to control the rotation of 16-channel servo.
-  使用 SERVO2 模块控制 16 通道舵机的旋转。
-*/
+ * SPDX-FileCopyrightText: 2025 M5Stack Technology CO LTD
+ *
+ * SPDX-License-Identifier: MIT
+ */
+/*
+ * @Hardwares: M5Core + Module13.2 Servo2
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.3
+ * @Dependent Library:
+ * M5Stack@^0.4.6: https://github.com/m5stack/M5Stack
+ */
 
 #include <M5Stack.h>
 #include <Wire.h>
 
 #include "Adafruit_PWMServoDriver.h"
+
+// Use SERVO2 Module to control the rotation of 16-channel servo.
+// 使用 SERVO2 模块控制 16 通道舵机的旋转。
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40, Wire);
 
@@ -30,12 +30,12 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40, Wire);
     500  // This is the rounded 'minimum' microsecond length based on the
          // minimum pulse of 102  这是基于 102 的最小脉冲的舍入“最小”微秒长度
 #define USMAX \
-    2500  // This is the rounded 'maximum' microsecond length based on the
-          // maximum pulse of 512  这是基于 512 的最大脉冲的舍入“最大”微秒长度
-#define SERVO_FREQ \
-    50  // Analog servos run at ~50 Hz updates  模拟伺服以 ~50 Hz 更新运行
+    2500               // This is the rounded 'maximum' microsecond length based on the
+                       // maximum pulse of 512  这是基于 512 的最大脉冲的舍入“最大”微秒长度
+#define SERVO_FREQ 50  // Analog servos run at ~50 Hz updates  模拟伺服以 ~50 Hz 更新运行
 
-void setup() {
+void setup()
+{
     M5.begin(true, true, true, true);
     pwm.begin();
     pwm.setPWMFreq(50);
@@ -44,7 +44,8 @@ void setup() {
     M5.Lcd.print("Servo2");
 }
 
-void setServoPulse(uint8_t n, double pulse) {
+void setServoPulse(uint8_t n, double pulse)
+{
     double pulselength;
     pulselength = 1000000;  // 1,000,000 us per second
     pulselength /= 50;      // 50 Hz
@@ -59,13 +60,15 @@ void setServoPulse(uint8_t n, double pulse) {
     pwm.setPWM(n, 0, pulse);
 }
 
-void servo_angle_write(uint8_t n, int Angle) {
+void servo_angle_write(uint8_t n, int Angle)
+{
     double pulse = Angle;
     pulse        = pulse / 90 + 0.5;
     setServoPulse(n, pulse);
 }
 
-void loop() {
+void loop()
+{
     for (int i = 0; i < 16; i++) {
         setServoPulse(i, 0.5);
     }
