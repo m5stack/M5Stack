@@ -1,3 +1,13 @@
+# 🚫 Deprecated — Use M5GFX & M5Unified
+
+- **M5GFX**  
+  High-performance, lightweight graphics and display driver library for M5 devices.  
+  <https://github.com/m5stack/M5GFX>
+
+- **M5Unified**  
+  Unified base library for M5 devices (IO/peripherals, power management, audio, etc.).  
+  <https://github.com/m5stack/M5Unified>
+
 # M5Stack Library
 
 [![Arduino Lint](https://github.com/m5stack/M5Stack/actions/workflows/Arduino-Lint-Check.yml/badge.svg)](https://github.com/m5stack/M5Stack/actions/workflows/Arduino-Lint-Check.yml)
@@ -6,9 +16,6 @@
 English | [中文](docs/getting_started_cn.md) | [日本語](docs/getting_started_ja.md)
 
 The M5Stack library provides access to the built-in hardware of the M5Stack Core (including Basic and Gray) controllers.
-
-## Recommendation
-**<span style="font-size: larger">This library is not recommended for new projects, nor for projects using M5Stack products other than _Basic_ and _Gray_.  See [M5Unified](https://github.com/M5Stack/M5Unified) and [M5GFX](https://github.com/M5Stack/M5GFX) for libraries that are more up-to-date and with support for many newer M5Stack products.</span>**
 
 ## Usage
 This library's functionality is available through the M5Stack class, referenced as `M5`, including:
