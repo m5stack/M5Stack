@@ -20,7 +20,7 @@ void setup()
 {
     M5.begin();             // Init M5Stack.  初始化M5Stack
     M5.Power.begin();       // Init power  初始化电源模块
-    M5.lcd.setTextSize(2);  // Set the text size to 2.  设置文字大小为2
+    M5.Lcd.setTextSize(2);  // Set the text size to 2.  设置文字大小为2
     M5.Lcd.println("MFRC522 Test");
     Wire.begin();  // Wire init, adding the I2C bus.  Wire初始化, 加入i2c总线
 
