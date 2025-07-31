@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------*
- * M5Stack Bettery/Power Control Library v1.0                           *
+ * M5Stack Battery/Power Control Library v1.0                           *
  *                                                                      *
  * This work is licensed under the GNU Lesser General Public            *
  * License v2.1                                                         *
@@ -88,7 +88,7 @@ POWER::POWER() {
 void POWER::begin() {
     uint8_t data;
 
-    // Initial I2C
+    // Initialize I2C
     Wire.begin(21, 22);
 
     // 450ma
@@ -96,7 +96,7 @@ void POWER::begin() {
 
     setChargeVolt(BAT_4_2V);
 
-    // End charge current 200ma
+    // Set battery charging to stop when current is less than 200ma
     if (M5.I2C.readByte(IP5306_ADDR, 0x21, &data) == true) {
         M5.I2C.writeByte(IP5306_ADDR, 0x21, (data & 0x3f) | 0x00);
     }
@@ -200,7 +200,7 @@ bool POWER::setLowPowerShutdownTime(ShutdownTime time) {
   default: false
   false: when the current is too small, ip5306 will automatically shut down
   note: it seem not work and has problems
-        Function has disabled.(Stab for compatibility)
+        Function has been disabled. (Stub for compatibility)
         This function will be removed in a future release.
 */
 bool POWER::setKeepLightLoad(bool en) {
@@ -224,7 +224,7 @@ bool POWER::setPowerBoostKeepOn(bool en) {
 }
 
 /**
- * Function has disabled.(Stab for compatibility)
+ * Function has been disabled. (Stub for compatibility)
  * This function will be removed in a future release.
  */
 bool POWER::setLowPowerShutdown(bool en) {
@@ -410,6 +410,11 @@ void POWER::lightSleep(uint64_t time_in_us) {
     M5.Lcd.setBrightness(200);
 }
 
+
+// Reference is weak to avoid linking the bt stack if not already linked.
+// (Potential cost: hundreds of KB of flash memory)
+esp_err_t esp_bluedroid_disable(void) __attribute__((weak));
+
 // note:
 // To ensure that the power is turned off,
 // reduce the power consumption according to the specifications of the power
@@ -433,8 +438,8 @@ void POWER::powerOFF() {
         esp_wifi_stop();
     }
 
-    // stop bt
-    esp_bluedroid_disable();
+    // stop bt via weak reference  
+    if (esp_bluedroid_disable) esp_bluedroid_disable();
 
     // disable interrupt/peripheral
     esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_ALL);
