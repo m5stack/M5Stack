@@ -1,5 +1,12 @@
 #include "M5Display.h"
 
+// WiFi 功能的条件编译
+#ifdef ESP32
+    #include <WiFi.h>
+    #include <HTTPClient.h>
+    #define M5_WIFI_ENABLED
+#endif
+
 #define BLK_PWM_CHANNEL 7  // LEDC_CHANNEL_7
 
 M5Display::M5Display() : TFT_eSPI() {
@@ -10,10 +17,20 @@ void M5Display::begin() {
     setRotation(1);
     fillScreen(0);
 
+    #if defined(ESP_IDF_VERSION_MAJOR) && (ESP_IDF_VERSION_MAJOR >= 5)
+        // ESP32 Arduino 3.x 新 API
+        ledcAttach(TFT_BL, 44100, 8);
+        ledcWrite(TFT_BL, 80);  // 直接使用 TFT_BL 引脚
+    #else
+        // ESP32 Arduino 2.x 旧 API
+        ledcSetup(BLK_PWM_CHANNEL, 44100, 8);
+        ledcAttachPin(TFT_BL, BLK_PWM_CHANNEL);
+        ledcWrite(BLK_PWM_CHANNEL, 80);
+    #endif
+
     // Init the back-light LED PWM
-    ledcSetup(BLK_PWM_CHANNEL, 44100, 8);
-    ledcAttachPin(TFT_BL, BLK_PWM_CHANNEL);
-    ledcWrite(BLK_PWM_CHANNEL, 80);
+    // ledcSetup(BLK_PWM_CHANNEL, 44100, 8);
+    // ledcAttachPin(TFT_BL, BLK_PWM_CHANNEL);
 }
 
 void M5Display::sleep() {
@@ -344,7 +361,7 @@ static bool jpgDecode(jpg_file_decoder_t *jpeg,
     static uint8_t work[3100];
     JDEC decoder;
 
-    JRESULT jres = jd_prepare(&decoder, reader, work, 3100, jpeg);
+    JRESULT jres = jd_prepare(&decoder, (UINT(*)(JDEC*,BYTE*,UINT))reader, work, 3100, jpeg);
     if (jres != JDR_OK) {
         log_e("jd_prepare failed! %s", jd_errors[jres]);
         return false;
@@ -366,7 +383,7 @@ static bool jpgDecode(jpg_file_decoder_t *jpeg,
     jpeg->outHeight =
         (jpgMaxHeight > jpeg->maxHeight) ? jpeg->maxHeight : jpgMaxHeight;
 
-    jres = jd_decomp(&decoder, jpgWrite, (uint8_t)jpeg->scale);
+    jres = jd_decomp(&decoder, (UINT(*)(JDEC*,void*,JRECT*))jpgWrite, (uint8_t)jpeg->scale);
     if (jres != JDR_OK) {
         log_e("jd_decomp failed! %s", jd_errors[jres]);
         return false;
@@ -558,6 +575,8 @@ void M5Display::drawPngUrl(const char *url, uint16_t x, uint16_t y,
                            uint16_t maxWidth, uint16_t maxHeight, uint16_t offX,
                            uint16_t offY, double scale,
                            uint8_t alphaThreshold) {
+#ifdef M5_WIFI_ENABLED
+
     HTTPClient http;
 
     if (WiFi.status() != WL_CONNECTED) {
@@ -632,4 +651,10 @@ void M5Display::drawPngUrl(const char *url, uint16_t x, uint16_t y,
 
     pngle_destroy(pngle);
     http.end();
+
+#else 
+    // WiFi 未启用时的处理
+    Serial.println("WiFi functionality disabled - drawPngUrl not available");
+    Serial.printf("Requested URL: %s\n", url);
+#endif
 }

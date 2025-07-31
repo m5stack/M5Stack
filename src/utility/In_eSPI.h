@@ -163,8 +163,10 @@
     GPIO.out_w1tc = (1 << TFT_DC); \
     GPIO.out_w1ts = (1 << TFT_DC)
 #else
-#define DC_C GPIO.out_w1tc = (1 << TFT_DC)  //;GPIO.out_w1tc = (1 << TFT_DC)
-#define DC_D GPIO.out_w1ts = (1 << TFT_DC)  //;GPIO.out_w1ts = (1 << TFT_DC)
+
+// #define DC_C GPIO.out_w1tc = (1 << TFT_DC)  //;GPIO.out_w1tc = (1 << TFT_DC)
+// #define DC_D GPIO.out_w1ts = (1 << TFT_DC)  //;GPIO.out_w1ts = (1 << TFT_DC)
+
 #endif
 #else
 #define DC_C
@@ -227,10 +229,23 @@
     GPIO.out_w1tc = (1 << TFT_CS); \
     GPIO.out_w1ts = (1 << TFT_CS)
 #else
-#define CS_L                       \
-    GPIO.out_w1tc = (1 << TFT_CS); \
-    GPIO.out_w1tc = (1 << TFT_CS)
-#define CS_H GPIO.out_w1ts = (1 << TFT_CS)  //;GPIO.out_w1ts = (1 << TFT_CS)
+
+// ESP-IDF 版本兼容性修复
+#if defined(ESP_IDF_VERSION_MAJOR) && (ESP_IDF_VERSION_MAJOR >= 5)
+    // ESP-IDF 5.x 版本 - 使用寄存器直接访问
+    #include "soc/gpio_reg.h"
+    #define CS_L do { REG_WRITE(GPIO_OUT_W1TC_REG, (1 << TFT_CS)); } while(0)
+    #define CS_H do { REG_WRITE(GPIO_OUT_W1TS_REG, (1 << TFT_CS)); } while(0)
+    #define DC_C do { REG_WRITE(GPIO_OUT_W1TC_REG, (1 << TFT_DC)); } while(0)
+    #define DC_D do { REG_WRITE(GPIO_OUT_W1TS_REG, (1 << TFT_DC)); } while(0)
+#else
+    // ESP-IDF 4.x 及以下版本 - 使用传统方式
+    #define CS_L do { GPIO.out_w1tc = (1 << TFT_CS); } while(0)
+    #define CS_H do { GPIO.out_w1ts = (1 << TFT_CS); } while(0)
+    #define DC_C do { GPIO.out_w1tc = (1 << TFT_DC); } while(0)
+    #define DC_D do { GPIO.out_w1ts = (1 << TFT_DC); } while(0)
+#endif
+
 #endif
 #else
 #define CS_L
