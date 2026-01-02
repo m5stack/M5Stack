@@ -28,8 +28,10 @@ ClosedCube::Wired::TCA9548A tca9548a;
 
 void setup()
 {
-    M5.begin();
+    auto cfg = M5.config();
+    M5.begin(cfg);
     M5.Power.begin();
+    Wire.begin();
     tca9548a.address(PaHub_I2C_ADDRESS);  // Set the I2C address.  设置I2C地址
     M5.Lcd.setTextFont(4);
     M5.Lcd.setCursor(70, 0, 4);
