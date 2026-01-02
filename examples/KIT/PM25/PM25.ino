@@ -16,8 +16,31 @@ float humd = 0.0;
 #define X_OFFSET 160
 #define Y_OFFSET 23
 
-uint16_t CheckSum;
-uint16_t CheckCode;
+#define DATA_LEN 32
+
+#define OUT_BAUD 115200
+#define SENSOR_BAUD 9600
+
+#define FIRST_START_BIT 66
+#define SECOND_START_BIT 77
+
+#define FRONT 2
+
+bool firstStartBitIsRead;
+bool secondStartBitIsRead;
+
+uint8_t serial_bytes[DATA_LEN] = {0};
+uint8_t currentByte = 0;
+
+void resetSerial() {
+    currentByte = 0;
+
+    memset(serial_bytes, 0, sizeof(serial_bytes) / sizeof(serial_bytes[0]) * sizeof(serial_bytes[0]));
+
+    firstStartBitIsRead = false;
+    secondStartBitIsRead = false;
+}
+
 
 // Print the header for a display screen
 void header(const char *string, uint16_t color) {
@@ -28,30 +51,30 @@ void header(const char *string, uint16_t color) {
     M5.Lcd.setTextDatum(TC_DATUM);
     M5.Lcd.drawString(string, 160, 3, 4);
 }
+
 void setup() {
     M5.begin();
-    Serial.begin(9600);
-    Serial2.begin(9600, SERIAL_8N1, 16, 17);
+    Serial.begin(OUT_BAUD);
+    Serial2.begin(SENSOR_BAUD, SERIAL_8N1, 16, 17);
     pinMode(13, OUTPUT);
     digitalWrite(13, 1);
 
     M5.Lcd.fillScreen(TFT_BLACK);
     header("P M 2.5", TFT_BLACK);
+
+    resetSerial();
 }
 
-uint8_t Air_val[32] = {0};
-int16_t p_val[16]   = {0};
-uint8_t i           = 0;
-
-#define FRONT 2
 
 void LCD_Display_Val(void) {
+    uint16_t p_val[16] = {0};
+
     for (int i = 0, j = 0; i < 32; i++) {
         if (i % 2 == 0) {
-            p_val[j] = Air_val[i];
+            p_val[j] = serial_bytes[i];
             p_val[j] = p_val[j] << 8;
         } else {
-            p_val[j] |= Air_val[i];
+            p_val[j] |= serial_bytes[i];
             j++;
         }
     }
@@ -142,16 +165,18 @@ void LCD_Display_Val(void) {
     M5.Lcd.setCursor(X_LOCAL + X_OFFSET, Y_LOCAL + Y_OFFSET * 7, FRONT);
     M5.Lcd.print("10um  : ");
     M5.Lcd.print(p_val[13]);
+
+    resetSerial();
 }
 
 void TempHumRead(void) {
+    temp = 0, humd = 0;
+
     if (sht30.get() == 0) {  // Obtain the data of shT30.  获取sht30的数据
         temp = sht30.cTemp;  // Store the temperature obtained from shT30.
-                             // 将sht30获取到的温度存储
+        // 将sht30获取到的温度存储
         humd = sht30.humidity;  // Store the humidity obtained from the SHT30.
-                                // 将sht30获取到的湿度存储
-    } else {
-        temp = 0, humd = 0;
+        // 将sht30获取到的湿度存储
     }
 
     M5.Lcd.setTextColor(TFT_GREEN, TFT_BLACK);
@@ -168,17 +193,37 @@ void TempHumRead(void) {
     M5.Lcd.print(humd);
 }
 
-void loop() {
-    if (Serial2.available()) {
-        Air_val[i] = Serial2.read();
-        Serial.write(Air_val[i]);
-        i++;
-    } else {
-        i = 0;
+void readCurrentBit() {
+    uint8_t bit = Serial2.read();
+
+    if (!firstStartBitIsRead) {
+        if (bit != FIRST_START_BIT) {
+            resetSerial();
+            return;
+        }
+        firstStartBitIsRead = true;
+    } else if (!secondStartBitIsRead) {
+        if (bit != SECOND_START_BIT) {
+            resetSerial();
+            return;
+        }
+        secondStartBitIsRead = true;
     }
 
-    if (i == DATA_LEN) {
+    if (currentByte < DATA_LEN) {
+        serial_bytes[currentByte] = bit;
+    }
+
+    currentByte++;
+}
+
+void loop() {
+    if (currentByte >= DATA_LEN) {
         LCD_Display_Val();
         TempHumRead();
+    }
+
+    if (Serial2.available()) {
+        readCurrentBit();
     }
 }
