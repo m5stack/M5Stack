@@ -31,7 +31,7 @@ void M5Stack::begin(bool LCDEnable, bool SDEnable, bool SerialEnable, bool I2CEn
 
     // TF Card
     if (SDEnable == true) {
-        SD.begin(TFCARD_CS_PIN, SPI, 40000000);
+        SD.begin(TFCARD_CS_PIN, SPI, 10000000);
     }
 
     // LCD INIT
