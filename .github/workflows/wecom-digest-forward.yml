@@ -92,22 +92,29 @@ jobs:
               return;
             }
 
+            // GitHub repository_dispatch client_payload allows ≤10 top-level keys.
+            // Pack optional fields into `meta` so we stay within the limit.
             const client_payload = {
               event_type,
               repo,
               number,
-              title,
-              body,
-              html_url,
+              title: String(title || '').slice(0, 500),
+              body: String(body || '').slice(0, 2000),
+              html_url: html_url || '',
               kind,
               sender,
               sender_type,
-              assignees,
-              assignee: assignee || '',
-              comment_body: comment_body || '',
-              comment_url: comment_url || '',
-              comment_id: comment_id || '',
+              meta: JSON.stringify({
+                assignees: assignees || [],
+                assignee: assignee || '',
+                comment_url: comment_url || '',
+                comment_id: comment_id || '',
+              }),
             };
+            if (Object.keys(client_payload).length > 10) {
+              core.setFailed(`client_payload has ${Object.keys(client_payload).length} keys (max 10)`);
+              return;
+            }
 
             await github.rest.repos.createDispatchEvent({
               owner: process.env.OPS_OWNER,
