@@ -32,9 +32,9 @@
 #define WIDTH  128
 #define HEIGHT 128
 
-#include <M5Stack.h>
+#include <M5Unified.h>
 
-TFT_eSprite spr = TFT_eSprite(&M5.Lcd);
+M5Canvas spr(&M5.Lcd);
 
 void setup() {
     Serial.begin(250000);
@@ -78,7 +78,8 @@ void loop(void) {
 
     // Draw some text with Middle Centre datum
     spr.setTextDatum(MC_DATUM);
-    spr.drawString("Sprite", WIDTH / 2, HEIGHT / 2, 4);
+    spr.drawString("Sprite", WIDTH / 2, HEIGHT / 2, &fonts::Font4);
+    //spr.drawString("Sprite", WIDTH / 2, HEIGHT / 2, 4);
 
     // Now push the sprite to the TFT at position 0,0 on screen
     spr.pushSprite(-40, -40);
