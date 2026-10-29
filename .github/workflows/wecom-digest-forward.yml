@@ -13,7 +13,7 @@ on:
     types: [opened, assigned]
   pull_request_target:
     # pull_request_target so fork PRs still forward metadata; we only read github.event
-    types: [opened, assigned]
+    types: [opened, assigned, review_requested]
   issue_comment:
     types: [created]
   pull_request_review_comment:
@@ -71,6 +71,16 @@ jobs:
               } else if (action === 'assigned') {
                 event_type = 'assigned';
                 assignee = (ev.assignee && ev.assignee.login) || '';
+              } else if (action === 'review_requested') {
+                event_type = 'review_requested';
+                // Prefer user login; fall back to team slug. Reuse meta.assignee for ops reuse.
+                if (ev.requested_reviewer && ev.requested_reviewer.login) {
+                  assignee = ev.requested_reviewer.login;
+                } else if (ev.requested_team && (ev.requested_team.slug || ev.requested_team.name)) {
+                  assignee = ev.requested_team.slug || ev.requested_team.name;
+                } else {
+                  assignee = '';
+                }
               }
             } else if (name === 'issue_comment' || name === 'pull_request_review_comment') {
               event_type = 'comment';
@@ -107,6 +117,7 @@ jobs:
               meta: JSON.stringify({
                 assignees: assignees || [],
                 assignee: assignee || '',
+                reviewer: event_type === 'review_requested' ? (assignee || '') : '',
                 comment_url: comment_url || '',
                 comment_id: comment_id || '',
               }),
